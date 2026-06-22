@@ -1,0 +1,225 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thesis Abstract &amp; Framework — Latent Dynamics of Prediction-Market Price Paths</title>
+<script>
+(function(){
+  try{
+    document.documentElement.className += ' js';
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(rm || !('IntersectionObserver' in window)) return;   // fail-open: no .anim => content visible
+    document.documentElement.className += ' anim';
+    window.addEventListener('load', function(){
+      setTimeout(function(){                                  // insurance: nothing can stay hidden
+        var e=document.querySelectorAll('.reveal'); for(var i=0;i<e.length;i++) e[i].classList.add('in');
+      },3000);
+    });
+  }catch(_){}
+})();
+</script>
+<style>:root{
+  --bg:#FAFAF8; --surface:#FFFFFF; --surface-2:#F4F4F0;
+  --ink:#1A1A1A; --ink-2:#2B2B2B; --muted:#5A5A56; --faint:#8A8A86;
+  --accent:#0F6E56; --accent-2:#3E9B82; --accent-soft:#EAF3EF;
+  --clay:#B0560F; --clay-soft:#FBEEE2;
+  --line:#E5E5DF; --line-2:#D8D8D1;
+  --ok:#0F6E56; --bad:#A23E2E; --warn:#9A6A00;
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Consolas,"Liberation Mono",Menlo,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--measure:820px;--navh:54px;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--navh)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.66;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{line-height:1.2;font-weight:700;letter-spacing:-.015em;color:var(--ink)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line-2)}
+a:hover{border-color:var(--accent)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
+.wrap{max-width:var(--measure);margin:0 auto;padding:0 26px}
+p{max-width:74ch;color:var(--ink-2)}
+.small{font-size:14px;color:var(--muted)} .note{font-size:13px;color:var(--faint)}
+b{color:var(--ink)}
+nav{position:sticky;top:0;z-index:50;background:rgba(250,250,248,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .row{max-width:1120px;margin:0 auto;padding:0 26px;display:flex;align-items:center;gap:14px;height:var(--navh)}
+.brand{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap;border:none}
+.brand .dot{color:var(--accent)}
+.acts{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}.acts::-webkit-scrollbar{display:none}
+.acts a{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--muted);padding:6px 9px;border-radius:6px;white-space:nowrap;border:none}
+.acts a:hover{color:var(--ink);background:var(--surface-2)} .acts a.home{color:var(--accent)}
+.hero{padding:64px 0 24px}
+.hero .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+.hero h1{font-size:clamp(28px,4vw,42px);margin:0 0 16px;letter-spacing:-.02em;max-width:22ch}
+.hero h1 .hl{color:var(--accent)}
+.hero .ds{font-size:clamp(16px,1.9vw,19px);color:var(--muted);max-width:64ch;margin:0 0 18px}
+.byl{font-family:var(--mono);font-size:13.5px;color:var(--muted);line-height:1.85}
+.byl b{color:var(--ink)} .byl .warn{color:var(--clay);font-weight:600}
+section{padding:42px 0;border-top:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+h2.sec{font-size:clamp(22px,3vw,30px);margin:0 0 8px}
+h2.sec::after{content:"";display:block;width:46px;height:2px;background:var(--accent);margin-top:14px}
+.lead{font-size:18px;color:var(--muted);max-width:66ch}
+.abs{font-size:17.5px;color:var(--ink-2);max-width:74ch}
+.abs p{margin:0 0 16px}
+/* chapter card */
+.chap{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:9px;background:var(--surface);
+  padding:22px 26px;margin:18px 0}
+.chap.prog{border-left-color:var(--warn)} .chap.plan{border-left-color:var(--line-2)}
+.chap .ch-top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.chap .cn{font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;background:var(--accent);border-radius:5px;padding:3px 9px}
+.chap.prog .cn{background:var(--warn)} .chap.plan .cn{background:var(--faint)}
+.chap h3{font-size:19px;margin:0;flex:1;min-width:60%}
+.badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:4px;font-weight:700}
+.badge.done{color:#fff;background:var(--accent)}
+.badge.prog{color:var(--warn);background:#FBF3DF;border:1px solid #EBDFB5}
+.badge.plan{color:var(--muted);background:var(--surface-2);border:1px solid var(--line)}
+.chap p{font-size:15px;margin:0 0 10px;color:var(--ink-2)}
+.chap .contents{font-size:13.5px;color:var(--muted);font-family:var(--sans);border-top:1px dashed var(--line-2);padding-top:10px;margin-top:4px}
+.chap .contents b{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint)}
+/* tables */
+table.dt{border-collapse:collapse;width:100%;margin:18px 0;font-size:14px}
+table.dt th,table.dt td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+table.dt th{background:var(--surface-2);font-weight:600}
+table.dt td.m,table.dt th.m{font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.dt .st{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600}
+ul.risks{list-style:none;padding:0;margin:14px 0}
+ul.risks li{border-left:2px solid var(--warn);padding:4px 0 4px 15px;margin:12px 0;font-size:14.5px;color:var(--ink-2)}
+ul.risks li b{color:var(--clay);font-family:var(--mono);font-size:13px}
+.gap{border:1px dashed var(--warn);background:#FBF3DF;border-radius:8px;padding:14px 18px;margin:16px 0;font-size:14px;color:var(--ink-2)}
+.gap b{color:var(--warn);font-family:var(--mono);font-size:12px}
+.reveal{transition:opacity .6s ease,transform .6s ease}
+html.anim .reveal{opacity:0;transform:translateY(12px)} html.anim .reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}}
+@media print{.reveal{opacity:1!important;transform:none!important}nav{display:none}}
+footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
+</style></head>
+<body>
+<nav><div class="row">
+  <a class="brand" href="../index.html">latent dynamics <span class="dot">·</span> framework</a>
+  <div class="acts"><a href="#abstract">Abstract</a><a href="#ch1">Ch1</a><a href="#ch2">Ch2</a><a href="#ch3">Ch3</a><a href="#ch4">Ch4</a><a href="#ch5">Ch5</a><a href="#ch6">Ch6</a><a href="#ch7">Ch7</a><a href="#ch8">Ch8</a><a href="#datasets">Data</a><a href="#risks">Risks</a><a class="home" href="../index.html">← Overview</a></div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <p class="kicker reveal">MSc Machine Learning · Thesis Framework</p>
+  <h1 class="reveal">Latent Dynamics of <span class="hl">Prediction-Market</span> Price Paths</h1>
+  <p class="ds reveal">Repricing-intensity modelling of high-frequency Polymarket order-book data, with terminal absorption at resolution.</p>
+  <p class="byl reveal"><b>Juan Mediavilla</b> · University College London · MSc Machine Learning ·
+    Supervisor: Prof. Philip Treleaven</p>
+</div></header>
+
+<section id="abstract"><div class="wrap">
+  <p class="eyebrow reveal">Thesis Abstract</p>
+  <h2 class="sec reveal">Abstract</h2>
+  <div class="abs reveal" style="margin-top:18px">
+    <p>Prediction markets price real-world events as continuously traded probabilities, yet the high-frequency process by
+      which those prices form has not been studied at order-book resolution, because no public dataset of a prediction
+      venue's live order book has existed. This thesis introduces such a dataset — a purpose-built, gap-audited,
+      millisecond-resolution corpus of the <span class="num">250</span> most active Polymarket markets, captured
+      continuously and through each market's resolution — and uses it to characterise and model the latent dynamics of
+      prediction-market price paths.</p>
+    <p>Two pre-registered probes establish the governing structure. A natural model — a regime-switching model of price
+      variance — is decisively <b>falsified</b>: apparent volatility regimes do not persist at any timescale. Instead, the
+      price is sticky and reprices in clustered bursts, and the persistent structure lives in the <b>intensity of
+      repricing</b> — how often the market moves — which is strongly clustered and non-Poisson on every market tested
+      (hot episodes persist for tens of minutes; rate autocorrelation to ~50 minutes).</p>
+    <p>The thesis's contribution is a generative model of this repricing intensity as a latent hot/cold state process
+      (a Markov-modulated Poisson process), extended so that the intensity is modulated by <b>time-to-resolution</b> — the
+      defining feature of prediction markets, in which every price is absorbed at $0 or $1 by a bounded, approximately known
+      deadline. The model is inferred by variational methods and validated on held-out markets and against realised outcomes
+      via the complete path-to-resolution samples in the corpus.</p>
+    <p>The work is designed to be defensible whatever the empirical outcome: the central question — does repricing intensity
+      sharpen as a market approaches absorption? — has a clean negative answer as well as a positive one. The dissertation
+      therefore delivers three outputs: a reusable high-frequency prediction-market dataset and collection pipeline; an
+      empirical characterisation of prediction-market price dynamics at a resolution not previously available; and an
+      absorption-aware intensity model for terminally-absorbed price processes, a model class with no standard analogue in
+      financial time-series. No deployment of trading capital is involved; the venue has been independently shown to be
+      near-efficient gross of fees, which is precisely what motivates studying price formation rather than prediction.</p>
+  </div>
+</div></section>
+
+<section id="framework"><div class="wrap">
+  <p class="eyebrow reveal">Thesis Framework · Chapter Micro-abstracts</p>
+  <h2 class="sec reveal">Eight chapters, a probe-and-gate arc</h2>
+  <p class="lead reveal" style="margin-top:16px">Context and data, then the empirical discovery, then the model that the
+    discovery dictates, then validation. Each micro-abstract states what the chapter establishes and how.</p>
+  <div style="margin-top:22px"><div class="chap done reveal" id="ch1">
+          <div class="ch-top"><span class="cn">Ch 1</span><h3>Introduction and motivation</h3>
+            <span class="badge done">Done</span></div>
+          <p>Establishes the object of study and why it is open. Prediction-market prices are bounded, terminally absorbed at a known deadline, and have an observed terminal outcome — three properties that distinguish them from the equity processes most dynamics models target. Frames the research question (does identifiable, persistent latent structure exist in these price paths, and how is it shaped by approach to resolution?) and states the thesis's defining stance: it is a measurement-and-modelling thesis, not a trading thesis, designed to yield a defensible result whether the central signal is present or absent.</p>
+          <div class="contents"><b>Contents:</b> problem statement; the three structural peculiarities; the data gap that kept the question closed; contributions and roadmap.</div></div>
+<div class="chap prog reveal" id="ch2">
+          <div class="ch-top"><span class="cn">Ch 2</span><h3>Background and related work</h3>
+            <span class="badge prog">In progress</span></div>
+          <p>Positions the thesis against three literatures: market microstructure and high-frequency price formation; point-process and regime-switching models of event-timed financial data (Hawkes processes, Markov-modulated Poisson processes, hidden semi-Markov models); and the empirical literature on prediction-market efficiency and price discovery. Identifies the specific gap — intensity modelling of prediction-market repricing as a function of time-to-resolution — and surveys the absorption / bounded-martingale modelling the terminal-boundary contribution builds on.</p>
+          <div class="contents"><b>Contents:</b> microstructure and price formation; point processes for financial events; prediction-market efficiency; the absorption / bounded-price modelling gap.</div></div>
+<div class="chap done reveal" id="ch3">
+          <div class="ch-top"><span class="cn">Ch 3</span><h3>Data: a high-frequency prediction-market corpus</h3>
+            <span class="badge done">Done</span></div>
+          <p>Documents the dataset and collection system as a contribution in its own right. A purpose-built 24/7 pipeline captures full order-book deltas, periodic snapshots, the trade tape and resolutions for the top-250 Polymarket markets at millisecond resolution, with an audit trail that makes data loss known rather than silent (~10 minutes total over the validation run). Describes order-book reconstruction (delta replay anchored on snapshots), the gold samples (markets observed continuously through absorption), and honest limitations of window length, liquidity selection and single-venue scope.</p>
+          <div class="contents"><b>Contents:</b> collection architecture and fault isolation; schemas; continuity auditing; order-book reconstruction and validation; gold samples; limitations.</div></div>
+<div class="chap done reveal" id="ch4">
+          <div class="ch-top"><span class="cn">Ch 4</span><h3>Probe I: is the venue exploitable, and what should we model?</h3>
+            <span class="badge done">Done</span></div>
+          <p>Reports the groundwork that fixes the thesis's framing. Pre-registered, fee-aware tests across 1,348 markets establish that the venue clears near-efficiently gross of fees and that naive directional strategies have no out-of-sample edge (five independent negative results; the market price beats every coarse prior, Brier 0.063 vs 0.18–0.25). This negative result is load-bearing: prices are informative, so the productive question is how they form, not how to beat them — redirecting the thesis from prediction to dynamics.</p>
+          <div class="contents"><b>Contents:</b> efficiency census; directional-strategy backtests; prior-vs-market comparison; the methodological move from edge-seeking to dynamics.</div></div>
+<div class="chap done reveal" id="ch5">
+          <div class="ch-top"><span class="cn">Ch 5</span><h3>Probe II: identifying the dynamics</h3>
+            <span class="badge done">Done</span></div>
+          <p>The empirical heart of the thesis. Two pre-registered probes adjudicate between competing models of the price path. A Gaussian regime-switching model of per-bin variance is falsified — apparent regimes flicker, lasting a single bin at every grid resolution (1s/10s/60s). Direct tests then show repricing events cluster strongly and are non-Poisson on all ten markets (overdispersion CV 2.2–5.3, rate autocorrelation to ~50 minutes, hot-stays-hot correlation ρ=0.74), and that a sticky variance model still cannot recover the persistence. Conclusion: the price is sticky with clustered repricing, and persistence lives in the event intensity, not the per-bin variance — which dictates the Chapter 6 model class.</p>
+          <div class="contents"><b>Contents:</b> variance-regime probe and its falsification; jump-clustering and inter-event tests; sticky-model refutation; grid-invariance; the intensity reframe.</div></div>
+<div class="chap prog reveal" id="ch6">
+          <div class="ch-top"><span class="cn">Ch 6</span><h3>The absorption-aware intensity model</h3>
+            <span class="badge prog">In progress</span></div>
+          <p>Builds the model the data dictates. A baseline homogeneous Poisson process (M0) is rejected by Chapter 5's clustering result; a Markov-modulated Poisson process (M1) introduces a latent hot/cold intensity state with genuine dwell; and the contribution model (M2) makes the intensity — and the state transitions — functions of time-to-resolution τ, capturing the hypothesised sharpening of repricing as the market approaches its absorbing boundary. Inference is variational; events are defined in tick units and stratified by price level; masked gaps enter the likelihood as censored intervals. A self-exciting (Hawkes) formulation is developed as a comparison model, making endogenous-excitation vs exogenous-regime a substantive model-selection question.</p>
+          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2; the time-to-resolution mechanism; variational inference; tick-heterogeneity and censoring; Hawkes comparison; marked-process extension (jump sizes). M2 is the core contribution.</div></div>
+<div class="chap plan reveal" id="ch7">
+          <div class="ch-top"><span class="cn">Ch 7</span><h3>Validation</h3>
+            <span class="badge plan">Planned</span></div>
+          <p>Subjects the model to the same standard under which earlier candidate findings were retracted. Validation covers held-out predictive likelihood on out-of-sample markets; posterior-predictive checks on inter-event distributions and episode dwell times; calibration of the model's implied probabilities against realised resolutions on the gold samples; simulation-based recovery checks (fit to data from a known model before any empirical claim); and stability across disjoint market subsets and time windows. The central absorption hypothesis — intensity rises or sharpens as τ→0 — is tested with bootstrap confidence intervals and a pre-registered direction, with “no effect” an admissible outcome.</p>
+          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery checks; robustness and stability; the absorption test.</div></div>
+<div class="chap plan reveal" id="ch8">
+          <div class="ch-top"><span class="cn">Ch 8</span><h3>Conclusions, contributions and impact</h3>
+            <span class="badge plan">Planned</span></div>
+          <p>Consolidates the three deliverables — dataset and pipeline, empirical characterisation, and the absorption-aware intensity model — and states what is learned whichever way the central hypothesis falls. Discusses external validity (single venue, liquidity-selected, a specific event-mix window), transferability of the methods to any deadline-resolved contract or event-timed financial series, and concrete extensions (multi-venue, marked processes, longer accrual). Closes on the methodological stance the thesis demonstrates end-to-end: cheap falsifiable probes, pre-registration, and honest retraction.</p>
+          <div class="contents"><b>Contents:</b> summary of contributions; the result under both hypotheses; limitations and external validity; future work; reflective methodology note.</div></div></div>
+</div></section>
+
+<section id="datasets"><div class="wrap">
+  <p class="eyebrow reveal">Datasets Gathered</p>
+  <h2 class="sec reveal">Data on hand</h2>
+  <p class="lead reveal" style="margin-top:14px">All data required to begin modelling is already collected and under version
+    control; the corpus grows daily, which strengthens the absorption analysis over time. No external data acquisition is outstanding.</p>
+  <table class="dt reveal">
+    <tr><th>Corpus</th><th>Contents</th><th>Status</th></tr>
+    <tr><td><b>Forward L2 corpus</b> (primary)</td><td>Full order-book deltas + snapshots + trade tape, top-250 event markets, millisecond resolution</td><td class="st">Live; ~2.4 GB/day, gap-audited</td></tr>
+    <tr><td>Resolution archive</td><td>Per-market outcomes + timing; complete path-to-absorption samples</td><td class="st">Growing ~10–15/day</td></tr>
+    <tr><td>Historical corpus</td><td>Resolved-market snapshots, tape, prior backtest corpora</td><td class="st">On hand (1,348 markets)</td></tr>
+  </table>
+</div></section>
+
+<section id="risks"><div class="wrap">
+  <p class="eyebrow reveal">Risks &amp; Mitigations</p>
+  <h2 class="sec reveal">Pre-named risks</h2>
+  <ul class="risks reveal">
+    <li><b>Absorption signal is weak.</b> The central H2/H3 hypotheses could return null. Mitigation: the thesis is framed so a rigorous null is a valid result; Chapters 3–5 stand independently.</li>
+    <li><b>Gold-sample size.</b> The absorption analysis needs markets resolving in-window; the sample is small now but accrues ~10–15/day. Mitigation: continuous collection; early results labelled preliminary.</li>
+    <li><b>Inference pathologies.</b> Variational inference on point-process models can be unstable. Mitigation: simulation-based recovery checks before empirical claims; conservative model comparison.</li>
+    <li><b>Novelty collision.</b> Intensity-vs-time-to-resolution may have prior art. Mitigation: targeted literature sweep (Ch.2); the dataset and empirical characterisation remain contributions regardless.</li>
+    <li><b>Collection outage.</b> Single-VPS sensor. Mitigation: audited gaps, off-site mirroring, self-monitoring watchdog; historical corpus supports a reduced-scope fallback.</li>
+  </ul>
+</div></section>
+
+<footer><div class="wrap">
+  <p class="note">Latent Dynamics of Prediction-Market Price Paths · Juan Mediavilla · University College London,
+    MSc Machine Learning · Supervisor Prof. Philip Treleaven. Companion deliverable: the
+    <a href="../slides/index.html">slide deck</a>. <a href="../index.html">← Overview</a></p>
+</div></footer>
+<script>
+(function(){
+  if(document.documentElement.classList.contains('anim') && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -6% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  }
+})();
+</script>
+</body></html>
