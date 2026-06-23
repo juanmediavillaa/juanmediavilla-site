@@ -130,6 +130,14 @@ html.anim .reveal{opacity:0;transform:translateY(12px)} html.anim .reveal.in{opa
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}}
 @media print{.reveal{opacity:1!important;transform:none!important}nav{display:none}}
 footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
+/* work-in-progress banner (active-work notice; clay palette) */
+.wipbar{background:var(--clay-soft);border-top:1px solid #EFD7C2;border-bottom:1px solid #EFD7C2}
+.wipbar .wrap{padding-top:16px;padding-bottom:16px;display:flex;gap:15px;align-items:flex-start}
+.wipbar .tag{flex:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#fff;background:var(--clay);border-radius:5px;padding:4px 11px;margin-top:2px}
+.wipbar p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-2);max-width:82ch}
+.wipbar p b{color:var(--clay)}
+@media(max-width:560px){.wipbar .wrap{flex-direction:column;gap:9px}}
 </style></head>
 <body>
 <nav><div class="row">
@@ -140,6 +148,13 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
     <a href="#validation">Validation</a><a href="#method">Methodology</a><a class="home" href="../index.html">← Overview</a>
   </div>
 </div></nav>
+
+<div class="wipbar"><div class="wrap">
+  <span class="tag">Work in progress</span>
+  <p><b>This page is actively being worked on.</b> Apologies for the figures — some were poorly generated and
+    have overlapping text, along with a few other small errors still to be cleaned up. The data, methods and
+    results behind them are real; the presentation is catching up. I update the site as I hit big milestones.</p>
+</div></div>
 
 <header class="hero"><div class="wrap">
   <p class="kicker reveal">Methods &amp; Results in Depth</p>
