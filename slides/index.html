@@ -85,6 +85,18 @@ figcaption{font-size:12.5px;color:var(--muted);padding:11px 4px 0;line-height:1.
 @media(max-width:760px){.two{grid-template-columns:1fr}}
 .two h3{font-size:15px;font-family:var(--mono);letter-spacing:.04em;color:var(--accent);margin:0 0 6px}
 .two.imp h3{color:var(--clay)}
+/* §3 key-publications compact reference list */
+.pubgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px;margin-top:6px}
+@media(max-width:860px){.pubgrid{grid-template-columns:1fr}}
+.pubgrid .gh{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.pubgrid .gh.rec{color:var(--clay)}
+.refs{list-style:none;margin:0;padding:0}
+.refs li{font-size:13px;color:var(--ink-2);line-height:1.42;padding:6px 0;border-top:1px solid var(--line)}
+.refs li:first-child{border-top:none}
+.refs li b{color:var(--ink)}
+.refs li .rel{color:var(--muted);font-style:italic}
+.pubnote{font-size:13px;color:var(--muted);line-height:1.5;margin:16px 0 0;padding-top:12px;border-top:1px dashed var(--line-2);max-width:none}
+.pubnote b{color:var(--ink)}
 /* fixed chrome: counter + arrows + progress */
 .chrome{position:fixed;left:0;right:0;bottom:0;height:46px;display:flex;align-items:center;gap:14px;
   padding:0 18px;background:rgba(250,250,248,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);z-index:60}
@@ -117,7 +129,9 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
         with terminal absorption at resolution.</p>
       <div class="byline reveal">
         <span class="nm">Juan Mediavilla</span> &nbsp;·&nbsp; <span class="uni">University College London</span><br>
-        MSc Machine Learning &nbsp;·&nbsp; Supervisor: Prof. Philip Treleaven
+        MSc Machine Learning<br>
+        Academic Supervisor: Prof. Philip Treleaven<br>
+        Technical Advisor: <span class="warn">TBC</span> (Bayesian time-series / point processes)
       </div></div></section>
 <section class="slide" id="s2"><div class="inner">
       <h2 class="reveal">Research Motivations</h2><div class="rule reveal"></div>
@@ -135,30 +149,46 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
           I built one, removing the binding constraint on studying these dynamics.</li>
       </ul></div></section>
 <section class="slide" id="s3"><div class="inner">
-      <h2 class="reveal">Industry Background &amp; Positioning</h2><div class="rule reveal"></div>
-      <div class="two reveal">
+      <h2 class="reveal">Industry Background &amp; Key Publications</h2><div class="rule reveal"></div>
+      <p class="sub reveal" style="margin-bottom:14px">Polymarket is the largest prediction-market venue (central limit order book,
+        on-chain settlement, hundreds of markets resolved weekly). Six months of prior work established it clears
+        <b>near-efficiently gross of fees</b> (<span class="num">1,348</span> markets, <span class="num">~$445M</span>) with no
+        exploitable directional edge, captured by a self-built 24/7 collector (top-250 markets, millisecond deltas, audited
+        continuity, capture through resolution). The work is positioned against three literatures: prediction-market
+        <b>efficiency &amp; price discovery</b>, <b>point-process / regime-switching</b> models of event-timed data, and
+        <b>market microstructure</b>.</p>
+      <div class="reveal" style="margin-top:0">
         <div>
-          <h3>Industry background</h3>
-          <ul class="big" style="margin-top:8px">
-            <li>Polymarket is the largest prediction-market venue: central limit order book, on-chain
-              settlement, hundreds of markets resolved weekly.</li>
-            <li>Six months of prior work established the venue clears <b>near-efficiently gross of fees</b>
-              (<span class="num">1,348</span> markets, <span class="num">~$445M</span>) with no exploitable directional edge.</li>
-            <li>Self-built 24/7 collection system: top-250 markets, millisecond order-book deltas, audited
-              continuity (<span class="num">~10&nbsp;min</span> total loss), capture through resolution.</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Research positioning</h3>
-          <ul class="big" style="margin-top:8px">
-            <li>Positioned against three literatures: prediction-market <b>efficiency &amp; price
-              discovery</b>; <b>point-process / regime-switching</b> models of event-timed data (Hawkes, MMPP,
-              hidden semi-Markov); and market microstructure.</li>
-            <li>The specific gap: intensity modelling of prediction-market repricing as a function of
-              time-to-resolution — with no standard analogue for the known terminal boundary.</li>
-            <li>Methodological stance: pre-registered tests, market-clustered bootstrap CIs, documented
-              retractions; an open dataset + pipeline as a reusable artifact.</li>
-          </ul>
+          <h3 style="font-size:15px;font-family:var(--mono);letter-spacing:.04em;color:var(--accent);margin:0 0 6px">Key publications</h3>
+          <div class="pubgrid">
+            <div>
+              <p class="gh">Foundational — efficiency &amp; prices-as-probabilities</p>
+              <ul class="refs">
+                <li><b>Wolfers &amp; Zitzewitz (2004)</b>, "Prediction Markets," <i>J. Economic Perspectives</i> 18(2):107–126.
+                  <span class="rel">Foundational survey; prices as accurate probability forecasts.</span></li>
+                <li><b>Manski (2006)</b>; Wolfers &amp; Zitzewitz, "Interpreting Prediction Market Prices as Probabilities" (NBER).
+                  <span class="rel">Theoretical basis for treating price as probability — underpins the calibration work.</span></li>
+                <li><b>Tetlock (2004)</b>, "How Efficient are Information Markets?"
+                  <span class="rel">Mild over-reaction in <em>sports</em> markets, not profitably tradeable — matches the efficiency finding.</span></li>
+                <li><b>Leigh, Wolfers &amp; Zitzewitz (2003)</b>.
+                  <span class="rel">ADF/KPSS tests; prediction-market prices follow a random walk — the stationarity methodology.</span></li>
+              </ul>
+            </div>
+            <div>
+              <p class="gh rec">Recent microstructure — the contemporary frontier</p>
+              <ul class="refs">
+                <li><b>"The Anatomy of a Decentralized Prediction Market"</b> (arXiv, 2026; preprint).
+                  <span class="rel">Tick-level Polymarket order-book microstructure — characterises the book; this thesis instead models repricing <em>intensity</em> vs time-to-resolution.</span></li>
+                <li><b>Becker (2026)</b>, "The Microstructure of Wealth Transfer in Prediction Markets."
+                  <span class="rel">72.1M Kalshi trades; calibration + maker/taker decomposition — independent corroboration (independent researcher, not peer-reviewed).</span></li>
+                <li><b>Easley et al.</b>, "Microstructure and Market Dynamics in Crypto Markets."
+                  <span class="rel">VPIN / Roll / AUC microstructure predictability — methodologically adjacent.</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="pubnote"><b>Positioning.</b> The two recent Polymarket-specific works mean the venue is now an active research
+            area; this thesis's distinct contribution is the <b>absorption-aware repricing-intensity model</b> — intensity as a
+            function of time-to-resolution — which those works do not address.</p>
         </div>
       </div></div></section>
 <section class="slide" id="s4"><div class="inner">
@@ -201,14 +231,15 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f1-efficiency.png" alt="Market Brier 0.063 beats every coarse prior (0.18–0.25), by category"></div>
           <figcaption>Late-stage market price beats the base-rate prior in every category
-            (market Brier 0.063 vs 0.18–0.25).</figcaption></figure></div>
+            (market Brier ≈0.063 vs 0.18–0.25). The 0.063 here is the <em>cross-category</em> market-Brier shown above; the
+            calibration Brier against the 0.166 base rate is <b>0.0585</b> (structure_report_v0).</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s7"><div class="inner">
       <h2 class="reveal">Exp 2 — The price-path dynamics <span class="st done">Complete</span></h2><div class="rule reveal"></div>
       <div class="expgrid">
         <div><div class="quad reveal">
   <div class="cell"><div class="lab">Experiment</div><ul><li>Identify the correct latent-dynamics model class.</li><li>Two pre-registered probes (v0 falsify, v1 establish).</li></ul></div>
-  <div class="cell"><div class="lab">Data</div><ul><li><b>10</b> liquid event markets; <b>~12M</b> order-book updates.</li><li>Millisecond deltas reconstructed to mid-price.</li><li>Gap-audited; masked, never interpolated.</li></ul></div>
+  <div class="cell"><div class="lab">Data</div><ul><li><b>10</b> liquid event markets; <b>~12.1M</b> order-book delta rows.</li><li>Millisecond deltas reconstructed to mid-price.</li><li>Gap-audited; masked, never interpolated.</li></ul></div>
   <div class="cell"><div class="lab">Models</div><ul><li>v0: Gaussian regime-switching HMM (variance).</li><li>v1: jump-clustering + sticky-HMM + intensity.</li><li>Grid-invariance checks (1s / 10s / 60s).</li></ul></div>
   <div class="cell res"><div class="lab">Results</div><ul><li>Variance-regime model <b>FALSIFIED</b> — regimes flicker (<b>0/10</b>).</li><li>Repricing intensity clustered &amp; non-Poisson (<b>10/10</b>), CV <b>2.2–5.3</b>.</li><li>Persistent hot/cold episodes (<b>ρ=0.74</b>, <b>~50&nbsp;min</b> memory).</li></ul></div>
 </div></div>
@@ -223,10 +254,12 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
   <div class="cell"><div class="lab">Experiment</div><ul><li>Model repricing intensity vs time-to-resolution τ — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
   <div class="cell"><div class="lab">Data</div><ul><li>Clean server corpus + gold samples (resolve in-window).</li><li><b>~10–15</b> complete lifecycles/day, accruing.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
   <div class="cell"><div class="lab">Models</div><ul><li><b>M0</b>: homogeneous Poisson (null).</li><li><b>M1</b>: MMPP, hot/cold rate — <b>ESTABLISHED</b>.</li><li><b>M2</b>: + time-to-resolution τ (absorbing); Hawkes comparison; variational inference.</li></ul></div>
-  <div class="cell res"><div class="lab">Results</div><ul><li><b>H1</b> hot/cold states + dwell — <b>ESTABLISHED</b> (MMPP=M1).</li><li><b>H2</b> intensity collapses as τ→0 (the <b>freeze</b>) — borne out at scale.</li><li><b>H3</b> resolution as absorbing state (intensity→0) — M2b preferred.</li></ul></div>
+  <div class="cell res"><div class="lab">Results</div><ul><li><b>H1</b> hot/cold states + dwell — <b>ESTABLISHED</b> (MMPP=M1).</li><li><b>H2</b> intensity vs τ is <b>two-regime</b>: reveal-before-wire markets <b>freeze</b> (intensity→0); sports markets <b>spike</b> at resolution.</li><li><b>H3</b> resolution as absorbing state (intensity→0) — M2b preferred.</li></ul></div>
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f6-freeze.png" alt="Repricing intensity collapses as time-to-resolution τ→0 — the freeze"></div>
-          <figcaption>Repricing intensity collapses as time-to-resolution τ→0 — the freeze.</figcaption></figure></div>
+          <figcaption>Repricing intensity collapses as time-to-resolution τ→0 — the <b>freeze</b>, shown here for the
+            reveal-before-wire regime. Sports markets instead <b>spike</b> at resolution: the picture is two-regime
+            (m2_session2/3), not a uniform venue-wide freeze.</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s9"><div class="inner">
       <h2 class="reveal">Contributions to Science <span class="st done" style="background:var(--ink)">Academic</span></h2><div class="rule reveal"></div>
