@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Latent Dynamics of Prediction-Market Price Paths — Juan Mediavilla</title>
-<meta name="description" content="MSc thesis, UCL Machine Learning. An absorption-aware intensity model of high-frequency prediction-market price formation.">
+<meta name="description" content="MSc Machine Learning thesis, UCL. Learning latent repricing dynamics in terminally-absorbed price processes with non-parametric Bayesian and variational point-process models; high-frequency Polymarket data as the testbed.">
 <style>:root{
   --bg:#FAFAF8; --surface:#FFFFFF; --surface-2:#F4F4F0;
   --ink:#1A1A1A; --ink-2:#2B2B2B; --muted:#5A5A56; --faint:#8A8A86;
@@ -67,7 +67,8 @@ footer a{color:var(--muted)}
 <header class="hero"><div class="wrap">
   <p class="kicker">MSc Machine Learning · Thesis</p>
   <h1>Latent Dynamics of <span class="hl">Prediction-Market</span> Price Paths</h1>
-  <p class="ds">Repricing-intensity modelling of high-frequency Polymarket order-book data, with terminal absorption at resolution.</p>
+  <p class="ds">Learning latent repricing dynamics in terminally-absorbed price processes — non-parametric Bayesian
+    and variational point-process models, with high-frequency Polymarket order-book data as the testbed.</p>
   <p class="byl"><b>Juan Mediavilla</b> · University College London · MSc Machine Learning<br>
     Academic Supervisor: Prof. Philip Treleaven<br>
     Technical Advisor: TBC</p>
@@ -75,39 +76,52 @@ footer a{color:var(--muted)}
 
 <section id="abstract"><div class="wrap">
   <p class="eyebrow">Abstract</p>
-  <h2 class="sec">A first look at prediction-market price formation</h2>
+  <h2 class="sec">Learning the latent structure of prediction-market price paths</h2>
   <div class="abs" style="margin-top:18px">
-    <p>Prediction markets price real-world events as continuously traded probabilities, yet the high-frequency process by
-      which those prices form has not been studied at order-book resolution, because no public dataset of a prediction
-      venue's live order book has existed. This thesis introduces such a dataset — a purpose-built, gap-audited,
-      millisecond-resolution corpus of the <span class="num">250</span> most active Polymarket markets, captured
-      continuously and through each market's resolution — and uses it to characterise and model the latent dynamics of
-      prediction-market price paths.</p>
-    <p>Two pre-registered probes establish the governing structure. A natural model — a regime-switching model of price
-      variance — is decisively falsified: apparent volatility regimes do not persist at any timescale. Instead, the price
-      is sticky and reprices in clustered bursts, and the persistent structure lives in the intensity of repricing — how
-      often the market moves — which is strongly clustered and non-Poisson on every market tested.</p>
-    <p>The thesis's contribution is a generative model of this repricing intensity as a latent hot/cold state process
-      (a Markov-modulated Poisson process), extended so that the intensity is modulated by time-to-resolution — the
-      defining feature of prediction markets, in which every price is absorbed at $0 or $1 by a bounded, approximately
-      known deadline. The model is inferred by variational methods and validated on held-out markets and against realised
-      outcomes via the complete path-to-resolution samples in the corpus.</p>
+    <p>This thesis investigates original research in the <b>machine learning of latent dynamics in terminally-absorbed
+      price processes</b>: the high-frequency price paths of prediction markets, which are driven to an absorbing
+      <span class="mono">$0</span>/<span class="mono">$1</span> outcome at an approximately known deadline. What governs how
+      — and how fast — such a market reprices is a hidden state that cannot be hand-specified; it must be <em>learned</em>
+      from data. The thesis therefore treats price-path dynamics as a latent-structure learning problem rather than a
+      parametric estimation problem.</p>
+    <p>Price-formation dynamics have traditionally been modelled in <b>econometrics</b>, through regime-switching and
+      stochastic-volatility specifications that fix a parametric form in advance. This thesis instead investigates the use
+      of <b>machine-learning algorithms</b> — unsupervised latent-variable models, non-parametric Bayesian mixtures, and
+      variational inference — to learn the generative structure of repricing directly. These methods are adopted for their
+      <b>non-parametric nature</b>: they require no explicit assumption on the data-generating process of a venue whose paths
+      are bounded, terminally absorbed, and shaped by exogenous information arrival. Where a regime, a cluster count, or a
+      participant type would otherwise have to be assumed, it is instead inferred.</p>
+    <p>The empirical core learns the hidden state that governs repricing. A natural variance-regime hypothesis is decisively
+      <b>falsified</b>; an unsupervised latent-state model — a <b>Markov-modulated Poisson process</b> — instead recovers a
+      hidden hot/cold intensity process with genuine dwell. The contribution extends it into an <b>absorption-aware</b> model
+      in which the latent intensity is modulated by time-to-resolution — a model class with no standard analogue — fitted by
+      <b>variational inference</b> and compared against a self-exciting (Hawkes) generative alternative. A <b>Dirichlet-process
+      mixture</b>, inferred by <b>amortized variational inference</b>, then learns the number and shape of latent market and
+      participant types without assuming it; a <b>hierarchical Bayesian</b> model pools across markets by Metropolis-within-Gibbs
+      sampling, with variational and MCMC inference cross-validated against each other.</p>
+    <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
+      <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
+      path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
+      whatever the empirical outcome — a rigorous null is reported as readily as a positive one. No trading capital is
+      deployed; the venue is independently near-efficient gross of fees, which is precisely what makes <b>price formation,
+      not prediction</b>, the object of study.</p>
   </div>
 </div></section>
 
 <section id="contributions"><div class="wrap">
   <p class="eyebrow">Contributions</p>
-  <h2 class="sec">Three deliverables</h2>
+  <h2 class="sec">Three contributions — a model class, learned latent structure, and the data</h2>
   <div class="contrib" style="margin-top:20px">
-    <div class="c"><div class="n">01 · Dataset</div><h3>A reusable HF corpus</h3>
+    <div class="c"><div class="n">01 · Model class</div><h3>Absorption-aware latent-intensity model</h3>
+      <p>A new latent-variable model class for terminally-absorbed processes: a Markov-modulated Poisson process whose
+        hidden intensity is modulated by time-to-resolution, fitted by variational inference — no standard analogue in
+        financial time-series.</p></div>
+    <div class="c"><div class="n">02 · Learned structure</div><h3>Non-parametric Bayesian latent types</h3>
+      <p>Unsupervised learning of latent market and participant structure with Dirichlet-process mixtures and amortized
+        variational inference — the cluster count is inferred, not assumed — over a hierarchical Bayesian backbone.</p></div>
+    <div class="c"><div class="n">03 · Dataset</div><h3>A reusable HF corpus</h3>
       <p>A gap-audited, millisecond-resolution order-book corpus of Polymarket, and the 24/7 collection pipeline that
-        produces it — a contribution in its own right.</p></div>
-    <div class="c"><div class="n">02 · Empirical</div><h3>Price-dynamics characterisation</h3>
-      <p>The first characterisation of prediction-market price dynamics at order-book resolution, identifying
-        repricing-intensity clustering as the governing structure.</p></div>
-    <div class="c"><div class="n">03 · Model</div><h3>Absorption-aware intensity</h3>
-      <p>An intensity model for terminally-absorbed price processes — modulating repricing by time-to-resolution, a model
-        class with no standard analogue in financial time-series.</p></div>
+        produces it — the testbed on which the learned models are validated.</p></div>
   </div>
 </div></section>
 
@@ -119,8 +133,9 @@ footer a{color:var(--muted)}
       <p>The full abstract and eight chapter micro-abstracts — context and data, the empirical discovery, the model the
         discovery dictates, then validation — with datasets and risks.</p><span class="go">Open framework →</span></a>
     <a class="card" href="technical/index.html"><div class="ic">Methods &amp; results in depth</div><h3>Technical detail</h3>
-      <p>A figure-led deep-dive for technical readers: the data, the efficiency findings, the dynamics, the
-        absorption-aware model, the latent-types flagship null, and the methodology — with the real numbers.</p><span class="go">Open technical →</span></a>
+      <p>A figure-led deep-dive for technical readers: the data, the efficiency findings, the learned latent-state model
+        (MMPP + variational inference), the non-parametric Bayesian latent-types flagship, and the inference machinery —
+        with the real numbers.</p><span class="go">Open technical →</span></a>
     <a class="card" href="slides/index.html"><div class="ic">Slide Deck</div><h3>Presentation deck</h3>
       <p>A navigable ten-slide web deck: motivation, background, objectives, methodology, the three experiments,
         contributions and impact — with real figures and results.</p><span class="go">Open deck →</span></a>

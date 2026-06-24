@@ -102,7 +102,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 <header class="hero"><div class="wrap">
   <p class="kicker reveal">MSc Machine Learning · Thesis Framework</p>
   <h1 class="reveal">Latent Dynamics of <span class="hl">Prediction-Market</span> Price Paths</h1>
-  <p class="ds reveal">Repricing-intensity modelling of high-frequency Polymarket order-book data, with terminal absorption at resolution.</p>
+  <p class="ds reveal">Learning latent repricing dynamics in terminally-absorbed price processes — non-parametric Bayesian
+    and variational point-process models, with high-frequency Polymarket order-book data as the testbed.</p>
   <p class="byl reveal"><b>Juan Mediavilla</b> · University College London · MSc Machine Learning ·
     Academic Supervisor: Prof. Philip Treleaven · Technical Advisor: TBC</p>
 </div></header>
@@ -111,46 +112,70 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <p class="eyebrow reveal">Thesis Abstract</p>
   <h2 class="sec reveal">Abstract</h2>
   <div class="abs reveal" style="margin-top:18px">
-    <p>Prediction markets price real-world events as continuously traded probabilities, yet the high-frequency process by
-      which those prices form has not been studied at order-book resolution, because no public dataset of a prediction
-      venue's live order book has existed. This thesis introduces such a dataset — a purpose-built, gap-audited,
-      millisecond-resolution corpus of the <span class="num">250</span> most active Polymarket markets, captured
-      continuously and through each market's resolution — and uses it to characterise and model the latent dynamics of
-      prediction-market price paths.</p>
-    <p>Two pre-registered probes establish the governing structure. A natural model — a regime-switching model of price
-      variance — is decisively <b>falsified</b>: apparent volatility regimes do not persist at any timescale. Instead, the
-      price is sticky and reprices in clustered bursts, and the persistent structure lives in the <b>intensity of
-      repricing</b> — how often the market moves — which is strongly clustered and non-Poisson on every market tested
-      (hot episodes persist for tens of minutes; rate autocorrelation to ~50 minutes).</p>
-    <p>The thesis's contribution is a generative model of this repricing intensity as a latent hot/cold state process
-      (a Markov-modulated Poisson process), extended so that the intensity is modulated by <b>time-to-resolution</b> — the
-      defining feature of prediction markets, in which every price is absorbed at $0 or $1 by a bounded, approximately known
-      deadline. The model is inferred by variational methods and validated on held-out markets and against realised outcomes
-      via the complete path-to-resolution samples in the corpus.</p>
-    <p>The work is designed to be defensible whatever the empirical outcome: the central question — does repricing intensity
-      sharpen as a market approaches absorption? — has a clean negative answer as well as a positive one. The dissertation
-      therefore delivers three outputs: a reusable high-frequency prediction-market dataset and collection pipeline; an
-      empirical characterisation of prediction-market price dynamics at a resolution not previously available; and an
-      absorption-aware intensity model for terminally-absorbed price processes, a model class with no standard analogue in
-      financial time-series. No deployment of trading capital is involved; the venue has been independently shown to be
-      near-efficient gross of fees, which is precisely what motivates studying price formation rather than prediction.</p>
+    <p>This thesis investigates original research in the <b>machine learning of latent dynamics in terminally-absorbed price
+      processes</b>: the high-frequency price paths of prediction markets, which are driven to an absorbing
+      <span class="mono">$0</span>/<span class="mono">$1</span> outcome at an approximately known deadline. What governs how —
+      and how fast — such a market reprices is a hidden state that cannot be hand-specified; it must be <em>learned</em> from
+      data. The thesis therefore treats price-path dynamics as a latent-structure learning problem rather than a parametric
+      estimation problem.</p>
+    <p>Price-formation dynamics have traditionally been modelled in <b>econometrics</b>, through regime-switching and
+      stochastic-volatility specifications that fix a parametric form in advance. This thesis instead investigates the use of
+      <b>machine-learning algorithms</b> — unsupervised latent-variable models, non-parametric Bayesian mixtures, and
+      variational inference — to learn the generative structure of repricing directly. These methods are adopted for their
+      <b>non-parametric nature</b>: they require no explicit assumption on the data-generating process of a venue whose paths
+      are bounded, terminally absorbed, and shaped by exogenous information arrival. Where a regime, a cluster count, or a
+      participant type would otherwise have to be assumed, it is instead inferred.</p>
+    <p>The empirical core learns the hidden state that governs repricing. A natural variance-regime hypothesis is decisively
+      <b>falsified</b> (apparent regimes flicker at every timescale); an unsupervised latent-state model — a <b>Markov-modulated
+      Poisson process</b> — instead recovers a hidden hot/cold intensity process with genuine dwell (hot episodes persist for
+      tens of minutes; rate autocorrelation to ~50 minutes). The contribution extends it into an <b>absorption-aware</b> model
+      in which the latent intensity is modulated by <b>time-to-resolution</b> — a model class with no standard analogue —
+      fitted by <b>variational inference</b> and compared against a self-exciting (Hawkes) generative alternative. A
+      <b>Dirichlet-process mixture</b> inferred by <b>amortized variational inference</b> learns the number and shape of latent
+      market and participant types without assuming it; a <b>hierarchical Bayesian</b> model pools across markets by
+      Metropolis-within-Gibbs sampling, with variational and MCMC inference cross-validated against each other.</p>
+    <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
+      <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
+      path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
+      whatever the empirical outcome — a rigorous null (at current sample size the latent trigger axis is not identified) is
+      reported as readily as a positive one. The dissertation's <b>original contributions to science</b> are: an
+      absorption-aware latent-intensity model class for terminally-absorbed processes; the use of amortized variational
+      inference and non-parametric Bayesian mixtures to learn market and participant structure that cannot be hand-labelled;
+      and a reusable high-frequency dataset and pipeline. No trading capital is deployed; the venue is independently
+      near-efficient gross of fees, which is precisely what makes <b>price formation, not prediction</b>, the object of study.</p>
   </div>
 </div></section>
 
 <section id="framework"><div class="wrap">
   <p class="eyebrow reveal">Thesis Framework · Chapter Micro-abstracts</p>
   <h2 class="sec reveal">Eight chapters, a probe-and-gate arc</h2>
-  <p class="lead reveal" style="margin-top:16px">Context and data, then the empirical discovery, then the model that the
-    discovery dictates, then validation. Each micro-abstract states what the chapter establishes and how.</p>
+  <p class="lead reveal" style="margin-top:16px">Context and data, then supervised baselines, then unsupervised latent-state
+    learning, then the absorption-aware model that the learned structure dictates, then validation. Each micro-abstract names
+    the <b>machine-learning method</b> the chapter uses and why it is justified.</p>
   <div style="margin-top:22px"><div class="chap done reveal" id="ch1">
           <div class="ch-top"><span class="cn">Ch 1</span><h3>Introduction and motivation</h3>
             <span class="badge done">Done</span></div>
-          <p>Establishes the object of study and why it is open. Prediction-market prices are bounded, terminally absorbed at a known deadline, and have an observed terminal outcome — three properties that distinguish them from the equity processes most dynamics models target. Frames the research question (does identifiable, persistent latent structure exist in these price paths, and how is it shaped by approach to resolution?) and states the thesis's defining stance: it is a measurement-and-modelling thesis, not a trading thesis, designed to yield a defensible result whether the central signal is present or absent.</p>
-          <div class="contents"><b>Contents:</b> problem statement; the three structural peculiarities; the data gap that kept the question closed; contributions and roadmap.</div></div>
+          <p>The introduction follows the standard thesis-intro arc — motivation, objectives, experiments, contributions, structure.
+          <b>Motivation:</b> prediction-market price paths are bounded, terminally absorbed at a known deadline, and have an observed
+          terminal outcome — three properties that distinguish them from the equity processes most dynamics models target. The hidden
+          state that governs their repricing cannot be hand-specified, so it must be <em>learned</em>; this is a <b>machine-learning</b>
+          problem, not an econometric estimation problem. <b>Objectives:</b> learn that latent intensity state and its dependence on
+          time-to-resolution; learn the latent market/participant types non-parametrically; and build the dataset that makes learning
+          possible. <b>Experiments:</b> supervised baselines &amp; calibration (Ch.4) → unsupervised latent-state model selection (Ch.5) →
+          the absorption-aware latent-intensity model with variational inference (Ch.6) → validation (Ch.7). <b>Contributions to science
+          and industry:</b> a new latent-variable model class for terminally-absorbed processes; non-parametric Bayesian and amortized-VI
+          learning of structure that cannot be hand-labelled; and a reusable high-frequency corpus. The thesis is a measurement-and-modelling
+          study designed to yield a defensible result — a rigorous null as readily as a positive one.</p>
+          <div class="contents"><b>Contents:</b> motivation and the three structural peculiarities; the ML-vs-econometrics justification; objectives as learning problems; the experiment programme; contributions to science and industry; thesis structure and roadmap.</div></div>
 <div class="chap prog reveal" id="ch2">
           <div class="ch-top"><span class="cn">Ch 2</span><h3>Background and related work</h3>
             <span class="badge prog">In progress</span></div>
-          <p>Positions the thesis against three literatures: market microstructure and high-frequency price formation; point-process and regime-switching models of event-timed financial data (Hawkes processes, Markov-modulated Poisson processes, hidden semi-Markov models); and the empirical literature on prediction-market efficiency and price discovery. Identifies the specific gap — intensity modelling of prediction-market repricing as a function of time-to-resolution — and surveys the absorption / bounded-martingale modelling the terminal-boundary contribution builds on.</p>
+          <p>Positions the thesis against three literatures, and frames the methodological choice of <b>machine learning over
+          econometrics</b>: market microstructure and high-frequency price formation; <b>latent-variable and point-process
+          models</b> for event-timed data (Hawkes processes, Markov-modulated Poisson processes, hidden semi-Markov models,
+          Dirichlet-process mixtures) together with their inference machinery (variational inference, MCMC); and the empirical
+          literature on prediction-market efficiency. Identifies the specific gap — learning repricing intensity as a function of
+          time-to-resolution — and surveys the absorption / bounded-martingale modelling the terminal-boundary contribution builds on.</p>
           <div class="contents"><b>Contents:</b> microstructure and price formation; point processes for financial events; prediction-market efficiency; the absorption / bounded-price modelling gap.</div></div>
 <div class="chap done reveal" id="ch3">
           <div class="ch-top"><span class="cn">Ch 3</span><h3>Data: a high-frequency prediction-market corpus</h3>
@@ -158,29 +183,60 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           <p>Documents the dataset and collection system as a contribution in its own right. A purpose-built 24/7 pipeline captures full order-book deltas, periodic snapshots, the trade tape and resolutions for the top-250 Polymarket markets at millisecond resolution, with an audit trail that makes data loss known rather than silent (~10 minutes total over the validation run). Describes order-book reconstruction (delta replay anchored on snapshots), the gold samples (markets observed continuously through absorption), and honest limitations of window length, liquidity selection and single-venue scope.</p>
           <div class="contents"><b>Contents:</b> collection architecture and fault isolation; schemas; continuity auditing; order-book reconstruction and validation; gold samples; limitations.</div></div>
 <div class="chap done reveal" id="ch4">
-          <div class="ch-top"><span class="cn">Ch 4</span><h3>Probe I: is the venue exploitable, and what should we model?</h3>
+          <div class="ch-top"><span class="cn">Ch 4</span><h3>Probe I: supervised baselines &amp; calibration — is the venue exploitable?</h3>
             <span class="badge done">Done</span></div>
-          <p>Reports the groundwork that fixes the thesis's framing. Pre-registered, fee-aware tests across 1,348 markets establish that the venue clears near-efficiently gross of fees and that naive directional strategies have no out-of-sample edge (five independent negative results; the market price beats every coarse prior, Brier 0.063 vs 0.18–0.25). This negative result is load-bearing: prices are informative, so the productive question is how they form, not how to beat them — redirecting the thesis from prediction to dynamics.</p>
-          <div class="contents"><b>Contents:</b> efficiency census; directional-strategy backtests; prior-vs-market comparison; the methodological move from edge-seeking to dynamics.</div></div>
+          <p>Reports the groundwork that fixes the thesis's framing, using <b>supervised and probabilistic-forecasting methods</b>:
+          pre-registered, fee-aware tests across 1,348 markets train directional classifiers and score the <b>calibration</b> (Brier) of
+          coarse priors against the market. The venue clears near-efficiently gross of fees and naive directional models have no
+          out-of-sample edge (five independent negative results; the market price beats every coarse prior, Brier 0.063 vs 0.18–0.25),
+          under multiple-testing (BH) correction. This negative result is load-bearing and motivates the <b>unsupervised turn</b>: prices are
+          informative, so the productive question is how they form — redirecting the thesis from supervised prediction to learning latent dynamics.</p>
+          <div class="contents"><b>Contents:</b> efficiency census; supervised directional classifiers; Brier calibration of priors vs market; multiple-testing correction; the methodological move from edge-seeking to latent-structure learning.</div></div>
 <div class="chap done reveal" id="ch5">
-          <div class="ch-top"><span class="cn">Ch 5</span><h3>Probe II: identifying the dynamics</h3>
+          <div class="ch-top"><span class="cn">Ch 5</span><h3>Probe II: unsupervised latent-state model selection</h3>
             <span class="badge done">Done</span></div>
-          <p>The empirical heart of the thesis. Two pre-registered probes adjudicate between competing models of the price path. A Gaussian regime-switching model of per-bin variance is falsified — apparent regimes flicker, lasting a single bin at every grid resolution (1s/10s/60s). Direct tests then show repricing events cluster strongly and are non-Poisson on all ten markets (overdispersion CV 2.2–5.3, rate autocorrelation to ~50 minutes, hot-stays-hot correlation ρ=0.74), and that a sticky variance model still cannot recover the persistence. Conclusion: the price is sticky with clustered repricing, and persistence lives in the event intensity, not the per-bin variance — which dictates the Chapter 6 model class.</p>
-          <div class="contents"><b>Contents:</b> variance-regime probe and its falsification; jump-clustering and inter-event tests; sticky-model refutation; grid-invariance; the intensity reframe.</div></div>
+          <p>The empirical heart of the thesis, and an exercise in <b>unsupervised latent-variable model selection</b>. Two pre-registered
+          probes adjudicate between competing latent models of the price path. A Gaussian regime-switching <b>hidden Markov model</b> of
+          per-bin variance is falsified — apparent regimes flicker, lasting a single bin at every grid resolution (1s/10s/60s). Direct tests
+          then show repricing events cluster strongly and are non-Poisson on all ten markets (overdispersion CV 2.2–5.3, rate autocorrelation
+          to ~50 minutes, hot-stays-hot correlation ρ=0.74), and that a sticky variance model still cannot recover the persistence. Conclusion:
+          the learned latent structure is a <b>hot/cold repricing-intensity state</b>, not a price-variance regime — which dictates the
+          Chapter 6 model class (a Markov-modulated Poisson process).</p>
+          <div class="contents"><b>Contents:</b> variance-regime HMM probe and its falsification; jump-clustering and inter-event tests; sticky-model refutation; grid-invariance; the latent-intensity model-selection conclusion.</div></div>
 <div class="chap prog reveal" id="ch6">
-          <div class="ch-top"><span class="cn">Ch 6</span><h3>The absorption-aware intensity model</h3>
+          <div class="ch-top"><span class="cn">Ch 6</span><h3>The absorption-aware latent-intensity model (variational inference)</h3>
             <span class="badge prog">In progress</span></div>
-          <p>Builds the model the data dictates. A baseline homogeneous Poisson process (M0) is rejected by Chapter 5's clustering result; a Markov-modulated Poisson process (M1) introduces a latent hot/cold intensity state with genuine dwell; and the contribution model (M2) makes the intensity — and the state transitions — functions of time-to-resolution τ, capturing the hypothesised sharpening of repricing as the market approaches its absorbing boundary. Inference is variational; events are defined in tick units and stratified by price level; masked gaps enter the likelihood as censored intervals. A self-exciting (Hawkes) formulation is developed as a comparison model, making endogenous-excitation vs exogenous-regime a substantive model-selection question.</p>
-          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2; the time-to-resolution mechanism; variational inference; tick-heterogeneity and censoring; Hawkes comparison; marked-process extension (jump sizes). M2 is the core contribution.</div></div>
+          <p>Builds the <b>latent-variable model</b> the data dictates, and is the thesis's principal ML contribution. A baseline
+          homogeneous Poisson process (M0) is rejected by Chapter 5; a <b>Markov-modulated Poisson process</b> (M1) introduces a latent
+          hot/cold intensity state with genuine dwell; and the contribution model (M2) makes the intensity — and the state transitions —
+          functions of time-to-resolution τ, capturing the hypothesised sharpening of repricing as the market approaches its absorbing
+          boundary. Inference is <b>variational</b> (ELBO maximisation, amortized inference networks), validated against
+          Metropolis-within-Gibbs <b>MCMC</b>; events are tick-defined and price-stratified; masked gaps enter the likelihood as censored
+          intervals. A self-exciting <b>Hawkes</b> formulation is the comparison model, making endogenous-excitation vs exogenous-regime a
+          substantive model-selection question. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
+          types with a <b>Dirichlet-process mixture</b> (cluster count inferred, not assumed) and amortized VI, over a <b>hierarchical
+          Bayesian</b> backbone (θ<sub>m</sub>~N(μ,Σ)) that pools across markets.</p>
+          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2; the time-to-resolution mechanism; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; Hawkes comparison; Dirichlet-process latent-type mixtures and hierarchical pooling; tick-heterogeneity and censoring. M2 and the learned latent types are the core contribution.</div></div>
 <div class="chap plan reveal" id="ch7">
           <div class="ch-top"><span class="cn">Ch 7</span><h3>Validation</h3>
             <span class="badge plan">Planned</span></div>
-          <p>Subjects the model to the same standard under which earlier candidate findings were retracted. Validation covers held-out predictive likelihood on out-of-sample markets; posterior-predictive checks on inter-event distributions and episode dwell times; calibration of the model's implied probabilities against realised resolutions on the gold samples; simulation-based recovery checks (fit to data from a known model before any empirical claim); and stability across disjoint market subsets and time windows. The central absorption hypothesis — intensity rises or sharpens as τ→0 — is tested with bootstrap confidence intervals and a pre-registered direction, with “no effect” an admissible outcome.</p>
+          <p>Subjects the learned models to the same standard under which earlier candidate findings were retracted, with emphasis on
+          <b>inference validity</b>: held-out predictive likelihood on out-of-sample markets; posterior-predictive checks on inter-event
+          distributions and episode dwell times; calibration of the model's implied probabilities against realised resolutions on the gold
+          samples; <b>simulation-based recovery</b> and <b>VI-vs-MCMC</b> cross-checks (fit a known model before any empirical claim); and
+          Dirichlet-process identifiability checks. The central absorption hypothesis — intensity rises or sharpens as τ→0 — is tested with
+          bootstrap confidence intervals and a pre-registered direction, with “no effect” an admissible outcome.</p>
           <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery checks; robustness and stability; the absorption test.</div></div>
 <div class="chap plan reveal" id="ch8">
           <div class="ch-top"><span class="cn">Ch 8</span><h3>Conclusions, contributions and impact</h3>
             <span class="badge plan">Planned</span></div>
-          <p>Consolidates the three deliverables — dataset and pipeline, empirical characterisation, and the absorption-aware intensity model — and states what is learned whichever way the central hypothesis falls. Discusses external validity (single venue, liquidity-selected, a specific event-mix window), transferability of the methods to any deadline-resolved contract or event-timed financial series, and concrete extensions (multi-venue, marked processes, longer accrual). Closes on the methodological stance the thesis demonstrates end-to-end: cheap falsifiable probes, pre-registration, and honest retraction.</p>
+          <p>Consolidates the three contributions — the <b>absorption-aware latent-intensity model class</b>, the <b>non-parametric
+          Bayesian / amortized-VI learning</b> of market and participant structure, and the dataset and pipeline — and states what is learned
+          whichever way the central hypothesis falls. Discusses external validity (single venue, liquidity-selected, a specific event-mix
+          window), transferability of the <b>ML methods</b> (latent point-process learning, variational inference, non-parametric Bayesian
+          clustering) to any deadline-resolved contract or event-timed financial series, and concrete extensions (multi-venue, marked
+          processes, longer accrual). Closes on the methodological stance the thesis demonstrates end-to-end: cheap falsifiable probes,
+          pre-registration, and honest retraction.</p>
           <div class="contents"><b>Contents:</b> summary of contributions; the result under both hypotheses; limitations and external validity; future work; reflective methodology note.</div></div></div>
 </div></section>
 

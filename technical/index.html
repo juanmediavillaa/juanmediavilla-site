@@ -143,8 +143,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 <nav><div class="row">
   <a class="brand" href="../index.html">latent dynamics <span class="dot">·</span> technical</a>
   <div class="acts">
-    <a href="#data">Data</a><a href="#efficiency">Efficiency</a><a href="#dynamics">Dynamics</a>
-    <a href="#model">Model</a><a href="#freeze">Freeze</a><a href="#latent">Latent</a>
+    <a href="#data">Data</a><a href="#efficiency">Baselines</a><a href="#dynamics">Latent state</a>
+    <a href="#model">MMPP + VI</a><a href="#freeze">Freeze</a><a href="#latent">Non-param Bayes</a>
     <a href="#validation">Validation</a><a href="#method">Methodology</a><a class="home" href="../index.html">← Overview</a>
   </div>
 </div></nav>
@@ -158,10 +158,11 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 
 <header class="hero"><div class="wrap">
   <p class="kicker reveal">Methods &amp; Results in Depth</p>
-  <h1 class="reveal">The <span class="hl">technical</span> detail behind the thesis</h1>
-  <p class="ds reveal">A figure-led walk through the data, the efficiency findings, the price-path dynamics, the
-    absorption-aware intensity model, the latent-types flagship, and the validation — with the methods, the numbers,
-    and the honest nulls and self-corrections that the high-level overview compresses away.</p>
+  <h1 class="reveal">The <span class="hl">machine learning</span> behind the thesis</h1>
+  <p class="ds reveal">A figure-led walk through the data, the supervised efficiency baselines, the unsupervised latent-state
+    model selection, the absorption-aware latent-intensity model (MMPP + variational inference), the non-parametric Bayesian
+    latent-types flagship, and the inference validation — with the methods, the numbers, and the honest nulls and
+    self-corrections that the high-level overview compresses away.</p>
   <p class="byl reveal"><b>Juan Mediavilla</b> · University College London · MSc Machine Learning ·
     Academic Supervisor: Prof. Philip Treleaven · Technical Advisor: TBC</p>
 </div></header>
@@ -170,22 +171,23 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <p class="eyebrow reveal">Orientation</p>
   <h2 class="sec reveal">A probe-and-gate arc</h2>
   <p class="lead reveal">The thesis advances by cheap, falsifiable, pre-registered probes, each with named gates and a
-    committed verdict — including the verdicts that came back negative. The structure below is the spine of every
-    section that follows: rule out the easy story, identify the real structure, build the model that structure
-    dictates, then validate it to the standard that retracted earlier candidate findings.</p>
+    committed verdict — including the verdicts that came back negative. The arc is a progression of machine-learning methods:
+    supervised baselines rule out the easy story, unsupervised latent-state learning identifies the real structure, a
+    latent-variable generative model is built and inferred by variational methods, then validated to the standard that
+    retracted earlier candidate findings.</p>
   <div class="arc reveal">
-    <div class="step"><div class="n">Probe I</div><h4>Is the venue exploitable?</h4>
-      <p>Fee-aware efficiency tests across 1,348 markets. Five independent no-edge results redirect the thesis from
-        prediction to price formation.</p></div>
-    <div class="step"><div class="n">Probe II</div><h4>What governs the path?</h4>
-      <p>Falsify the variance-regime model; establish that persistence lives in repricing <em>intensity</em>, not
-        per-bin variance.</p></div>
-    <div class="step"><div class="n">Model</div><h4>Build what the data dictates</h4>
+    <div class="step"><div class="n">Probe I</div><h4>Supervised baselines</h4>
+      <p>Supervised directional classifiers + Brier calibration across 1,348 markets. Five no-edge results redirect the
+        thesis from prediction to learning price formation.</p></div>
+    <div class="step"><div class="n">Probe II</div><h4>Unsupervised model selection</h4>
+      <p>Falsify the variance-regime HMM; learn that persistence lives in a latent repricing-<em>intensity</em> state,
+        not per-bin variance.</p></div>
+    <div class="step"><div class="n">Model</div><h4>Latent-variable model + VI</h4>
       <p>A model ladder M0&rarr;M1&rarr;M2: homogeneous Poisson, then a latent hot/cold MMPP, then absorption-aware
-        modulation by time-to-resolution.</p></div>
-    <div class="step"><div class="n">Validate</div><h4>Test it honestly</h4>
-      <p>Held-out likelihood, hierarchical pooling, a pre-registered latent flagship, and a walk-forward causal
-        test that bounds the predictive claim.</p></div>
+        modulation by time-to-resolution, fitted by variational inference.</p></div>
+    <div class="step"><div class="n">Validate</div><h4>Inference validity</h4>
+      <p>Held-out likelihood, hierarchical Bayesian pooling, a non-parametric Bayesian latent flagship, and a walk-forward
+        causal test that bounds the predictive claim.</p></div>
   </div>
   <p class="small reveal" style="margin-top:18px">Every number on this page is drawn from a committed result; the
     originating probe is named in light grey beside each figure (e.g. <span class="cite">market_census_v0</span>,
@@ -222,8 +224,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 </div></section>
 
 <section id="efficiency"><div class="wrap">
-  <p class="eyebrow reveal">2 · Efficiency</p>
-  <h2 class="sec reveal">The venue is near-efficient gross of fees</h2>
+  <p class="eyebrow reveal">2 · Supervised baselines</p>
+  <h2 class="sec reveal">Supervised baselines &amp; calibration: the venue is near-efficient</h2>
   <p class="lead reveal">Before modelling dynamics, the thesis establishes <em>why</em> dynamics is the right object: the
     price is already informative, so the productive question is how it forms, not how to beat it. A battery of
     pre-registered, fee-aware tests finds no out-of-sample directional edge — a load-bearing negative result.</p>
@@ -264,8 +266,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 </div></section>
 
 <section id="dynamics"><div class="wrap">
-  <p class="eyebrow reveal">3 · Dynamics</p>
-  <h2 class="sec reveal">Persistence lives in repricing intensity, not variance</h2>
+  <p class="eyebrow reveal">3 · Unsupervised model selection</p>
+  <h2 class="sec reveal">Latent-state learning: persistence lives in repricing intensity, not variance</h2>
   <p class="lead reveal">Two pre-registered probes adjudicate between competing models of the price path. The natural
     model — a regime-switching model of price variance — is decisively falsified. The persistent structure instead lives
     in the <em>intensity</em> of repricing: how often the market moves.</p>
@@ -303,8 +305,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 </div></section>
 
 <section id="model"><div class="wrap">
-  <p class="eyebrow reveal">4 · The model</p>
-  <h2 class="sec reveal">An absorption-aware intensity model</h2>
+  <p class="eyebrow reveal">4 · The latent-variable model</p>
+  <h2 class="sec reveal">An absorption-aware latent-intensity model, fitted by variational inference</h2>
   <p class="lead reveal">The model is built as a ladder, each rung forced by the evidence of the rung below. A homogeneous
     Poisson baseline is rejected by the clustering result; a Markov-modulated Poisson process introduces a latent
     hot/cold intensity state with genuine dwell; and the contribution model makes the intensity a function of
@@ -409,8 +411,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 </div></section>
 
 <section id="latent"><div class="wrap">
-  <p class="eyebrow reveal">6 · The flagship</p>
-  <h2 class="sec reveal">Latent market types — a pre-registered bounded null</h2>
+  <p class="eyebrow reveal">6 · Non-parametric Bayes</p>
+  <h2 class="sec reveal">Dirichlet-process latent types (amortized VI) — a pre-registered bounded null</h2>
   <p class="lead reveal">The flagship chapter asks whether the consensus-versus-calendar trigger axis becomes a learnable
     dimension that separates <em>types</em> of market — fit nonparametrically as a Dirichlet-process mixture over
     per-market parameters by amortized variational inference, on the <span class="num">52</span> book-covered markets. The
@@ -466,8 +468,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
 </div></section>
 
 <section id="validation"><div class="wrap">
-  <p class="eyebrow reveal">7 · Validation</p>
-  <h2 class="sec reveal">The model detects; it does not anticipate</h2>
+  <p class="eyebrow reveal">7 · Inference validation</p>
+  <h2 class="sec reveal">Walk-forward validation: the model detects; it does not anticipate</h2>
   <p class="lead reveal">A walk-forward, causal-filter test subjects the model to the standard that retracted earlier
     candidate findings — and bounds the predictive claim honestly. The latent state is descriptively rich, but it does not
     forecast.</p>

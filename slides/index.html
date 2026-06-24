@@ -125,8 +125,8 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
 <div class="deck"><section class="slide" id="s1"><div class="inner">
       <p class="eyebrow reveal">MSc Machine Learning · Thesis</p>
       <h1 class="reveal">Latent Dynamics of <span style="color:var(--accent)">Prediction-Market</span> Price Paths</h1>
-      <p class="sub reveal">Repricing-intensity modelling of high-frequency Polymarket order-book data,
-        with terminal absorption at resolution.</p>
+      <p class="sub reveal">Learning latent repricing dynamics in terminally-absorbed price processes — non-parametric
+        Bayesian and variational point-process models, with high-frequency Polymarket order-book data as the testbed.</p>
       <div class="byline reveal">
         <span class="nm">Juan Mediavilla</span> &nbsp;·&nbsp; <span class="uni">University College London</span><br>
         MSc Machine Learning<br>
@@ -135,18 +135,21 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
       </div></div></section>
 <section class="slide" id="s2"><div class="inner">
       <h2 class="reveal">Research Motivations</h2><div class="rule reveal"></div>
-      <p class="sub reveal">Three structural peculiarities make prediction-market price paths an open,
-        and distinct, modelling object — and one data gap kept the question closed.</p>
+      <p class="sub reveal">The price path is a <b>latent-structure learning problem</b>: the hidden state that governs how
+        a market reprices cannot be hand-specified, so it must be <em>learned</em>. Three structural peculiarities make
+        prediction-market paths a distinct learning object — and one data gap kept the question closed.</p>
       <ul class="big reveal">
+        <li><b>Why machine learning, not econometrics.</b> The data-generating process of repricing is unknown; rather than
+          fix a parametric regime model in advance, the latent state, its cluster count, and the participant types are
+          <em>inferred</em> from data — motivating non-parametric Bayesian and latent-variable methods.</li>
         <li><b>Bounded &amp; tradable as probability.</b> Prediction markets price real-world events as
           continuously traded probabilities on (0,1); how those prices <em>form</em> at high frequency is poorly understood.</li>
         <li><b>Terminal absorption at a known deadline.</b> Every market is forced to an absorbing outcome
           (<span class="mono">$0</span> or <span class="mono">$1</span>) at a roughly known deadline — a structure
-          standard financial-dynamics models do not capture.</li>
-        <li><b>Observed terminal outcome.</b> The realised result of every path is recorded — a per-path
-          ground truth that can discipline the model.</li>
-        <li><b>The data gap.</b> No public high-frequency order-book dataset of a prediction venue existed;
-          I built one, removing the binding constraint on studying these dynamics.</li>
+          standard financial-dynamics models do not capture, and which the learned model must encode.</li>
+        <li><b>Observed terminal outcome &amp; the data gap.</b> Every path's realised result is recorded — per-path
+          ground truth to validate the learned model. No public high-frequency order-book dataset of a prediction venue
+          existed; I built one, removing the binding constraint on studying these dynamics.</li>
       </ul></div></section>
 <section class="slide" id="s3"><div class="inner">
       <h2 class="reveal">Industry Background &amp; Key Publications</h2><div class="rule reveal"></div>
@@ -193,40 +196,44 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
       </div></div></section>
 <section class="slide" id="s4"><div class="inner">
       <h2 class="reveal">Research Objectives</h2><div class="rule reveal"></div>
-      <p class="sub reveal">Three deliverables — designed to hold whether the central signal is rich or null.</p>
+      <p class="sub reveal">Three ML-method objectives — each justified by the same principle: the latent structure must be
+        <em>learned</em>, not assumed — designed to hold whether the central signal is rich or null.</p>
       <ul class="big reveal">
-        <li><b>1 · Dataset &amp; pipeline.</b> A reusable, gap-audited, millisecond-resolution L2 corpus and the
-          24/7 collection pipeline that produces it — a contribution in its own right.</li>
-        <li><b>2 · Empirical characterisation.</b> Characterise the latent dynamics of price paths at order-book
-          resolution — <em>does identifiable, persistent structure exist?</em></li>
-        <li><b>3 · Absorption-aware intensity model.</b> Model the repricing process generatively and test whether
-          its dynamics change systematically as a market approaches terminal absorption — delivering a defensible
-          thesis whether the structure is rich or null.</li>
+        <li><b>1 · Learn the latent intensity state.</b> Develop and fit an <b>absorption-aware latent-variable model</b>
+          — a Markov-modulated Poisson process whose hidden intensity is modulated by time-to-resolution — by
+          <b>variational inference</b>, with a self-exciting (Hawkes) generative model as the comparison.</li>
+        <li><b>2 · Learn latent market &amp; participant types.</b> Apply <b>non-parametric Bayesian</b> clustering
+          (Dirichlet-process mixtures, amortized VI) so the number and shape of latent types are <em>inferred</em>, over a
+          <b>hierarchical Bayesian</b> backbone that pools across markets.</li>
+        <li><b>3 · Build the dataset that makes learning possible.</b> A reusable, gap-audited, millisecond-resolution L2
+          corpus and 24/7 pipeline — the testbed and the per-path ground truth for validating every learned model.</li>
       </ul></div></section>
 <section class="slide" id="s5"><div class="inner">
       <h2 class="reveal">Research Methodology &amp; Structure</h2><div class="rule reveal"></div>
       <p class="sub reveal">A <b>probe-and-gate arc</b>: rule out the easy story, identify the real structure,
         then build the model that structure dictates — and validate it to the standard that retracted earlier findings.</p>
       <div class="quad reveal" style="grid-template-columns:1fr">
-        <div class="cell"><div class="lab">Exp 1 — Is the venue exploitable? (groundwork)</div>
-          <ul><li>Establish venue efficiency and the absence of a directional edge — the negative result that
-            <b>motivates studying dynamics</b>.</li>
+        <div class="cell"><div class="lab">Exp 1 — Supervised baselines &amp; calibration (groundwork)</div>
+          <ul><li>Supervised directional classifiers and calibration scoring establish the absence of an edge — the
+            negative result that <b>motivates the unsupervised turn</b> to dynamics.</li>
           <li>Five independent NO-EDGE findings; the market price beats every coarse prior tested.</li></ul></div>
-        <div class="cell"><div class="lab">Exp 2 — Identifying the dynamics</div>
-          <ul><li>Probe the latent structure of price paths; identify the correct model class.</li>
-          <li>Two pre-registered probes — <b>falsify</b> the variance-regime model, <b>establish</b> repricing-intensity clustering.</li></ul></div>
-        <div class="cell res"><div class="lab">Exp 3 — Absorption-aware model (the contribution)</div>
-          <ul><li>Build the intensity model and test its dependence on time-to-resolution; validate on held-out
+        <div class="cell"><div class="lab">Exp 2 — Unsupervised latent-state model selection</div>
+          <ul><li>Learn the latent structure of price paths and select the model class.</li>
+          <li>Two pre-registered probes — <b>falsify</b> the Gaussian regime-switching (HMM) variance model, <b>establish</b>
+            the latent intensity process that dictates the Exp 3 model.</li></ul></div>
+        <div class="cell res"><div class="lab">Exp 3 — Absorption-aware latent-intensity model (the contribution)</div>
+          <ul><li>Learn the intensity model and test its dependence on time-to-resolution; validate on held-out
             markets and realised outcomes.</li>
-          <li>Markov-modulated Poisson process with time-to-resolution modulation; variational inference.</li></ul></div>
+          <li>Markov-modulated Poisson process with time-to-resolution modulation; <b>variational inference</b>;
+            non-parametric Bayesian latent-type clustering.</li></ul></div>
       </div></div></section>
 <section class="slide" id="s6"><div class="inner">
-      <h2 class="reveal">Exp 1 — Is the venue exploitable? <span class="st done">Complete</span></h2><div class="rule reveal"></div>
+      <h2 class="reveal">Exp 1 · Supervised baselines &amp; calibration — is the venue exploitable? <span class="st done">Complete</span></h2><div class="rule reveal"></div>
       <div class="expgrid">
         <div><div class="quad reveal">
-  <div class="cell"><div class="lab">Experiment</div><ul><li>Test whether any directional strategy or coarse prior beats the market.</li><li>Pre-registered, fee-aware backtests; market-clustered bootstrap CIs.</li></ul></div>
+  <div class="cell"><div class="lab">Experiment</div><ul><li>Test whether any supervised directional model or coarse prior beats the market.</li><li>Pre-registered, fee-aware backtests; market-clustered bootstrap CIs.</li></ul></div>
   <div class="cell"><div class="lab">Data</div><ul><li><b>1,348</b> resolved markets, <b>~$445M</b> notional.</li><li><b>400</b> markets / <b>188,856</b> trades for the prior test.</li><li>On-chain maker reconstruction (<b>100%</b> matched).</li></ul></div>
-  <div class="cell"><div class="lab">Models</div><ul><li>4 directional strategies; coarse-prior vs market Brier.</li><li>Cross-market lead-lag; fee-aware PnL accounting.</li><li>Multiple-testing correction throughout.</li></ul></div>
+  <div class="cell"><div class="lab">Models — supervised / probabilistic</div><ul><li>4 directional classifiers; Brier-score <b>calibration</b> of priors vs the market.</li><li>Cross-market lead-lag; fee-aware PnL accounting.</li><li>Multiple-testing (BH) correction throughout.</li></ul></div>
   <div class="cell res"><div class="lab">Results</div><ul><li><b>Five independent NO-EDGE</b> results; near-efficient gross of fees.</li><li>Market Brier <b>0.063</b> beats every prior (<b>0.18–0.25</b>).</li><li>Conclusion: study price <em>formation</em>, not edge.</li></ul></div>
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f1-efficiency.png" alt="Market Brier 0.063 beats every coarse prior (0.18–0.25), by category"></div>
@@ -235,12 +242,12 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
             calibration Brier against the 0.166 base rate is <b>0.0585</b> (structure_report_v0).</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s7"><div class="inner">
-      <h2 class="reveal">Exp 2 — The price-path dynamics <span class="st done">Complete</span></h2><div class="rule reveal"></div>
+      <h2 class="reveal">Exp 2 · Unsupervised latent-state model selection <span class="st done">Complete</span></h2><div class="rule reveal"></div>
       <div class="expgrid">
         <div><div class="quad reveal">
-  <div class="cell"><div class="lab">Experiment</div><ul><li>Identify the correct latent-dynamics model class.</li><li>Two pre-registered probes (v0 falsify, v1 establish).</li></ul></div>
+  <div class="cell"><div class="lab">Experiment</div><ul><li>Learn the latent-dynamics model class from the data.</li><li>Two pre-registered probes (v0 falsify, v1 establish).</li></ul></div>
   <div class="cell"><div class="lab">Data</div><ul><li><b>10</b> liquid event markets; <b>~12.1M</b> order-book delta rows.</li><li>Millisecond deltas reconstructed to mid-price.</li><li>Gap-audited; masked, never interpolated.</li></ul></div>
-  <div class="cell"><div class="lab">Models</div><ul><li>v0: Gaussian regime-switching HMM (variance).</li><li>v1: jump-clustering + sticky-HMM + intensity.</li><li>Grid-invariance checks (1s / 10s / 60s).</li></ul></div>
+  <div class="cell"><div class="lab">Models — latent-variable / unsupervised</div><ul><li>v0: Gaussian regime-switching <b>HMM</b> on variance (falsified).</li><li>v1: jump-clustering + sticky-HMM + latent intensity.</li><li>Grid-invariance checks (1s / 10s / 60s).</li></ul></div>
   <div class="cell res"><div class="lab">Results</div><ul><li>Variance-regime model <b>FALSIFIED</b> — regimes flicker (<b>0/10</b>).</li><li>Repricing intensity clustered &amp; non-Poisson (<b>10/10</b>), CV <b>2.2–5.3</b>.</li><li>Persistent hot/cold episodes (<b>ρ=0.74</b>, <b>~50&nbsp;min</b> memory).</li></ul></div>
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f4-dynamics.png" alt="Repricing events cluster; intensity autocorrelation persists to ~50 minutes"></div>
@@ -248,12 +255,12 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
             persistence lives in the <em>event intensity</em>, not the per-bin variance.</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s8"><div class="inner">
-      <h2 class="reveal">Exp 3 — Absorption-aware model <span class="st prog">In progress</span></h2><div class="rule reveal"></div>
+      <h2 class="reveal">Exp 3 · Absorption-aware latent-intensity model — MMPP + variational inference <span class="st prog">In progress</span></h2><div class="rule reveal"></div>
       <div class="expgrid">
         <div><div class="quad reveal">
-  <div class="cell"><div class="lab">Experiment</div><ul><li>Model repricing intensity vs time-to-resolution τ — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
+  <div class="cell"><div class="lab">Experiment</div><ul><li>Learn repricing intensity vs time-to-resolution τ — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
   <div class="cell"><div class="lab">Data</div><ul><li>Clean server corpus + gold samples (resolve in-window).</li><li><b>~10–15</b> complete lifecycles/day, accruing.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
-  <div class="cell"><div class="lab">Models</div><ul><li><b>M0</b>: homogeneous Poisson (null).</li><li><b>M1</b>: MMPP, hot/cold rate — <b>ESTABLISHED</b>.</li><li><b>M2</b>: + time-to-resolution τ (absorbing); Hawkes comparison; variational inference.</li></ul></div>
+  <div class="cell"><div class="lab">Models — latent point process + inference</div><ul><li><b>M0</b>: homogeneous Poisson (null).</li><li><b>M1</b>: <b>MMPP</b> latent hot/cold state — <b>ESTABLISHED</b>.</li><li><b>M2</b>: + time-to-resolution τ (absorbing); <b>variational inference</b>; Hawkes comparison; non-parametric Bayesian (DP-mixture, amortized VI) latent types; hierarchical pooling, VI-vs-MCMC checked.</li></ul></div>
   <div class="cell res"><div class="lab">Results</div><ul><li><b>H1</b> hot/cold states + dwell — <b>ESTABLISHED</b> (MMPP=M1).</li><li><b>H2</b> intensity vs τ is <b>two-regime</b>: reveal-before-wire markets <b>freeze</b> (intensity→0); sports markets <b>spike</b> at resolution.</li><li><b>H3</b> resolution as absorbing state (intensity→0) — M2b preferred.</li></ul></div>
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f6-freeze.png" alt="Repricing intensity collapses as time-to-resolution τ→0 — the freeze"></div>
@@ -265,21 +272,23 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
       <h2 class="reveal">Contributions to Science <span class="st done" style="background:var(--ink)">Academic</span></h2><div class="rule reveal"></div>
       <div class="two reveal">
         <div>
-          <h3>Empirical</h3>
+          <h3>Methodological — the ML contribution</h3>
           <ul class="big" style="margin-top:8px">
-            <li>First order-book-resolution characterisation of prediction-market price dynamics.</li>
-            <li>Identifies <b>repricing-intensity clustering</b> as the governing structure — not price-variance regimes.</li>
-            <li>On a novel, gap-audited dataset with complete path-to-resolution samples.</li>
-            <li><b>Falsifies</b> the natural variance-regime model — a clean negative result.</li>
+            <li>A new <b>absorption-aware latent-intensity model class</b> (MMPP modulated by time-to-resolution) for
+              terminally-absorbed processes — no standard analogue.</li>
+            <li><b>Amortized variational inference</b> (ELBO, inference networks) and a <b>Dirichlet-process mixture</b> to
+              learn latent market and participant types — cluster count inferred, not assumed.</li>
+            <li><b>Hierarchical Bayesian</b> pooling by Metropolis-within-Gibbs; <b>VI-vs-MCMC</b> cross-validation.</li>
+            <li>Hawkes vs MMPP framed as learned generative models of the event sequence.</li>
           </ul>
         </div>
         <div>
-          <h3>Methodological</h3>
+          <h3>Empirical</h3>
           <ul class="big" style="margin-top:8px">
-            <li>An <b>absorption-aware intensity model</b> for terminally-absorbed price processes.</li>
-            <li>Markov-modulated Poisson process with time-to-resolution modulation.</li>
-            <li>Variational inference; validated by posterior-predictive checks and outcome calibration.</li>
-            <li>A model class with <b>no standard analogue</b> (known terminal boundary).</li>
+            <li>First order-book-resolution characterisation of prediction-market price dynamics.</li>
+            <li>Learns <b>repricing-intensity clustering</b> as the governing latent structure — not price-variance regimes.</li>
+            <li>On a novel, gap-audited dataset with complete path-to-resolution samples.</li>
+            <li><b>Falsifies</b> the natural variance-regime model — a clean negative result.</li>
           </ul>
         </div>
       </div></div></section>
@@ -295,10 +304,10 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
           </ul>
         </div>
         <div>
-          <h3>Methods transferable beyond prediction markets</h3>
+          <h3>ML methods transferable beyond prediction markets</h3>
           <ul class="big" style="margin-top:8px">
-            <li>Intensity / point-process modelling applies to any event-timed financial data.</li>
-            <li>Absorption-aware framing is relevant to <b>any deadline-resolved contract</b>.</li>
+            <li>Latent point-process learning (MMPP / Hawkes) + variational inference apply to any event-timed financial data.</li>
+            <li>Non-parametric Bayesian clustering and the absorption-aware framing transfer to <b>any deadline-resolved contract</b>.</li>
             <li>Near-efficiency motivates studying <b>price formation, not prediction</b>.</li>
             <li>Demonstrates rigorous, retraction-honest empirical practice end to end.</li>
           </ul>
