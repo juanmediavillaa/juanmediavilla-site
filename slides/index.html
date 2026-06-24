@@ -39,7 +39,7 @@ b{color:var(--ink)}
 /* safe center: centred when content fits, but aligns to top (never clips) when it overflows.
    bottom padding (90px) clears the fixed 46px chrome bar so trailing figures are never hidden. */
 .slide{scroll-snap-align:start;min-height:100vh;display:flex;flex-direction:column;justify-content:safe center;
-  padding:64px 7vw 90px;border-bottom:1px solid var(--line);position:relative}
+  padding:56px 7vw 78px;border-bottom:1px solid var(--line);position:relative}
 @media(max-width:760px){.slide{padding:52px 6vw 84px}}
 .slide .inner{max-width:1080px;margin:0 auto;width:100%}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
@@ -48,7 +48,7 @@ b{color:var(--ink)}
 .slide h2 .st{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
   vertical-align:middle;margin-left:14px;padding:4px 10px;border-radius:5px}
 .st.done{color:#fff;background:var(--accent)} .st.prog{color:var(--warn);background:#FBF3DF;border:1px solid #EBDFB5}
-.rule{width:54px;height:2px;background:var(--accent);margin:14px 0 26px}
+.rule{width:54px;height:2px;background:var(--accent);margin:13px 0 18px}
 .sub{font-size:clamp(16px,1.9vw,21px);color:var(--muted);max-width:60ch;line-height:1.5;margin:0 0 8px}
 .lead{font-size:clamp(17px,2vw,22px);color:var(--ink-2);max-width:62ch;line-height:1.5}
 ul.big{list-style:none;padding:0;margin:24px 0 0;max-width:74ch}
@@ -56,6 +56,10 @@ ul.big li{position:relative;padding:14px 0 14px 34px;font-size:clamp(15px,1.7vw,
   line-height:1.5;border-top:1px solid var(--line)}
 ul.big li:before{content:"";position:absolute;left:6px;top:23px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
 ul.big li b{color:var(--ink)}
+/* two-column bullets: use the horizontal space so a 4-point slide fits one viewport */
+ul.big.two-col{display:grid;grid-template-columns:1fr 1fr;column-gap:46px;row-gap:0;max-width:none;margin-top:16px}
+ul.big.two-col li{padding-top:12px;padding-bottom:12px;font-size:clamp(14px,1.55vw,17px)}
+@media(max-width:760px){ul.big.two-col{grid-template-columns:1fr;column-gap:0}}
 .byline{font-family:var(--mono);font-size:14px;color:var(--muted);margin-top:26px;line-height:1.9}
 .byline .nm{color:var(--ink);font-weight:700;font-size:16px}
 .byline .uni{color:var(--accent)}
@@ -97,6 +101,20 @@ figcaption{font-size:12.5px;color:var(--muted);padding:11px 4px 0;line-height:1.
 .refs li .rel{color:var(--muted);font-style:italic}
 .pubnote{font-size:13px;color:var(--muted);line-height:1.5;margin:16px 0 0;padding-top:12px;border-top:1px dashed var(--line-2);max-width:none}
 .pubnote b{color:var(--ink)}
+/* related-works: glance-with-expand reference grid (native <details>, fail-open) */
+.rwgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px;margin-top:6px;align-items:start}
+@media(max-width:860px){.rwgrid{grid-template-columns:1fr}}
+.rwcol .gh{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;padding-bottom:6px;border-bottom:2px solid var(--accent-soft)}
+.rwcol .gh.meth{color:var(--clay);border-bottom-color:var(--clay-soft)}
+details.ref{border-bottom:1px solid var(--line)}
+details.ref>summary{list-style:none;cursor:pointer;font-size:12.5px;color:var(--ink-2);line-height:1.38;padding:5px 0 5px 16px;position:relative}
+details.ref>summary::-webkit-details-marker{display:none}
+details.ref>summary:before{content:"▸";position:absolute;left:1px;top:6px;color:var(--faint);font-size:10px;transition:transform .15s ease}
+details.ref[open]>summary:before{transform:rotate(90deg)}
+details.ref>summary b{color:var(--ink)}
+details.ref>summary:hover{color:var(--accent)}
+details.ref .rel{font-size:11.5px;color:var(--muted);font-style:italic;line-height:1.45;padding:2px 0 8px 16px;margin:0}
+.rwhint{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin:2px 0 10px}
 /* fixed chrome: counter + arrows + progress */
 .chrome{position:fixed;left:0;right:0;bottom:0;height:46px;display:flex;align-items:center;gap:14px;
   padding:0 18px;background:rgba(250,250,248,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);z-index:60}
@@ -138,7 +156,7 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
       <p class="sub reveal">The price path is a <b>latent-structure learning problem</b>: the hidden state that governs how
         a market reprices cannot be hand-specified, so it must be <em>learned</em>. Three structural peculiarities make
         prediction-market paths a distinct learning object — and one data gap kept the question closed.</p>
-      <ul class="big reveal">
+      <ul class="big two-col reveal">
         <li><b>Why machine learning, not econometrics.</b> The data-generating process of repricing is unknown; rather than
           fix a parametric regime model in advance, the latent state, its cluster count, and the participant types are
           <em>inferred</em> from data — motivating non-parametric Bayesian and latent-variable methods.</li>
@@ -153,45 +171,52 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
       </ul></div></section>
 <section class="slide" id="s3"><div class="inner">
       <h2 class="reveal">Industry Background &amp; Key Publications</h2><div class="rule reveal"></div>
-      <p class="sub reveal" style="margin-bottom:14px">Polymarket is the largest prediction-market venue (central limit order book,
-        on-chain settlement, hundreds of markets resolved weekly). Six months of prior work established it clears
-        <b>near-efficiently gross of fees</b> (<span class="num">1,348</span> markets, <span class="num">~$445M</span>) with no
-        exploitable directional edge, captured by a self-built 24/7 collector (top-250 markets, millisecond deltas, audited
-        continuity, capture through resolution). The work is positioned against three literatures: prediction-market
-        <b>efficiency &amp; price discovery</b>, <b>point-process / regime-switching</b> models of event-timed data, and
-        <b>market microstructure</b>.</p>
-      <div class="reveal" style="margin-top:0">
-        <div>
-          <h3 style="font-size:15px;font-family:var(--mono);letter-spacing:.04em;color:var(--accent);margin:0 0 6px">Key publications</h3>
-          <div class="pubgrid">
-            <div>
-              <p class="gh">Foundational — efficiency &amp; prices-as-probabilities</p>
-              <ul class="refs">
-                <li><b>Wolfers &amp; Zitzewitz (2004)</b>, "Prediction Markets," <i>J. Economic Perspectives</i> 18(2):107–126.
-                  <span class="rel">Foundational survey; prices as accurate probability forecasts.</span></li>
-                <li><b>Manski (2006)</b>; Wolfers &amp; Zitzewitz, "Interpreting Prediction Market Prices as Probabilities" (NBER).
-                  <span class="rel">Theoretical basis for treating price as probability — underpins the calibration work.</span></li>
-                <li><b>Tetlock (2004)</b>, "How Efficient are Information Markets?"
-                  <span class="rel">Mild over-reaction in <em>sports</em> markets, not profitably tradeable — matches the efficiency finding.</span></li>
-                <li><b>Leigh, Wolfers &amp; Zitzewitz (2003)</b>.
-                  <span class="rel">ADF/KPSS tests; prediction-market prices follow a random walk — the stationarity methodology.</span></li>
-              </ul>
-            </div>
-            <div>
-              <p class="gh rec">Recent microstructure — the contemporary frontier</p>
-              <ul class="refs">
-                <li><b>"The Anatomy of a Decentralized Prediction Market"</b> (arXiv, 2026; preprint).
-                  <span class="rel">Tick-level Polymarket order-book microstructure — characterises the book; this thesis instead models repricing <em>intensity</em> vs time-to-resolution.</span></li>
-                <li><b>Becker (2026)</b>, "The Microstructure of Wealth Transfer in Prediction Markets."
-                  <span class="rel">72.1M Kalshi trades; calibration + maker/taker decomposition — independent corroboration (independent researcher, not peer-reviewed).</span></li>
-                <li><b>Easley et al.</b>, "Microstructure and Market Dynamics in Crypto Markets."
-                  <span class="rel">VPIN / Roll / AUC microstructure predictability — methodologically adjacent.</span></li>
-              </ul>
-            </div>
-          </div>
-          <p class="pubnote"><b>Positioning.</b> The two recent Polymarket-specific works mean the venue is now an active research
-            area; this thesis's distinct contribution is the <b>absorption-aware repricing-intensity model</b> — intensity as a
-            function of time-to-resolution — which those works do not address.</p>
+      <p class="sub reveal" style="margin-bottom:6px">Polymarket is the largest prediction-market venue (central limit order book,
+        on-chain settlement, hundreds of markets resolved weekly); prior work established it clears <b>near-efficiently gross of
+        fees</b> (<span class="num">1,348</span> markets, <span class="num">~$445M</span>), captured by a self-built 24/7
+        collector. The work sits against <b>three literatures</b> — prediction-market efficiency, the
+        <b>ML &amp; point-process</b> methods that are its foundation, and recent prediction-market microstructure.</p>
+      <p class="rwhint reveal">▸ click any reference to expand its relevance</p>
+      <div class="rwgrid reveal">
+        <div class="rwcol">
+          <p class="gh">Prediction-market efficiency</p>
+          <details class="ref"><summary><b>Wolfers &amp; Zitzewitz (2004)</b> — "Prediction Markets," <i>JEP</i> 18(2)</summary>
+            <p class="rel">Foundational survey; market prices as accurate probability forecasts.</p></details>
+          <details class="ref"><summary><b>Manski (2006)</b> / W&amp;Z (NBER) — prices as probabilities</summary>
+            <p class="rel">Theoretical basis for treating price as probability — underpins the calibration work.</p></details>
+          <details class="ref"><summary><b>Tetlock (2004)</b> — "How Efficient are Information Markets?"</summary>
+            <p class="rel">Mild over-reaction in <em>sports</em> markets, not profitably tradeable — matches the efficiency finding.</p></details>
+          <details class="ref"><summary><b>Leigh, Wolfers &amp; Zitzewitz (2003)</b> — random-walk tests</summary>
+            <p class="rel">ADF / KPSS tests; prediction-market prices follow a random walk — the stationarity methodology.</p></details>
+        </div>
+        <div class="rwcol">
+          <p class="gh meth">ML &amp; point-process methods — the methodological foundation</p>
+          <details class="ref"><summary><b>Hawkes (1971)</b> — self-exciting point process</summary>
+            <p class="rel">Foundational self-exciting process; the endogenous-excitation comparison model (MMPP vs Hawkes).</p></details>
+          <details class="ref"><summary><b>Bacry, Mastromatteo &amp; Muzy (2015)</b> — "Hawkes processes in finance"</summary>
+            <p class="rel">The survey establishing point processes as the standard for high-frequency financial event modelling.</p></details>
+          <details class="ref"><summary><b>Fischer &amp; Meier-Hellstern (1993)</b> — foundational MMPP</summary>
+            <p class="rel">The latent-CTMC-modulated Poisson process — the model class this thesis learns and extends.</p></details>
+          <details class="ref"><summary><b>Wu et al. (2022)</b> — Markov-modulated Hawkes, <i>Ann. Appl. Stat.</i></summary>
+            <p class="rel">MMHP as a latent-variable model learning a <em>mixture</em> of event dynamics — the ML framing of this model class.</p></details>
+          <details class="ref"><summary><b>MM-Hawkes for HF crypto</b> (arXiv 2502.04027, 2025; <i>Eur. J. Finance</i>)</summary>
+            <p class="rel">Hidden-Markov point process on HF data detecting event bursts without price change — near-neighbour; benchmarks MMPP.</p></details>
+          <details class="ref"><summary><b>Semiparametric multivariate Hawkes</b> — Dirichlet processes + VI</summary>
+            <p class="rel">Non-parametric-Bayes on point processes for order flow — validates the DP-mixture + variational-inference methodology.</p></details>
+          <details class="ref"><summary><b>Easley et al.</b> — "Microstructure &amp; Market Dynamics in Crypto Markets"</summary>
+            <p class="rel">VPIN / Roll / AUC microstructure predictability — methodologically adjacent.</p></details>
+        </div>
+        <div class="rwcol">
+          <p class="gh rec">Recent prediction-market microstructure</p>
+          <details class="ref"><summary><b>"Anatomy of a Decentralized Prediction Market"</b> (arXiv 2026, preprint)</summary>
+            <p class="rel">Tick-level Polymarket order book — characterises the book; this thesis instead models repricing <em>intensity</em> vs time-to-resolution.</p></details>
+          <details class="ref"><summary><b>Becker (2026)</b> — "Microstructure of Wealth Transfer in Prediction Markets"</summary>
+            <p class="rel">72.1M Kalshi trades; calibration + maker/taker decomposition — independent corroboration (independent researcher, not peer-reviewed).</p></details>
+          <p class="pubnote" style="margin-top:14px"><b>Positioning.</b> The point-process / latent-state ML literature is
+            established and current — MMPP, Markov-modulated Hawkes, DP&nbsp;+&nbsp;VI on high-frequency financial data, now even
+            applied to crypto and order flow. This thesis's novelty is the <b>absorption-aware extension</b> — latent intensity
+            modulated by time-to-resolution toward a known <span class="mono">0/1</span> boundary — applied to
+            <b>prediction markets</b>, a model class with no standard analogue that none of the above address.</p>
         </div>
       </div></div></section>
 <section class="slide" id="s4"><div class="inner">

@@ -91,20 +91,27 @@ footer a{color:var(--muted)}
       <b>non-parametric nature</b>: they require no explicit assumption on the data-generating process of a venue whose paths
       are bounded, terminally absorbed, and shaped by exogenous information arrival. Where a regime, a cluster count, or a
       participant type would otherwise have to be assumed, it is instead inferred.</p>
-    <p>The empirical core learns the hidden state that governs repricing. A natural variance-regime hypothesis is decisively
-      <b>falsified</b>; an unsupervised latent-state model — a <b>Markov-modulated Poisson process</b> — instead recovers a
-      hidden hot/cold intensity process with genuine dwell. The contribution extends it into an <b>absorption-aware</b> model
-      in which the latent intensity is modulated by time-to-resolution — a model class with no standard analogue — fitted by
-      <b>variational inference</b> and compared against a self-exciting (Hawkes) generative alternative. A <b>Dirichlet-process
-      mixture</b>, inferred by <b>amortized variational inference</b>, then learns the number and shape of latent market and
-      participant types without assuming it; a <b>hierarchical Bayesian</b> model pools across markets by Metropolis-within-Gibbs
-      sampling, with variational and MCMC inference cross-validated against each other.</p>
+    <p>The thesis comprises <b>three method-led investigations</b>. <b>Experiment 1 — supervised baselines &amp; calibration</b>
+      fixes the framing: directional classifiers and Brier-score calibration of coarse priors against the market establish that
+      the venue is near-efficient gross of fees and that no prior beats the market price — the negative result that motivates the
+      <b>unsupervised turn</b> from prediction to price formation. <b>Experiment 2 — unsupervised latent-state model selection</b>
+      decisively <b>falsifies</b> a natural variance-regime hypothesis (apparent regimes flicker at every timescale) and instead
+      recovers, with an unsupervised <b>Markov-modulated Poisson process</b>, a hidden hot/cold intensity state with genuine dwell.
+      <b>Experiment 3 — the absorption-aware latent-intensity model</b> extends that process into one whose latent intensity is
+      modulated by <b>time-to-resolution</b> — a model class with no standard analogue — fitted by <b>variational inference</b> and
+      compared against a self-exciting (Hawkes) generative alternative; a <b>Dirichlet-process mixture</b>, inferred by
+      <b>amortized variational inference</b>, learns the number and shape of latent market and participant types without assuming
+      it, over a <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling, with variational and MCMC
+      inference cross-validated against each other.</p>
     <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
       <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
-      whatever the empirical outcome — a rigorous null is reported as readily as a positive one. No trading capital is
-      deployed; the venue is independently near-efficient gross of fees, which is precisely what makes <b>price formation,
-      not prediction</b>, the object of study.</p>
+      whatever the empirical outcome — a rigorous null is reported as readily as a positive one. The dissertation's
+      <b>original contributions to science</b> are: an absorption-aware latent-intensity model class for terminally-absorbed
+      processes; the use of amortized variational inference and non-parametric Bayesian mixtures to learn market and participant
+      structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed;
+      the venue is independently near-efficient gross of fees, which is precisely what makes <b>price formation, not
+      prediction</b>, the object of study.</p>
   </div>
 </div></section>
 
