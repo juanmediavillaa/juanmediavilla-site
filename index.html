@@ -98,11 +98,17 @@ footer a{color:var(--muted)}
       decisively <b>falsifies</b> a natural variance-regime hypothesis (apparent regimes flicker at every timescale) and instead
       recovers, with an unsupervised <b>Markov-modulated Poisson process</b>, a hidden hot/cold intensity state with genuine dwell.
       <b>Experiment 3 — the absorption-aware latent-intensity model</b> extends that process into one whose latent intensity is
-      modulated by <b>time-to-resolution</b> — a model class with no standard analogue — fitted by <b>variational inference</b> and
-      compared against a self-exciting (Hawkes) generative alternative; a <b>Dirichlet-process mixture</b>, inferred by
-      <b>amortized variational inference</b>, learns the number and shape of latent market and participant types without assuming
-      it, over a <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling, with variational and MCMC
-      inference cross-validated against each other.</p>
+      modulated first by <b>time-to-resolution</b> and then by <b>approach-to-consensus</b> (distance to belief-commitment on a
+      de-bounded logit scale) — a model class with no standard analogue — fitted by <b>variational inference</b> and compared
+      against a self-exciting (Hawkes) generative alternative. On an expanded gold cohort (<span class="num">105</span> markets,
+      <span class="num">171,847</span> repricing events) the pre-registered comparison answers the thesis's central question:
+      repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and the freeze is genuine
+      belief-consensus rather than a price-boundedness artifact (the consensus model beats a mechanical room-to-move floor by
+      <span class="num">+665</span> nats, CI excludes zero, leave-one-market-out robust). Consensus and calendar are statistically
+      <b>co-equal</b> drivers — neither subsumes the other at this sample size — and a two-regime structure (consensus → freeze,
+      residual calendar → spike) falls out of the fitted coefficients. In parallel a <b>Dirichlet-process mixture</b>, inferred by
+      <b>amortized variational inference</b> over a <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling
+      and cross-validated against MCMC, learns the number and shape of latent market and participant types without assuming it.</p>
     <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
       <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
@@ -120,9 +126,9 @@ footer a{color:var(--muted)}
   <h2 class="sec">Three contributions — a model class, learned latent structure, and the data</h2>
   <div class="contrib" style="margin-top:20px">
     <div class="c"><div class="n">01 · Model class</div><h3>Absorption-aware latent-intensity model</h3>
-      <p>A new latent-variable model class for terminally-absorbed processes: a Markov-modulated Poisson process whose
-        hidden intensity is modulated by time-to-resolution, fitted by variational inference — no standard analogue in
-        financial time-series.</p></div>
+      <p>A new latent-variable model class for terminally-absorbed processes: an MMPP whose hidden intensity is modulated by
+        time-to-resolution and approach-to-consensus, fitted by variational inference. On 105 markets it establishes that
+        repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact.</p></div>
     <div class="c"><div class="n">02 · Learned structure</div><h3>Non-parametric Bayesian latent types</h3>
       <p>Unsupervised learning of latent market and participant structure with Dirichlet-process mixtures and amortized
         variational inference — the cluster count is inferred, not assumed — over a hierarchical Bayesian backbone.</p></div>

@@ -280,18 +280,18 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
             persistence lives in the <em>event intensity</em>, not the per-bin variance.</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s8"><div class="inner">
-      <h2 class="reveal">Exp 3 · Absorption-aware latent-intensity model — MMPP + variational inference <span class="st prog">In progress</span></h2><div class="rule reveal"></div>
+      <h2 class="reveal">Exp 3 · Absorption-aware latent-intensity model — the M0→M3 ladder <span class="st done">Complete</span></h2><div class="rule reveal"></div>
       <div class="expgrid">
         <div><div class="quad reveal">
-  <div class="cell"><div class="lab">Experiment</div><ul><li>Learn repricing intensity vs time-to-resolution τ — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
-  <div class="cell"><div class="lab">Data</div><ul><li>Clean server corpus + gold samples (resolve in-window).</li><li><b>~10–15</b> complete lifecycles/day, accruing.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
-  <div class="cell"><div class="lab">Models — latent point process + inference</div><ul><li><b>M0</b>: homogeneous Poisson (null).</li><li><b>M1</b>: <b>MMPP</b> latent hot/cold state — <b>ESTABLISHED</b>.</li><li><b>M2</b>: + time-to-resolution τ (absorbing); <b>variational inference</b>; Hawkes comparison; non-parametric Bayesian (DP-mixture, amortized VI) latent types; hierarchical pooling, VI-vs-MCMC checked.</li></ul></div>
-  <div class="cell res"><div class="lab">Results</div><ul><li><b>H1</b> hot/cold states + dwell — <b>ESTABLISHED</b> (MMPP=M1).</li><li><b>H2</b> intensity vs τ is <b>two-regime</b>: reveal-before-wire markets <b>freeze</b> (intensity→0); sports markets <b>spike</b> at resolution.</li><li><b>H3</b> resolution as absorbing state (intensity→0) — M2b preferred.</li></ul></div>
+  <div class="cell"><div class="lab">Experiment</div><ul><li>Learn repricing intensity vs time-to-resolution τ and approach-to-consensus — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
+  <div class="cell"><div class="lab">Data</div><ul><li>Expanded <b>gold cohort</b>: <b>105</b> markets, <b>171,847</b> repricing events (12× the first gold sample).</li><li>Built from gap-audited server delta shards; resolve in-window.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
+  <div class="cell"><div class="lab">Models — latent point process + inference</div><ul><li><b>M0</b>: homogeneous Poisson (null). &nbsp;<b>M1</b>: <b>MMPP</b> latent hot/cold state.</li><li><b>M2</b>: + time-to-resolution τ (calendar).</li><li><b>M3</b>: + approach-to-consensus (de-bounded logit); mechanical floor (Mmech) as circularity guard. <b>Variational inference</b>; Hawkes comparison; DP-mixture latent types; hierarchical pooling, VI-vs-MCMC checked.</li></ul></div>
+  <div class="cell res"><div class="lab">Results</div><ul><li>Intensity does <b>not</b> sharpen as τ→0 — it <b>freezes</b> (n=105).</li><li>Freeze is <b>real consensus</b>, not boundedness: M3 beats the mechanical floor <b>+665 nats</b> (CI [+98,+1220] excl 0; β<sub>c</sub>=−0.132).</li><li>Consensus &amp; calendar <b>co-equal</b> — M3 doesn't beat M2, neither subsumes the other.</li><li><b>Two-regime</b> from coefficient signs: reached-consensus <b>freeze</b> (rate-ratio 1.09, n=76) vs not-reached <b>spike</b> (3.61, n=29).</li></ul></div>
 </div></div>
-        <div class="reveal"><figure><div class="figframe"><img src="figs/f6-freeze.png" alt="Repricing intensity collapses as time-to-resolution τ→0 — the freeze"></div>
-          <figcaption>Repricing intensity collapses as time-to-resolution τ→0 — the <b>freeze</b>, shown here for the
-            reveal-before-wire regime. Sports markets instead <b>spike</b> at resolution: the picture is two-regime
-            (m2_session2/3), not a uniform venue-wide freeze.</figcaption></figure></div>
+        <div class="reveal"><figure><div class="figframe"><img src="figs/f6-freeze.png" alt="Repricing intensity collapses as the market approaches resolution — the freeze"></div>
+          <figcaption>Repricing intensity collapses as the market approaches resolution — the <b>freeze</b>, now confirmed at
+            n=105 and shown real beyond a mechanical price-boundedness floor. The two-regime picture (consensus → freeze,
+            residual calendar → spike) falls out of the fitted coefficients (consensus_model_v0).</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s9"><div class="inner">
       <h2 class="reveal">Contributions to Science <span class="st done" style="background:var(--ink)">Academic</span></h2><div class="rule reveal"></div>

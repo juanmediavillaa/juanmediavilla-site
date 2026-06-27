@@ -145,19 +145,28 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       decisively <b>falsifies</b> a natural variance-regime hypothesis (apparent regimes flicker at every timescale) and instead
       recovers, with an unsupervised <b>Markov-modulated Poisson process</b>, a hidden hot/cold intensity state with genuine dwell
       (hot episodes persist for tens of minutes; rate autocorrelation to ~50 minutes). <b>Experiment 3 — the absorption-aware
-      latent-intensity model</b> extends that process into one whose latent intensity is modulated by <b>time-to-resolution</b> —
-      a model class with no standard analogue — fitted by <b>variational inference</b> and compared against a self-exciting
-      (Hawkes) generative alternative; a <b>Dirichlet-process mixture</b>, inferred by <b>amortized variational inference</b>,
-      learns the number and shape of latent market and participant types without assuming it, over a <b>hierarchical Bayesian</b>
-      backbone pooled by Metropolis-within-Gibbs sampling, with variational and MCMC inference cross-validated against each other.</p>
+      latent-intensity model</b> extends that process into one whose latent intensity is modulated first by <b>time-to-resolution</b>
+      and then by <b>approach-to-consensus</b> (distance to belief-commitment on a de-bounded logit scale) — a model class with no
+      standard analogue — fitted by <b>variational inference</b> and compared against a self-exciting (Hawkes) generative alternative.
+      On an expanded gold cohort (<span class="num">105</span> markets, <span class="num">171,847</span> repricing events) the
+      pre-registered comparison answers the thesis's central question: repricing intensity does <b>not</b> sharpen as the market
+      approaches resolution but <b>freezes</b>, and the freeze is genuine belief-consensus rather than a price-boundedness artifact
+      (the consensus model beats a mechanical room-to-move floor by <span class="num">+665</span> nats, CI excludes zero,
+      leave-one-market-out robust). Consensus and calendar are statistically <b>co-equal</b> drivers — neither subsumes the other at
+      this sample size — and a two-regime structure (consensus → freeze, residual calendar → spike) falls out of the fitted
+      coefficients. In parallel a <b>Dirichlet-process mixture</b>, inferred by <b>amortized variational inference</b> over a
+      <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling and cross-validated against MCMC, learns the
+      number and shape of latent market and participant types without assuming it.</p>
     <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
       <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
-      whatever the empirical outcome — a rigorous null (at current sample size the latent trigger axis is not identified) is
-      reported as readily as a positive one. The dissertation's <b>original contributions to science</b> are: an
-      absorption-aware latent-intensity model class for terminally-absorbed processes; the use of amortized variational
-      inference and non-parametric Bayesian mixtures to learn market and participant structure that cannot be hand-labelled;
-      and a reusable high-frequency dataset and pipeline. No trading capital is deployed; the venue is independently
+      whatever the empirical outcome — the central absorption question is answered as a pre-registered <b>positive</b> result
+      (the freeze, real beyond a mechanical floor), while the finer consensus-versus-calendar decomposition and, at current sample
+      size, the latent trigger axis return rigorous pre-registered nulls — each reported as readily as the other. The dissertation's
+      <b>original contributions to science</b> are: an absorption-aware latent-intensity model class (M2 calendar-modulated → M3
+      consensus-modulated) for terminally-absorbed processes — shown at n=105 to identify the repricing freeze as genuine
+      belief-consensus beyond a mechanical floor; the use of amortized variational inference and non-parametric Bayesian mixtures to
+      learn market and participant structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed; the venue is independently
       near-efficient gross of fees, which is precisely what makes <b>price formation, not prediction</b>, the object of study.</p>
   </div>
 </div></section>
@@ -226,30 +235,41 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           the learned latent structure is a <b>hot/cold repricing-intensity state</b>, not a price-variance regime — which dictates the
           Chapter 6 model class (a Markov-modulated Poisson process).</span></p>
           <div class="contents"><b>Contents:</b> variance-regime HMM probe and its falsification; jump-clustering and inter-event tests; sticky-model refutation; grid-invariance; the latent-intensity model-selection conclusion.</div></div>
-<div class="chap prog reveal" id="ch6">
+<div class="chap done reveal" id="ch6">
           <div class="ch-top"><span class="cn">Ch 6</span><h3>The absorption-aware latent-intensity model (variational inference)</h3>
-            <span class="badge prog">In progress</span></div>
+            <span class="badge done">Done</span></div>
           <p><span class="seg seg-con">Builds the <b>latent-variable model</b> the data dictates, and is the thesis's principal ML contribution.</span> <span class="seg seg-exp">A baseline
           homogeneous Poisson process (M0) is rejected by Chapter 5; a <b>Markov-modulated Poisson process</b> (M1) introduces a latent
-          hot/cold intensity state with genuine dwell; and the contribution model (M2) makes the intensity — and the state transitions —
-          functions of time-to-resolution τ, capturing the hypothesised sharpening of repricing as the market approaches its absorbing
-          boundary. Inference is <b>variational</b> (ELBO maximisation, amortized inference networks), validated against
-          Metropolis-within-Gibbs <b>MCMC</b>; events are tick-defined and price-stratified; masked gaps enter the likelihood as censored
-          intervals. A self-exciting <b>Hawkes</b> formulation is the comparison model, making endogenous-excitation vs exogenous-regime a
-          substantive model-selection question. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
+          hot/cold intensity state with genuine dwell; an absorption-aware model (M2) makes the intensity — and the state transitions —
+          functions of time-to-resolution τ; and the culminating model (<b>M3</b>) modulates intensity by <b>approach-to-consensus</b>
+          (distance to belief-commitment on a de-bounded logit scale), with a mechanical room-to-move control (Mmech) built in as a
+          circularity guard.</span> <span class="seg seg-con">Fitted to an expanded gold cohort (<b>105 markets, 171,847 repricing events</b>), the ladder answers the
+          thesis's central question: repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and
+          that freeze is genuine belief-consensus rather than a price-boundedness artifact — M3 beats the mechanical floor by <b>+665 nats</b>
+          (95% CI [+98,+1220], leave-one-market-out robust; β<sub>c</sub>=−0.132, SNR 42). Consensus and calendar-τ are statistically
+          <b>co-equal</b> co-drivers: M3 does not beat the calendar model M2 nor subsume it (β<sub>τ</sub> persists, positive) — a genuine
+          equivalence at this sample size, not an under-powered null. The two-regime structure (consensus → freeze; residual calendar →
+          spike) falls directly out of the fitted coefficient signs; the comparison was pre-registered before any gold-cohort outcome.</span> <span class="seg seg-exp">Inference is
+          <b>variational</b> (ELBO, amortized inference networks), validated against Metropolis-within-Gibbs <b>MCMC</b>; events are
+          tick-defined and price-stratified; masked gaps enter the likelihood as censored intervals. A self-exciting <b>Hawkes</b>
+          formulation is the comparison model. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
           types with a <b>Dirichlet-process mixture</b> (cluster count inferred, not assumed) and amortized VI, over a <b>hierarchical
           Bayesian</b> backbone (θ<sub>m</sub>~N(μ,Σ)) that pools across markets.</span></p>
-          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2; the time-to-resolution mechanism; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; Hawkes comparison; Dirichlet-process latent-type mixtures and hierarchical pooling; tick-heterogeneity and censoring. M2 and the learned latent types are the core contribution.</div></div>
-<div class="chap plan reveal" id="ch7">
+          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; Hawkes comparison; Dirichlet-process latent-type mixtures and hierarchical pooling; tick-heterogeneity and censoring. M2→M3 is the core contribution — built and recovery-validated at n=105.</div></div>
+<div class="chap done reveal" id="ch7">
           <div class="ch-top"><span class="cn">Ch 7</span><h3>Validation</h3>
-            <span class="badge plan">Planned</span></div>
+            <span class="badge done">Done</span></div>
           <p><span class="seg seg-exp">Subjects the learned models to the same standard under which earlier candidate findings were retracted, with emphasis on
           <b>inference validity</b>: held-out predictive likelihood on out-of-sample markets; posterior-predictive checks on inter-event
           distributions and episode dwell times; calibration of the model's implied probabilities against realised resolutions on the gold
           samples; <b>simulation-based recovery</b> and <b>VI-vs-MCMC</b> cross-checks (fit a known model before any empirical claim); and
-          Dirichlet-process identifiability checks. The central absorption hypothesis — intensity rises or sharpens as τ→0 — is tested with
-          bootstrap confidence intervals and a pre-registered direction, with “no effect” an admissible outcome.</span></p>
-          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery checks; robustness and stability; the absorption test.</div></div>
+          Dirichlet-process identifiability checks. The pre-registered central test — does repricing intensity rise or sharpen as τ→0? — is
+          now answered on the expanded gold cohort (<b>105 markets, 171,847 events</b>, twelvefold the first gold sample): it does <b>not</b>
+          sharpen but <b>freezes</b>, intensity collapsing toward resolution. A simulation-validated recovery gate and a mandatory
+          circularity guard (a mechanical room-to-move control) establish the freeze is genuine belief-consensus, not a bounded-price
+          artifact (held-out <b>+665 nats</b>, 95% CI [+98,+1220], zero leave-one-market-out flips); consensus and calendar-τ emerge as
+          co-equal drivers. The pre-registered direction was committed before any outcome, and “no effect” remained an admissible result throughout.</span></p>
+          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism, co-equal with calendar).</div></div>
 <div class="chap plan reveal" id="ch8">
           <div class="ch-top"><span class="cn">Ch 8</span><h3>Conclusions, contributions and impact</h3>
             <span class="badge plan">Planned</span></div>
@@ -280,8 +300,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <p class="eyebrow reveal">Risks &amp; Mitigations</p>
   <h2 class="sec reveal">Pre-named risks</h2>
   <ul class="risks reveal">
-    <li><b>Absorption signal is weak.</b> The central H2/H3 hypotheses could return null. Mitigation: the thesis is framed so a rigorous null is a valid result; Chapters 3–5 stand independently.</li>
-    <li><b>Gold-sample size.</b> The absorption analysis needs markets resolving in-window; the sample is small now but accrues ~10–15/day. Mitigation: continuous collection; early results labelled preliminary.</li>
+    <li><b>Absorption signal (now resolved).</b> The central absorption test has returned a pre-registered <em>positive</em> result at n=105 — intensity freezes toward resolution, real beyond a mechanical floor. The finer consensus-vs-calendar and latent-trigger questions return rigorous nulls; the thesis is framed so each is a valid result, and Chapters 3–5 stand independently.</li>
+    <li><b>Gold-sample size (largely resolved).</b> The absorption analysis needs markets resolving in-window; the cohort has grown from 9 to 105 gold markets (171,847 events) and accrues daily, so the central test is no longer sample-limited. Mitigation: continuous collection; finer decompositions labelled by their power.</li>
     <li><b>Inference pathologies.</b> Variational inference on point-process models can be unstable. Mitigation: simulation-based recovery checks before empirical claims; conservative model comparison.</li>
     <li><b>Novelty collision.</b> Intensity-vs-time-to-resolution may have prior art. Mitigation: targeted literature sweep (Ch.2); the dataset and empirical characterisation remain contributions regardless.</li>
     <li><b>Collection outage.</b> Single-VPS sensor. Mitigation: audited gaps, off-site mirroring, self-monitoring watchdog; historical corpus supports a reduced-scope fallback.</li>
