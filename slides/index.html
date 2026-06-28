@@ -192,7 +192,7 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
         <div class="rwcol">
           <p class="gh meth">ML &amp; point-process methods — the methodological foundation</p>
           <details class="ref"><summary><b>Hawkes (1971)</b> — self-exciting point process</summary>
-            <p class="rel">Foundational self-exciting process; the endogenous-excitation comparison model (MMPP vs Hawkes).</p></details>
+            <p class="rel">Foundational self-exciting process — the mechanism the Exp 3 model comparison <em>identifies</em>: the repricing freeze is near-critical endogenous self-excitation (branching n*≈0.94).</p></details>
           <details class="ref"><summary><b>Bacry, Mastromatteo &amp; Muzy (2015)</b> — "Hawkes processes in finance"</summary>
             <p class="rel">The survey establishing point processes as the standard for high-frequency financial event modelling.</p></details>
           <details class="ref"><summary><b>Fischer &amp; Meier-Hellstern (1993)</b> — foundational MMPP</summary>
@@ -216,7 +216,9 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
             established and current — MMPP, Markov-modulated Hawkes, DP&nbsp;+&nbsp;VI on high-frequency financial data, now even
             applied to crypto and order flow. This thesis's novelty is the <b>absorption-aware extension</b> — latent intensity
             modulated by time-to-resolution toward a known <span class="mono">0/1</span> boundary — applied to
-            <b>prediction markets</b>, a model class with no standard analogue that none of the above address.</p>
+            <b>prediction markets</b>, a model class with no standard analogue that none of the above address. These
+            self-exciting / point-process foundations also ground a <b>result</b> here, not just positioning: the Exp 3
+            Hawkes comparison identifies the freeze's clustering as near-critical endogenous self-excitation (n*≈0.94).</p>
         </div>
       </div></div></section>
 <section class="slide" id="s4"><div class="inner">
@@ -286,12 +288,13 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
   <div class="cell"><div class="lab">Experiment</div><ul><li>Learn repricing intensity vs time-to-resolution τ and approach-to-consensus — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
   <div class="cell"><div class="lab">Data</div><ul><li>Expanded <b>gold cohort</b>: <b>105</b> markets, <b>171,847</b> repricing events (12× the first gold sample).</li><li>Built from gap-audited server delta shards; resolve in-window.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
   <div class="cell"><div class="lab">Models — latent point process + inference</div><ul><li><b>M0</b>: homogeneous Poisson (null). &nbsp;<b>M1</b>: <b>MMPP</b> latent hot/cold state.</li><li><b>M2</b>: + time-to-resolution τ (calendar).</li><li><b>M3</b>: + approach-to-consensus (de-bounded logit); mechanical floor (Mmech) as circularity guard. <b>Variational inference</b>; Hawkes comparison; DP-mixture latent types; hierarchical pooling, VI-vs-MCMC checked.</li></ul></div>
-  <div class="cell res"><div class="lab">Results</div><ul><li>Intensity does <b>not</b> sharpen as τ→0 — it <b>freezes</b> (n=105).</li><li>Freeze is <b>real consensus</b>, not boundedness: M3 beats the mechanical floor <b>+665 nats</b> (CI [+98,+1220] excl 0; β<sub>c</sub>=−0.132).</li><li>Consensus &amp; calendar <b>co-equal</b> — M3 doesn't beat M2, neither subsumes the other.</li><li><b>Two-regime</b> from coefficient signs: reached-consensus <b>freeze</b> (rate-ratio 1.09, n=76) vs not-reached <b>spike</b> (3.61, n=29).</li></ul></div>
+  <div class="cell res"><div class="lab">Results</div><ul><li>Intensity does <b>not</b> sharpen as τ→0 — it <b>freezes</b> (n=105); <b>real consensus</b>, not boundedness (M3 beats the mechanical floor <b>+665 nats</b>, β<sub>c</sub>=−0.132).</li><li><b>Mechanism — Hawkes lens:</b> the clustering is near-critical <b>endogenous self-excitation</b> (branching <b>0.939</b>), beating the regime model <b>+17,349 nats</b> [+12.6k,+22.6k]; consensus redundant given self-excitation (latent hot-state a proxy — Hawkes win conservative).</li><li><b>Categories — regime lens:</b> geo <b>freezes on consensus</b> (β<sub>c</sub> −0.257) vs sports <b>spikes on calendar</b> (β<sub>τ</sub> +0.213), BH-significant — the pooled “co-equal” resolves into a real geo↔sports split (most variance still within-category).</li></ul></div>
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f6-freeze.png" alt="Repricing intensity collapses as the market approaches resolution — the freeze"></div>
-          <figcaption>Repricing intensity collapses as the market approaches resolution — the <b>freeze</b>, now confirmed at
-            n=105 and shown real beyond a mechanical price-boundedness floor. The two-regime picture (consensus → freeze,
-            residual calendar → spike) falls out of the fitted coefficients (consensus_model_v0).</figcaption></figure></div>
+          <figcaption>Repricing intensity collapses as the market approaches resolution — the <b>freeze</b>, confirmed at
+            n=105 and real beyond a mechanical floor. Two lenses then explain it: a <b>Hawkes</b> comparison identifies the
+            mechanism as near-critical self-excitation, while the hierarchical regime model maps the freeze to categories
+            (geo consensus-led, sports calendar-led). <span class="mono">m3_extensions_v0</span>.</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s9"><div class="inner">
       <h2 class="reveal">Contributions to Science <span class="st done" style="background:var(--ink)">Academic</span></h2><div class="rule reveal"></div>
@@ -299,19 +302,21 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
         <div>
           <h3>Methodological — the ML contribution</h3>
           <ul class="big" style="margin-top:8px">
-            <li>A new <b>absorption-aware latent-intensity model class</b> (MMPP modulated by time-to-resolution) for
-              terminally-absorbed processes — no standard analogue.</li>
+            <li>A new <b>absorption-aware latent-intensity model class</b> (MMPP modulated by time-to-resolution and
+              approach-to-consensus) for terminally-absorbed processes — no standard analogue; its hierarchical extension
+              maps the freeze to market categories (geo consensus-led, sports calendar-led).</li>
             <li><b>Amortized variational inference</b> (ELBO, inference networks) and a <b>Dirichlet-process mixture</b> to
               learn latent market and participant types — cluster count inferred, not assumed.</li>
             <li><b>Hierarchical Bayesian</b> pooling by Metropolis-within-Gibbs; <b>VI-vs-MCMC</b> cross-validation.</li>
-            <li>Hawkes vs MMPP framed as learned generative models of the event sequence.</li>
+            <li>A <b>Hawkes-vs-regime model-selection result</b>: the freeze's clustering is near-critical endogenous
+              self-excitation (branching <b>0.939</b>, +17,349 nats over the regime model) — a methodological contribution.</li>
           </ul>
         </div>
         <div>
           <h3>Empirical</h3>
           <ul class="big" style="margin-top:8px">
             <li>First order-book-resolution characterisation of prediction-market price dynamics.</li>
-            <li>Learns <b>repricing-intensity clustering</b> as the governing latent structure — not price-variance regimes.</li>
+            <li>Learns <b>repricing-intensity clustering</b> as the governing latent structure — not price-variance regimes — and identifies it as <b>endogenous self-excitation</b>.</li>
             <li>On a novel, gap-audited dataset with complete path-to-resolution samples.</li>
             <li><b>Falsifies</b> the natural variance-regime model — a clean negative result.</li>
           </ul>

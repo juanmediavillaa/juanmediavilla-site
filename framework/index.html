@@ -147,25 +147,33 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       (hot episodes persist for tens of minutes; rate autocorrelation to ~50 minutes). <b>Experiment 3 — the absorption-aware
       latent-intensity model</b> extends that process into one whose latent intensity is modulated first by <b>time-to-resolution</b>
       and then by <b>approach-to-consensus</b> (distance to belief-commitment on a de-bounded logit scale) — a model class with no
-      standard analogue — fitted by <b>variational inference</b> and compared against a self-exciting (Hawkes) generative alternative.
+      standard analogue — fitted by <b>variational inference</b>.
       On an expanded gold cohort (<span class="num">105</span> markets, <span class="num">171,847</span> repricing events) the
       pre-registered comparison answers the thesis's central question: repricing intensity does <b>not</b> sharpen as the market
       approaches resolution but <b>freezes</b>, and the freeze is genuine belief-consensus rather than a price-boundedness artifact
       (the consensus model beats a mechanical room-to-move floor by <span class="num">+665</span> nats, CI excludes zero,
-      leave-one-market-out robust). Consensus and calendar are statistically <b>co-equal</b> drivers — neither subsumes the other at
-      this sample size — and a two-regime structure (consensus → freeze, residual calendar → spike) falls out of the fitted
-      coefficients. In parallel a <b>Dirichlet-process mixture</b>, inferred by <b>amortized variational inference</b> over a
+      leave-one-market-out robust). Two complementary lenses then characterise the freeze: as an <b>interpretable regime model</b>, a
+      hierarchical extension resolves the pooled consensus-versus-calendar balance into a genuine <b>category split</b> — geopolitics
+      freezes on consensus (β<sub>c</sub> −0.257) while sports spikes on the calendar (β<sub>τ</sub> +0.213), a BH-significant
+      geo↔sports contrast, though most variance remains market-to-market within a category; and as a <b>model-selection result</b>, a
+      self-exciting (Hawkes) comparison identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b>
+      (branching ratio <span class="num">0.939</span>), beating the regime model on held-out likelihood by <span class="num">+17,349</span>
+      nats (consensus redundant once self-excitation is present; the latent hot-state a proxy for the cascade). In parallel a
+      <b>Dirichlet-process mixture</b>, inferred by <b>amortized variational inference</b> over a
       <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling and cross-validated against MCMC, learns the
       number and shape of latent market and participant types without assuming it.</p>
     <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
       <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
       whatever the empirical outcome — the central absorption question is answered as a pre-registered <b>positive</b> result
-      (the freeze, real beyond a mechanical floor), while the finer consensus-versus-calendar decomposition and, at current sample
-      size, the latent trigger axis return rigorous pre-registered nulls — each reported as readily as the other. The dissertation's
+      (the freeze, real beyond a mechanical floor) whose mechanism a Hawkes comparison identifies as endogenous self-excitation;
+      the consensus-versus-calendar balance, co-equal when pooled, resolves into a category-dependent split; and, at current sample
+      size, the latent trigger axis returns a rigorous pre-registered null — each reported as readily as the other. The dissertation's
       <b>original contributions to science</b> are: an absorption-aware latent-intensity model class (M2 calendar-modulated → M3
       consensus-modulated) for terminally-absorbed processes — shown at n=105 to identify the repricing freeze as genuine
-      belief-consensus beyond a mechanical floor; the use of amortized variational inference and non-parametric Bayesian mixtures to
+      belief-consensus beyond a mechanical floor, freezing on consensus in geopolitics but spiking on the calendar in sports, with a
+      pre-registered Hawkes comparison identifying the clustering mechanism as near-critical endogenous self-excitation (branching
+      0.939); the use of amortized variational inference and non-parametric Bayesian mixtures to
       learn market and participant structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed; the venue is independently
       near-efficient gross of fees, which is precisely what makes <b>price formation, not prediction</b>, the object of study.</p>
   </div>
@@ -205,7 +213,9 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           <p><span class="seg seg-mot">Positions the thesis against three literatures, and frames the methodological choice of <b>machine learning over
           econometrics</b>: market microstructure and high-frequency price formation; <b>latent-variable and point-process
           models</b> for event-timed data (Hawkes processes, Markov-modulated Poisson processes, hidden semi-Markov models,
-          Dirichlet-process mixtures) together with their inference machinery (variational inference, MCMC); and the empirical
+          Dirichlet-process mixtures) together with their inference machinery (variational inference, MCMC) — the self-exciting-process
+          literature in particular furnishing the methodological foundation for the thesis's model-selection result that the freeze is
+          endogenous self-excitation; and the empirical
           literature on prediction-market efficiency. Identifies the specific gap — learning repricing intensity as a function of
           time-to-resolution — and surveys the absorption / bounded-martingale modelling the terminal-boundary contribution builds on.</span></p>
           <div class="contents"><b>Contents:</b> microstructure and price formation; point processes for financial events; prediction-market efficiency; the absorption / bounded-price modelling gap.</div></div>
@@ -246,16 +256,21 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           circularity guard.</span> <span class="seg seg-con">Fitted to an expanded gold cohort (<b>105 markets, 171,847 repricing events</b>), the ladder answers the
           thesis's central question: repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and
           that freeze is genuine belief-consensus rather than a price-boundedness artifact — M3 beats the mechanical floor by <b>+665 nats</b>
-          (95% CI [+98,+1220], leave-one-market-out robust; β<sub>c</sub>=−0.132, SNR 42). Consensus and calendar-τ are statistically
-          <b>co-equal</b> co-drivers: M3 does not beat the calendar model M2 nor subsume it (β<sub>τ</sub> persists, positive) — a genuine
-          equivalence at this sample size, not an under-powered null. The two-regime structure (consensus → freeze; residual calendar →
-          spike) falls directly out of the fitted coefficient signs; the comparison was pre-registered before any gold-cohort outcome.</span> <span class="seg seg-exp">Inference is
+          (95% CI [+98,+1220], leave-one-market-out robust; β<sub>c</sub>=−0.132, SNR 42). Two complementary lenses then
+          characterise the freeze. As an <b>interpretable regime model</b>, consensus and calendar-τ are co-equal <em>when pooled</em>
+          (M3 does not beat the calendar model M2 held-out), but a hierarchical extension resolves that balance into a genuine
+          <b>category split</b>: geopolitics freezes on consensus (β<sub>c</sub>=−0.257, CI excl 0) while sports spikes on the calendar
+          (β<sub>τ</sub>=+0.213, CI excl 0), a BH-significant geo↔sports contrast — though most coefficient variance is market-to-market
+          <em>within</em> a category. As a <b>model-selection result</b>, a self-exciting <b>Hawkes</b> comparison identifies the
+          clustering mechanism as near-critical endogenous self-excitation (branching <b>0.939</b>), beating the regime model on held-out
+          likelihood by <b>+17,349 nats</b> (95% CI [+12,561,+22,638], zero LOMO flips), with consensus redundant once self-excitation is
+          present — the latent hot-state was a proxy for the cascade (the MMPP's rate flexibility biases toward the regime model, so the
+          Hawkes win is conservative). Both comparisons were pre-registered before any gold-cohort outcome.</span> <span class="seg seg-exp">Inference is
           <b>variational</b> (ELBO, amortized inference networks), validated against Metropolis-within-Gibbs <b>MCMC</b>; events are
-          tick-defined and price-stratified; masked gaps enter the likelihood as censored intervals. A self-exciting <b>Hawkes</b>
-          formulation is the comparison model. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
+          tick-defined and price-stratified; masked gaps enter the likelihood as censored intervals. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
           types with a <b>Dirichlet-process mixture</b> (cluster count inferred, not assumed) and amortized VI, over a <b>hierarchical
           Bayesian</b> backbone (θ<sub>m</sub>~N(μ,Σ)) that pools across markets.</span></p>
-          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; Hawkes comparison; Dirichlet-process latent-type mixtures and hierarchical pooling; tick-heterogeneity and censoring. M2→M3 is the core contribution — built and recovery-validated at n=105.</div></div>
+          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; the Hawkes comparison (self-excitation mechanism, branching 0.939); hierarchical M3 and the category split (geo↔sports); Dirichlet-process latent-type mixtures; tick-heterogeneity and censoring. Two lenses — interpretable regime model + Hawkes mechanism — both recovery-validated at n=105.</div></div>
 <div class="chap done reveal" id="ch7">
           <div class="ch-top"><span class="cn">Ch 7</span><h3>Validation</h3>
             <span class="badge done">Done</span></div>
@@ -267,9 +282,13 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           now answered on the expanded gold cohort (<b>105 markets, 171,847 events</b>, twelvefold the first gold sample): it does <b>not</b>
           sharpen but <b>freezes</b>, intensity collapsing toward resolution. A simulation-validated recovery gate and a mandatory
           circularity guard (a mechanical room-to-move control) establish the freeze is genuine belief-consensus, not a bounded-price
-          artifact (held-out <b>+665 nats</b>, 95% CI [+98,+1220], zero leave-one-market-out flips); consensus and calendar-τ emerge as
-          co-equal drivers. The pre-registered direction was committed before any outcome, and “no effect” remained an admissible result throughout.</span></p>
-          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism, co-equal with calendar).</div></div>
+          artifact (held-out <b>+665 nats</b>, 95% CI [+98,+1220], zero leave-one-market-out flips). Two further pre-registered,
+          recovery-validated comparisons then characterise the freeze: a self-exciting <b>Hawkes</b> comparison identifies the mechanism
+          as near-critical endogenous self-excitation (branching <b>0.939</b>; <b>+17,349 nats</b> over the regime model, conservatively),
+          and a hierarchical extension resolves the pooled consensus-vs-calendar balance into a BH-significant <b>category split</b> (geo
+          consensus-led, sports calendar-led; most variance within-category). The pre-registered direction was committed before any
+          outcome, and “no effect” remained an admissible result throughout.</span></p>
+          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism); the Hawkes self-excitation result and the geo↔sports category split, both recovery-validated.</div></div>
 <div class="chap plan reveal" id="ch8">
           <div class="ch-top"><span class="cn">Ch 8</span><h3>Conclusions, contributions and impact</h3>
             <span class="badge plan">Planned</span></div>
@@ -300,7 +319,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <p class="eyebrow reveal">Risks &amp; Mitigations</p>
   <h2 class="sec reveal">Pre-named risks</h2>
   <ul class="risks reveal">
-    <li><b>Absorption signal (now resolved).</b> The central absorption test has returned a pre-registered <em>positive</em> result at n=105 — intensity freezes toward resolution, real beyond a mechanical floor. The finer consensus-vs-calendar and latent-trigger questions return rigorous nulls; the thesis is framed so each is a valid result, and Chapters 3–5 stand independently.</li>
+    <li><b>Absorption signal (now resolved).</b> The central absorption test has returned a pre-registered <em>positive</em> result at n=105 — intensity freezes toward resolution, real beyond a mechanical floor — and a Hawkes comparison identifies its mechanism as endogenous self-excitation while a category split (geo consensus-led, sports calendar-led) resolves the pooled consensus-vs-calendar balance. The latent-trigger question remains a rigorous null; the thesis is framed so each is a valid result, and Chapters 3–5 stand independently.</li>
     <li><b>Gold-sample size (largely resolved).</b> The absorption analysis needs markets resolving in-window; the cohort has grown from 9 to 105 gold markets (171,847 events) and accrues daily, so the central test is no longer sample-limited. Mitigation: continuous collection; finer decompositions labelled by their power.</li>
     <li><b>Inference pathologies.</b> Variational inference on point-process models can be unstable. Mitigation: simulation-based recovery checks before empirical claims; conservative model comparison.</li>
     <li><b>Novelty collision.</b> Intensity-vs-time-to-resolution may have prior art. Mitigation: targeted literature sweep (Ch.2); the dataset and empirical characterisation remain contributions regardless.</li>

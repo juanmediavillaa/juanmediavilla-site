@@ -99,14 +99,16 @@ footer a{color:var(--muted)}
       recovers, with an unsupervised <b>Markov-modulated Poisson process</b>, a hidden hot/cold intensity state with genuine dwell.
       <b>Experiment 3 — the absorption-aware latent-intensity model</b> extends that process into one whose latent intensity is
       modulated first by <b>time-to-resolution</b> and then by <b>approach-to-consensus</b> (distance to belief-commitment on a
-      de-bounded logit scale) — a model class with no standard analogue — fitted by <b>variational inference</b> and compared
-      against a self-exciting (Hawkes) generative alternative. On an expanded gold cohort (<span class="num">105</span> markets,
+      de-bounded logit scale) — a model class with no standard analogue — fitted by <b>variational inference</b>. On an expanded gold cohort (<span class="num">105</span> markets,
       <span class="num">171,847</span> repricing events) the pre-registered comparison answers the thesis's central question:
       repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and the freeze is genuine
       belief-consensus rather than a price-boundedness artifact (the consensus model beats a mechanical room-to-move floor by
-      <span class="num">+665</span> nats, CI excludes zero, leave-one-market-out robust). Consensus and calendar are statistically
-      <b>co-equal</b> drivers — neither subsumes the other at this sample size — and a two-regime structure (consensus → freeze,
-      residual calendar → spike) falls out of the fitted coefficients. In parallel a <b>Dirichlet-process mixture</b>, inferred by
+      <span class="num">+665</span> nats, CI excludes zero, leave-one-market-out robust). Two complementary lenses then characterise
+      the freeze: an <b>interpretable regime model</b> resolves the pooled consensus-versus-calendar balance into a genuine
+      <b>category split</b> (geopolitics freezes on consensus, β<sub>c</sub> −0.257; sports spikes on the calendar, β<sub>τ</sub>
+      +0.213; BH-significant, though most variance is within-category), while a self-exciting (Hawkes) <b>model-selection result</b>
+      identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b> (branching ratio
+      <span class="num">0.939</span>, <span class="num">+17,349</span> nats over the regime model). In parallel a <b>Dirichlet-process mixture</b>, inferred by
       <b>amortized variational inference</b> over a <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling
       and cross-validated against MCMC, learns the number and shape of latent market and participant types without assuming it.</p>
     <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
@@ -114,7 +116,9 @@ footer a{color:var(--muted)}
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
       whatever the empirical outcome — a rigorous null is reported as readily as a positive one. The dissertation's
       <b>original contributions to science</b> are: an absorption-aware latent-intensity model class for terminally-absorbed
-      processes; the use of amortized variational inference and non-parametric Bayesian mixtures to learn market and participant
+      processes — identifying the repricing freeze (consensus-led in geopolitics, calendar-led in sports), with a Hawkes
+      comparison showing its mechanism is near-critical endogenous self-excitation; the use of amortized variational inference
+      and non-parametric Bayesian mixtures to learn market and participant
       structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed;
       the venue is independently near-efficient gross of fees, which is precisely what makes <b>price formation, not
       prediction</b>, the object of study.</p>
@@ -128,7 +132,8 @@ footer a{color:var(--muted)}
     <div class="c"><div class="n">01 · Model class</div><h3>Absorption-aware latent-intensity model</h3>
       <p>A new latent-variable model class for terminally-absorbed processes: an MMPP whose hidden intensity is modulated by
         time-to-resolution and approach-to-consensus, fitted by variational inference. On 105 markets it establishes that
-        repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact.</p></div>
+        repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact — and a Hawkes comparison
+        identifies the mechanism as near-critical endogenous self-excitation (branching 0.939).</p></div>
     <div class="c"><div class="n">02 · Learned structure</div><h3>Non-parametric Bayesian latent types</h3>
       <p>Unsupervised learning of latent market and participant structure with Dirichlet-process mixtures and amortized
         variational inference — the cluster count is inferred, not assumed — over a hierarchical Bayesian backbone.</p></div>
