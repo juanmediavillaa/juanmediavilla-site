@@ -140,7 +140,9 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       participant type would otherwise have to be assumed, it is instead inferred.</p>
     <p>The thesis comprises <b>three method-led investigations</b>. <b>Experiment 1 — supervised baselines &amp; calibration</b>
       fixes the framing: directional classifiers and Brier-score calibration of coarse priors against the market establish that
-      the venue is near-efficient gross of fees and that no prior beats the market price — the negative result that motivates the
+      the venue is near-efficient gross of fees and that no prior beats the market price — an efficiency corroborated
+      <b>cross-venue</b> against the professional Betfair exchange on a live match (99.1% path correlation, Polymarket leading on
+      discrete events, no tradeable cross-venue basis; n=1) — the negative result that motivates the
       <b>unsupervised turn</b> from prediction to price formation. <b>Experiment 2 — unsupervised latent-state model selection</b>
       decisively <b>falsifies</b> a natural variance-regime hypothesis (apparent regimes flicker at every timescale) and instead
       recovers, with an unsupervised <b>Markov-modulated Poisson process</b>, a hidden hot/cold intensity state with genuine dwell
@@ -231,9 +233,15 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           pre-registered, fee-aware tests across 1,348 markets train directional classifiers and score the <b>calibration</b> (Brier) of
           coarse priors against the market. The venue clears near-efficiently gross of fees and naive directional models have no
           out-of-sample edge (five independent negative results; the market price beats every coarse prior, Brier 0.063 vs 0.18–0.25),
-          under multiple-testing (BH) correction.</span> <span class="seg seg-mot">This negative result is load-bearing and motivates the <b>unsupervised turn</b>: prices are
+          under multiple-testing (BH) correction. A <b>cross-venue</b> probe extends the exploitability question beyond Polymarket's own
+          book: on a live World Cup match (France v Sweden) captured simultaneously on Polymarket and the professional <b>Betfair</b>
+          exchange, the two venues' implied probabilities are <b>99.1% correlated</b>, Polymarket <b>leads</b> on discrete events
+          (repricing a goal in under a second while Betfair suspends for 1–3 minutes), and <b>no tradeable cross-venue basis</b> exists
+          on either speed or level (the venues agree to ~1c, never clearing the ~6.3c round-trip cost) — so Polymarket is efficient not
+          only internally but against an external professional exchange (a single-match n=1 result; Betfair on a delayed key, so the
+          level null is delay-robust and the lead is structural).</span> <span class="seg seg-mot">This negative result is load-bearing and motivates the <b>unsupervised turn</b>: prices are
           informative, so the productive question is how they form — redirecting the thesis from supervised prediction to learning latent dynamics.</span></p>
-          <div class="contents"><b>Contents:</b> efficiency census; supervised directional classifiers; Brier calibration of priors vs market; multiple-testing correction; the methodological move from edge-seeking to latent-structure learning.</div></div>
+          <div class="contents"><b>Contents:</b> efficiency census; supervised directional classifiers; Brier calibration of priors vs market; multiple-testing correction; the cross-venue efficiency probe (Polymarket vs Betfair, no tradeable basis on speed or level); the methodological move from edge-seeking to latent-structure learning.</div></div>
 <div class="chap done reveal" id="ch5">
           <div class="ch-top"><span class="cn">Ch 5</span><h3>Probe II: unsupervised latent-state model selection</h3>
             <span class="badge done">Done</span></div>
@@ -294,12 +302,14 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
             <span class="badge plan">Planned</span></div>
           <p><span class="seg seg-con">Consolidates the three contributions — the <b>absorption-aware latent-intensity model class</b>, the <b>non-parametric
           Bayesian / amortized-VI learning</b> of market and participant structure, and the dataset and pipeline — and states what is learned
-          whichever way the central hypothesis falls. Discusses external validity (single venue, liquidity-selected, a specific event-mix
-          window), transferability of the <b>ML methods</b> (latent point-process learning, variational inference, non-parametric Bayesian
-          clustering) to any deadline-resolved contract or event-timed financial series, and concrete extensions (multi-venue, marked
+          whichever way the central hypothesis falls. Discusses external validity — single venue, liquidity-selected, a specific event-mix
+          window — tempered by a <b>cross-venue</b> corroboration: on a live match Polymarket tracks the professional Betfair exchange at
+          99.1% correlation and leads on discrete events, with no tradeable cross-venue basis, so the efficiency finding holds against an
+          external venue (n=1, suggestive). Covers transferability of the <b>ML methods</b> (latent point-process learning, variational inference, non-parametric Bayesian
+          clustering) to any deadline-resolved contract or event-timed financial series, and concrete extensions (the multi-venue probe scaled beyond one match, marked
           processes, longer accrual).</span> Closes on the methodological stance the thesis demonstrates end-to-end: cheap falsifiable probes,
           pre-registration, and honest retraction.</p>
-          <div class="contents"><b>Contents:</b> summary of contributions; the result under both hypotheses; limitations and external validity; future work; reflective methodology note.</div></div></div>
+          <div class="contents"><b>Contents:</b> summary of contributions; the result under both hypotheses; limitations and external validity (incl. the cross-venue efficiency corroboration); future work; reflective methodology note.</div></div></div>
 </div></section>
 
 <section id="datasets"><div class="wrap">

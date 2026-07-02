@@ -263,6 +263,20 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <p class="small reveal">The same conclusion recurs across directional, dependence, and relative-value tests run later in
     the project: where a gross edge appears, the two-legged cost stack (spread plus fee) erases it. The finding is robust
     to removing the largest markets and to split-half resampling.</p>
+  <h3 class="sub reveal">A cross-venue check: efficient against an external professional exchange</h3>
+  <p class="reveal">The efficiency finding is internal to Polymarket. One cross-venue probe tests it against an external,
+    professionally-made book. A live World Cup match (France v Sweden) was captured simultaneously on Polymarket and the
+    <b>Betfair</b> exchange. Across the full match the two venues' implied probabilities are <span class="num">99.1%</span>
+    correlated — a single price path offset by Betfair's feed delay. On discrete events Polymarket <em>leads</em>: it reprices
+    a goal in under a second while Betfair <b>suspends</b> the market for 1&ndash;3 minutes, inverting the naive "the sharp
+    exchange leads" premise. No tradeable cross-venue basis exists on either axis: on <b>speed</b> the venues settle at the same
+    level with no exploitable lead, and on <b>level</b> the basis in quiet periods maxes at <span class="mono">~1.5&cent;</span>
+    and never clears the <span class="mono">~6.3&cent;</span> combined round-trip cost — the only large gaps are the goal
+    transients, which are the Betfair delay artefact and close as its feed catches up. Polymarket is thus efficient not only
+    internally but against an external professional exchange. Scope is honest: <span class="num">n=1</span> match, with Betfair
+    on a delayed data key — so the level null is delay-robust (a level basis is far less delay-sensitive, and quiet-only and
+    delay-aligned views agree) while the sub-second lead is structural rather than delay-contaminated.
+    <span class="cite">— crossvenue_capture_v0, crossvenue_levelbasis_v0</span></p>
 </div></section>
 
 <section id="dynamics"><div class="wrap">
@@ -527,6 +541,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
     <tr><th>Probe</th><th>Question</th><th class="m">Key number</th><th>Verdict</th></tr>
     <tr><td>Efficiency</td><td>Does the price beat a base-rate prior?</td><td class="m">Brier 0.0585 vs 0.166</td><td><span class="chip pass">efficient</span></td></tr>
     <tr><td>Directional edge</td><td>Any out-of-sample directional edge?</td><td class="m">0 / 192 lead-lag</td><td><span class="chip null">no edge</span></td></tr>
+    <tr><td>Cross-venue</td><td>Any basis vs Betfair (speed or level)?</td><td class="m">99.1% corr, n=1</td><td><span class="chip null">no basis</span></td></tr>
     <tr><td>Variance regime</td><td>Do volatility regimes persist?</td><td class="m">0 / 10 markets</td><td><span class="chip fail">falsified</span></td></tr>
     <tr><td>Intensity clustering</td><td>Is repricing non-Poisson and clustered?</td><td class="m">10 / 10, CV 2.2&ndash;5.3</td><td><span class="chip pass">established</span></td></tr>
     <tr><td>MMPP (M1)</td><td>Latent hot/cold state with dwell?</td><td class="m">beats M0 10/10</td><td><span class="chip pass">established</span></td></tr>
