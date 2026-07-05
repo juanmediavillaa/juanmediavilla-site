@@ -110,7 +110,15 @@ footer a{color:var(--muted)}
       <b>category split</b> (geopolitics freezes on consensus, β<sub>c</sub> −0.257; sports spikes on the calendar, β<sub>τ</sub>
       +0.213; BH-significant, though most variance is within-category), while a self-exciting (Hawkes) <b>model-selection result</b>
       identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b> (branching ratio
-      <span class="num">0.939</span>, <span class="num">+17,349</span> nats over the regime model). In parallel a <b>Dirichlet-process mixture</b>, inferred by
+      <span class="num">0.939</span>, <span class="num">+17,349</span> nats over the regime model). A pre-registered <b>neural benchmark</b>
+      (LSTM, Transformer, GRU-TPP) on the refreshed <span class="num">206</span>-market gold cohort
+      (<span class="num">408,414</span> events) then validates the model selection itself: the interpretable ladder captures
+      <span class="num">90.8%</span> of the total Poisson→neural structure gap with 3–6 parameters, while the genuine neural
+      residual (<span class="num">+15,600</span> nats held-out, CI excluding zero, 51/51 test markets) is <em>localized</em> —
+      a GRU-TPP given only the Hawkes model's own count history still wins (<span class="num">+7,756</span> nats), confirming
+      self-excitation as the mechanism and placing the residual in kernel shape and nonlinear covariate pathways: a concrete
+      neural-Hawkes future-work agenda, not a black-box advantage (data-limited, so the residual is a lower bound; no
+      trading claim). In parallel a <b>Dirichlet-process mixture</b>, inferred by
       <b>amortized variational inference</b> over a <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling
       and cross-validated against MCMC, learns the number and shape of latent market and participant types without assuming it.</p>
     <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
@@ -119,7 +127,9 @@ footer a{color:var(--muted)}
       whatever the empirical outcome — a rigorous null is reported as readily as a positive one. The dissertation's
       <b>original contributions to science</b> are: an absorption-aware latent-intensity model class for terminally-absorbed
       processes — identifying the repricing freeze (consensus-led in geopolitics, calendar-led in sports), with a Hawkes
-      comparison showing its mechanism is near-critical endogenous self-excitation; the use of amortized variational inference
+      comparison showing its mechanism is near-critical endogenous self-excitation and a pre-registered neural benchmark
+      quantifying the interpretable choice (90.8% of learnable structure at 3–6 parameters; the ~9% residual localized to
+      kernel shape); the use of amortized variational inference
       and non-parametric Bayesian mixtures to learn market and participant
       structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed;
       the venue is independently near-efficient gross of fees, which is precisely what makes <b>price formation, not
@@ -135,7 +145,10 @@ footer a{color:var(--muted)}
       <p>A new latent-variable model class for terminally-absorbed processes: an MMPP whose hidden intensity is modulated by
         time-to-resolution and approach-to-consensus, fitted by variational inference. On 105 markets it establishes that
         repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact — and a Hawkes comparison
-        identifies the mechanism as near-critical endogenous self-excitation (branching 0.939).</p></div>
+        identifies the mechanism as near-critical endogenous self-excitation (branching 0.939). A pre-registered neural
+        benchmark on the refreshed 206-market cohort quantifies the choice: the ladder captures 90.8% of the learnable
+        structure with 3–6 parameters, and the neural residual is localized to kernel shape — motivating neural-Hawkes
+        extensions.</p></div>
     <div class="c"><div class="n">02 · Learned structure</div><h3>Non-parametric Bayesian latent types</h3>
       <p>Unsupervised learning of latent market and participant structure with Dirichlet-process mixtures and amortized
         variational inference — the cluster count is inferred, not assumed — over a hierarchical Bayesian backbone.</p></div>

@@ -160,7 +160,15 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       geo↔sports contrast, though most variance remains market-to-market within a category; and as a <b>model-selection result</b>, a
       self-exciting (Hawkes) comparison identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b>
       (branching ratio <span class="num">0.939</span>), beating the regime model on held-out likelihood by <span class="num">+17,349</span>
-      nats (consensus redundant once self-excitation is present; the latent hot-state a proxy for the cascade). In parallel a
+      nats (consensus redundant once self-excitation is present; the latent hot-state a proxy for the cascade). A
+      pre-registered <b>neural benchmark</b> (LSTM, Transformer, GRU-TPP) on the refreshed <span class="num">206</span>-market
+      gold cohort (<span class="num">408,414</span> events) then validates the model selection itself: the interpretable
+      ladder captures <span class="num">90.8%</span> of the total Poisson→neural structure gap with 3–6 parameters, while the
+      genuine neural residual (<span class="num">+15,600</span> nats held-out, CI excluding zero, 51/51 test markets) is
+      <em>localized</em> — a GRU-TPP given only the Hawkes model's own count history still wins
+      (<span class="num">+7,756</span> nats), confirming self-excitation as the mechanism and placing the residual in kernel
+      shape and nonlinear covariate pathways: a concrete neural-Hawkes future-work agenda, not a black-box advantage
+      (data-limited, so the residual is a lower bound). In parallel a
       <b>Dirichlet-process mixture</b>, inferred by <b>amortized variational inference</b> over a
       <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling and cross-validated against MCMC, learns the
       number and shape of latent market and participant types without assuming it.</p>
@@ -175,7 +183,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       consensus-modulated) for terminally-absorbed processes — shown at n=105 to identify the repricing freeze as genuine
       belief-consensus beyond a mechanical floor, freezing on consensus in geopolitics but spiking on the calendar in sports, with a
       pre-registered Hawkes comparison identifying the clustering mechanism as near-critical endogenous self-excitation (branching
-      0.939); the use of amortized variational inference and non-parametric Bayesian mixtures to
+      0.939) and a pre-registered neural benchmark quantifying the interpretable choice (90.8% of learnable structure at 3–6
+      parameters; the ~9% residual localized to kernel shape, motivating neural-Hawkes hybrids); the use of amortized variational inference and non-parametric Bayesian mixtures to
       learn market and participant structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed; the venue is independently
       near-efficient gross of fees, which is precisely what makes <b>price formation, not prediction</b>, the object of study.</p>
   </div>
@@ -215,9 +224,11 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           <p><span class="seg seg-mot">Positions the thesis against three literatures, and frames the methodological choice of <b>machine learning over
           econometrics</b>: market microstructure and high-frequency price formation; <b>latent-variable and point-process
           models</b> for event-timed data (Hawkes processes, Markov-modulated Poisson processes, hidden semi-Markov models,
-          Dirichlet-process mixtures) together with their inference machinery (variational inference, MCMC) — the self-exciting-process
+          Dirichlet-process mixtures, and their neural extensions — recurrent marked temporal point processes and the neural
+          Hawkes process) together with their inference machinery (variational inference, MCMC) — the self-exciting-process
           literature in particular furnishing the methodological foundation for the thesis's model-selection result that the freeze is
-          endogenous self-excitation; and the empirical
+          endogenous self-excitation, and the neural-TPP literature both the benchmark ceiling against which the interpretable
+          ladder is quantified and the flexible-kernel future-work direction; and the empirical
           literature on prediction-market efficiency. Identifies the specific gap — learning repricing intensity as a function of
           time-to-resolution — and surveys the absorption / bounded-martingale modelling the terminal-boundary contribution builds on.</span></p>
           <div class="contents"><b>Contents:</b> microstructure and price formation; point processes for financial events; prediction-market efficiency; the absorption / bounded-price modelling gap.</div></div>
@@ -273,12 +284,21 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           clustering mechanism as near-critical endogenous self-excitation (branching <b>0.939</b>), beating the regime model on held-out
           likelihood by <b>+17,349 nats</b> (95% CI [+12,561,+22,638], zero LOMO flips), with consensus redundant once self-excitation is
           present — the latent hot-state was a proxy for the cascade (the MMPP's rate flexibility biases toward the regime model, so the
-          Hawkes win is conservative). Both comparisons were pre-registered before any gold-cohort outcome.</span> <span class="seg seg-exp">Inference is
+          Hawkes win is conservative). Both comparisons were pre-registered before any gold-cohort outcome.</span> <span class="seg seg-con">A third
+          pre-registered comparison — a <b>neural benchmark</b> (LSTM, Transformer, GRU-TPP) run on the refreshed gold cohort
+          (<b>206 markets, 408,414 events</b>; the ladder results above stand at their original n=105) — validates the model
+          selection: the interpretable ladder captures <b>90.8%</b> of the total Poisson→neural structure gap with 3–6
+          parameters, and the genuine neural residual (LSTM − Hawkes <b>+15,600 nats</b> held-out, 95% CI [+10,675, +21,640],
+          51/51 test markets, zero drop-one flips) is <em>localized</em>: a GRU-TPP restricted to the Hawkes model's own count
+          history still wins <b>+7,756 nats</b>, so self-excitation is confirmed as the mechanism and the residual sits in the
+          exponential kernel's shape plus nonlinear covariate pathways — a concrete neural-Hawkes/flexible-kernel agenda, not a
+          black-box advantage. The benchmark is data-limited (learning curve still rising), so the residual is a lower bound and
+          the 90.8% figure conservative; it is model-selection validation, not an edge (no costs or fills).</span> <span class="seg seg-exp">Inference is
           <b>variational</b> (ELBO, amortized inference networks), validated against Metropolis-within-Gibbs <b>MCMC</b>; events are
           tick-defined and price-stratified; masked gaps enter the likelihood as censored intervals. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
           types with a <b>Dirichlet-process mixture</b> (cluster count inferred, not assumed) and amortized VI, over a <b>hierarchical
           Bayesian</b> backbone (θ<sub>m</sub>~N(μ,Σ)) that pools across markets.</span></p>
-          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; the Hawkes comparison (self-excitation mechanism, branching 0.939); hierarchical M3 and the category split (geo↔sports); Dirichlet-process latent-type mixtures; tick-heterogeneity and censoring. Two lenses — interpretable regime model + Hawkes mechanism — both recovery-validated at n=105.</div></div>
+          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; the Hawkes comparison (self-excitation mechanism, branching 0.939); the neural benchmark (LSTM/Transformer/GRU-TPP vs the ladder at n=206 — 90.8% captured, residual localized to kernel shape); hierarchical M3 and the category split (geo↔sports); Dirichlet-process latent-type mixtures; tick-heterogeneity and censoring. Two lenses — interpretable regime model + Hawkes mechanism — both recovery-validated at n=105; the ladder-vs-neural validation at n=206.</div></div>
 <div class="chap done reveal" id="ch7">
           <div class="ch-top"><span class="cn">Ch 7</span><h3>Validation</h3>
             <span class="badge done">Done</span></div>
@@ -294,9 +314,13 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           recovery-validated comparisons then characterise the freeze: a self-exciting <b>Hawkes</b> comparison identifies the mechanism
           as near-critical endogenous self-excitation (branching <b>0.939</b>; <b>+17,349 nats</b> over the regime model, conservatively),
           and a hierarchical extension resolves the pooled consensus-vs-calendar balance into a BH-significant <b>category split</b> (geo
-          consensus-led, sports calendar-led; most variance within-category). The pre-registered direction was committed before any
+          consensus-led, sports calendar-led; most variance within-category). A pre-registered <b>neural benchmark</b> validates the
+          model selection under the same machinery (sanity gates in both directions passed; a frozen train/val/test market firewall;
+          a single held-out split rather than LOMO, disclosed): the interpretable ladder captures <b>90.8%</b> of the learnable
+          structure, and the neural residual is real (+15,600 nats, CI excl 0) and localized to kernel shape — with a data-honesty
+          label (DATA-LIMITED) making the residual a lower bound. The pre-registered direction was committed before any
           outcome, and “no effect” remained an admissible result throughout.</span></p>
-          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism); the Hawkes self-excitation result and the geo↔sports category split, both recovery-validated.</div></div>
+          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism); the Hawkes self-excitation result and the geo↔sports category split, both recovery-validated; the neural benchmark as model-selection validation (n=206, single-split, data-limited ⇒ lower bound).</div></div>
 <div class="chap plan reveal" id="ch8">
           <div class="ch-top"><span class="cn">Ch 8</span><h3>Conclusions, contributions and impact</h3>
             <span class="badge plan">Planned</span></div>
@@ -306,7 +330,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           window — tempered by a <b>cross-venue</b> corroboration: on a live match Polymarket tracks the professional Betfair exchange at
           99.1% correlation and leads on discrete events, with no tradeable cross-venue basis, so the efficiency finding holds against an
           external venue (n=1, suggestive). Covers transferability of the <b>ML methods</b> (latent point-process learning, variational inference, non-parametric Bayesian
-          clustering) to any deadline-resolved contract or event-timed financial series, and concrete extensions (the multi-venue probe scaled beyond one match, marked
+          clustering) to any deadline-resolved contract or event-timed financial series, and concrete extensions (flexible-kernel /
+          neural-Hawkes hybrids targeting the benchmark's localized ~9% residual, the multi-venue probe scaled beyond one match, marked
           processes, longer accrual).</span> Closes on the methodological stance the thesis demonstrates end-to-end: cheap falsifiable probes,
           pre-registration, and honest retraction.</p>
           <div class="contents"><b>Contents:</b> summary of contributions; the result under both hypotheses; limitations and external validity (incl. the cross-venue efficiency corroboration); future work; reflective methodology note.</div></div></div>
@@ -322,6 +347,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
     <tr><td><b>Forward L2 corpus</b> (primary)</td><td>Full order-book deltas + snapshots + trade tape, top-250 event markets, millisecond resolution</td><td class="st">Live; ~2.4 GB/day, gap-audited</td></tr>
     <tr><td>Resolution archive</td><td>Per-market outcomes + timing; complete path-to-absorption samples</td><td class="st">Growing ~10–15/day</td></tr>
     <tr><td>Historical corpus</td><td>Resolved-market snapshots, tape, prior backtest corpora</td><td class="st">On hand (1,348 markets)</td></tr>
+    <tr><td><b>Gold cohort</b> (modelling panel)</td><td>Markets observed continuously through absorption (≥100 repricings, path through resolution), 28-day window 2026-06-06 → 07-03; 792 markets resolved in-window</td><td class="st">n=206 markets; 408,414 repricing events; 2.87M valid 60-s bins (regime-ladder results reported at their original n=105 pull; neural benchmark at n=206)</td></tr>
   </table>
 </div></section>
 
@@ -330,7 +356,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <h2 class="sec reveal">Pre-named risks</h2>
   <ul class="risks reveal">
     <li><b>Absorption signal (now resolved).</b> The central absorption test has returned a pre-registered <em>positive</em> result at n=105 — intensity freezes toward resolution, real beyond a mechanical floor — and a Hawkes comparison identifies its mechanism as endogenous self-excitation while a category split (geo consensus-led, sports calendar-led) resolves the pooled consensus-vs-calendar balance. The latent-trigger question remains a rigorous null; the thesis is framed so each is a valid result, and Chapters 3–5 stand independently.</li>
-    <li><b>Gold-sample size (largely resolved).</b> The absorption analysis needs markets resolving in-window; the cohort has grown from 9 to 105 gold markets (171,847 events) and accrues daily, so the central test is no longer sample-limited. Mitigation: continuous collection; finer decompositions labelled by their power.</li>
+    <li><b>Gold-sample size (largely resolved).</b> The absorption analysis needs markets resolving in-window; the cohort has grown from 9 to 105 to <b>206</b> gold markets (408,414 events over the 28-day window) and accrues daily, so the central test is no longer sample-limited. The neural benchmark's DATA-LIMITED label shows the corpus still binds for high-capacity models — a bound, not a defect. Mitigation: continuous collection; finer decompositions labelled by their power.</li>
     <li><b>Inference pathologies.</b> Variational inference on point-process models can be unstable. Mitigation: simulation-based recovery checks before empirical claims; conservative model comparison.</li>
     <li><b>Novelty collision.</b> Intensity-vs-time-to-resolution may have prior art. Mitigation: targeted literature sweep (Ch.2); the dataset and empirical characterisation remain contributions regardless.</li>
     <li><b>Collection outage.</b> Single-VPS sensor. Mitigation: audited gaps, off-site mirroring, self-monitoring watchdog; historical corpus supports a reduced-scope fallback.</li>

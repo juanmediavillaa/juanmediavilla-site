@@ -203,6 +203,10 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
             <p class="rel">Hidden-Markov point process on HF data detecting event bursts without price change — near-neighbour; benchmarks MMPP.</p></details>
           <details class="ref"><summary><b>Semiparametric multivariate Hawkes</b> — Dirichlet processes + VI</summary>
             <p class="rel">Non-parametric-Bayes on point processes for order flow — validates the DP-mixture + variational-inference methodology.</p></details>
+          <details class="ref"><summary><b>Du et al. (2016)</b> — RMTPP: recurrent marked temporal point processes, <i>KDD</i></summary>
+            <p class="rel">Neural TPPs — intensity learned by an RNN. Grounds the thesis's neural benchmark: the interpretable ladder captures 90.8% of the Poisson→neural gap; the residual motivates flexible kernels.</p></details>
+          <details class="ref"><summary><b>Mei &amp; Eisner (2017)</b> — the neural Hawkes process, <i>NeurIPS</i></summary>
+            <p class="rel">Continuous-time LSTM self-excitation with learned kernels — exactly the hybrid class the benchmark's localized kernel-shape residual points future work toward.</p></details>
           <details class="ref"><summary><b>Easley et al.</b> — "Microstructure &amp; Market Dynamics in Crypto Markets"</summary>
             <p class="rel">VPIN / Roll / AUC microstructure predictability — methodologically adjacent.</p></details>
         </div>
@@ -286,9 +290,9 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
       <div class="expgrid">
         <div><div class="quad reveal">
   <div class="cell"><div class="lab">Experiment</div><ul><li>Learn repricing intensity vs time-to-resolution τ and approach-to-consensus — the core thesis contribution.</li><li>Endogenous self-excitation (Hawkes) vs exogenous regime (MMPP) as a real model-selection question.</li></ul></div>
-  <div class="cell"><div class="lab">Data</div><ul><li>Expanded <b>gold cohort</b>: <b>105</b> markets, <b>171,847</b> repricing events (12× the first gold sample).</li><li>Built from gap-audited server delta shards; resolve in-window.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
+  <div class="cell"><div class="lab">Data</div><ul><li>Expanded <b>gold cohort</b>: <b>105</b> markets, <b>171,847</b> repricing events (12× the first gold sample); since refreshed to <b>206</b> markets / <b>408,414</b> events (28-day window) for the neural benchmark.</li><li>Built from gap-audited server delta shards; resolve in-window.</li><li>Event = repricing (&gt;1 tick), price-level stratified; masked gaps as censored intervals.</li></ul></div>
   <div class="cell"><div class="lab">Models — latent point process + inference</div><ul><li><b>M0</b>: homogeneous Poisson (null). &nbsp;<b>M1</b>: <b>MMPP</b> latent hot/cold state.</li><li><b>M2</b>: + time-to-resolution τ (calendar).</li><li><b>M3</b>: + approach-to-consensus (de-bounded logit); mechanical floor (Mmech) as circularity guard. <b>Variational inference</b>; Hawkes comparison; DP-mixture latent types; hierarchical pooling, VI-vs-MCMC checked.</li></ul></div>
-  <div class="cell res"><div class="lab">Results</div><ul><li>Intensity does <b>not</b> sharpen as τ→0 — it <b>freezes</b> (n=105); <b>real consensus</b>, not boundedness (M3 beats the mechanical floor <b>+665 nats</b>, β<sub>c</sub>=−0.132).</li><li><b>Mechanism — Hawkes lens:</b> the clustering is near-critical <b>endogenous self-excitation</b> (branching <b>0.939</b>), beating the regime model <b>+17,349 nats</b> [+12.6k,+22.6k]; consensus redundant given self-excitation (latent hot-state a proxy — Hawkes win conservative).</li><li><b>Categories — regime lens:</b> geo <b>freezes on consensus</b> (β<sub>c</sub> −0.257) vs sports <b>spikes on calendar</b> (β<sub>τ</sub> +0.213), BH-significant — the pooled “co-equal” resolves into a real geo↔sports split (most variance still within-category).</li></ul></div>
+  <div class="cell res"><div class="lab">Results</div><ul><li>Intensity does <b>not</b> sharpen as τ→0 — it <b>freezes</b> (n=105); <b>real consensus</b>, not boundedness (M3 beats the mechanical floor <b>+665 nats</b>, β<sub>c</sub>=−0.132).</li><li><b>Mechanism — Hawkes lens:</b> the clustering is near-critical <b>endogenous self-excitation</b> (branching <b>0.939</b>), beating the regime model <b>+17,349 nats</b> [+12.6k,+22.6k]; consensus redundant given self-excitation (latent hot-state a proxy — Hawkes win conservative).</li><li><b>Categories — regime lens:</b> geo <b>freezes on consensus</b> (β<sub>c</sub> −0.257) vs sports <b>spikes on calendar</b> (β<sub>τ</sub> +0.213), BH-significant — the pooled “co-equal” resolves into a real geo↔sports split (most variance still within-category).</li><li><b>Validation — neural benchmark (n=206):</b> the interpretable ladder captures <b>90.8%</b> of the Poisson→neural structure gap with 3–6 params; the real ~9% residual (LSTM <b>+15.6k nats</b>, 51/51 mkts) is <b>localized</b> — GRU-TPP on counts alone wins +7.8k, so <b>self-excitation is confirmed</b> and the residual is kernel shape → neural-Hawkes future work (data-limited ⇒ lower bound).</li></ul></div>
 </div></div>
         <div class="reveal"><figure><div class="figframe"><img src="figs/f6-freeze.png" alt="Repricing intensity collapses as the market approaches resolution — the freeze"></div>
           <figcaption>Repricing intensity collapses as the market approaches resolution — the <b>freeze</b>, confirmed at
@@ -309,7 +313,9 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
               learn latent market and participant types — cluster count inferred, not assumed.</li>
             <li><b>Hierarchical Bayesian</b> pooling by Metropolis-within-Gibbs; <b>VI-vs-MCMC</b> cross-validation.</li>
             <li>A <b>Hawkes-vs-regime model-selection result</b>: the freeze's clustering is near-critical endogenous
-              self-excitation (branching <b>0.939</b>, +17,349 nats over the regime model) — a methodological contribution.</li>
+              self-excitation (branching <b>0.939</b>, +17,349 nats over the regime model) — quantified by a pre-registered
+              <b>neural benchmark</b> (ladder captures <b>90.8%</b> of learnable structure; residual localized to kernel
+              shape → neural-Hawkes future work).</li>
           </ul>
         </div>
         <div>
