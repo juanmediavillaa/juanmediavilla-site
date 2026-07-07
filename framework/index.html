@@ -243,7 +243,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           <p><span class="seg seg-exp">Reports the groundwork that fixes the thesis's framing, using <b>supervised and probabilistic-forecasting methods</b>:
           pre-registered, fee-aware tests across 1,348 markets train directional classifiers and score the <b>calibration</b> (Brier) of
           coarse priors against the market. The venue clears near-efficiently gross of fees and naive directional models have no
-          out-of-sample edge (five independent negative results; the market price beats every coarse prior, Brier 0.063 vs 0.18–0.25),
+          out-of-sample edge (five independent negative results; the market price beats every coarse prior, late-price Brier 0.040 vs base rates 0.18–0.25),
           under multiple-testing (BH) correction. A <b>cross-venue</b> probe extends the exploitability question beyond Polymarket's own
           book: on a live World Cup match (France v Sweden) captured simultaneously on Polymarket and the professional <b>Betfair</b>
           exchange, the two venues' implied probabilities are <b>99.1% correlated</b>, Polymarket <b>leads</b> on discrete events
@@ -292,8 +292,8 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           51/51 test markets, zero drop-one flips) is <em>localized</em>: a GRU-TPP restricted to the Hawkes model's own count
           history still wins <b>+7,756 nats</b>, so self-excitation is confirmed as the mechanism and the residual sits in the
           exponential kernel's shape plus nonlinear covariate pathways — a concrete neural-Hawkes/flexible-kernel agenda, not a
-          black-box advantage. The benchmark is data-limited (learning curve still rising), so the residual is a lower bound and
-          the 90.8% figure conservative; it is model-selection validation, not an edge (no costs or fills).</span> <span class="seg seg-exp">Inference is
+          black-box advantage. The benchmark is data-limited (learning curve still rising), so the residual is a <em>lower</em> bound —
+          and the 90.8% interpretable share is correspondingly an <em>upper</em> bound (more data would shrink it, not grow it); it is model-selection validation, not an edge (no costs or fills).</span> <span class="seg seg-exp">Inference is
           <b>variational</b> (ELBO, amortized inference networks), validated against Metropolis-within-Gibbs <b>MCMC</b>; events are
           tick-defined and price-stratified; masked gaps enter the likelihood as censored intervals. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
           types with a <b>Dirichlet-process mixture</b> (cluster count inferred, not assumed) and amortized VI, over a <b>hierarchical

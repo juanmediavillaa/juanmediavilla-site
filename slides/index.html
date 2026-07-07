@@ -265,12 +265,13 @@ html.anim .slide.active .reveal.in{opacity:1;transform:none}
   <div class="cell"><div class="lab">Experiment</div><ul><li>Test whether any supervised directional model or coarse prior beats the market.</li><li>Pre-registered, fee-aware backtests; market-clustered bootstrap CIs.</li></ul></div>
   <div class="cell"><div class="lab">Data</div><ul><li><b>1,348</b> resolved markets, <b>~$445M</b> notional.</li><li><b>400</b> markets / <b>188,856</b> trades for the prior test.</li><li>On-chain maker reconstruction (<b>100%</b> matched).</li></ul></div>
   <div class="cell"><div class="lab">Models — supervised / probabilistic</div><ul><li>4 directional classifiers; Brier-score <b>calibration</b> of priors vs the market.</li><li>Cross-market lead-lag; fee-aware PnL accounting.</li><li>Multiple-testing (BH) correction throughout.</li></ul></div>
-  <div class="cell res"><div class="lab">Results</div><ul><li><b>Five independent NO-EDGE</b> results; near-efficient gross of fees.</li><li>Market Brier <b>0.063</b> beats every prior (<b>0.18–0.25</b>).</li><li>Cross-venue: tracks <b>Betfair 99.1%</b>, leads on goals, no basis (n=1).</li><li>Conclusion: study price <em>formation</em>, not edge.</li></ul></div>
+  <div class="cell res"><div class="lab">Results</div><ul><li><b>Five independent NO-EDGE</b> results; near-efficient gross of fees.</li><li>Market late-price Brier <b>0.040</b> beats every prior (<b>0.18–0.25</b>).</li><li>Cross-venue: tracks <b>Betfair 99.1%</b>, leads on goals, no basis (n=1).</li><li>Conclusion: study price <em>formation</em>, not edge.</li></ul></div>
 </div></div>
-        <div class="reveal"><figure><div class="figframe"><img src="figs/f1-efficiency.png" alt="Market Brier 0.063 beats every coarse prior (0.18–0.25), by category"></div>
+        <div class="reveal"><figure><div class="figframe"><img src="figs/f1-efficiency.png" alt="Market late-price Brier 0.040 beats every coarse prior (0.18–0.25), by category"></div>
           <figcaption>Late-stage market price beats the base-rate prior in every category
-            (market Brier ≈0.063 vs 0.18–0.25). The 0.063 here is the <em>cross-category</em> market-Brier shown above; the
-            calibration Brier against the 0.166 base rate is <b>0.0585</b> (structure_report_v0).</figcaption></figure></div>
+            (late-price Brier <b>0.040</b> vs base rates 0.18–0.25; recomputed with provenance, brier_recompute_v0 — an earlier
+            0.063 figure was traced to a lifetime-<em>mean</em>-price Brier on a different pull and is retired; the 0.0585 variant
+            (structure_report_v0) is the same late-price quantity on the disjoint post-fee resolved archive, n=71).</figcaption></figure></div>
       </div></div></section>
 <section class="slide" id="s7"><div class="inner">
       <h2 class="reveal">Exp 2 · Unsupervised latent-state model selection <span class="st done">Complete</span></h2><div class="rule reveal"></div>
