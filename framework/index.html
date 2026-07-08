@@ -154,13 +154,16 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       pre-registered comparison answers the thesis's central question: repricing intensity does <b>not</b> sharpen as the market
       approaches resolution but <b>freezes</b>, and the freeze is genuine belief-consensus rather than a price-boundedness artifact
       (the consensus model beats a mechanical room-to-move floor by <span class="num">+665</span> nats, CI excludes zero,
-      leave-one-market-out robust). Two complementary lenses then characterise the freeze: as an <b>interpretable regime model</b>, a
-      hierarchical extension resolves the pooled consensus-versus-calendar balance into a genuine <b>category split</b> — geopolitics
-      freezes on consensus (β<sub>c</sub> −0.257) while sports spikes on the calendar (β<sub>τ</sub> +0.213), a BH-significant
-      geo↔sports contrast, though most variance remains market-to-market within a category; and as a <b>model-selection result</b>, a
-      self-exciting (Hawkes) comparison identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b>
-      (branching ratio <span class="num">0.939</span>), beating the regime model on held-out likelihood by <span class="num">+17,349</span>
-      nats (consensus redundant once self-excitation is present; the latent hot-state a proxy for the cascade). A
+      leave-one-market-out robust). A self-exciting (Hawkes) <b>model-selection result</b> identifies the clustering mechanism as
+      near-critical <b>endogenous self-excitation</b> (branching ratio <span class="num">0.939</span>), beating the regime model on
+      held-out likelihood by <span class="num">+17,349</span> nats, with no exogenous modulation improving one-step prediction on top
+      (the latent hot-state a proxy for the cascade). A final pre-registered <b>residual synthesis test</b> then reconciles the two
+      findings as a <b>two-scale structure</b>: the consensus freeze survives in the winning Hawkes model's own residuals as a
+      <em>venue-wide</em> slow quieting envelope (median residual γ<sub>c</sub> <span class="num">−0.039</span>, CI excluding zero;
+      implied envelope ≈ <span class="num">−0.34</span> per SD) — real, but a ~6% share of intensity under near-critical excitation,
+      too small to improve pooled held-out prediction — while the one category departure beyond self-excitation is a
+      <b>sports-specific calendar deadline-spike</b> (BH-p &lt; 0.001; the coefficient-level split, geopolitics β<sub>c</sub> −0.257
+      vs sports β<sub>τ</sub> +0.213, stands, with most variance market-to-market within a category). A
       pre-registered <b>neural benchmark</b> (LSTM, Transformer, GRU-TPP) on the refreshed <span class="num">206</span>-market
       gold cohort (<span class="num">408,414</span> events) then validates the model selection itself: the interpretable
       ladder captures <span class="num">90.8%</span> of the total Poisson→neural structure gap with 3–6 parameters, while the
@@ -176,14 +179,17 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
       <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
       whatever the empirical outcome — the central absorption question is answered as a pre-registered <b>positive</b> result
-      (the freeze, real beyond a mechanical floor) whose mechanism a Hawkes comparison identifies as endogenous self-excitation;
-      the consensus-versus-calendar balance, co-equal when pooled, resolves into a category-dependent split; and, at current sample
+      (the freeze, real beyond a mechanical floor) whose mechanism a Hawkes comparison identifies as endogenous self-excitation
+      — the two reconciled by a pre-registered residual test as a two-scale structure (a real venue-wide consensus envelope,
+      predictively subsumed; a sports-specific calendar deadline-spike the one category departure); and, at current sample
       size, the latent trigger axis returns a rigorous pre-registered null — each reported as readily as the other. The dissertation's
       <b>original contributions to science</b> are: an absorption-aware latent-intensity model class (M2 calendar-modulated → M3
       consensus-modulated) for terminally-absorbed processes — shown at n=105 to identify the repricing freeze as genuine
-      belief-consensus beyond a mechanical floor, freezing on consensus in geopolitics but spiking on the calendar in sports, with a
+      belief-consensus beyond a mechanical floor (a venue-wide envelope, with a sports-specific calendar deadline-spike the one
+      category departure), with a
       pre-registered Hawkes comparison identifying the clustering mechanism as near-critical endogenous self-excitation (branching
-      0.939) and a pre-registered neural benchmark quantifying the interpretable choice (90.8% of learnable structure at 3–6
+      0.939), a pre-registered residual test reconciling the two at different scales (consensus real in the winning model's
+      residuals, predictively subsumed), and a pre-registered neural benchmark quantifying the interpretable choice (90.8% of learnable structure at 3–6
       parameters; the ~9% residual localized to kernel shape, motivating neural-Hawkes hybrids); the use of amortized variational inference and non-parametric Bayesian mixtures to
       learn market and participant structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed; the venue is independently
       near-efficient gross of fees, which is precisely what makes <b>price formation, not prediction</b>, the object of study.</p>
@@ -275,16 +281,23 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           circularity guard.</span> <span class="seg seg-con">Fitted to an expanded gold cohort (<b>105 markets, 171,847 repricing events</b>), the ladder answers the
           thesis's central question: repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and
           that freeze is genuine belief-consensus rather than a price-boundedness artifact — M3 beats the mechanical floor by <b>+665 nats</b>
-          (95% CI [+98,+1220], leave-one-market-out robust; β<sub>c</sub>=−0.132, SNR 42). Two complementary lenses then
-          characterise the freeze. As an <b>interpretable regime model</b>, consensus and calendar-τ are co-equal <em>when pooled</em>
-          (M3 does not beat the calendar model M2 held-out), but a hierarchical extension resolves that balance into a genuine
-          <b>category split</b>: geopolitics freezes on consensus (β<sub>c</sub>=−0.257, CI excl 0) while sports spikes on the calendar
+          (95% CI [+98,+1220], leave-one-market-out robust; β<sub>c</sub>=−0.132, SNR 42). As an <b>interpretable regime model</b>,
+          consensus and calendar-τ are co-equal <em>when pooled</em>
+          (M3 does not beat the calendar model M2 held-out), with a coefficient-level <b>category split</b> under a hierarchical
+          extension: geopolitics freezes on consensus (β<sub>c</sub>=−0.257, CI excl 0) while sports spikes on the calendar
           (β<sub>τ</sub>=+0.213, CI excl 0), a BH-significant geo↔sports contrast — though most coefficient variance is market-to-market
           <em>within</em> a category. As a <b>model-selection result</b>, a self-exciting <b>Hawkes</b> comparison identifies the
           clustering mechanism as near-critical endogenous self-excitation (branching <b>0.939</b>), beating the regime model on held-out
-          likelihood by <b>+17,349 nats</b> (95% CI [+12,561,+22,638], zero LOMO flips), with consensus redundant once self-excitation is
-          present — the latent hot-state was a proxy for the cascade (the MMPP's rate flexibility biases toward the regime model, so the
-          Hawkes win is conservative). Both comparisons were pre-registered before any gold-cohort outcome.</span> <span class="seg seg-con">A third
+          likelihood by <b>+17,349 nats</b> (95% CI [+12,561,+22,638], zero LOMO flips), with no exogenous modulation improving one-step
+          prediction on top — the latent hot-state was a proxy for the cascade (the MMPP's rate flexibility biases toward the regime model, so the
+          Hawkes win is conservative). A final pre-registered <b>residual synthesis test</b> adjudicates the apparent tension as a
+          <b>two-scale structure</b>: the consensus freeze survives in the winning Hawkes model's own residuals as a <em>venue-wide</em>
+          slow envelope (median residual γ<sub>c</sub>=−0.039, CI excl 0; implied ≈−0.34/SD — about 2.5× the pooled estimate), while the
+          one category departure beyond self-excitation is the <b>sports calendar deadline-spike</b> (Δγ<sub>τ</sub>=−0.121, BH-p&lt;0.001;
+          the residual consensus contrast is null — geopolitics is not special). The envelope is a ~6% intensity share, too small and too
+          market-heterogeneous to improve pooled held-out prediction (H3−H1 −42, H3cat−H1 −3231, CIs incl 0) — attenuation, not
+          proxy-subsumption (FP-controlled at 5%, power-calibrated to b<sub>min</sub>=0.15; both strict readings refuted). All
+          comparisons were pre-registered before any gold-cohort outcome.</span> <span class="seg seg-con">A third
           pre-registered comparison — a <b>neural benchmark</b> (LSTM, Transformer, GRU-TPP) run on the refreshed gold cohort
           (<b>206 markets, 408,414 events</b>; the ladder results above stand at their original n=105) — validates the model
           selection: the interpretable ladder captures <b>90.8%</b> of the total Poisson→neural structure gap with 3–6
@@ -298,7 +311,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           tick-defined and price-stratified; masked gaps enter the likelihood as censored intervals. In parallel, a <b>non-parametric Bayesian</b> strand learns latent market and participant
           types with a <b>Dirichlet-process mixture</b> (cluster count inferred, not assumed) and amortized VI, over a <b>hierarchical
           Bayesian</b> backbone (θ<sub>m</sub>~N(μ,Σ)) that pools across markets.</span></p>
-          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; the Hawkes comparison (self-excitation mechanism, branching 0.939); the neural benchmark (LSTM/Transformer/GRU-TPP vs the ladder at n=206 — 90.8% captured, residual localized to kernel shape); hierarchical M3 and the category split (geo↔sports); Dirichlet-process latent-type mixtures; tick-heterogeneity and censoring. Two lenses — interpretable regime model + Hawkes mechanism — both recovery-validated at n=105; the ladder-vs-neural validation at n=206.</div></div>
+          <div class="contents"><b>Contents:</b> model ladder M0→M1→M2→M3; the time-to-resolution mechanism; the approach-to-consensus mechanism and the mechanical-floor circularity guard; variational inference (ELBO, amortized VI) and VI-vs-MCMC validation; the Hawkes comparison (self-excitation mechanism, branching 0.939); the neural benchmark (LSTM/Transformer/GRU-TPP vs the ladder at n=206 — 90.8% captured, residual localized to kernel shape); hierarchical M3 and the category split (geo↔sports); the two-scale synthesis (consensus in the Hawkes residuals, synthesis_test_v0); Dirichlet-process latent-type mixtures; tick-heterogeneity and censoring. Two lenses — interpretable regime model + Hawkes mechanism — both recovery-validated at n=105 and reconciled by the pre-registered residual test; the ladder-vs-neural validation at n=206.</div></div>
 <div class="chap done reveal" id="ch7">
           <div class="ch-top"><span class="cn">Ch 7</span><h3>Validation</h3>
             <span class="badge done">Done</span></div>
@@ -313,14 +326,17 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
           artifact (held-out <b>+665 nats</b>, 95% CI [+98,+1220], zero leave-one-market-out flips). Two further pre-registered,
           recovery-validated comparisons then characterise the freeze: a self-exciting <b>Hawkes</b> comparison identifies the mechanism
           as near-critical endogenous self-excitation (branching <b>0.939</b>; <b>+17,349 nats</b> over the regime model, conservatively),
-          and a hierarchical extension resolves the pooled consensus-vs-calendar balance into a BH-significant <b>category split</b> (geo
-          consensus-led, sports calendar-led; most variance within-category). A pre-registered <b>neural benchmark</b> validates the
+          and a hierarchical extension finds a BH-significant coefficient-level <b>category split</b> (most variance within-category).
+          A pre-registered <b>residual synthesis test</b> (sanity-gated: 5% false-positive control, power calibrated to b<sub>min</sub>=0.15,
+          one pre-outcome amendment disclosed) reconciles the freeze and Hawkes verdicts as <b>two-scale</b>: the consensus envelope is
+          real and venue-wide in the winning model's own residuals, the sports calendar deadline-spike is the one category departure,
+          and both are too small a share of intensity to improve one-step held-out prediction. A pre-registered <b>neural benchmark</b> validates the
           model selection under the same machinery (sanity gates in both directions passed; a frozen train/val/test market firewall;
           a single held-out split rather than LOMO, disclosed): the interpretable ladder captures <b>90.8%</b> of the learnable
           structure, and the neural residual is real (+15,600 nats, CI excl 0) and localized to kernel shape — with a data-honesty
           label (DATA-LIMITED) making the residual a lower bound. The pre-registered direction was committed before any
           outcome, and “no effect” remained an admissible result throughout.</span></p>
-          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism); the Hawkes self-excitation result and the geo↔sports category split, both recovery-validated; the neural benchmark as model-selection validation (n=206, single-split, data-limited ⇒ lower bound).</div></div>
+          <div class="contents"><b>Contents:</b> model comparison; posterior-predictive checks; outcome calibration; recovery and VI-vs-MCMC checks; robustness and stability; the absorption test (completed at n=105 — freeze, real beyond mechanism); the Hawkes self-excitation result and the geo↔sports category split, both recovery-validated; the residual synthesis test (two-scale adjudication: G-SANITY, calibration curve, pre-outcome amendment disclosed); the neural benchmark as model-selection validation (n=206, single-split, data-limited ⇒ lower bound).</div></div>
 <div class="chap plan reveal" id="ch8">
           <div class="ch-top"><span class="cn">Ch 8</span><h3>Conclusions, contributions and impact</h3>
             <span class="badge plan">Planned</span></div>
@@ -355,7 +371,7 @@ footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--muted)}
   <p class="eyebrow reveal">Risks &amp; Mitigations</p>
   <h2 class="sec reveal">Pre-named risks</h2>
   <ul class="risks reveal">
-    <li><b>Absorption signal (now resolved).</b> The central absorption test has returned a pre-registered <em>positive</em> result at n=105 — intensity freezes toward resolution, real beyond a mechanical floor — and a Hawkes comparison identifies its mechanism as endogenous self-excitation while a category split (geo consensus-led, sports calendar-led) resolves the pooled consensus-vs-calendar balance. The latent-trigger question remains a rigorous null; the thesis is framed so each is a valid result, and Chapters 3–5 stand independently.</li>
+    <li><b>Absorption signal (now resolved).</b> The central absorption test has returned a pre-registered <em>positive</em> result at n=105 — intensity freezes toward resolution, real beyond a mechanical floor — and a Hawkes comparison identifies its mechanism as endogenous self-excitation, with a pre-registered residual test reconciling the two as a two-scale structure (a venue-wide consensus envelope, real in the winning model's residuals but predictively subsumed; a sports calendar deadline-spike the one category departure). The latent-trigger question remains a rigorous null; the thesis is framed so each is a valid result, and Chapters 3–5 stand independently.</li>
     <li><b>Gold-sample size (largely resolved).</b> The absorption analysis needs markets resolving in-window; the cohort has grown from 9 to 105 to <b>206</b> gold markets (408,414 events over the 28-day window) and accrues daily, so the central test is no longer sample-limited. The neural benchmark's DATA-LIMITED label shows the corpus still binds for high-capacity models — a bound, not a defect. Mitigation: continuous collection; finer decompositions labelled by their power.</li>
     <li><b>Inference pathologies.</b> Variational inference on point-process models can be unstable. Mitigation: simulation-based recovery checks before empirical claims; conservative model comparison.</li>
     <li><b>Novelty collision.</b> Intensity-vs-time-to-resolution may have prior art. Mitigation: targeted literature sweep (Ch.2); the dataset and empirical characterisation remain contributions regardless.</li>

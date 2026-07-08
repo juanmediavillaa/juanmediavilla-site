@@ -105,12 +105,16 @@ footer a{color:var(--muted)}
       <span class="num">171,847</span> repricing events) the pre-registered comparison answers the thesis's central question:
       repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and the freeze is genuine
       belief-consensus rather than a price-boundedness artifact (the consensus model beats a mechanical room-to-move floor by
-      <span class="num">+665</span> nats, CI excludes zero, leave-one-market-out robust). Two complementary lenses then characterise
-      the freeze: an <b>interpretable regime model</b> resolves the pooled consensus-versus-calendar balance into a genuine
-      <b>category split</b> (geopolitics freezes on consensus, β<sub>c</sub> −0.257; sports spikes on the calendar, β<sub>τ</sub>
-      +0.213; BH-significant, though most variance is within-category), while a self-exciting (Hawkes) <b>model-selection result</b>
-      identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b> (branching ratio
-      <span class="num">0.939</span>, <span class="num">+17,349</span> nats over the regime model). A pre-registered <b>neural benchmark</b>
+      <span class="num">+665</span> nats, CI excludes zero, leave-one-market-out robust). A self-exciting (Hawkes) <b>model-selection
+      result</b> identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b> (branching ratio
+      <span class="num">0.939</span>, <span class="num">+17,349</span> nats over the regime model), and a final pre-registered
+      <b>residual synthesis test</b> reconciles the two findings as a <b>two-scale structure</b>: the consensus freeze survives in
+      the winning Hawkes model's own residuals as a <em>venue-wide</em> slow quieting envelope (median residual γ<sub>c</sub>
+      <span class="num">−0.039</span>, CI excluding zero; implied envelope ≈ <span class="num">−0.34</span> per SD of consensus) —
+      real, but too small a share of intensity (~6% under near-critical excitation) to improve one-step-ahead prediction once
+      self-excitation is modelled — while the one category departure beyond self-excitation is a <b>sports-specific calendar
+      deadline-spike</b> (BH-p &lt; 0.001; the coefficient-level split, geopolitics β<sub>c</sub> −0.257 vs sports β<sub>τ</sub>
+      +0.213, stands with most variance within-category). A pre-registered <b>neural benchmark</b>
       (LSTM, Transformer, GRU-TPP) on the refreshed <span class="num">206</span>-market gold cohort
       (<span class="num">408,414</span> events) then validates the model selection itself: the interpretable ladder captures
       <span class="num">90.8%</span> of the total Poisson→neural structure gap with 3–6 parameters, while the genuine neural
@@ -126,8 +130,9 @@ footer a{color:var(--muted)}
       path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
       whatever the empirical outcome — a rigorous null is reported as readily as a positive one. The dissertation's
       <b>original contributions to science</b> are: an absorption-aware latent-intensity model class for terminally-absorbed
-      processes — identifying the repricing freeze (consensus-led in geopolitics, calendar-led in sports), with a Hawkes
-      comparison showing its mechanism is near-critical endogenous self-excitation and a pre-registered neural benchmark
+      processes — identifying the repricing freeze (a venue-wide consensus envelope, real in the winning model's own residuals,
+      with a sports-specific calendar deadline-spike the one category departure), with a Hawkes
+      comparison showing the within-burst mechanism is near-critical endogenous self-excitation and a pre-registered neural benchmark
       quantifying the interpretable choice (90.8% of learnable structure at 3–6 parameters; the ~9% residual localized to
       kernel shape); the use of amortized variational inference
       and non-parametric Bayesian mixtures to learn market and participant
@@ -144,8 +149,10 @@ footer a{color:var(--muted)}
     <div class="c"><div class="n">01 · Model class</div><h3>Absorption-aware latent-intensity model</h3>
       <p>A new latent-variable model class for terminally-absorbed processes: an MMPP whose hidden intensity is modulated by
         time-to-resolution and approach-to-consensus, fitted by variational inference. On 105 markets it establishes that
-        repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact — and a Hawkes comparison
-        identifies the mechanism as near-critical endogenous self-excitation (branching 0.939). A pre-registered neural
+        repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact — a Hawkes comparison
+        identifies the mechanism as near-critical endogenous self-excitation (branching 0.939), and a pre-registered residual
+        test reconciles the two at different scales: the consensus freeze is real in the winning model's own residuals
+        (venue-wide) but predictively subsumed by self-excitation. A pre-registered neural
         benchmark on the refreshed 206-market cohort quantifies the choice: the ladder captures 90.8% of the learnable
         structure with 3–6 parameters, and the neural residual is localized to kernel shape — motivating neural-Hawkes
         extensions.</p></div>
