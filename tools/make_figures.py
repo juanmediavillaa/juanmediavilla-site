@@ -102,8 +102,10 @@ class Svg:
 def write_csv(name: str, header: list[str], rows: list[list[object]]) -> pathlib.Path:
     p = SITE / "data" / name
     p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, "w", newline="\n") as fh:  # LF, so --check survives a fresh clone
-        w = csv.writer(fh)
+    with open(p, "w", newline="") as fh:
+        # LF terminator: csv.writer defaults to CRLF, .gitattributes normalises to LF
+        # on commit, and the mismatch would make --check report false drift.
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(header)
         w.writerows(rows)
     return p
