@@ -228,7 +228,19 @@ Run the computed-contrast audit before publishing: it walks every text node in a
 resolves the effective background through the ancestor chain, and reports any pair below AA. A
 palette table cannot catch token drift; this does.
 
-## 14. Checks before publishing
+## 14. Responsive charts
+
+Charts are authored on a 640-wide canvas with 11px labels. **Never let one shrink to fit a phone**
+— at 342px that type renders around 6px. Each referenced figure sits in a `.scroll` container with
+`min-width: 30rem`, so it keeps a legible size and scrolls inside its own box while the page itself
+never moves. A global `img { max-width: 100% }` is the safety net beneath that.
+
+**The overflow check must compare against the emulated device width, not `window.innerWidth`.**
+Under mobile emulation the layout viewport stretches to fit overflowing content, so `innerWidth`
+grows to match `scrollWidth` and the comparison silently passes. That is how a 662px-wide page at a
+390px viewport reported "no overflow" for two rounds.
+
+## 15. Checks before publishing
 
 ```sh
 # no external subresources anywhere

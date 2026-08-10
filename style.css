@@ -117,6 +117,10 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* No image may ever be wider than its container. This is the safety net; the
+   figure rules below decide what a chart does with the space it has. */
+img { max-width: 100%; height: auto; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -367,6 +371,23 @@ details > .inner { padding-bottom: var(--s3); }
 
 figure { margin: var(--s4) 0; }
 figure svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* Charts are authored on a 640-wide canvas with 11px labels. Squeezed into a
+   phone they would render that type at about 6px, so instead they keep a legible
+   minimum and scroll inside their own box — the page itself never moves. Above
+   ~520px of container the chart simply fills the width and there is nothing to
+   scroll. Same pattern as the wide tables. */
+figure .scroll { margin: 0; }
+figure .scroll img { display: block; width: 100%; min-width: 30rem; max-width: none; }
+figure .scroll::-webkit-scrollbar { height: 6px; }
+figure .scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.scroll-hint {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  margin: var(--s1) 0 0;
+}
+@media (min-width: 34rem) { .scroll-hint { display: none; } }
 figcaption { font-size: var(--fs-sm); color: var(--ink-3); margin-top: var(--s2); }
 figcaption b { font-weight: 600; }
 .prov {

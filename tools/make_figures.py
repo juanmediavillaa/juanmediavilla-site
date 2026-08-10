@@ -679,8 +679,10 @@ def inject() -> list[str]:
             title = re.search(r"<title[^>]*>(.*?)</title>", src, re.S)
             alt = esc(title.group(1)) if title else name
             block = (f"<!-- FIGURE:{name} -->\n"
-                     f'<img src="{up}figures/{name}.svg" width="{vb.group(1)}" '
-                     f'height="{vb.group(2)}" alt="{alt}">\n'
+                     f'<div class="scroll"><img src="{up}figures/{name}.svg" '
+                     f'width="{vb.group(1)}" height="{vb.group(2)}" alt="{alt}"></div>\n'
+                     f'<p class="scroll-hint">Chart scrolls sideways on a narrow screen — '
+                     f'or open “Show the numbers” below.</p>\n'
                      + data_table(name, up)
                      + f"<!-- /FIGURE:{name} -->")
             text = text.replace(m.group(0), block)
