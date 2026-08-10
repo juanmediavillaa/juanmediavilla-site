@@ -81,8 +81,11 @@ for f in sorted(pathlib.Path('.').glob('**/index.html')):
     used += sum(pathlib.Path('assets', m).stat().st_size for m in re.findall(r'assets/([\w.-]+)', s))
     markup, total = h + css, h + css + used + js
     cap = 400*1024 if str(f) == 'index.html' else 600*1024
+    # /research carries six inline charts; inlining is what lets them follow the
+    # manual theme toggle, which a referenced <img> cannot do. Authorised at 110 KB.
+    markup_cap = 110*1024 if str(f) == 'research/index.html' else 90*1024
     flag = ''
-    if markup > 90*1024: flag += ' MARKUP OVER'; bad += 1
+    if markup > markup_cap: flag += ' MARKUP OVER'; bad += 1
     if total > cap:      flag += ' TOTAL OVER';  bad += 1
     print(f"  {str(f):34} markup {markup/1024:6.1f} KB  total {total/1024:6.1f} KB{flag}")
 sys.exit(1 if bad else 0)

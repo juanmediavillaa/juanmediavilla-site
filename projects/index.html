@@ -92,7 +92,7 @@ $ poly-status --audit
   <title id="dt-dia-pipeline">The collection pipeline</title>
   <desc id="dd-dia-pipeline">Six scheduled collectors write to storage on a 15 to 60 minute cadence. A gap audit checks continuity, and the audited output is a panel of 400 resolved markets and 188,856 trades.</desc>
   <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink2)}.tm{font:12px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
   <g><rect x="8" y="18" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 1, dispatched every 15–60 minutes</title><text x="67" y="28" class="t" text-anchor="middle" dominant-baseline="middle">collector 1</text></g>
   <g><rect x="8" y="42" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 2, dispatched every 15–60 minutes</title><text x="67" y="52" class="t" text-anchor="middle" dominant-baseline="middle">collector 2</text></g>
   <g><rect x="8" y="66" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 3, dispatched every 15–60 minutes</title><text x="67" y="76" class="t" text-anchor="middle" dominant-baseline="middle">collector 3</text></g>
@@ -162,7 +162,37 @@ $ poly-status --audit
     </div>
     <figure>
 <!-- FIGURE:fig-strategies -->
-<div class="scroll" role="region" tabindex="0" aria-label="Four strategies against a random baseline — scrollable chart"><img src="../figures/fig-strategies.svg" width="640" height="212" alt="Four strategies against a random baseline"></div>
+<div class="scroll" role="region" tabindex="0" aria-label="Four strategies against a random baseline — scrollable chart">
+<svg viewBox="0 0 640 212" role="img" aria-labelledby="t-fig-strategies d-fig-strategies" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-strategies">Four strategies against a random baseline</title>
+  <desc id="d-fig-strategies">Three strategies score no edge with p-values far above 0.05. The fourth is not plotted: it abstained on every market because the data lacks the signal it needs.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="186" y1="22" x2="186" y2="186" class="rule"/>
+  <text x="186" y="16" class="lbl" text-anchor="middle">p = 0.05</text>
+  <text x="0" y="48" class="lbl-i" text-anchor="start">mean_reversion_v1</text>
+  <rect x="168" y="35" width="179.21" height="18" class="bar"><title>mean_reversion_v1: p = 0.498 vs random, 67 trades</title></rect>
+  <text x="355.2" y="48" class="lbl-i" text-anchor="start">p = 0.498</text>
+  <text x="624" y="48" class="lbl" text-anchor="end">NO_EDGE</text>
+  <text x="0" y="88" class="lbl-i" text-anchor="start">longshot_fade_v1</text>
+  <rect x="168" y="75" width="216.25" height="18" class="bar"><title>longshot_fade_v1: p = 0.601 vs random, 157 trades</title></rect>
+  <text x="392.3" y="88" class="lbl-i" text-anchor="start">p = 0.601</text>
+  <text x="624" y="88" class="lbl" text-anchor="end">NO_EDGE</text>
+  <text x="0" y="128" class="lbl-i" text-anchor="start">depth_imbalance_v1</text>
+  <line x1="168" y1="124" x2="528" y2="124" class="axis"/>
+  <text x="172" y="118" class="lbl-i" text-anchor="start">no bar — abstained on every market</text>
+  <text x="624" y="128" class="lbl-i" text-anchor="end">NOT_APPLICABLE</text>
+  <text x="0" y="168" class="lbl-i" text-anchor="start">regime_conditioned_v1</text>
+  <rect x="168" y="155" width="220.57" height="18" class="bar"><title>regime_conditioned_v1: p = 0.613 vs random, 4 trades</title></rect>
+  <text x="396.6" y="168" class="lbl-i" text-anchor="start">p = 0.613</text>
+  <text x="624" y="168" class="lbl" text-anchor="end">NO_EDGE</text>
+  <line x1="168" y1="182" x2="528" y2="182" class="axis"/>
+  <text x="168" y="194" class="lbl" text-anchor="middle">0</text>
+  <text x="258" y="194" class="lbl" text-anchor="middle">0.25</text>
+  <text x="348" y="194" class="lbl" text-anchor="middle">0.5</text>
+  <text x="438" y="194" class="lbl" text-anchor="middle">0.75</text>
+  <text x="348" y="207" class="lbl" text-anchor="middle">how easily chance alone explains it (longer = more likely chance)</text>
+</svg>
+</div>
 <p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
 <details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">strategy</th><th scope="col">n markets</th><th scope="col">trades taken</th><th scope="col">p value vs random</th><th scope="col">verdict</th></tr></thead><tbody><tr><td>mean_reversion_v1</td><td>382</td><td>67</td><td>0.4978</td><td>NO_EDGE</td></tr><tr><td>longshot_fade_v1</td><td>382</td><td>157</td><td>0.6007</td><td>NO_EDGE</td></tr><tr><td>depth_imbalance_v1</td><td>382</td><td>0</td><td>NOT_APPLICABLE</td><td>NOT_APPLICABLE</td></tr><tr><td>regime_conditioned_v1</td><td>382</td><td>4</td><td>0.6127</td><td>NO_EDGE</td></tr></tbody></table></div></details>
 <!-- /FIGURE:fig-strategies -->
@@ -282,7 +312,7 @@ $ poly-status --audit
   <title id="dt-dia-tiers">The three-tier wallet engine</title>
   <desc id="dd-dia-tiers">Three independent checks run on each wallet. Only when all three agree is a wallet labelled an insider; if on-chain tracing is unavailable the classification is capped rather than guessed.</desc>
   <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink2)}.tm{font:12px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
   <g><rect x="8" y="18" width="220" height="44" rx="6" class="bx bx1"/><title>tier 1 · trading pattern: timing vs news</title><text x="118" y="35" class="t" text-anchor="middle" dominant-baseline="middle">tier 1 · trading pattern</text><text x="118" y="51" class="ts" text-anchor="middle" dominant-baseline="middle">timing vs news</text></g>
   <g><rect x="8" y="76" width="220" height="44" rx="6" class="bx bx1"/><title>tier 2 · profit history: early on winners</title><text x="118" y="93" class="t" text-anchor="middle" dominant-baseline="middle">tier 2 · profit history</text><text x="118" y="109" class="ts" text-anchor="middle" dominant-baseline="middle">early on winners</text></g>
   <g><rect x="8" y="134" width="220" height="44" rx="6" class="bx bx1"/><title>tier 3 · on-chain funding: traced up to 3 hops</title><text x="118" y="151" class="t" text-anchor="middle" dominant-baseline="middle">tier 3 · on-chain funding</text><text x="118" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">traced up to 3 hops</text></g>
@@ -380,7 +410,7 @@ $ poly-status --audit
   <title id="dt-dia-nav">Unitisation, and the ledger invariant</title>
   <desc id="dd-dia-nav">Money paid in is converted to units at today's price per unit. The fund's value always equals its cash plus the market value of its positions.</desc>
   <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink2)}.tm{font:12px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
   <g><rect x="8" y="30" width="140" height="50" rx="6" class="bx bx3"/><title>a member deposits</title><text x="78" y="50" class="t" text-anchor="middle" dominant-baseline="middle">money in</text><text x="78" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">€ deposit</text></g>
   <g><rect x="190" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>net asset value per unit, computed at the moment of the deposit</title><text x="265" y="50" class="t" text-anchor="middle" dominant-baseline="middle">price per unit</text><text x="265" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">value ÷ units</text></g>
   <g><rect x="382" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>the member is issued units at that price</title><text x="457" y="50" class="t" text-anchor="middle" dominant-baseline="middle">units issued</text><text x="457" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">deposit ÷ price</text></g>

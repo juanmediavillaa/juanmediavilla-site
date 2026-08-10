@@ -20,19 +20,15 @@ SITE = pathlib.Path(__file__).resolve().parent.parent
 W = 660
 
 STYLE = (
-    "svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;"
-    "--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;"
-    "--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"
-    "--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}"
-    "@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;"
-    "--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}"
+    # Inline SVG inherits the page tokens deliberately: a self-contained palette
+    # can only see prefers-color-scheme and would ignore the manual theme toggle.
     ".bx{fill:var(--surface);stroke:var(--line);stroke-width:1}"
     ".bx1{stroke:var(--c1);stroke-width:1.5}"
     ".bx2{stroke:var(--c2);stroke-width:1.5}"
     ".bx3{stroke:var(--c3);stroke-width:1.5}"
     ".t{font:13px var(--sans);fill:var(--ink)}"
-    ".ts{font:12px var(--mono);fill:var(--ink2)}"
-    ".tm{font:12px var(--mono);fill:var(--ink2)}"
+    ".ts{font:12px var(--mono);fill:var(--ink-2)}"
+    ".tm{font:12px var(--mono);fill:var(--ink-2)}"
     ".ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}"
     ".ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}"
     ".dash{stroke-dasharray:4 3}"

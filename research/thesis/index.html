@@ -211,7 +211,41 @@
 
     <figure>
 <!-- FIGURE:fig-lead -->
-<div class="scroll" role="region" tabindex="0" aria-label="Per-episode detection lead — scrollable chart"><img src="../../figures/fig-lead.svg" width="640" height="220" alt="Per-episode detection lead"></div>
+<div class="scroll" role="region" tabindex="0" aria-label="Per-episode detection lead — scrollable chart">
+<svg viewBox="0 0 640 220" role="img" aria-labelledby="t-fig-lead d-fig-lead" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-lead">Per-episode detection lead</title>
+  <desc id="d-fig-lead">Distribution of lead in minutes across 48 held-out hot episodes. Against the first raw repricing the median lead is -2.0 minutes.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <rect x="53" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -11 min: 1 episode(s)</title></rect>
+  <text x="68.8" y="195" class="lbl" text-anchor="middle">-11</text>
+  <rect x="86.6" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -10 min: 1 episode(s)</title></rect>
+  <rect x="120.3" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -9 min: 1 episode(s)</title></rect>
+  <rect x="153.9" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -7 min: 1 episode(s)</title></rect>
+  <text x="169.8" y="195" class="lbl" text-anchor="middle">-7</text>
+  <rect x="187.6" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -5 min: 1 episode(s)</title></rect>
+  <rect x="221.2" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -3 min: 1 episode(s)</title></rect>
+  <rect x="254.9" y="163.6" width="31.65" height="16.44" class="bar"><title>lead -2 min: 1 episode(s)</title></rect>
+  <text x="270.7" y="195" class="lbl" text-anchor="middle">-2</text>
+  <rect x="288.5" y="163.6" width="31.65" height="16.44" class="bar"><title>lead 0 min: 1 episode(s)</title></rect>
+  <rect x="322.2" y="114.2" width="31.65" height="65.78" class="bar"><title>lead 1 min: 4 episode(s)</title></rect>
+  <rect x="355.8" y="81.3" width="31.65" height="98.67" class="bar"><title>lead 2 min: 6 episode(s)</title></rect>
+  <text x="371.6" y="195" class="lbl" text-anchor="middle">2</text>
+  <rect x="389.5" y="32" width="31.65" height="148" class="bar"><title>lead 3 min: 9 episode(s)</title></rect>
+  <text x="405.3" y="195" class="lbl" text-anchor="middle">3</text>
+  <rect x="423.1" y="163.6" width="31.65" height="16.44" class="bar"><title>lead 4 min: 1 episode(s)</title></rect>
+  <rect x="456.8" y="97.8" width="31.65" height="82.22" class="bar"><title>lead 7 min: 5 episode(s)</title></rect>
+  <text x="472.6" y="195" class="lbl" text-anchor="middle">7</text>
+  <rect x="490.4" y="163.6" width="31.65" height="16.44" class="bar"><title>lead 8 min: 1 episode(s)</title></rect>
+  <rect x="524.1" y="114.2" width="31.65" height="65.78" class="bar"><title>lead 9 min: 4 episode(s)</title></rect>
+  <rect x="557.7" y="114.2" width="31.65" height="65.78" class="bar"><title>lead 10 min: 4 episode(s)</title></rect>
+  <text x="573.5" y="195" class="lbl" text-anchor="middle">10</text>
+  <rect x="591.4" y="81.3" width="31.65" height="98.67" class="bar"><title>lead 11 min: 6 episode(s)</title></rect>
+  <line x1="52" y1="180" x2="624" y2="180" class="axis"/>
+  <text x="338" y="212" class="lbl" text-anchor="middle">minutes early (negative = the model was late)</text>
+  <text x="46" y="36" class="lbl" text-anchor="end">9</text>
+  <text x="12" y="106" class="lbl" text-anchor="middle" transform="rotate(-90 12 106)">episodes</text>
+</svg>
+</div>
 <p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
 <details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">episode index</th><th scope="col">lead min vs causal detector</th></tr></thead><tbody><tr><td>1</td><td>2.0</td></tr><tr><td>2</td><td>3.0</td></tr><tr><td>3</td><td>2.0</td></tr><tr><td>4</td><td>11.0</td></tr><tr><td>5</td><td>2.0</td></tr><tr><td>6</td><td>2.0</td></tr><tr><td>7</td><td>3.0</td></tr><tr><td>8</td><td>7.0</td></tr><tr><td>9</td><td>7.0</td></tr><tr><td>10</td><td>2.0</td></tr><tr><td>11</td><td>10.0</td></tr><tr><td>12</td><td>7.0</td></tr></tbody></table></div><p class="prov">First 12 of 48 rows. <a href="../../data/lead-episodes.csv">Download all 48</a>.</p></details>
 <!-- /FIGURE:fig-lead -->

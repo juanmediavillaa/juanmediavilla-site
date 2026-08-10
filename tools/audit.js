@@ -181,12 +181,16 @@ const CONTRAST = `(() => {
       n = n.parentElement; }
     return acc || { r: 255, g: 255, b: 255, a: 1 }; }
   const out = [];
-  document.querySelectorAll('body *').forEach(el => {
+  document.querySelectorAll('body *, body svg text').forEach(el => {
     if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim().length > 1)) return;
     const st = getComputedStyle(el);
     if (st.display === 'none' || st.visibility === 'hidden') return;
     const r = el.getBoundingClientRect(); if (!r.width || !r.height) return;
-    const fg = parse(st.color), bg = bgOf(el); if (!fg || !bg) return;
+    // SVG text is painted by fill, not color. Reading color here measured an
+    // inherited value that never reaches the screen, so SVG text went unchecked.
+    const inSvg = !!el.ownerSVGElement;
+    const paint = inSvg ? (st.fill && st.fill !== 'none' ? st.fill : st.color) : st.color;
+    const fg = parse(paint), bg = bgOf(el); if (!fg || !bg) return;
     const ratio = (Math.max(lum(fg), lum(bg)) + .05) / (Math.min(lum(fg), lum(bg)) + .05);
     const px = parseFloat(st.fontSize), bold = (parseInt(st.fontWeight, 10) || 400) >= 700;
     const need = (px >= 24 || (bold && px >= 18.66)) ? 3 : 4.5;

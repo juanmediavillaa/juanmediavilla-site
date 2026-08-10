@@ -255,7 +255,21 @@ compared `scrollWidth` to `window.innerWidth` — which stretches to fit overflo
 mobile emulation, so a 662px page at a 390px viewport reported no overflow. Measure against the
 intended device width, and measure the rendered page.
 
-## 16. Checks before publishing
+## 16. SVG must inherit the page, never carry its own palette
+
+**A generated SVG never defines its own colour tokens.** Inline SVG inherits the page's custom
+properties, which respond to `prefers-color-scheme` *and* to the manual `data-theme` toggle. A
+self-contained palette can only see the OS setting, so the moment someone overrides the theme the
+figure renders on the opposite scheme from the page it sits in — near-black boxes on a white page.
+
+That also means **figures are inlined, not referenced**. `/research` carries a 110 KB markup cap
+instead of 90 KB for this reason.
+
+Token names inside an SVG must match the page exactly: it is `--ink-2`, not `--ink2`. An
+undefined custom property in a `fill` silently falls back to black, which is invisible in dark
+mode and which the audit only catches because it measures `fill` rather than `color`.
+
+## 17. Checks before publishing
 
 ```sh
 # no external subresources anywhere

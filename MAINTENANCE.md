@@ -27,7 +27,7 @@ CHROME=/path/to/chrome bash tools/audit.sh
 | Check | Catches |
 |---|---|
 | **Layout** at 320, 390, 768, 1440 | page overflow, elements overflowing a non-scrolling parent, any text under 12px, scroll regions missing `role`/`aria-label`/`tabindex` |
-| **Computed contrast**, both themes | any text below WCAG AA against its *effective* background, resolved through the ancestor chain |
+| **Computed contrast**, both themes | any text below WCAG AA against its *effective* background, resolved through the ancestor chain — **including SVG text, measured on `fill`** |
 | **Structure**, scripting on and off | heading order, one `h1`, five nav items, landmarks, dead in-page anchors, external subresources, and anything hidden when JS is off |
 | **Generator idempotence** | a figure, diagram or glossary entry that has drifted from its source |
 | **Prohibited content** | external subresources, infrastructure, secrets, identifiers, student data, retired figures |
@@ -41,7 +41,10 @@ CHROME=/path/to/chrome bash tools/audit.sh
 - a scroll animation hid every below-fold section and handed visibility back via script;
 - charts were pinned to 640px and overflowed every phone, while the overflow check compared
   against `window.innerWidth` — which *stretches to fit overflowing content* under mobile
-  emulation, so the test passed while the page was 662px wide at 390.
+  emulation, so the test passed while the page was 662px wide at 390;
+- every generated SVG carried its own `prefers-color-scheme` palette, so using the theme toggle
+  left the charts and diagrams on the opposite theme from the page. The contrast audit could not
+  see it either, because it read `color` on SVG text when SVG text is painted by `fill`.
 
 A CSS review found none of them. Measuring the rendered page found all three in seconds. **If a
 rule matters, give it a checker, not a paragraph.**
@@ -170,6 +173,11 @@ retroactively, because the commit ordering proves it.
   8/255, edge antialiasing only). An aggressive pass that stripped elements dropped two visible
   fills, so it was reverted. A real optimiser (`svgo`) would do better but needs npm, which this
   repo does not use.
+- **`/research` markup is 106.5 KB against a 110 KB cap**, higher than the 90 KB other pages get.
+  That is deliberate: its six charts are inlined, and inlining is the only way an SVG can inherit
+  the page's custom properties and therefore follow the manual theme toggle. A referenced `<img>`
+  can only see `prefers-color-scheme`, so it desynchronises the moment someone overrides the OS.
+  If that page grows further, move a section rather than going back to referenced figures.
 - **Charts scroll horizontally at 320px** rather than having hand-built portrait variants. The
   charts stay at 1:1 so their 12px type is legible, each scroll region is labelled and
   keyboard-reachable, and the same numbers are in the data table beside it. Building narrow
