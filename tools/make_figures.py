@@ -87,9 +87,9 @@ class Svg:
             "--sans:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}"
             "@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;"
             "--muted:#8A87A0;--line:#26233A;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}"
-            ".lbl{font:11px var(--mono,monospace);fill:var(--ink2,#4A4759)}"
-            ".lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#0D0B14)}"
-            ".ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}"
+            ".lbl{font:12px var(--mono,monospace);fill:var(--ink2,#4A4759)}"
+            ".lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}"
+            ".ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}"
             ".axis{stroke:var(--line,#E4E2EE);stroke-width:1}"
             ".rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}"
             ".bar{fill:var(--c1,#4F46E5)}"
@@ -99,7 +99,7 @@ class Svg:
             ".dot{fill:var(--c1,#4F46E5)}"
             ".dot-2{fill:var(--ink2,#4A4759)}"
             ".cell{fill:var(--c1,#4F46E5)}"
-            ".cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}"
+            ".cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}"
             ".cv.hi{fill:#fff}"
         )
         body = "\n".join(self.parts)
@@ -579,7 +579,7 @@ def fig_perclass() -> None:
               [[c, support[c]] + [dict((k, v) for k, v, _ in data[m])[c] for m in BSC_MODELS]
                for c in classes])
 
-    cw, rh = 58, 26
+    cw, rh = 66, 30
     x0, y0 = 132, PAD_T + 30
     h = y0 + rh * len(BSC_MODELS) + 44
     s = Svg(h, "Per-class F1 across six architectures",
@@ -652,7 +652,7 @@ def data_table(name: str, up: str) -> str:
     th = "".join(f"<th scope=\"col\">{esc(c.replace('_', ' '))}</th>" for c in head)
     tb = "".join("<tr>" + "".join(f"<td>{esc(c)}</td>" for c in r) + "</tr>" for r in shown)
     return (f'<details class="figdata"><summary>Show the numbers</summary>'
-            f'<div class="scroll"><table><thead><tr>{th}</tr></thead>'
+            f'<div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr>{th}</tr></thead>'
             f"<tbody>{tb}</tbody></table></div>{note}</details>\n")
 
 
@@ -679,7 +679,8 @@ def inject() -> list[str]:
             title = re.search(r"<title[^>]*>(.*?)</title>", src, re.S)
             alt = esc(title.group(1)) if title else name
             block = (f"<!-- FIGURE:{name} -->\n"
-                     f'<div class="scroll"><img src="{up}figures/{name}.svg" '
+                     f'<div class="scroll" role="region" tabindex="0" '
+                     f'aria-label="{alt} — scrollable chart"><img src="{up}figures/{name}.svg" '
                      f'width="{vb.group(1)}" height="{vb.group(2)}" alt="{alt}"></div>\n'
                      f'<p class="scroll-hint">Chart scrolls sideways on a narrow screen — '
                      f'or open “Show the numbers” below.</p>\n'

@@ -240,7 +240,22 @@ Under mobile emulation the layout viewport stretches to fit overflowing content,
 grows to match `scrollWidth` and the comparison silently passes. That is how a 662px-wide page at a
 390px viewport reported "no overflow" for two rounds.
 
-## 15. Checks before publishing
+## 15. Mobile is measured, not reviewed
+
+**Never shrink text below 12px to make something fit**, in CSS or in an SVG. Charts display at
+1:1 or larger and scroll inside a labelled region instead of scaling down; every scroll region
+carries `role="region"`, an `aria-label` and `tabindex="0"`.
+
+Run `bash tools/audit.sh`. It loads every page at 320, 390, 768 and 1440 in a real browser and
+fails on page overflow, on any element overflowing a non-scrolling parent, on any computed
+font-size under 12px, and on an unlabelled scroll region.
+
+A CSS review cannot catch this. Charts were pinned to 640px for three rounds while the check
+compared `scrollWidth` to `window.innerWidth` — which stretches to fit overflowing content under
+mobile emulation, so a 662px page at a 390px viewport reported no overflow. Measure against the
+intended device width, and measure the rendered page.
+
+## 16. Checks before publishing
 
 ```sh
 # no external subresources anywhere

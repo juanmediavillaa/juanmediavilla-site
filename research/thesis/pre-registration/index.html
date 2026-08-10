@@ -61,7 +61,7 @@
     <h2>Hierarchical MMPP fit and pooling study</h2>
     <p class="meta">SPEC ab05bc1 committed 2026-06-16, before any fit; results 5293b7a.</p>
     <h3>SPEC.md</h3>
-    <pre class="code"># Hierarchical MMPP v0 — SPECIFICATION (pre-registered before any fitting)
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Hierarchical MMPP v0 — SPECIFICATION (pre-registered before any fitting)
 
 _Committed BEFORE the fitting code runs (house style: spec → fit → gate). This is the
 central ML-sophistication step of the project: moving from **N independent per-market MMPP
@@ -252,7 +252,7 @@ thesis spine, and is it ready to carry the bounded k=3 latent population structu
 whether μ,Σ are estimated with usable precision at n=34.
 </pre>
     <h3>REPORT.md</h3>
-    <pre class="code"># Hierarchical MMPP v0 — a model of the market population
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Hierarchical MMPP v0 — a model of the market population
 
 _The central ML-sophistication step: replacing **N independent per-market MMPP fits** with
 **one hierarchical (partial-pooling) model** in which each market&#x27;s parameters are drawn from
@@ -429,7 +429,7 @@ high-activity saturation flag, the `max_count`-cap artifact, complete-case handl
 G-POOL regime confound.
 </pre>
     <h3>CAVEATS.md</h3>
-    <pre class="code"># Hierarchical MMPP v0 — CAVEATS
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Hierarchical MMPP v0 — CAVEATS
 
 **1. Inference is Metropolis-within-Gibbs, not NUTS — and the trigger block did not converge.**
 The forward-algorithm HMM marginal likelihood has no autodiff gradient in this codebase, so
@@ -507,7 +507,7 @@ weakly-identified trigger directions the Laplace Hessian is ridge-regularized wh
     <h2>Walk-forward predictive-validity study</h2>
     <p class="meta">SPEC ba92b6c committed 2026-06-17, before any outcome statistic; results a90c9bf.</p>
     <h3>SPEC.md</h3>
-    <pre class="code"># WALK-FORWARD PREDICTIVE-VALIDITY OF THE TWO-STATE MMPP — SPEC (PRE-REGISTERED)
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># WALK-FORWARD PREDICTIVE-VALIDITY OF THE TWO-STATE MMPP — SPEC (PRE-REGISTERED)
 
 **Frozen BEFORE any outcome statistic is computed.** Question: can the two-state (hot/cold)
 MMPP — fit causally and walked forward out-of-sample — **forecast near-future intensity** and
@@ -630,7 +630,7 @@ self-excitation or is descriptively rich but predictively redundant.
 Artifacts: `results/wf_mmpp_v0/{logs/*.json, figs/*.png, REPORT.md}`; code `analysis/wf_mmpp/`.
 </pre>
     <h3>REPORT.md</h3>
-    <pre class="code"># Walk-forward predictive validity of the two-state MMPP — REPORT (wf_mmpp_v0)
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Walk-forward predictive validity of the two-state MMPP — REPORT (wf_mmpp_v0)
 
 **Question.** Can the two-state (hot/cold) MMPP, fit causally and walked forward out-of-sample,
 **forecast near-future intensity** and **identify hot/cold state transitions**, and does its latent
@@ -738,7 +738,7 @@ Artifacts: `logs/wf_gates.json` (all numbers + CIs), `logs/wf_arrays.npz`, `figs
 See `CAVEATS.md`.
 </pre>
     <h3>CAVEATS.md</h3>
-    <pre class="code"># wf_mmpp_v0 — CAVEATS
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># wf_mmpp_v0 — CAVEATS
 
 1. **Pre-registered metrics that turned out artifact-prone (reported in full, not suppressed):**
    - *G-ANTICIPATE lead:* the SPEC&#x27;s &quot;first crossing in [onset−10,end]&quot; is boundary-pinned (filter
