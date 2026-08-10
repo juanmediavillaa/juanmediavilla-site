@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — Juan Mediavilla</title>
+<meta name="description" content="MSc thesis on latent repricing dynamics in prediction markets, BSc thesis on activity recognition, and the method underneath both.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../index.html">Juan Mediavilla</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="index.html" aria-current="page">Research</a>
+    <a href="../how-i-work/index.html">How I Work</a>
+    <a href="../about/index.html">About</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <h1>Research</h1>
+    <p class="standfirst">
+      Two theses and the method underneath them. Both are strongest where they report a negative
+      result, so that is where these summaries start.
+    </p>
+  </div>
+</header>
+
+<section class="section" id="msc">
+  <div class="wrap">
+    <p class="eyebrow">MSc thesis · UCL · in write-up, submission Sep 2026</p>
+    <h2>Latent Dynamics of Prediction-Market Price Paths</h2>
+    <p class="meta">Supervised by Prof. Philip Treleaven, University College London</p>
+
+    <p class="lede">
+      A prediction-market price is a terminally-absorbed process: it is driven to a
+      <span class="num">$0</span>/<span class="num">$1</span> outcome at an approximately known
+      deadline. The thesis asks what governs how, and how fast, such a market reprices — and treats
+      that as a latent-structure learning problem, because no observable field records it.
+    </p>
+
+    <p>
+      The intuition to beat was that repricing should <em>sharpen</em> into the deadline as the
+      answer approaches. It does the opposite. Intensity <strong>freezes</strong>, and that freeze
+      sits beneath a much larger, faster clustering process — a two-scale picture the thesis
+      reaches by pre-registered test rather than by argument.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">Reversal — the conjecture was wrong</p>
+      <p>
+        Repricing intensity freezes rather than sharpens as a market approaches the end of its
+        activity: <span class="num">β_τ = −0.131</span>, CI
+        <span class="num">[−0.188, −0.074]</span>, with 8 of 9 markets frozen at the first cohort.
+        Re-anchoring at the settlement record makes it <em>stronger</em>. The direction held from
+        <span class="num">n=9</span> through <span class="num">n=318</span> under frozen
+        specifications.
+      </p>
+      <p class="method">
+        <b>Evidence</b> — pre-registered, with recovery and identifiability gates that had to pass
+        before any empirical number was read; both directions and the null admissible in advance.
+        <b>Caveat</b> — on the trade-tape re-run the freeze survives as a median-market property but
+        the pooled-rate gate fails; that robustness slice is graded partial.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">Null — the primary pre-registered test failed</p>
+      <p>
+        The thesis's own primary hypothesis was that a consensus term would improve prediction
+        beyond a calendar term. It did not: <span class="num">−1.1 nats</span>, CI
+        <span class="num">[−394.6, +409.1]</span> at <span class="num">n=318</span>, with 46% of
+        markets positive. The thesis calls this "a genuine equipoise, not an underpowered
+        near-miss", and states the consequence against its own interest — the licensed claim becomes
+        mechanism-existence, not mechanism-primacy.
+      </p>
+      <p class="method">
+        <b>Evidence</b> — pre-registered, leave-one-market-out, market-clustered bootstrap, carried
+        from n=105 to n=318 with zero re-specification.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">Reversal — a post-hoc competitor beat my own headline</p>
+      <p>
+        A pre-registered comparison found a self-exciting model predicting repricing far better than
+        the two-state latent-state model: <span class="num">+48,970 nats</span>, CI
+        <span class="num">[+35,238, +67,016]</span>, zero drop-one flips. After the pre-registration
+        closed I tested the flank I had disclosed — and a <em>three-state</em> competitor
+        <strong>reverses that ordering</strong> by <span class="num">37,868 nats</span>, CI
+        <span class="num">[+30,156, +46,662]</span>. A simulation control rules out a
+        parameter-count artifact.
+      </p>
+      <p>
+        So the claim was narrowed rather than defended: the result is scoped to the
+        <em>tested two-state</em> model, not to the model class. One-step-ahead count likelihood
+        does not separate the two accounts.
+      </p>
+      <p class="method">
+        <b>Evidence</b> — the winning arm pre-registered and recovery-gated; the competitor
+        exploratory, post-freeze and <em>not</em> pre-registered. Both numbers are published
+        together or neither.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">Negative — my own model class lost its benchmark</p>
+      <p>
+        A pre-registered neural benchmark put the interpretable models on trial, and they lost: an
+        LSTM beat the champion by <span class="num">+15,600 nats</span>, CI
+        <span class="num">[+10,675, +21,640]</span>, ahead on
+        <span class="num">51/51</span> held-out test markets. The interpretable ladder still covers
+        <span class="num">90.8%</span> of the Poisson-to-LSTM gap, CI
+        <span class="num">[88.2, 92.7]</span>, using 3 to 6 parameters.
+      </p>
+      <p>
+        The direction of the bound is the unflattering one, and is reported that way: the learning
+        curve is still rising, so <span class="num">+15,600</span> is a <strong>lower</strong> bound
+        on the neural advantage and <span class="num">90.8%</span> is an <strong>upper</strong>
+        bound on the interpretable share.
+      </p>
+      <p class="method">
+        <b>Evidence</b> — pre-registered, falsification-tested in both directions, test set
+        evaluated exactly once. <b>Disclosed deviation</b> — a single frozen split at n=206, not the
+        leave-one-market-out standard used elsewhere. Model-selection validation only: no costs, no
+        fills, no trading claim.
+      </p>
+    </div>
+
+    <p>
+      A fifth result is the one I would defend hardest in an interview, because it is the least
+      flattering: the best-fitting model in the ladder <strong>fails its own absolute
+      goodness-of-fit test</strong>. A time-rescaling check rejects it on most markets. It is the
+      best-performing tested approximation, not a generatively adequate description — and the
+      residual clustering it misses is the same headroom the neural benchmark exploits.
+    </p>
+
+    <p>
+      <a href="thesis/index.html">The full write-up, with the method and every caveat&nbsp;→</a>
+    </p>
+  </div>
+</section>
+
+<section class="section" id="bsc">
+  <div class="wrap">
+    <p class="eyebrow">BSc thesis · Leiden (LIACS) · 2025</p>
+    <h2>Self-supervised models for human activity recognition</h2>
+
+    <p>
+      <em>Fine-tuning General Time Series and Accelerometer-Specific Self-Supervised Models for
+      Human Activity Recognition.</em> Six architectures benchmarked head-to-head on HARTH v1.2,
+      12 activity classes, under leave-one-subject-out cross-validation.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <caption>Macro F1 under leave-one-subject-out cross-validation, HARTH v1.2.</caption>
+        <thead>
+          <tr><th scope="col">Model</th><th scope="col" class="n">Macro F1</th><th scope="col">Type</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SimCLR</td><td class="n">0.880</td><td>Contrastive SSL</td></tr>
+          <tr><td>DeepConvLSTM</td><td class="n">0.871</td><td>Supervised hybrid</td></tr>
+          <tr><td>SelfHARModel</td><td class="n">0.862</td><td>CNN baseline</td></tr>
+          <tr><td>SelfPAB</td><td class="n">0.860</td><td>Transformer SSL</td></tr>
+          <tr><td>XGBoost</td><td class="n">0.851</td><td>Classical ensemble</td></tr>
+          <tr><td>MOMENT</td><td class="n">0.843</td><td>Time-series foundation model</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">The load-bearing finding is negative</p>
+      <p>
+        A <strong>Friedman test failed to reject the null</strong> at
+        <span class="num">α=0.05</span>: there is no statistically significant difference in macro
+        F1 among all six models on this dataset and protocol. The Nemenyi post-hoc was therefore not
+        run — there was no difference to decompose. The thesis states that the observed spread
+        "could reasonably be attributed to random chance."
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">The practical finding</p>
+      <p>
+        SelfPAB — the state-of-the-art model the thesis was built around — cost about
+        <span class="num">7 hours</span> for the full cross-validation, against
+        <span class="num">1.7 hours</span> for SimCLR and <span class="num">23 minutes</span> for
+        XGBoost. It finished fourth, statistically tied with everything else. A 23-minute
+        gradient-boosting baseline was indistinguishable from a 7-hour transformer.
+      </p>
+    </div>
+
+    <p>
+      Recorded honestly rather than claimed: SelfPAB scored <span class="num">0.860</span> here
+      against <span class="num">0.813</span> in its original paper on the same dataset, attributed
+      to setup variation and <em>not</em> claimed as an improvement. Known persistent limitation:
+      class imbalance.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="method">
+  <div class="wrap">
+    <p class="eyebrow">Method</p>
+    <h2>How I keep myself honest</h2>
+
+    <p>
+      The reason to trust any number above is the protocol that produced it, so here is the
+      protocol — including where it falls short.
+    </p>
+
+    <ul class="plain">
+      <li>
+        <strong>Specifications committed before outcome statistics.</strong> The MSc work carries
+        <span class="num">14</span> pre-registered components, each indexed as a
+        spec-commit-then-results-commit pair. The one amendment is disclosed as pre-outcome under
+        its own hash: the originally specified gating statistic failed simulated false-positive
+        control at 35% against a 5% bar, so an already-registered alternative was promoted
+        <em>before</em> any empirical statistic was computed.
+      </li>
+      <li>
+        <strong>Recovery gates before results.</strong> Several tests had to demonstrate, on
+        simulated data with a known truth, that they could recover the right answer — and that they
+        would return the null when the null was true — before any real number was read.
+      </li>
+      <li>
+        <strong>The null declared admissible in advance.</strong> "No effect" and "no identifiable
+        structure at this sample size" were written into specs as acceptable outcomes, which is what
+        makes reporting them afterwards meaningful rather than merely disappointing.
+      </li>
+      <li>
+        <strong>Clustered bootstraps with the right unit.</strong> Market-clustered resampling
+        throughout, so the effective sample is the number of markets rather than the number of
+        events.
+      </li>
+      <li>
+        <strong>Held-out and walk-forward evaluation.</strong> Leave-one-market-out as the house
+        standard, chronological splits where time ordering matters, and any deviation from that
+        standard disclosed at the point it is used.
+      </li>
+      <li>
+        <strong>Multiple-comparison control.</strong> Benjamini–Hochberg across every test family,
+        applied before a result is called.
+      </li>
+    </ul>
+
+    <div class="finding">
+      <p class="finding__sign">Where the protocol falls short</p>
+      <p>
+        Pre-registration did not prevent two of my own metrics from turning out to be artifacts of
+        their measurement design — one apparent lead tracked the length of its own lookback window
+        exactly, and one rising hazard was an artifact of a minimum-length floor. Both were
+        diagnosed, dissected, and the verdicts rebuilt on artifact-free re-analyses.
+      </p>
+      <p>
+        Beyond that: the research repository is private, so the commit ordering is not
+        reader-verifiable; no library versions or containers are pinned anywhere; and not every
+        figure comes from a pre-registered component. The cohorts are nested rather than
+        independent, and the corpus is six weeks of one venue's liquid, actively-repriced head.
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

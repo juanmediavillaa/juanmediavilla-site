@@ -1,190 +1,123 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Latent Dynamics of Prediction-Market Price Paths — Juan Mediavilla</title>
-<meta name="description" content="MSc Machine Learning thesis, UCL. Learning latent repricing dynamics in terminally-absorbed price processes with non-parametric Bayesian and variational point-process models; high-frequency Polymarket data as the testbed.">
-<style>:root{
-  --bg:#FAFAF8; --surface:#FFFFFF; --surface-2:#F4F4F0;
-  --ink:#1A1A1A; --ink-2:#2B2B2B; --muted:#5A5A56; --faint:#8A8A86;
-  --accent:#0F6E56; --accent-2:#3E9B82; --accent-soft:#EAF3EF;
-  --line:#E5E5DF; --line-2:#D8D8D1;
-  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Consolas,"Liberation Mono",Menlo,monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
---measure:900px;--navh:54px;}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:var(--navh)}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.66;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3{line-height:1.18;font-weight:700;letter-spacing:-.015em;color:var(--ink)}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
-.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.num{font-family:var(--mono);color:var(--accent);font-weight:600}
-b{color:var(--ink)}
-.wrap{max-width:var(--measure);margin:0 auto;padding:0 28px}
-nav{position:sticky;top:0;z-index:50;background:rgba(250,250,248,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-nav .row{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:14px;height:var(--navh)}
-.brand{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap}
-.brand .dot{color:var(--accent)}
-.acts{display:flex;gap:2px;margin-left:auto}
-.acts a{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--muted);padding:6px 10px;border-radius:6px;white-space:nowrap}
-.acts a:hover{color:var(--ink);background:var(--surface-2);text-decoration:none}
-.hero{padding:74px 0 30px}
-.hero .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
-.hero h1{font-size:clamp(30px,4.4vw,48px);margin:0 0 18px;letter-spacing:-.02em;max-width:20ch}
-.hero h1 .hl{color:var(--accent)}
-.hero .ds{font-size:clamp(16px,1.9vw,20px);color:var(--muted);max-width:60ch;margin:0 0 20px}
-.byl{font-family:var(--mono);font-size:13.5px;color:var(--muted);line-height:1.9}
-.byl b{color:var(--ink)}
-section{padding:44px 0;border-top:1px solid var(--line)}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
-h2.sec{font-size:clamp(21px,2.7vw,29px);margin:0 0 14px}
-h2.sec::after{content:"";display:block;width:46px;height:2px;background:var(--accent);margin-top:14px}
-p{max-width:74ch;color:var(--ink-2)}
-.abs p{font-size:17.5px;margin:0 0 16px}
-.contrib{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:8px 0 0}
-@media(max-width:780px){.contrib{grid-template-columns:1fr}}
-.contrib .c{border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:9px;background:var(--surface);padding:20px 22px}
-.contrib .c .n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 9px}
-.contrib .c h3{font-size:16px;margin:0 0 7px}
-.contrib .c p{font-size:14px;color:var(--muted);margin:0;line-height:1.5}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:6px 0 0}
-@media(max-width:780px){.cards{grid-template-columns:1fr}}
-.card{display:block;border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:24px 24px 22px;color:var(--ink);transition:border-color .2s,transform .2s}
-.card:hover{border-color:var(--accent);transform:translateY(-2px);text-decoration:none}
-.card .ic{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
-.card h3{font-size:20px;margin:0 0 8px}
-.card p{font-size:14px;color:var(--muted);margin:0;line-height:1.5}
-.card .go{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:14px;display:inline-block}
-footer{padding:44px 0 64px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:12px;line-height:1.8}
-footer a{color:var(--muted)}
-</style></head>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juan Mediavilla — ML engineer</title>
+<meta name="description" content="MSc Machine Learning at UCL. I build research systems end to end and report what they actually show.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:,">
+</head>
 <body>
-<nav><div class="row">
-  <span class="brand">latent dynamics <span class="dot">·</span> prediction-market price paths</span>
-  <div class="acts"><a href="#abstract">Abstract</a><a href="framework/index.html">Framework</a><a href="technical/index.html">Technical</a><a href="slides/index.html">Slides</a></div>
-</div></nav>
+<a class="skip" href="#main">Skip to content</a>
 
-<header class="hero"><div class="wrap">
-  <p class="kicker">MSc Machine Learning · Thesis</p>
-  <h1>Latent Dynamics of <span class="hl">Prediction-Market</span> Price Paths</h1>
-  <p class="ds">Learning latent repricing dynamics in terminally-absorbed price processes — non-parametric Bayesian
-    and variational point-process models, with high-frequency Polymarket order-book data as the testbed.</p>
-  <p class="byl"><b>Juan Mediavilla</b> · University College London · MSc Machine Learning<br>
-    Academic Supervisor: Prof. Philip Treleaven<br>
-    Technical Advisor: TBC</p>
-</div></header>
-
-<section id="abstract"><div class="wrap">
-  <p class="eyebrow">Abstract</p>
-  <h2 class="sec">Learning the latent structure of prediction-market price paths</h2>
-  <div class="abs" style="margin-top:18px">
-    <p>This thesis investigates original research in the <b>machine learning of latent dynamics in terminally-absorbed
-      price processes</b>: the high-frequency price paths of prediction markets, which are driven to an absorbing
-      <span class="mono">$0</span>/<span class="mono">$1</span> outcome at an approximately known deadline. What governs how
-      — and how fast — such a market reprices is a hidden state that cannot be hand-specified; it must be <em>learned</em>
-      from data. The thesis therefore treats price-path dynamics as a latent-structure learning problem rather than a
-      parametric estimation problem.</p>
-    <p>Price-formation dynamics have traditionally been modelled in <b>econometrics</b>, through regime-switching and
-      stochastic-volatility specifications that fix a parametric form in advance. This thesis instead investigates the use
-      of <b>machine-learning algorithms</b> — unsupervised latent-variable models, non-parametric Bayesian mixtures, and
-      variational inference — to learn the generative structure of repricing directly. These methods are adopted for their
-      <b>non-parametric nature</b>: they require no explicit assumption on the data-generating process of a venue whose paths
-      are bounded, terminally absorbed, and shaped by exogenous information arrival. Where a regime, a cluster count, or a
-      participant type would otherwise have to be assumed, it is instead inferred.</p>
-    <p>The thesis comprises <b>three method-led investigations</b>. <b>Experiment 1 — supervised baselines &amp; calibration</b>
-      fixes the framing: directional classifiers and Brier-score calibration of coarse priors against the market establish that
-      the venue is near-efficient gross of fees and that no prior beats the market price — an efficiency corroborated
-      <b>cross-venue</b> against the professional Betfair exchange on a live match (99.1% path correlation, Polymarket leading on
-      discrete events, no tradeable cross-venue basis; n=1) — the negative result that motivates the
-      <b>unsupervised turn</b> from prediction to price formation. <b>Experiment 2 — unsupervised latent-state model selection</b>
-      decisively <b>falsifies</b> a natural variance-regime hypothesis (apparent regimes flicker at every timescale) and instead
-      recovers, with an unsupervised <b>Markov-modulated Poisson process</b>, a hidden hot/cold intensity state with genuine dwell.
-      <b>Experiment 3 — the absorption-aware latent-intensity model</b> extends that process into one whose latent intensity is
-      modulated first by <b>time-to-resolution</b> and then by <b>approach-to-consensus</b> (distance to belief-commitment on a
-      de-bounded logit scale) — a model class with no standard analogue — fitted by <b>variational inference</b>. On an expanded gold cohort (<span class="num">105</span> markets,
-      <span class="num">171,847</span> repricing events) the pre-registered comparison answers the thesis's central question:
-      repricing intensity does <b>not</b> sharpen as the market approaches resolution but <b>freezes</b>, and the freeze is genuine
-      belief-consensus rather than a price-boundedness artifact (the consensus model beats a mechanical room-to-move floor by
-      <span class="num">+665</span> nats, CI excludes zero, leave-one-market-out robust). A self-exciting (Hawkes) <b>model-selection
-      result</b> identifies the clustering mechanism as near-critical <b>endogenous self-excitation</b> (branching ratio
-      <span class="num">0.939</span>, <span class="num">+17,349</span> nats over the regime model), and a final pre-registered
-      <b>residual synthesis test</b> reconciles the two findings as a <b>two-scale structure</b>: the consensus freeze survives in
-      the winning Hawkes model's own residuals as a <em>venue-wide</em> slow quieting envelope (median residual γ<sub>c</sub>
-      <span class="num">−0.039</span>, CI excluding zero; implied envelope ≈ <span class="num">−0.34</span> per SD of consensus) —
-      real, but too small a share of intensity (~6% under near-critical excitation) to improve one-step-ahead prediction once
-      self-excitation is modelled — while the one category departure beyond self-excitation is a <b>sports-specific calendar
-      deadline-spike</b> (BH-p &lt; 0.001; the coefficient-level split, geopolitics β<sub>c</sub> −0.257 vs sports β<sub>τ</sub>
-      +0.213, stands with most variance within-category). A pre-registered <b>neural benchmark</b>
-      (LSTM, Transformer, GRU-TPP) on the refreshed <span class="num">206</span>-market gold cohort
-      (<span class="num">408,414</span> events) then validates the model selection itself: the interpretable ladder captures
-      <span class="num">90.8%</span> of the total Poisson→neural structure gap with 3–6 parameters, while the genuine neural
-      residual (<span class="num">+15,600</span> nats held-out, CI excluding zero, 51/51 test markets) is <em>localized</em> —
-      a GRU-TPP given only the Hawkes model's own count history still wins (<span class="num">+7,756</span> nats), confirming
-      self-excitation as the mechanism and placing the residual in kernel shape and nonlinear covariate pathways: a concrete
-      neural-Hawkes future-work agenda, not a black-box advantage (data-limited, so the residual is a lower bound; no
-      trading claim). In parallel a <b>Dirichlet-process mixture</b>, inferred by
-      <b>amortized variational inference</b> over a <b>hierarchical Bayesian</b> backbone pooled by Metropolis-within-Gibbs sampling
-      and cross-validated against MCMC, learns the number and shape of latent market and participant types without assuming it.</p>
-    <p>Prediction markets serve as the testbed: a purpose-built, gap-audited, millisecond-resolution corpus of the
-      <span class="num">250</span> most active Polymarket markets, captured continuously through resolution, supplies the
-      path-to-absorption ground truth against which the learned models are validated. The work is designed to be defensible
-      whatever the empirical outcome — a rigorous null is reported as readily as a positive one. The dissertation's
-      <b>original contributions to science</b> are: an absorption-aware latent-intensity model class for terminally-absorbed
-      processes — identifying the repricing freeze (a venue-wide consensus envelope, real in the winning model's own residuals,
-      with a sports-specific calendar deadline-spike the one category departure), with a Hawkes
-      comparison showing the within-burst mechanism is near-critical endogenous self-excitation and a pre-registered neural benchmark
-      quantifying the interpretable choice (90.8% of learnable structure at 3–6 parameters; the ~9% residual localized to
-      kernel shape); the use of amortized variational inference
-      and non-parametric Bayesian mixtures to learn market and participant
-      structure that cannot be hand-labelled; and a reusable high-frequency dataset and pipeline. No trading capital is deployed;
-      the venue is independently near-efficient gross of fees, which is precisely what makes <b>price formation, not
-      prediction</b>, the object of study.</p>
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="index.html" aria-current="page">Juan Mediavilla</a>
+    <a href="projects/index.html">Projects</a>
+    <a href="research/index.html">Research</a>
+    <a href="how-i-work/index.html">How I Work</a>
+    <a href="about/index.html">About</a>
   </div>
-</div></section>
+</nav>
 
-<section id="contributions"><div class="wrap">
-  <p class="eyebrow">Contributions</p>
-  <h2 class="sec">Three contributions — a model class, learned latent structure, and the data</h2>
-  <div class="contrib" style="margin-top:20px">
-    <div class="c"><div class="n">01 · Model class</div><h3>Absorption-aware latent-intensity model</h3>
-      <p>A new latent-variable model class for terminally-absorbed processes: an MMPP whose hidden intensity is modulated by
-        time-to-resolution and approach-to-consensus, fitted by variational inference. On 105 markets it establishes that
-        repricing freezes toward resolution — genuine belief-consensus, not a boundedness artifact — a Hawkes comparison
-        identifies the mechanism as near-critical endogenous self-excitation (branching 0.939), and a pre-registered residual
-        test reconciles the two at different scales: the consensus freeze is real in the winning model's own residuals
-        (venue-wide) but predictively subsumed by self-excitation. A pre-registered neural
-        benchmark on the refreshed 206-market cohort quantifies the choice: the ladder captures 90.8% of the learnable
-        structure with 3–6 parameters, and the neural residual is localized to kernel shape — motivating neural-Hawkes
-        extensions.</p></div>
-    <div class="c"><div class="n">02 · Learned structure</div><h3>Non-parametric Bayesian latent types</h3>
-      <p>Unsupervised learning of latent market and participant structure with Dirichlet-process mixtures and amortized
-        variational inference — the cluster count is inferred, not assumed — over a hierarchical Bayesian backbone.</p></div>
-    <div class="c"><div class="n">03 · Dataset</div><h3>A reusable HF corpus</h3>
-      <p>A gap-audited, millisecond-resolution order-book corpus of Polymarket, and the 24/7 collection pipeline that
-        produces it — the testbed on which the learned models are validated.</p></div>
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <h1>Juan Mediavilla</h1>
+    <p class="standfirst">I build research systems end to end and report what they actually show.</p>
+    <p class="meta">
+      <b>MSc Machine Learning</b>, University College London — Sep 2025 to Sep 2026<br>
+      London, UK
+    </p>
   </div>
-</div></section>
+</header>
 
-<section id="explore"><div class="wrap">
-  <p class="eyebrow">Read on</p>
-  <h2 class="sec">The thesis in three views</h2>
-  <div class="cards" style="margin-top:20px">
-    <a class="card" href="framework/index.html"><div class="ic">Abstract &amp; Framework</div><h3>Chapter framework</h3>
-      <p>The full abstract and eight chapter micro-abstracts — context and data, the empirical discovery, the model the
-        discovery dictates, then validation — with datasets and risks.</p><span class="go">Open framework →</span></a>
-    <a class="card" href="technical/index.html"><div class="ic">Methods &amp; results in depth</div><h3>Technical detail</h3>
-      <p>A figure-led deep-dive for technical readers: the data, the efficiency findings, the learned latent-state model
-        (MMPP + variational inference), the non-parametric Bayesian latent-types flagship, and the inference machinery —
-        with the real numbers.</p><span class="go">Open technical →</span></a>
-    <a class="card" href="slides/index.html"><div class="ic">Slide Deck</div><h3>Presentation deck</h3>
-      <p>A navigable ten-slide web deck: motivation, background, objectives, methodology, the three experiments,
-        contributions and impact — with real figures and results.</p><span class="go">Open deck →</span></a>
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Position</p>
+    <h2>The method is the deliverable</h2>
+    <p class="lede">
+      Four trading strategies I built were reported as no-edge rather than shipped. My thesis's
+      primary pre-registered test failed, and the thesis says so. What I am offering is the
+      discipline underneath that: decide what counts as a result before you look at the result.
+    </p>
+    <p>
+      That discipline is also how I work with AI tooling — written contracts, provenance on every
+      claim, and guardrails enforced in code rather than in prompts.
+      <a href="how-i-work/index.html">How I work&nbsp;→</a>
+    </p>
   </div>
-</div></section>
+</section>
 
-<footer><div class="wrap">
-  Latent Dynamics of Prediction-Market Price Paths · Juan Mediavilla · University College London, MSc Machine Learning ·
-  Academic Supervisor Prof. Philip Treleaven · Technical Advisor TBC<br>
-  <a href="framework/index.html">Abstract &amp; framework</a> · <a href="technical/index.html">Technical detail</a> · <a href="slides/index.html">Slide deck</a>
-</div></footer>
-</body></html>
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Selected work</p>
+    <h2>Four projects</h2>
+
+    <div class="cards">
+
+      <a class="card" href="projects/index.html#prediction-market-system">
+        <h3>Prediction-market research system</h3>
+        <p>
+          A self-built collection, modelling and backtesting stack, evaluated on an audited panel
+          of resolved markets.
+        </p>
+        <p class="card__stat">4 of 4 strategies → no edge</p>
+      </a>
+
+      <a class="card" href="research/index.html">
+        <h3>MSc thesis — latent repricing dynamics</h3>
+        <p>
+          A point-process account of how prediction-market prices reprice into their deadline,
+          across fourteen pre-registered components.
+        </p>
+        <p class="card__stat">Primary test: failed, and reported</p>
+      </a>
+
+      <a class="card" href="projects/index.html#data-portal">
+        <h3>Market-data portal</h3>
+        <p>
+          A zero-JavaScript static product documenting an order-book archive, with provenance
+          enforced at build time.
+        </p>
+        <p class="card__stat">7 streams · 236 GB · 12.8 GiB/day</p>
+      </a>
+
+      <a class="card" href="research/index.html#bsc">
+        <h3>BSc thesis — activity recognition</h3>
+        <p>
+          Six architectures benchmarked on wearable-sensor data, then tested for whether the
+          ranking meant anything.
+        </p>
+        <p class="card__stat">6 models · no significant difference</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Get in touch</h2>
+    <ul class="contact">
+      <li><a href="mailto:&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
+      <li><a href="https://github.com/juanmediavillaa">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/juanmediavilla">LinkedIn</a></li>
+      <li><a href="cv/index.html">CV</a></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="projects/index.html">Projects</a> · <a href="research/index.html">Research</a> · <a href="how-i-work/index.html">How I Work</a> · <a href="about/index.html">About</a> · <a href="cv/index.html">CV</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

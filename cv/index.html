@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV — Juan Mediavilla</title>
+<meta name="description" content="Curriculum vitae: MSc Machine Learning at UCL, research systems, teaching, and skills tiered by demonstrability.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../index.html">Juan Mediavilla</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../research/index.html">Research</a>
+    <a href="../how-i-work/index.html">How I Work</a>
+    <a href="../about/index.html">About</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <h1>Juan Mediavilla</h1>
+    <p class="standfirst">
+      Machine-learning engineer. MSc Machine Learning, UCL — available September 2026.
+    </p>
+    <p class="meta">
+      London, UK ·
+      <a href="mailto:&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+      · github.com/juanmediavillaa · linkedin.com/in/juanmediavilla<br>
+      Spanish and English (bilingual) · French B2
+    </p>
+    <p class="meta no-print">
+      This page is the CV. To get a PDF, print it — the print stylesheet is set up for it.
+    </p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="eyebrow">Education</h2>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>MSc Machine Learning — University College London</h3>
+        <span class="when">Sep 2025 – Sep 2026</span>
+      </div>
+      <ul>
+        <li>
+          Thesis: <em>Latent Dynamics of Prediction-Market Price Paths.</em> A point-process account
+          of repricing in terminally-absorbed price processes, across 14 pre-registered components.
+        </li>
+        <li>
+          Coursework: Supervised Learning; Probabilistic &amp; Unsupervised Learning; Bayesian Deep
+          Learning; Approximate Inference; Statistical Learning Theory; Reinforcement Learning;
+          Information Retrieval.
+        </li>
+      </ul>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>BSc Data Science &amp; Artificial Intelligence — Leiden University (LIACS)</h3>
+        <span class="when">to 2025</span>
+      </div>
+      <ul>
+        <li>Minor in Technology-Based Entrepreneurship, TU Delft.</li>
+        <li>
+          Thesis: benchmarked six architectures — SimCLR, DeepConvLSTM, SelfHARModel, SelfPAB,
+          XGBoost, MOMENT — for human activity recognition on wearable-sensor data under
+          leave-one-subject-out cross-validation, and applied a Friedman test showing the
+          0.880–0.843 macro-F1 spread was <strong>not statistically significant</strong>: a 7-hour
+          self-supervised transformer was statistically tied with a 23-minute gradient-boosting
+          baseline.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="eyebrow">Selected work</h2>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>Prediction-market research and trading system — self-built</h3>
+        <span class="when">May 2026 – present</span>
+      </div>
+      <ul>
+        <li>
+          Built an end-to-end research system: six live collectors on a 15-to-60-minute cadence
+          feeding a licence-clean, hash-verified panel of 400 resolved markets and 188,856 trades.
+        </li>
+        <li>
+          Ran four candidate strategies through clustered-bootstrap evaluation and reported all four
+          as no-edge (p = 0.498, 0.601, 0.613) rather than shipping a false positive. The fourth
+          abstained universally rather than substituting a proxy for a signal the historical data
+          did not carry.
+        </li>
+        <li>
+          Established a behavioural trader typology that predicted held-out P&amp;L
+          (Kruskal–Wallis p = 7.7e-07, 6/45 pairs surviving Bonferroni), reported with its mixed
+          cluster-stability caveat attached.
+        </li>
+        <li>
+          Stack: real-time WebSocket pipelines, XGBoost with isotonic calibration, live inference
+          and order execution, walk-forward backtesting with realistic fill simulation, Linux,
+          systemd.
+        </li>
+      </ul>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>Wallet-intelligence and manipulation-detection engine</h3>
+        <span class="when">2026</span>
+      </div>
+      <ul>
+        <li>
+          Built a three-tier scoring engine tracing on-chain funding up to 3 hops and flagging
+          coordinated trading clusters, requiring corroboration across all three tiers before an
+          insider call. 51 tests under pytest; clustering across 3,413 wallets.
+        </li>
+        <li>
+          Documented the false-positive mode that forced one heuristic to be retired outright, and
+          the endpoint limitations that cap what the tool can reconstruct.
+        </li>
+      </ul>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>Fund-accounting terminal</h3>
+        <span class="when">Jul 2025 – present</span>
+      </div>
+      <ul>
+        <li>
+          Built a NAV-based fund-accounting system with unit issuance and redemption, live position
+          pricing and benchmark-relative reporting, across five screens and four preceding
+          generations of CLI.
+        </li>
+        <li>
+          Used end-to-end <code>Decimal</code> arithmetic serialised as strings, an enforced
+          fund-value invariant, and a shared state contract so the pre-existing CLI and the web
+          terminal operate on the same ledger without divergence.
+        </li>
+      </ul>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>Market-data portal</h3>
+        <span class="when">Jul 2026</span>
+      </div>
+      <ul>
+        <li>
+          Built a zero-JavaScript static portal documenting a seven-stream, 236 GB+ order-book
+          archive growing 12.8 GiB/day, with a curated tier of 206 markets and 408,414 repricing
+          events.
+        </li>
+        <li>
+          Enforced provenance at build time: a gate that fails the build on unverified or internal
+          claims, and an extraction tool that raises on every unimplemented path so it cannot emit a
+          fabricated sample.
+        </li>
+        <li>
+          Retired the product's original differentiator when competitor research contradicted it,
+          replacing it with a structurally verifiable claim.
+        </li>
+      </ul>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>Front-end delivery</h3>
+        <span class="when">2024 – 2026</span>
+      </div>
+      <ul>
+        <li>
+          Shipped four front ends across three idioms: a React single-page app (solo-developed
+          within a five-person TU Delft course project), a Next.js 15 / React 19 application with
+          third-party auth deployed on its own domain, and zero-dependency static sites with no
+          framework, CDN or third-party requests.
+        </li>
+      </ul>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>AI4MDE Studio — open-source contribution</h3>
+        <span class="when">May – Jun 2026</span>
+      </div>
+      <ul>
+        <li>
+          Contributed to an open-source model-driven-engineering platform generating working Django
+          prototypes from UML diagrams — 10 of 354 commits in a ~7-contributor Django/Docker
+          codebase with ruff, pyright and SonarQube gates.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="eyebrow">Experience</h2>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>Teaching Assistant — Leiden University</h3>
+        <span class="when">Autumn 2024</span>
+      </div>
+      <ul>
+        <li>
+          Two computer-science courses in one semester: Human–Agent Interaction, and Concepts of
+          Programming Languages (OCaml and Prolog). Recruited to the former personally by its
+          instructor as a top-scoring student.
+        </li>
+        <li>
+          Ran labs and tutorials for a cohort of roughly 120–150; graded 20 OCaml group submissions,
+          14 Prolog group submissions and 6 retake students; co-designed assignments including
+          difficulty calibration.
+        </li>
+        <li>Both course professors wrote my Cambridge and UCL recommendation letters.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="eyebrow">Skills</h2>
+    <div class="cv-item">
+      <ul>
+        <li>
+          <strong>Experimental design and statistical validation</strong> — pre-registered
+          specifications, clustered bootstrap, leave-one-out cross-validation, Friedman tests,
+          Benjamini–Hochberg correction, walk-forward validation, simulation-based recovery gates.
+        </li>
+        <li><strong>Languages</strong> — Python (primary); Java, OCaml, Prolog (the latter two to teaching standard); JavaScript.</li>
+        <li><strong>ML</strong> — XGBoost with isotonic calibration; point processes (Hawkes, MMPP) at thesis depth; self-supervised and representation learning (SimCLR, SelfPAB, MOMENT).</li>
+        <li><strong>Systems</strong> — real-time WebSocket pipelines, Linux and VPS operations, systemd, Git, rclone, SQLite.</li>
+        <li><strong>Web</strong> — React, HTML, CSS, Tailwind, Astro, Flask.</li>
+        <li><strong>Markets</strong> — microstructure, Kelly sizing, options basics, NAV unitization and decimal-exact ledgers.</li>
+        <li><strong>AI tooling and agentic systems</strong> — designing agentic pipelines, written operating contracts, provenance requirements, and guardrails enforced in code rather than in prompts.</li>
+        <li><strong>Also</strong> — LaTeX.</li>
+      </ul>
+      <p>
+        Coursework not claimed as current capability: Bayesian and variational inference,
+        reinforcement learning, sequence models, statistical learning theory, information retrieval.
+        Measure-theoretic probability and stochastic calculus are an acknowledged gap.
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

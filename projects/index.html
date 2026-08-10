@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Juan Mediavilla</title>
+<meta name="description" content="Research systems, a fund-accounting terminal, a data product, and two shipped products wound down — each with its result, including the negative ones.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../index.html">Juan Mediavilla</a>
+    <a href="index.html" aria-current="page">Projects</a>
+    <a href="../research/index.html">Research</a>
+    <a href="../how-i-work/index.html">How I Work</a>
+    <a href="../about/index.html">About</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <h1>Projects</h1>
+    <p class="standfirst">
+      What each one is, how big it got, and what it returned — including when that was nothing.
+      Source repositories are private and are not linked.
+    </p>
+  </div>
+</header>
+
+<article class="entry" id="prediction-market-system">
+  <div class="wrap">
+    <p class="eyebrow">Research system</p>
+    <h2>Prediction-market research and trading system</h2>
+    <p class="entry__meta">Self-built, end to end · May 2026 – ongoing · 718 commits as of 9 Aug 2026</p>
+
+    <p>
+      A complete research stack for a prediction-market venue: continuous collection, a modelling
+      layer, and a fee-aware backtester. Six scheduled collectors feed an audited panel of
+      <span class="num">400</span> resolved markets and <span class="num">188,856</span> trades,
+      licence-clean and hash-verified. A predecessor execution line on BTC used gradient boosting
+      with isotonic calibration across 35 tested hypotheses; its recorded limitation is that win
+      rate is flat across edge magnitude, so the model captures direction but not conviction.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">Headline result — negative</p>
+      <p>
+        All four candidate strategies scored <span class="num">NO_EDGE</span> against a random
+        baseline under a market-clustered bootstrap, and were reported that way rather than
+        shipped.
+      </p>
+      <p>
+        The fourth is the one worth reading. <code>depth_imbalance_v1</code> returned
+        <span class="num">NOT_APPLICABLE</span>: the historical data carries no level-2 depth, so
+        the strategy <strong>abstained universally rather than substituting a proxy</strong> for
+        the signal it needed.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">One positive, with its caveat</p>
+      <p>
+        A behavioural trader typology predicted held-out profit and loss. Cluster stability came
+        back only mixed, so it is reported with that attached rather than on the strength of the
+        test alone. Full figures are on the <a href="../research/index.html">research page</a>.
+      </p>
+    </div>
+
+    <p class="entry__stack">
+      Real-time WebSocket pipelines, XGBoost with isotonic calibration, live inference and order
+      execution, walk-forward backtesting with realistic fill simulation, Linux, systemd.
+    </p>
+  </div>
+</article>
+
+<article class="entry" id="wallet-intelligence">
+  <div class="wrap">
+    <p class="eyebrow">Anomaly detection</p>
+    <h2>Wallet-intelligence and manipulation-detection engine</h2>
+    <p class="entry__meta">Ships inside the research system · standalone predecessor archived May 2026</p>
+
+    <p>
+      A three-tier scoring engine running daily scans over the top 200 markets by volume, tracing
+      on-chain funding up to <span class="num">3</span> hops, with <span class="num">51</span>
+      tests under pytest. A wallet is classified as an insider <strong>only when all three tiers
+      corroborate</strong>. Without an on-chain key the third tier is disabled and classifications
+      cap out one level lower, by design rather than by degradation.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">Documented limits</p>
+      <p>
+        Wallets using mixers are opaque to the third tier and are downgraded rather than guessed
+        at. The venue's per-user history endpoints return empty for most wallets, so trading
+        history cannot be reconstructed. The backtest's definition of a winner is retrospective,
+        and therefore slightly optimistic.
+      </p>
+      <p>
+        One heuristic was <strong>retired outright</strong>: a dormant-wallet signal fired falsely
+        on the venue's safe-proxy architecture, where activity routes through a proxy contract, so
+        proxy-funded wallets are now excluded from it.
+      </p>
+    </div>
+
+    <p class="entry__stack">
+      Python, on-chain RPC tracing, venue REST APIs, SQLite, pytest; scikit-learn, UMAP, HDBSCAN
+      and Gaussian mixtures on the clustering side.
+    </p>
+  </div>
+</article>
+
+<article class="entry" id="fund-terminal">
+  <div class="wrap">
+    <p class="eyebrow">Financial systems</p>
+    <h2>Fund-accounting terminal</h2>
+    <p class="entry__meta">Active · July 2025 – present · the longest-running build here</p>
+
+    <p>
+      A NAV-based accounting system for an investment fund with multiple members: per-member units,
+      ownership, return and full transaction history across five screens. Four generations of
+      command-line tool preceded the web application.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">Correctness is the story</p>
+      <p>
+        Money is handled as <code>Decimal</code> end to end and serialised to JSON <em>as
+        strings</em>, so no float drift can enter the ledger. The core invariant, that fund value
+        equals cash plus the market value of positions, is enforced rather than assumed. Deposits
+        and withdrawals issue or redeem units at the current NAV. The web terminal and the
+        command-line tool read and write the same state files, so the ledger cannot fork between
+        them.
+      </p>
+    </div>
+
+    <p>
+      No fund figures appear on this site — no assets, returns, membership or positions — and the
+      repository is not linked.
+    </p>
+
+    <p class="entry__stack">
+      Flask, pandas and yfinance on the backend; React, Vite and Recharts on the front end.
+    </p>
+  </div>
+</article>
+
+<article class="entry" id="data-portal">
+  <div class="wrap">
+    <p class="eyebrow">Product engineering</p>
+    <h2>Market-data portal</h2>
+    <p class="entry__meta">Phase 1 complete, shipped July 2026 · not launched</p>
+
+    <p>
+      A static, zero-JavaScript site documenting a seven-stream order-book archive of roughly
+      <span class="num">236 GB</span>, growing about <span class="num">12.8 GiB</span> a day. It is
+      presented here as an engineering and product-research case study; nothing is offered for sale
+      and there is no purchase path.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">Provenance enforced in code</p>
+      <p>
+        Every factual claim on the site is confined to a single data file, so claims are auditable
+        in one place. Unknown dataset fields are flagged rather than invented. The sample-extraction
+        tool <strong>raises on every unimplemented path</strong>, so it cannot emit a
+        plausible-looking fabricated sample. A custom build gate <strong>fails the build</strong>
+        if internal material reaches public output — added after two real leaks got past an earlier
+        exclusion that worked at the rendering layer rather than the build layer.
+      </p>
+      <p class="method">
+        <b>More on this</b> — the same discipline applied to agent work, on
+        <a href="../how-i-work/index.html">how I work</a>.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">Killed differentiator</p>
+      <p>
+        The product's original headline claim, continuous coverage through resolution, was
+        researched, found indefensible once competitors were shown to advertise the same coverage,
+        and <strong>removed from the site</strong> rather than kept as an unverified boast. It was
+        replaced with a structurally verifiable claim instead. A separate draft claim, that no
+        third party redistributed the feed, was checked, found <strong>false</strong>, and
+        corrected.
+      </p>
+    </div>
+
+    <p class="entry__stack">
+      Astro with static output, self-hosted fonts, zero JavaScript by default; no backend,
+      database, authentication or payments by design. Custom Node build gate.
+    </p>
+  </div>
+</article>
+
+<article class="entry" id="wound-down">
+  <div class="wrap">
+    <p class="eyebrow">Shipped, then wound down</p>
+    <h2>Two products that did not continue</h2>
+
+    <p>
+      Both worked end to end. Neither was a founded company, and neither reached revenue. They are
+      here because delivery counts and because the reasons they stopped are worth stating plainly.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">ResolveIt — stalled on the data problem, not the build</p>
+      <p>
+        A five-person TU Delft course final project; I solo-developed the web application. It let
+        people in debt consolidate what they owed and receive an AI-generated repayment plan. Plan
+        generation worked end to end; the negotiation tool was scoped but never built.
+        <strong>Zero users, zero revenue</strong> — it never left MVP. What stopped it was a
+        permissioned two-sided data problem: every creditor had to agree to release debtor data, on
+        top of data-privacy clearance.
+      </p>
+      <p class="method"><b>Stack</b> — React, Express, OpenAI.</p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">Alphatrack — stopped on data cost</p>
+      <p>
+        A solo side product, deployed on its own domain and working end to end for equities.
+        Signups were limited to friends and family; there was <strong>no revenue and monetisation
+        was never reached</strong>. It stopped because quality market data is paywalled and the
+        paid APIs it needed exceeded a student budget.
+      </p>
+      <p class="method"><b>Stack</b> — Next.js, React, Supabase, Tailwind.</p>
+    </div>
+  </div>
+</article>
+
+<article class="entry" id="ai4mde">
+  <div class="wrap">
+    <p class="eyebrow">Contribution</p>
+    <h2>AI4MDE Studio</h2>
+    <p class="entry__meta">May – June 2026 · 10 of 354 commits in a ~7-contributor codebase</p>
+    <p>
+      An open-source model-driven-engineering platform at a university computer-science institute
+      that generates working Django prototypes from UML diagrams. This was a
+      <strong>contribution to an established codebase</strong>, not a project of mine. The value of
+      the entry is the environment: Docker Compose, pytest, ruff, pyright and SonarQube gates
+      already in place, and a review process to work inside.
+    </p>
+  </div>
+</article>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Also</p>
+    <h2>Research write-ups</h2>
+    <p>
+      The MSc thesis on latent repricing dynamics and the BSc thesis on activity recognition are
+      research rather than products, and are covered on the
+      <a href="../research/index.html">research page</a>.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

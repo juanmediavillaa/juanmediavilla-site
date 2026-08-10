@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Juan Mediavilla</title>
+<meta name="description" content="Education, teaching, languages, skills tiered by what I can demonstrate today, and what I'm looking for.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../index.html">Juan Mediavilla</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../research/index.html">Research</a>
+    <a href="../how-i-work/index.html">How I Work</a>
+    <a href="index.html" aria-current="page">About</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <h1>About</h1>
+    <p class="standfirst">
+      Machine-learning engineer finishing an MSc at UCL. Spanish, based in London. I build research
+      systems end to end, and I am careful about the difference between what I have demonstrated and
+      what I have merely been taught.
+    </p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Education</p>
+    <h2>Two degrees</h2>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>MSc Machine Learning — University College London</h3>
+        <span class="when">Sep 2025 – Sep 2026</span>
+      </div>
+      <p>
+        Thesis: <em>Latent Dynamics of Prediction-Market Price Paths</em> — machine learning applied
+        to price-formation microstructure through a point-process framework.
+        <a href="../research/thesis/index.html">Write-up&nbsp;→</a>
+      </p>
+      <p>
+        Coursework: Supervised Learning, Probabilistic &amp; Unsupervised Learning, Bayesian Deep
+        Learning, Approximate Inference, Statistical Learning Theory, Reinforcement Learning,
+        Information Retrieval.
+      </p>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-row">
+        <h3>BSc Data Science &amp; Artificial Intelligence — Leiden University (LIACS)</h3>
+        <span class="when">to 2025</span>
+      </div>
+      <p>
+        Minor in Technology-Based Entrepreneurship at TU Delft. Thesis on self-supervised models for
+        human activity recognition — six architectures benchmarked, with a Friedman test showing the
+        ranking was not statistically significant.
+        <a href="../research/index.html#bsc">Summary&nbsp;→</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Teaching</p>
+    <h2>Teaching Assistant — Leiden University</h2>
+    <p class="entry__meta">Autumn 2024 · two computer-science courses in one semester</p>
+    <p>
+      Human–Agent Interaction, and Concepts of Programming Languages (OCaml and Prolog). I was
+      <strong>recruited to Human–Agent Interaction personally by its instructor</strong>, as a
+      top-scoring student on that course the year before.
+    </p>
+    <p>
+      The programming-languages cohort was roughly 120 to 150 students. I graded
+      <span class="num">20</span> OCaml group submissions, <span class="num">14</span> Prolog group
+      submissions and <span class="num">6</span> retake students; ran labs and tutorials; and
+      co-designed assignments, including calibrating question and coding difficulty.
+    </p>
+    <p>
+      Recorded feedback described me as "a fantastic TA — proactive, engaged, and helping improve the
+      course." Both course professors wrote my Cambridge and UCL recommendation letters.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Skills</p>
+    <h2>What I can demonstrate today</h2>
+    <p class="lede">
+      Tiered honestly. What follows is what I can show working code or committed results for. What
+      I have only studied is listed separately below, and labelled as such.
+    </p>
+
+    <dl class="skills">
+      <dt>AI tooling and agentic systems</dt>
+      <dd>
+        My core strength: designing agentic pipelines, writing the contracts agents operate under,
+        and building the guardrails that make their output trustworthy — provenance requirements,
+        constraints enforced in code rather than in prompts, and independent verification of what
+        an agent claims it did. <a href="../how-i-work/index.html">How I work, with the artifacts</a>.
+      </dd>
+
+      <dt>Experimental design and statistical validation</dt>
+      <dd>
+        Specifications committed before outcome statistics; clustered bootstrap with the correct
+        resampling unit; leave-one-subject-out and leave-one-market-out cross-validation; Friedman
+        tests; Benjamini–Hochberg correction; walk-forward out-of-sample validation; recovery gates
+        that must pass on simulated ground truth before a real result is read.
+      </dd>
+
+      <dt>Python</dt>
+      <dd>Primary language.</dd>
+
+      <dt>Applied ML in production</dt>
+      <dd>
+        XGBoost with isotonic calibration, live inference and order execution. Backtesting
+        discipline: realistic fill simulation, walk-forward evaluation, realized-at-resolution
+        profit and loss, and honest abstention when a required signal is absent from the data rather
+        than substituting a proxy.
+      </dd>
+
+      <dt>Point processes</dt>
+      <dd>
+        Hawkes and Markov-modulated Poisson processes at thesis depth — hierarchical partial pooling
+        with a custom Metropolis-within-Gibbs sampler and a conjugate Normal-Inverse-Wishart
+        population block, benchmarked against Hawkes and EWMA baselines.
+      </dd>
+
+      <dt>Self-supervised and representation learning</dt>
+      <dd>Fine-tuned SimCLR, SelfPAB and the MOMENT time-series foundation model.</dd>
+
+      <dt>Data and systems engineering</dt>
+      <dd>
+        Real-time WebSocket pipelines, Linux and VPS operations, systemd, Git, rclone. A 24/7
+        collection pipeline on a 15-to-60-minute cadence with gap auditing and continuity
+        accounting.
+      </dd>
+
+      <dt>Web and front end</dt>
+      <dd>
+        React, JavaScript, HTML, CSS, Tailwind, Astro — four shipped front ends across three idioms:
+        a single-page app, a Next.js application with third-party auth, and zero-dependency static
+        (this site).
+      </dd>
+
+      <dt>Other languages</dt>
+      <dd>Java, OCaml and Prolog — the latter two to teaching standard.</dd>
+
+      <dt>Markets and microstructure</dt>
+      <dd>
+        Market microstructure, Kelly sizing, options basics, resolution mechanics, prediction-market
+        structure, NAV unitization and decimal-exact ledgers.
+      </dd>
+
+      <dt>LaTeX</dt>
+      <dd>Thesis writing.</dd>
+    </dl>
+
+    <div class="finding">
+      <p class="finding__sign">Studied, not claimed</p>
+      <p>
+        Bayesian and variational inference, reinforcement learning, sequence models, statistical
+        learning theory and information retrieval are <strong>coursework, not current
+        capability</strong>. I have used several of them in anger, but they would need a serious
+        refresher before I would claim them in an interview.
+      </p>
+      <p>
+        Measure-theoretic probability and stochastic calculus are an
+        <strong>acknowledged gap</strong>, and I am not going to pretend otherwise. That is the main
+        reason I am not currently positioning for pure theoretical-quant roles.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Looking for</p>
+    <h2>What I want next</h2>
+    <p>
+      Machine-learning engineer, applied scientist, quant developer, or quant research at a shop
+      where the work is empirical rather than theory-first. I am most useful where a system has to
+      be built end to end and the results have to survive someone checking them.
+    </p>
+    <p>
+      Available from September 2026, based in London.
+      <a href="../index.html#main">Contact details are on the home page</a>, and my
+      <a href="../cv/index.html">CV is here</a>.
+    </p>
+    <p class="meta">
+      Languages: Spanish and English (bilingual) · French B2
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../cv/index.html">CV</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

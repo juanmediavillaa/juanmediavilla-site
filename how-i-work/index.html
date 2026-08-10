@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I Work — Juan Mediavilla</title>
+<meta name="description" content="Agentic systems, and the structures that make their output trustworthy: written contracts, provenance requirements, guardrails enforced in code, and independent verification.">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../index.html">Juan Mediavilla</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../research/index.html">Research</a>
+    <a href="index.html" aria-current="page">How I Work</a>
+    <a href="../about/index.html">About</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <h1>How I work</h1>
+    <p class="standfirst">
+      Anyone can get an agent to write code. The hard part is knowing when to believe the output.
+      My answer is that trust comes from structure, not from better prompting.
+    </p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Contracts</p>
+    <h2>An agent gets a written contract, with the autonomy boundary stated first</h2>
+    <p>
+      I run a personal knowledge base entirely through an agent operating under a written
+      contract. The division of labour is that I produce thought and the agent owns structure: it
+      files, links and propagates, and it never asks me where something goes.
+    </p>
+    <p>
+      The contract fixes what would otherwise be re-litigated every run. Autonomy is stated up
+      front as <em>file freely, report after</em>: placement is the agent's call and I veto
+      afterwards. Ambiguous items stay queued rather than placed, because an unfiled note is
+      recoverable and a misfiled one vanishes, so the agent is told which way to err. Routing keys
+      on what <em>kind</em> of fact something is rather than its topic, which makes it decidable.
+      Questions are batched to the end and capped at five.
+    </p>
+    <p>
+      It also names its own anti-patterns. One tracking file is capped at five rows, because I had
+      over-built a nineteen-item registry with rubrics and a dashboard once and retired it; if it
+      wants to grow, that is a signal to raise with me. The tag vocabulary is closed at five: a
+      vocabulary that grows without resistance stops separating anything. Blast radius is bounded
+      too: two directories frozen, two files append-only, no git access.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Provenance</p>
+    <h2>Every claim carries its source, and "not found" is a legal answer</h2>
+    <p>
+      Anything the agent writes is tagged with where it came from: a dated attribution to something
+      I said, a git log, or a file path. Unconfirmed claims are marked as such rather than smoothed
+      over, and unknowns are marked unknown.
+    </p>
+    <p>
+      The rule doing the real work is that the agent must never invent a fact, a number or a date,
+      and that <span class="mono">NOT FOUND</span> is a valid and preferred answer. Hallucination
+      is not prompted against; it is designed out by making the absence of a fact something the
+      format can express.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Guardrails</p>
+    <h2>Enforce it in code, because a prompt is a hope</h2>
+    <p>
+      The clearest example is the
+      <a href="../projects/index.html#data-portal">market-data portal</a>. Telling a model not to
+      leak internal material is a hope. A build gate that fails the build when internal material
+      reaches public output is a guarantee. That gate exists because two real leaks got past an
+      earlier exclusion that operated at the rendering layer instead of the build layer.
+    </p>
+    <p>
+      Two more from the same build. Every factual claim on that site lives in a single data file,
+      so claims are auditable in one place. And the sample-extraction tool raises on every
+      unimplemented path, so it cannot emit a plausible-looking fabricated sample. Silence is the
+      dangerous failure mode; the system fails loudly instead.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Acceptance criteria</p>
+    <h2>Decide what counts as success before the run, not after</h2>
+    <p>
+      In the <a href="../research/index.html">research work</a> this is literal: a specification
+      committed to version control before any outcome statistic exists. It is what made it possible
+      to report that my own model failed its primary test, rather than quietly re-cutting the
+      metric until something passed.
+    </p>
+    <p>
+      The same device works on agent output. If you decide what done means only after seeing what
+      the agent produced, you will grade it on what it happened to do.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Fan-out and reconcile</p>
+    <h2>Parallel agents produce contradictions; the value is in resolving them</h2>
+    <p>
+      I surveyed 53 project directories across parallel agents, each entry recording which agent
+      surveyed it, a confidence rating, and a flag for credentials or personal data.
+    </p>
+    <p>
+      What mattered was the reconciliation pass afterwards: twelve ambiguities resolved by hand.
+      Which of two checkouts was current, whether two repositories were one project or two, and
+      three similarly-named directories that proved unrelated. Fan-out is the cheap half; skipping
+      reconciliation is how you get a confident, internally inconsistent answer.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Propagation</p>
+    <h2>Filing is the easy half; the job is asking what a new fact contradicts</h2>
+    <p>
+      The agent's real task is checking a new fact against what is already recorded. Two catches,
+      both against me.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">Contradiction caught</p>
+      <p>
+        A note about running an investment fund contradicted a career file that still listed
+        starting one as a future goal. The goal was wrong; the fund already existed.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">Overstatement caught, corrected downward</p>
+      <p>
+        A build inventory claimed two founded ventures. Checking found that one was a five-person
+        university course project and the other a solo side product with no revenue. Both CV
+        bullets were rewritten downward, and both now read that way on
+        <a href="../projects/index.html#wound-down">this site</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Verification</p>
+    <h2>Check what the agent says it did, including on this site</h2>
+    <p>
+      This site is the worked example. Contrast was checked programmatically across 30 colour pairs
+      in both themes, not eyeballed. Overflow was measured at 390px and 1440px on every page, and
+      the first harness produced a false positive, because headless Chrome on Windows clamps the
+      window size and crops instead of reflowing. The bug was in the instrument, and it surfaced
+      only because the result was checked rather than trusted.
+    </p>
+    <p>
+      Lighthouse was not run, so no Lighthouse score is claimed anywhere on this site. Six figures
+      the previous version advertised were found dead or revised against the current thesis draft,
+      and are now listed in a committed rules file so they cannot creep back. That file is the
+      build-gate principle again: write the constraint where it will be enforced, not where it will
+      be remembered.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
