@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-registration and reports — embargoed until submission</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="icon" href="data:,">
+</head>
+<!--
+  EMBARGOED. Built but deliberately unpublished: not linked from anywhere on the
+  site, excluded from sitemap.xml, and carrying noindex.
+
+  It publishes after the MSc thesis is submitted in September 2026. Publishing a
+  pre-registered SPEC next to the report that fails its own primary test is the
+  strongest evidence of method on this site, because it is the one claim that
+  cannot be constructed retroactively - the commit ordering proves it. Worth doing
+  properly after submission rather than half-doing before it.
+
+  REDACTION: venue market identifiers in the source documents are replaced with
+  stable pseudonyms ("market A", "market B", ...) by tools/build_prereg.py. Do not
+  paste the raw documents in; regenerate with that script.
+
+  TO PUBLISH: delete the robots meta above, add this page to sitemap.xml, and link
+  it from research/index.html and research/thesis/index.html.
+-->
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../../index.html">Juan Mediavilla</a>
+    <a href="../../../projects/index.html">Projects</a>
+    <a href="../../index.html">Research</a>
+    <a href="../../../how-i-work/index.html">How I Work</a>
+    <a href="../../../about/index.html">About</a>
+  </div>
+</nav>
+
+<main id="main">
+  <header class="head">
+    <div class="wrap">
+      <h1>Pre-registered specifications and reports</h1>
+      <p class="standfirst">
+        The committed specifications for two MSc thesis studies, reproduced verbatim, each next to
+        the report of what the study actually returned and the caveats carried with it.
+      </p>
+      <p class="meta">
+        <b>Embargoed until submission, September 2026.</b> Not linked, not indexed, not in the
+        sitemap. Venue market identifiers are replaced with stable pseudonyms; nothing else is
+        altered.
+      </p>
+    </div>
+  </header>
+  <div class="wrap">
+  <section class="section">
+    <p class="eyebrow">hier_mmpp_v0</p>
+    <h2>Hierarchical MMPP fit and pooling study</h2>
+    <p class="meta">SPEC ab05bc1 committed 2026-06-16, before any fit; results 5293b7a.</p>
+    <h3>SPEC.md</h3>
+    <pre class="code"># Hierarchical MMPP v0 — SPECIFICATION (pre-registered before any fitting)
+
+_Committed BEFORE the fitting code runs (house style: spec → fit → gate). This is the
+central ML-sophistication step of the project: moving from **N independent per-market MMPP
+fits** to **one hierarchical (partial-pooling) model of the market population**, where each
+market&#x27;s parameters are drawn from an inferred population distribution. Builds on
+`results/m2_session3/REPORT.md` (M2b absorbing preferred, book instrument), `results/m2_session1/SPEC.md`
+(the M2 model family + Laplace inference), `results/latent_probe_v1/REPORT.md` (the n=35
+book-covered cohort, the CONDITIONAL-GO, the saturation caveat). Cohort, window, inclusion
+rule and bin are FROZEN identical to those sessions. SEED=0._
+
+---
+
+## 0. Cohort (Task 1 result — frozen here, used by every fit below)
+
+- Window: closed ws_book days **2026-06-08 … 2026-06-15** (06-16 OPEN excluded). Pull this
+  session: resolved_archive 193→200 (+7), but **the cohort is unchanged at n=35** — the +7
+  bundles resolve on the open 06-16 or below the bar; the book frontier did not move.
+- Inclusion rule (latent_probe_v1, unchanged): resolved-in-window **AND ≥100 book repricings**.
+- **n = 35** book-covered resolved markets (27 reveal-before-wire FREEZE + 8 scheduled-reveal
+  sports SPIKE). Every market has Fano factor &gt; 1 (overdispersion → MMPP justified).
+- **Complete-case fitting cohort n = 34**: drop `market A` (1 event / 2880 bins in the 60s
+  design — the same singular market latent_probe_v1 dropped; its likelihood is degenerate).
+  This drop is pre-registered, not data-dependent on the fit.
+
+The per-market design is the **60s-binned book-repricing intensity** (counts cₜ), the book
+mid price pₜ, and time-to-end-of-activity τₜ — built by the **exact** `s3_book_fit.build_book_data`
+(48h window, τ=0 at last reprice). Per-market sufficient statistics (n_events, n_bins, mean
+rate, Fano, frac-active, max-count, median |p−0.5|) are in `logs/census.json` and define which
+markets are **data-sparse** (the shrinkage analysis keys on n_events).
+
+---
+
+## 1. The hierarchical generative model
+
+**Per-market base model:** the **M2b absorbing-state MMPP** — the preferred formulation from
+M2 Sessions 2 &amp; 3 (book-instrument selection: 4/5 folds, AIC −797). Three latent states
+(cold, hot, absorbing-frozen F); ordered Poisson rates 0&lt;λ_cold&lt;λ_hot; F fixed silent at
+λ_F=0.02; a time-inhomogeneous entry hazard hₜ = sigmoid(a0 + a_btau·(−zτₜ) + a_bp·zpₜ) absorbs
+the chain into F as the trigger fires. Features zτ, zp are standardized per market (SPEC §2 of
+m2_session1). This is `analysis/m2/model.py` unchanged.
+
+**Per-market parameter vector** (the M2b unconstrained reparameterization, `model._names(&quot;M2b&quot;)`):
+
+```
+θ_m = ( logλ_cold ,  log(λ_hot−λ_cold) ,  logit q_cc ,  logit q_hh ,  a0 ,  a_btau ,  a_bp )  ∈ ℝ⁷
+```
+
+This is the brief&#x27;s `θ_m = (log cold-rate, log hot-rate, dwell, β_price, β_τ)` made exact: the
+two rates are `logλ_cold` and `log Δλ` (which together give logλ_hot); **dwell** is carried by
+`logit q_cc` and `logit q_hh` (hot dwell = 1/(1−q_hh) bins); **β_τ = a_btau**, **β_price = a_bp**;
+plus the hazard intercept **a0** (baseline log-odds of absorption). The population lives over
+all 7 unconstrained coordinates so the prior is a proper multivariate Gaussian and the
+covariance Σ is interpretable on a common scale.
+
+**Partial-pooling layer (the hierarchy):**
+
+```
+θ_m  ~  N( μ , Σ )           for m = 1 … M   (M = 34)
+counts_m | θ_m  ~  M2b forward-marginal likelihood  (exact, analysis/m2/model.forward_loglik)
+```
+
+μ ∈ ℝ⁷ is the **population mean** (the &quot;typical market&quot;); Σ ∈ ℝ⁷ˣ⁷ is the **population
+covariance** (how market parameters co-vary across the venue — Task 4). This is the standard
+sophistication jump: N independent θ_m become draws from one inferred population, which (a)
+shrinks sparse-data markets toward μ, (b) characterizes the population, (c) is the substrate
+the bounded k=3 latent structure (latent_probe_v1) will later sit on (Σ&#x27;s principal axes ≈ the
+latent dims).
+
+## 2. Hyperpriors (weakly-informative; stated before fitting)
+
+Conjugate **Normal–Inverse-Wishart** so the population block has closed-form Gibbs updates:
+
+```
+μ | Σ  ~  N( m0 , Σ / κ0 )            m0 = the m2_session3 weak prior mean (unconstrained)
+Σ      ~  Inverse-Wishart( Ψ0 , ν0 )  Ψ0 = diag(prior_sd²)·(ν0−7−1) ,  ν0 = 7+2 = 9
+κ0 = 0.01  (μ essentially flat given Σ) ,  κ0 small so the data sets μ.
+```
+
+- `m0` = the `inference._PRIOR` means in `model._names(&quot;M2b&quot;)` order (logλ_cold=log0.1,
+  logΔλ=log1.5, logit q_cc=logit0.9, logit q_hh=logit0.9, a0=0, a_btau=0, a_bp=0).
+- `Ψ0` centers Σ on the old fixed prior scale (diag sd: 1,1,1,1,2,1.5,1.5) at the weakest
+  proper IW (ν0=9, i.e. 7+2). This regularizes Σ at small n WITHOUT pinning the population —
+  it is the minimal proper prior that keeps Σ positive-definite when M=34.
+
+The hyperpriors are deliberately weak: with M=34 markets the data, not the hyperprior,
+determines μ and Σ. A null result (&quot;pooling doesn&#x27;t help at this n&quot;) is a valid finding and
+the hyperpriors must not manufacture a pooling effect — hence κ0→0 and the weakest proper IW.
+
+## 3. Inference
+
+**Full-Bayes Metropolis-within-Gibbs with the conjugate NIW population block.** Why not
+HMC/NUTS, as the brief asks to consider: the per-market likelihood is the
+**forward-algorithm marginal** over the 3-state chain (numba-jitted, ~2 ms/eval) and has **no
+autodiff gradient** in this codebase, so gradient-based NUTS over the ~280-dim joint
+(34×7 + μ + Σ) is not available without re-implementing the HMM likelihood in an AD framework
+(out of scope/timebox). Instead we exploit the model&#x27;s conjugate structure for an **exact**
+(not Laplace, not mean-field-VI) sampler:
+
+Per Gibbs sweep:
+1. **Population block (closed form):** draw (μ, Σ) | {θ_m} from the NIW posterior given the
+   current per-market θ_m (standard conjugate update with m0, κ0, Ψ0, ν0).
+2. **Per-market block (Metropolis):** for each market m, take a few random-walk Metropolis
+   steps on θ_m targeting `forward_loglik(counts_m | θ_m) + logN(θ_m; μ, Σ)`. Proposal
+   covariance = c·Σ_current (population-scaled, adapted during burn-in to ~25–35% acceptance).
+
+This is gradient-free, the per-market target is cheap, and population-scaled proposals mix
+well because Σ tracks the true between-market spread. **Diagnostics:** ≥4 chains from
+dispersed inits; report **R-hat** and **ESS** for μ, diag(Σ), and the key per-market params;
+report **per-market acceptance rates** (the Metropolis analogue of HMC divergences — a chain
+that cannot move θ_m for a sparse market is flagged). Burn-in discarded; convergence judged by
+R-hat &lt; 1.1 on μ and diag(Σ).
+
+**Cross-check (deterministic):** a **Laplace-EM** (parametric empirical Bayes) point estimate
+of (μ, Σ) — E-step: per-market MAP + Laplace covariance under the current N(μ,Σ); M-step: the
+moment update μ = mean(θ̂_m), Σ = mean(Σ_m^Laplace + (θ̂_m−μ)(θ̂_m−μ)ᵀ). Used to initialize the
+Gibbs chains and to confirm the posterior mean of (μ, Σ) agrees with the EM optimum. If Gibbs
+and EM disagree materially we report it loudly (mixing or identifiability flag).
+
+If the Gibbs sampler fails to converge cohort-wide (R-hat ≫ 1.1) we fall back to reporting the
+**Laplace-EM** point estimate + a parametric-bootstrap-over-markets CI, with a clear note —
+the brief&#x27;s &quot;mean-field VI with a note&quot; contingency, served by the better-suited EM here.
+
+## 4. Outputs of the fit (Task 2)
+
+- **Population parameters** μ, Σ with full posterior CIs (Gibbs percentiles) + convergence
+  diagnostics (R-hat, ESS, acceptance).
+- **Shrinkage plot** (the money figure): per market, the **independent** estimate (per-market
+  MAP under the OLD fixed weak prior = `inference.fit_with_ci`) vs the **hierarchical**
+  estimate (per-market posterior mean from Gibbs), for each interpretable coordinate,
+  colored/sized by n_events. The pre-registered expected signature: **sparse markets are
+  pulled hardest toward μ**; data-rich markets barely move.
+
+## 5. G-POOL — the gate (does pooling help?), pre-registered
+
+**Metric: leave-one-market-out (LOMO) held-out predictive log-evidence.** For each held-out
+market m (data y_m), compute the Laplace log-evidence of y_m under a prior π:
+
+```
+log Z(y_m | π) = ℓ(y_m | θ̂) + log π(θ̂) + (7/2)log 2π − ½ log det H
+   θ̂ = argmax_θ [ ℓ(y_m|θ) + log π(θ) ]        (MAP under π; reuses inference machinery)
+   H  = −∇²[ ℓ + log π ] at θ̂                    (observed information; inference.hessian)
+```
+
+Two priors are contrasted on the **same** held-out market:
+- **π_indep** = N(m0, diag(prior_sd²)) — the fixed weakly-informative prior. This is the
+  faithful **independent per-market** baseline: a market fit alone, with no cross-market
+  information, predicts via its own generic prior.
+- **π_hier** = N(μ₍₋ₘ₎, Σ₍₋ₘ₎) — the **population fit on the other 33 markets** (Laplace-EM,
+  warm-started from the full-cohort population for speed). This is the empirical-Bayes
+  predictive: what the learned population says about an unseen market.
+
+Δ_m = log Z(y_m|π_hier) − log Z(y_m|π_indep). The held-out market m never informs μ₍₋ₘ₎,Σ₍₋ₘ₎.
+
+**G-POOL passes iff BOTH:**
+- **(G-POOL-1)** Σ_m Δ_m &gt; 0 — the hierarchical population predicts held-out markets at least
+  as well as independent fits, in **total** held-out evidence. (Report the per-fold paired
+  mean ± CI.)
+- **(G-POOL-2)** the improvement is **concentrated in low-data markets** — the regression
+  slope of Δ_m on log(n_events_m) is **negative** (bigger gain where data is thinner), and we
+  show the Δ_m-vs-n_events scatter. This pattern IS the evidence pooling is doing the right
+  thing (shrinkage helps exactly where the per-market likelihood is weak).
+
+A **null** (&quot;pooling does not beat independent at this n&quot; — Σ Δ_m ≤ 0 or flat-vs-volume) is a
+**valid, reportable finding**, consistent with latent_probe_v1&#x27;s WEAK verdict and the n&lt;50
+caveat. We do not tune the gate to pass.
+
+## 6. Pre-registered caveats / risks (expanded in CAVEATS.md after fitting)
+
+- **n=34 below ideal (~50).** Σ (28 free entries) is the most data-hungry object; we will not
+  over-interpret its off-diagonal (Task 4) structure at this n, and bootstrap its principal
+  axes before claiming any covariance story.
+- **MMPP high-activity saturation:** markets where the fit cannot separate cold/hot (near-
+  always-hot) have a poorly-identified θ_m. Flag per-market via fitted hot-occupancy ≈ 1 and/or
+  λ_cold≈λ_hot; the lead watch-case is `market B` (frac_active 0.587, mean_rate 1.57). The
+  per-bin `max_count` clusters at 6 across many markets — a possible panel/rate cap — also
+  flagged as it truncates the high tail of the count distribution.
+- **Complete-case** drop of the 1-event market (§0); the sports SPIKE regime (8 markets) is a
+  different dynamic than the freeze and its θ_m is included in the population but interpreted
+  with care (the M2b hazard is a freeze mechanism).
+- **Inference is Metropolis-within-Gibbs, not NUTS** (no AD gradient); diagnostics are
+  R-hat/ESS/acceptance, not divergences.
+
+## 7. GO/NO-GO question this session answers (Task 5)
+
+Is the hierarchical model the right backbone to **replace** independent per-market fits as the
+thesis spine, and is it ready to carry the bounded k=3 latent population structure
+(latent_probe_v1, gated on n≈50)? Decided on the G-POOL verdict + the shrinkage signature +
+whether μ,Σ are estimated with usable precision at n=34.
+</pre>
+    <h3>REPORT.md</h3>
+    <pre class="code"># Hierarchical MMPP v0 — a model of the market population
+
+_The central ML-sophistication step: replacing **N independent per-market MMPP fits** with
+**one hierarchical (partial-pooling) model** in which each market&#x27;s parameters are drawn from
+an inferred population distribution θ_m ~ N(μ, Σ). Pre-registered in `SPEC.md` before any
+fit. Cohort, window, inclusion rule, and the M2b absorbing base model are frozen from
+m2_session3 / latent_probe_v1. SEED=0. Per the timebox, Tasks 0–3 (pull, census, fit, G-POOL)
+are the must-haves; Task 4 (Σ structure) is reported but flagged preliminary at n=34._
+
+---
+
+## TASK 0 + 1 — pull result and cohort (stated first)
+
+**Pull (server-direct, read-only, no collector disturbance, no crypto):** resolved_archive
+**193 → 200 bundles (+7 net-new)**; ws_book 06-15 verified complete (deltas 17093, snaps 16978,
+MATCH); 06-16 is today&#x27;s OPEN partition — **not pulled, excluded** from all statistics. The
+remote also holds 06-06/06-07 book days, kept out of scope to preserve continuity with the
+06-08…06-15 cohort window every prior session uses. Log: `data_server_pull/pull_progress.log`.
+
+**Cohort — UNCHANGED at n=35.** The +7 new resolved bundles all resolve on the open 06-16 or
+fall below the bar; the book frontier did not move (06-15 was already local), so
+resolved-in-window is still 169 and the book-≥100-repricing cohort is **identical to
+latent_probe_v1**: 27 reveal-before-wire FREEZE + 8 scheduled-reveal sports SPIKE. **The
+hierarchical fit is valid at this n; the pull was an enhancement, not a blocker — and here it
+added nothing to the modelled cohort, which we report plainly.**
+
+Every cohort market has Fano factor &gt; 1 (overdispersion → MMPP justified). **Fitting cohort
+n = 34** (complete-case: drop `market A`, 1 event / 2880 bins — the same singular market
+v1 dropped). Per-market sufficient stats in `logs/census.json`; event volume ranges
+**69 → 3763 events** (median 521), the spread the shrinkage/G-POOL analyses key on.
+
+---
+
+## TASK 3 — G-POOL (the gate): does pooling earn its keep?
+
+&gt; **G-POOL-1 PASSES decisively; G-POOL-2 is confounded by regime → overall verdict PARTIAL,
+&gt; read as a GO on the core question.** Pooling improves the held-out predictive log-evidence
+&gt; of **every one of the 34 markets** (leave-one-market-out): total **Δ = +11,400 nats
+&gt; [3,256, 23,292]**, mean **+335/market [+32, +639]** (CI excludes 0). The hierarchical
+&gt; population is a strictly better prior for an unseen market than the generic weak prior.
+
+The pre-registered low-data-concentration test (G-POOL-2: slope of Δ on log n_events negative)
+**fails on the linear metric** (slope **+184 [−66, +620]**, positive) — but the failure is a
+**regime confound the gate did not anticipate**, not evidence against pooling:
+
+| cohort | linear slope Δ~log(n) | Spearman(Δ, n_events) | total Δ | median Δ |
+|---|---|---|---|---|
+| **all 34** | +184 | **−0.14** (n.s.) | +11,400 | 7.5 |
+| **reveal-before-wire (n=26, M2b&#x27;s home turf)** | +24 | **−0.15** (n.s.) | +3,300 | 6.4 |
+| **scheduled-reveal sports (n=8)** | **+820** | +0.48 | +8,100 | 459 |
+
+The sports SPIKE markets dominate the total and flip the slope positive: the weak prior is a
+*terrible* model for a spike (the M2b hazard expects a freeze), so the population — which has
+seen other sports — rescues them enormously regardless of their volume (one dense sports market,
+`market C`, gains **Δ +4,770**). **Within the freeze regime** the sign is the
+pre-registered one (Spearman −0.15; log-Δ-vs-log-volume slope **−0.35**, see
+`figs/gpool_vs_volume.png` right panel) — thinner markets gain more — but it is **weak and not
+significant at n=26**. So in held-out-**evidence** space the low-data signature is present-but-
+weak; the cleaner evidence for &quot;pooling does the right thing for sparse markets&quot; is in
+**parameter** space (the shrinkage figure below).
+
+---
+
+## TASK 2 — the hierarchical fit
+
+Inference: full-Bayes **Metropolis-within-Gibbs** with the conjugate Normal-Inverse-Wishart
+population block (not NUTS — the forward-algorithm HMM likelihood has no AD gradient in this
+codebase; SPEC §3), 4 chains × 3,500 sweeps (burn 1,500, 4,000 kept draws), per-market
+proposals shaped by each market&#x27;s local Laplace covariance. Acceptance ~0.30.
+
+### Convergence — a clean split (the honest headline)
+
+| block | params | R-hat | ESS | status |
+|---|---|---|---|---|
+| **rates + dwell** | logλ_cold, logΔλ, logit q_cc, logit q_hh | **1.000–1.001** | **1,630–3,304** | ✅ converged |
+| **hazard + trigger** | a0, β_τ, β_price | 1.23–1.37 | 26–41 | ⚠️ weakly identified |
+
+The **rate/dwell backbone is precisely estimated and fully mixed**; the **hazard/trigger block
+is weakly identified at n=34** — slow mixing, low ESS, R-hat above the 1.1 bar even after 4,000
+draws. This is **not** a sampler failure (the same sampler mixes the rates perfectly, at ~0.30
+acceptance): it is genuine weak identifiability of the absorption-trigger coefficients, exactly
+the obstacle m2_session1 (a0/trigger weakly separable) and latent_probe_v1 (&quot;trigger axis needs
+n≈50&quot;) already named. The Laplace-EM cross-check agrees with the Gibbs posterior on the rate
+block and on the **sign and ordering** of the trigger (β_price &gt; β_τ &gt; 0); only the trigger
+**magnitudes** are unpinned.
+
+### Population mean μ — the &quot;typical market&quot; (posterior median [95% CI])
+
+| parameter | μ (natural) | reading |
+|---|---|---|
+| λ_cold | **0.041 [0.025, 0.063]** /bin | quiet baseline ~0.04 repricings/min |
+| λ_hot | **1.141 [0.946, 1.383]** /bin | active state ~1.1/min — **27× the cold rate** (states well-separated) |
+| q_cc | 0.973 [0.962, 0.982] | **cold dwell ~37 min** |
+| q_hh | 0.877 [0.847, 0.903] | **hot dwell ~8 min** |
+| a0 (hazard) | −11.2 [−13.7, −9.5] *(weak)* | very low baseline absorption — fires only when the trigger is high |
+| **β_τ** (calendar) | **+0.82 [−0.12, +1.91]** *(weak)* | positive-leaning; CI includes 0 |
+| **β_price** (consensus) | **+1.90 [+0.72, +3.02]** *(weak)* | dominant; CI excludes 0 |
+
+The &quot;typical&quot; venue market is a slow MMPP that sits cold (~37-min dwells) punctuated by ~8-min
+hot bursts at ~27× the rate, and freezes via a regime flip into the absorbing state when the
+trigger fires. At the **population** level the freeze trigger is **consensus-led with a real
+calendar component** — β_price &gt; β_τ, β_price&#x27;s CI excludes 0 — reproducing the
+m2_session3 book-instrument refinement, now as a population property rather than a per-market
+average. (Read the trigger CIs as wide and not fully mixed; the robust claim is the
+sign/ordering, not the magnitudes.)
+
+### Shrinkage — the money figure (`figs/shrinkage.png`, `figs/shrinkage_vs_volume.png`)
+
+Pooling pulls each market&#x27;s independent estimate toward μ, **hardest for data-sparse markets**:
+`corr(log n_events, total pull) = −0.49`. On the **identified** parameters the signature is
+textbook —
+
+| parameter | mean \|pull\|, 8 sparsest | 8 densest | sparse/rich ratio |
+|---|---|---|---|
+| **λ_cold** | 1.72 | 0.04 | **40.5×** |
+| q_hh (dwell) | 0.72 | 0.05 | 13.5× |
+| q_cc | 1.86 | 0.25 | 7.3× |
+| logΔλ | 0.45 | 0.12 | 3.7× |
+| trigger block (a0, β_τ, β_price) | — | — | ~0.8–2.1× (uniform) |
+
+Sparse markets&#x27; rate estimates are regularized **40× harder** toward the population than
+data-rich ones — pooling is doing exactly what it should where the per-market likelihood is
+weak. The trigger block is pulled ~uniformly because it is prior-dominated for *every* market
+(rich or sparse), consistent with its weak identifiability. **This parameter-space evidence for
+the low-data signature is unambiguous, and complements the weaker held-out-evidence read in
+G-POOL-2.**
+
+---
+
+## TASK 4 — population covariance Σ (preliminary at n=34)
+
+Σ (correlation form, `figs/population_corr.png`) shows cross-parameter structure the
+independent fits could not produce. The **rate-block correlations are trustworthy** (those
+params converged); the trigger-block correlations involve the weakly-mixed coefficients and are
+flagged preliminary.
+
+- **corr(logλ_cold, logΔλ) = +0.58** — higher-baseline markets also have a larger hot↔cold gap.
+- **corr(logλ_cold, q_hh) = −0.24, corr(logΔλ, q_hh) = −0.29** — higher-rate markets have
+  **shorter** hot dwell (they switch faster): a genuine population dynamic.
+- corr(a0, β_price) = +0.56, corr(β_τ, β_price) = +0.15 — *(trigger block, preliminary)*.
+- **Σ&#x27;s top-3 eigen-axes carry 87.6% of the variance** (0.63 / 0.15 / 0.09). The leading axis
+  is the rate/dwell texture; this previews — and is consistent with — latent_probe_v1&#x27;s finding
+  of **3 effective latent dims**, and is the substrate the bounded k=3 latent structure will sit
+  on (Σ&#x27;s principal axes ≈ the latent dims).
+
+We do **not** over-interpret the off-diagonal at this n (28 free entries from 34 markets); the
+covariance *story* is a preview, the covariance *machinery* is in place.
+
+---
+
+## GO / NO-GO
+
+**GO — the hierarchical model is the right backbone to replace independent per-market fits as
+the thesis spine.** The evidence: (1) pooling improves held-out prediction on **34/34 markets**
+(+11,400 nats, mean CI excludes 0) — it earns its keep; (2) the rate/dwell backbone is
+estimated with full-posterior precision (R-hat ≈ 1.00, ESS &gt; 1,600) and yields a clean
+population characterization μ; (3) shrinkage regularizes sparse markets toward the population
+**40× harder** than data-rich ones — the directly-observed cure for the small-n problem the
+latent probes kept hitting; (4) Σ already reproduces the 3-effective-dim structure
+latent_probe_v1 found.
+
+**Conditional on the trigger block — carry the k=3 latent structure, but the trigger axis is
+still the pending piece.** The hazard/trigger coefficients (a0, β_τ, β_price) remain weakly
+identified at n=34 (R-hat 1.23–1.37, ESS 26–41), reproducing — from the hierarchical angle —
+latent_probe_v1&#x27;s &quot;trigger axis needs n≈50&quot; and m2_session1&#x27;s identifiability warning. The
+backbone (rates, dwell, the population covariance over them) is ready to host the bounded k=3
+latent population model **now**; the **consensus-vs-calendar trigger axis** should be added as a
+shrinkage-prior dimension to be *tested*, not assumed, and is expected to sharpen only when the
+cohort reaches n≈50 (≈1 more closed book day at the strict bar, or already met at the ≥50 bar
+— latent_probe_v1). The population-level trigger sign (β_price &gt; β_τ &gt; 0) is the robust,
+reportable takeaway.
+
+See `CAVEATS.md` for inference method + diagnostics, the n&lt;50 qualifier, the MMPP
+high-activity saturation flag, the `max_count`-cap artifact, complete-case handling, and the
+G-POOL regime confound.
+</pre>
+    <h3>CAVEATS.md</h3>
+    <pre class="code"># Hierarchical MMPP v0 — CAVEATS
+
+**1. Inference is Metropolis-within-Gibbs, not NUTS — and the trigger block did not converge.**
+The forward-algorithm HMM marginal likelihood has no autodiff gradient in this codebase, so
+gradient-based NUTS over the ~280-dim joint is unavailable (SPEC §3). We used full-Bayes
+Metropolis-within-Gibbs with the conjugate NIW population block (4 chains × 3,500 sweeps, burn
+1,500, per-market local-Laplace proposals, ~0.30 acceptance). Diagnostics are R-hat / ESS /
+acceptance (the Metropolis analogue of divergences). **The rate/dwell block converged cleanly**
+(R-hat 1.000–1.001, ESS 1,630–3,304) and matches the Laplace-EM cross-check. **The
+hazard/trigger block did NOT** (a0/β_τ/β_price: R-hat 1.23–1.37, ESS 26–41, above the 1.1 bar
+even at 4,000 draws). This is genuine weak identifiability, not a bug — the same sampler mixes
+the rates perfectly. Consequence: trigger-coefficient **magnitudes and CIs are not reliable**;
+only their **sign/ordering** (β_price &gt; β_τ &gt; 0, EM-corroborated) should be quoted. A future
+session wanting tight trigger CIs needs a non-centered reparameterization or an AD-gradient
+re-implementation of the HMM likelihood for HMC.
+
+**2. n=34 is below the ideal (~50).** Σ has 28 free entries estimated from 34 markets — the
+most data-hungry object here. The rate-block correlations (whose marginals converged) are
+trustworthy; the trigger-block correlations involve the weakly-mixed coefficients and are
+explicitly preliminary. Task 4&#x27;s covariance *story* is a preview; we did not bootstrap the
+principal axes (timebox) and do not claim the off-diagonal structure beyond the rate block.
+n≈50 is ≈1 more closed book day at the strict ≥100 bar, or already met at the ≥50 bar
+(latent_probe_v1).
+
+**3. The pull added nothing to the modelled cohort.** resolved_archive grew 193→200 (+7) but
+the book frontier did not move past 06-15 (06-16 is the open partition), so the cohort is
+identical to latent_probe_v1 at n=35 / fit n=34. We report this plainly rather than implying
+the pull enlarged the analysis. The remote 06-06/07 book days were left out of scope to keep
+the window continuous with every prior session.
+
+**4. MMPP high-activity saturation (flagged per brief).** No market *fully* saturates — the
+fitted hot/cold separation λ_hot/λ_cold ≥ 5.5× for all 34. But the **three highest-activity
+markets — `market B` (frac_active 0.59), `market D` (0.53), `market E` (0.38)** — have an
+**elevated λ_cold (~0.28–0.37 vs the population 0.04)**: their cold state absorbs background
+activity and the cold/hot contrast is compressed, so their θ_m (especially λ_cold) reads
+&quot;hotter&quot; than a clean two-state market. This biases their per-market rate estimates and inflates
+the upper tail of the population λ_cold; pooling pulls them toward μ but cannot fully separate
+states the data do not distinguish. Their freeze conclusions are unaffected (the hazard still
+fires), but their rate parameters should be read with this in mind.
+
+**5. `max_count` cap artifact.** The 60s-binned repricing count clusters at a maximum of 6
+across many markets (`logs/census.json`) — a probable rate-limit / panel cap that truncates the
+high tail of the per-bin count distribution. This mildly compresses the fitted λ_hot for the
+busiest bins (the Poisson emission cannot see counts &gt; 6). It does not affect the freeze
+mechanism (which lives in the low-count tail near τ=0) but is a known limit on the absolute
+rate scale.
+
+**6. Complete-case handling.** `market A` (1 event / 2880 bins) was dropped pre-registered
+(degenerate likelihood, the same market v1 dropped) → fit n=34. The 8 scheduled-reveal **sports
+SPIKE** markets are included in the population but interpreted with care: M2b&#x27;s absorbing hazard
+is a *freeze* mechanism, and a spike is the opposite dynamic — which is exactly why they get
+huge G-POOL gains (caveat 7).
+
+**7. G-POOL-2 regime confound (the reason the verdict is PARTIAL not full PASS).** The
+pre-registered low-data-concentration test (slope of held-out Δ on log n_events negative) fails
+on the linear metric (+184) because the **sports SPIKE markets** dominate it: the independent
+weak prior is a terrible model for a spike, so the population rescues them enormously regardless
+of volume (one dense sports market gains Δ +4,770), giving the SPIKE cohort a steep *positive*
+slope (+820) that swamps the freeze cohort&#x27;s near-flat one (+24). The robust, regime-aware reads
+(Spearman(Δ,n) = −0.14 all / −0.15 freeze; freeze log-Δ-vs-log-volume slope −0.35) carry the
+pre-registered *direction* but are weak and not significant at this n. The unambiguous evidence
+that pooling helps sparse markets is in **parameter** space (shrinkage: 40× harder pull on
+λ_cold for the thinnest markets), not in held-out-evidence space. G-POOL-1 (pooling helps in
+total: +11,400 nats, 34/34 markets) is unconfounded and decisive.
+
+**8. Laplace evidence approximation in G-POOL.** The held-out metric is a Laplace (Gaussian-at-
+the-MAP) approximation to the marginal likelihood, not an exact integral. It is stable and
+identical-form across the two priors being compared (so the *contrast* Δ is robust to the
+approximation&#x27;s bias), but absolute log-evidence values are approximate, and for the
+weakly-identified trigger directions the Laplace Hessian is ridge-regularized when near-singular
+(inflating those markets&#x27; evidence slightly for both priors symmetrically).
+</pre>
+  </section>
+  <section class="section">
+    <p class="eyebrow">wf_mmpp_v0</p>
+    <h2>Walk-forward predictive-validity study</h2>
+    <p class="meta">SPEC ba92b6c committed 2026-06-17, before any outcome statistic; results a90c9bf.</p>
+    <h3>SPEC.md</h3>
+    <pre class="code"># WALK-FORWARD PREDICTIVE-VALIDITY OF THE TWO-STATE MMPP — SPEC (PRE-REGISTERED)
+
+**Frozen BEFORE any outcome statistic is computed.** Question: can the two-state (hot/cold)
+MMPP — fit causally and walked forward out-of-sample — **forecast near-future intensity** and
+**identify hot/cold state transitions (onset/end)**, and does its latent state add predictive
+value **over self-exciting baselines** (Hawkes / EWMA)? This is a **predictive-validity** study
+of the descriptive model, **NOT** a trading study.
+
+## 0. Framing — two claims with opposite priors
+- **DETECTION (lag):** once a hot state has begun, does the CAUSAL FILTER (data ≤ t only)
+  identify it, and how fast? Prior: plausibly yes.
+- **ANTICIPATION (lead):** before observable activity changes, does the model flag an imminent
+  onset/end? MMPP transitions are exogenous + memoryless ⇒ structural prior = **NO**. We TEST it
+  (report the signed lead/lag distribution); we do not assume it.
+
+All test-time state estimates use the **causal forward FILTER** (P(state_t | counts ≤ t)). The
+**smoother** (forward–backward, uses future) is OFFLINE-LABELLING ONLY and reported strictly as a
+SECONDARY, circularity-flagged cross-reference.
+
+## 1. Instrument, binning, cohort  (design — fixed here)
+- **Instrument:** `ws_book` book-repricing count, the project&#x27;s thesis instrument. 60 s bins,
+  last-**48 h** window per market (`analysis.m2.s3_book_fit.build_book_data`, redirected to
+  `data_server_pull/lp1_book_panel`). MEASURED (repricing events); feed gaps masked (`valid`).
+  Price covariate = book mid. No fees (not a trading study).
+- **Cohort (frozen):** the latent_probe_v1 census `book n_reprice ≥ 100` resolved markets
+  (window 06-08..06-15), that also satisfy the walk-forward eligibility below.
+  Sized at SPEC time: 35 book≥100 → 35 build-ok → **29 eligible @ f_train=0.6**
+  (**24 reveal_before_wire / &quot;freeze&quot;** + **5 scheduled_reveal / sports &quot;spike&quot;**).
+- **Eligibility (frozen):** chronological prefix (earliest 60 % of bins) has ≥50 events AND ≥50
+  bins; test suffix (latest 40 %) has ≥30 events AND ≥30 bins. Markets failing this are dropped
+  and counted.
+
+## 2. Walk-forward protocol (no leakage)
+- **Per-market chronological split**, `f_train = 0.6`. Prefix = earliest 60 % of bins (largest τ);
+  Test = latest 40 % (toward τ→0, includes the terminal region). Fit ALL models on the **prefix
+  only**, FREEZE, walk the test suffix.
+- The causal filter runs from the market&#x27;s first bin through the test bins (data ≤ t throughout —
+  legitimately the market&#x27;s own past); the prefix bins are filter burn-in. **Outcome stats are
+  computed ONLY on test bins.**
+- **MMPP fit = the existing deterministic machinery, unchanged:** `inference.fit([prefix], &quot;M2b&quot;,
+  n_restarts=3, seed=0)`. No new fit is invented. (M2b = 3-state cold/hot/absorbing-frozen; the
+  hot/cold pair is the two-state object of study, frozen = the deadline absorbing state.)
+- **PRIMARY = per-market frozen θ** (each market its own prefix-fit params; makes MMPP-vs-Hawkes
+  apples-to-apples and honours &quot;market = unit&quot;). **ROBUSTNESS = pooled θ** (fit on all prefixes,
+  applied per market) to guard against thin-prefix fit instability; report both, and report fit
+  health (singular flag, degenerate-rate). **Expanding-window refit is NOT performed** (laptop
+  compute) — stated as a deviation, not silently dropped.
+- **Bootstrap:** market-clustered (unit = market), resample markets with replacement, 2000 reps,
+  seed 0 → 95 % CIs on every headline statistic, so one hyperactive market can&#x27;t manufacture
+  significance. **Split-half stability:** split the cohort deterministically (sorted-market_id
+  parity) and re-check each verdict on both halves.
+
+## 3. Baselines (the latent state must beat the RIGHT competitor)
+All fit on the prefix only, scored identically on the test bins.
+- **B0 — constant-rate Poisson:** λ̄ = mean prefix count. The trivial null (already beaten in
+  prior work; included for continuity). **Beating only B0 is NOT a pass.**
+- **B1 — EWMA &quot;is-it-busy&quot; detector:** causal exponential smoother of the count series; halflife
+  chosen on the prefix over grid {2,5,10,20,40 bins} by 1-step predictive loglik; forecast =
+  current EWMA level held flat over the horizon (memoryless recent-activity tracker).
+- **B2 — self-exciting HAWKES (key competitor):** discrete-time exp-kernel,
+  λ_t = μ + α·e_t with e_t = Σ_{k≥1} e^{−β k} n_{t−k}; (μ,α,β) by Poisson MLE on the prefix
+  (multi-restart, seed 0). h-step forecast via the expected-intensity recursion (future counts
+  replaced by their expectations: ê_{t+k}=e^{−β}ê_{t+k−1}+λ̂_{t+k−1}, λ̂=μ+α ê). Branching ≈ αΣe^{−βk}.
+
+## 4. PRE-REGISTERED GATES (verdicts + CIs committed before any outcome stat)
+
+### G-NOWCAST  (load-bearing)
+- Metric: per-bin **h-step-ahead predictive log-likelihood** of the realized book-repricing count,
+  horizons **h ∈ {1,3,5} bins** (1/3/5 min). MMPP/B0/B1 use the exact mixture-Poisson predictive
+  (MMPP: propagate filtered α through the known future τ-driven transition matrices to bin t+h,
+  predictive = Σ_state α_{t+h}[s]·Poisson(·; R[t+h,s])); B2 uses the propagated expected intensity
+  as a Poisson rate (predictive-variance approximation — flagged; applied as the standard Hawkes
+  forecast). Also report h-step expected-count point forecast MAE/RMSE as a secondary view.
+- Per market: mean test-bin predictive loglik for each model; paired diffs MMPP−B0, MMPP−B1,
+  MMPP−B2. Market-clustered bootstrap → 95 % CI on each mean paired diff.
+- **PASS iff** at the headline horizon **h=1**: (MMPP−B1 CI excludes 0 in MMPP&#x27;s favour) **AND**
+  (MMPP−B2 CI excludes 0 in MMPP&#x27;s favour). Report all horizons. If MMPP ≤ Hawkes ⇒ the latent
+  state is **predictively redundant** vs self-excitation (a valid, expected finding).
+
+### G-DETECT
+- **External hot episodes** (anti-circular — from OBSERVED counts, NOT model labels): centered
+  5-bin rolling-mean rate; a bin is *externally hot* if rolling-mean ≥ θ_m, with
+  θ_m = max(2 × median of positive-count bins, 0.5 ev/bin). Episode = maximal run of externally-hot
+  bins of length **≥ 3 bins**. (Offline ground truth may use the full series — it is the target.)
+- Evaluate episodes whose **onset falls in the test region**. **Detected** if causal filter
+  P(hot_t)=α_t[1] crosses ≥ 0.5 within [onset − 10 bins, episode end].
+- Report **detection rate** (detected / test episodes), overall and per regime.
+
+### G-ANTICIPATE  (falsification target)
+- **Signed lead** per detected onset = (time filter first crosses 0.5 within [onset−10bin, end])
+  − (onset time), in **minutes**. **Positive = anticipation; negative = lag/detection.** Report the
+  full distribution (histogram), median, and market-clustered bootstrap 95 % CI on the median.
+  Repeat for episode **ENDS** (filter crossing back below 0.5 vs the activity offset).
+- **Pre-registered expectation: median ≤ 0.** If so → &quot;**detection, not anticipation —
+  consistent with exogenous memoryless transitions**&quot; (and with prior lead-time≈0 findings). If a
+  CI lies strictly &gt; 0 anywhere → surprising positive; INVESTIGATE, do not suppress.
+
+### G-DURATION
+- External hot-episode **dwell times** (minutes), right-censored if the episode touches the window
+  end or a feed gap. **Kaplan–Meier** survival + **Nelson–Aalen** cumulative hazard; discrete
+  empirical hazard vs **elapsed time-in-state**; **Weibull MLE shape k** (with censoring).
+  - **k CI ∋ 1** ⇒ flat/exponential hazard ⇒ episode end is **memoryless, NOT predictable** beyond
+    the base rate.
+  - **k &gt; 1** (CI excludes 1 above) ⇒ rising hazard ⇒ partial end-predictability (older episodes
+    likelier to end). **k &lt; 1** ⇒ falling hazard.
+- Pooled across markets (the dwell-range 2–139 vs mean 14 hint at heterogeneity is the motivation);
+  also report cold-dwell for contrast.
+
+## 5. Honesty / house style
+- A NULL on anticipation is a valid, valuable result (ties the descriptive model to its predictive
+  ceiling). Report decoupling/failure openly. MEASURED vs IMPUTED labelled. Market-clustered
+  bootstrap; split-half stability. SPEC committed before any outcome stat. SESSIONS STARTED/DONE;
+  commit at boundaries; **NEVER git push.** Windows: pyarrow single-threaded; per-market buffers.
+- Do NOT reframe as a trading/NEH study.
+
+## 6. Deliverables
+Per-gate verdict + CI; the signed lead/lag distribution (core result); MMPP-vs-Hawkes/EWMA nowcast
+comparison (load-bearing); the dwell hazard-vs-elapsed-time plot; plain-language verdict —
+DETECT / ANTICIPATE / neither, and whether the latent state adds predictive value over
+self-excitation or is descriptively rich but predictively redundant.
+Artifacts: `results/wf_mmpp_v0/{logs/*.json, figs/*.png, REPORT.md}`; code `analysis/wf_mmpp/`.
+</pre>
+    <h3>REPORT.md</h3>
+    <pre class="code"># Walk-forward predictive validity of the two-state MMPP — REPORT (wf_mmpp_v0)
+
+**Question.** Can the two-state (hot/cold) MMPP, fit causally and walked forward out-of-sample,
+**forecast near-future intensity** and **identify hot/cold state transitions**, and does its latent
+state add predictive value **over self-exciting baselines (Hawkes/EWMA)**? Predictive-validity
+study of the descriptive model — **NOT** a trading study. Pre-registered SPEC + gates committed
+(`SPEC.md`, commit `ba92b6c`) before any outcome statistic.
+
+**Plain-language verdict.** The model **DETECTS, it does not ANTICIPATE, and its latent state is
+predictively redundant** for intensity nowcasting — it is descriptively rich but adds no
+forward-predictive value over self-excitation. The one place it carries real information is
+**episode duration**: hot-episode end is *not* memoryless (a falling hazard — young episodes end
+sooner). This is fully consistent with the project&#x27;s structural prior (MMPP transitions are
+exogenous + memoryless ⇒ no anticipation) and with prior lead-time≈0 / intensity⟂toxicity findings.
+
+## Setup (frozen pre-registration)
+- **Instrument:** `ws_book` book-repricing count, 60 s bins, last-48 h window (the thesis
+  instrument). MEASURED events; feed gaps masked. Price covariate = book mid. No fees.
+- **Cohort:** book≥100-reprice resolved markets (latent_probe_v1 census, `lp1_book_panel`) eligible
+  for the split → **n=29** (24 reveal_before_wire &quot;freeze&quot; + 5 sports &quot;spike&quot;); 6 dropped (thin).
+- **Walk-forward:** per-market chronological split `f_train=0.6`; all four models fit on the prefix,
+  FROZEN; causal FILTER + h-step forecasts on the test suffix. Market-clustered bootstrap (unit =
+  market, 2000 reps, seed 0); split-half stability. PRIMARY = per-market θ; ROBUSTNESS = pooled θ.
+- **Fit health:** per-market MMPP hot/cold-rate ratio median **13.8×, 0/29 degenerate**; Hawkes
+  branching median **0.69** (strongly self-exciting). Causal filter &amp; forecasts are new code
+  (`analysis/wf_mmpp/`), built on the unchanged `inference.fit(...,&quot;M2b&quot;,3,seed0)` machinery.
+
+## Gate-by-gate
+
+### G-NOWCAST = **FAIL** — latent state adds no value over self-excitation  (load-bearing)
+Per-bin h-step predictive loglik on test bins, MMPP vs B0/B1/B2 (`F2`):
+
+| horizon | MMPP | Hawkes(B2) | EWMA(B1) | const(B0) | MMPP−EWMA [CI] | MMPP−Hawkes [CI] |
+|--------|------|-----------|----------|-----------|----------------|------------------|
+| h=1 | −0.953 | −0.620 | −0.644 | −0.912 | −0.309 [−0.538,−0.119] | −0.332 [−0.572,−0.138] |
+| h=3 | −0.976 | −0.679 | −0.681 | −0.912 | −0.296 [−0.513,−0.110] | −0.297 [−0.521,−0.110] |
+| h=5 | −0.989 | −0.713 | −0.703 | −0.912 | −0.286 [−0.501,−0.103] | −0.277 [−0.495,−0.094] |
+
+Per-market frozen MMPP loses to **both** Hawkes and EWMA at every horizon (CI excludes 0 on the
+*wrong* side); it even loses to the trivial constant-Poisson. **PASS bar (beat B1 AND B2) not met.**
+
+**Why, and is it just fit variance?** Yes, partly — and the robustness check makes the verdict
+*stronger*, not weaker. With **pooled θ** (regularized, fit on all prefixes), MMPP **beats EWMA**
+(+0.026 [+0.010,+0.041]) but only **ties Hawkes** (+0.002 [−0.017,+0.022], CI spans 0). So:
+- the steep per-market loss is largely thin-prefix fit variance (a well-estimated MMPP is not
+  *worse* than self-excitation), **but**
+- even the best-case, well-regularized latent model **only matches** the self-exciting Hawkes and
+  never beats it. The thesis question (&quot;does the latent state ADD forward-predictive value over
+  self-excitation?&quot;) is answered **NO** under both readings.
+
+**Split-half:** direction stable (MMPP−Hawkes &lt; 0 in both halves: −0.57, −0.07); magnitude
+heterogeneous, consistent with the fit-variance story.
+
+### G-DETECT = detection works (0.68 per-market → 1.00 pooled)
+Of 100 external test hot-episodes (defined from observed counts, anti-circular), the causal filter
+crosses P(hot)≥0.5 within the episode in **68%** (per-market θ, CI [0.41,0.89]) — and **100%** under
+the more sensitive pooled θ. Per-market under-detection is again fit variance. The filter is a
+genuine, effective causal detector of hot states (`F4`).
+
+### G-ANTICIPATE = **DETECTION, NOT ANTICIPATION** (the core result, `F1`)
+A naïve reading of the pre-registered metric showed a +10 min &quot;lead&quot; — **a window artifact**, which
+fully dissolves as the comparison is made fair:
+
+| lead measured against… | median lead | reading |
+|---|---|---|
+| pre-registered label (centered mean + min-len + 10-bin grace) | **+10 min** | boundary-pinned ARTIFACT (filter persistently ≥0.5 across the grace window; median tracks LOOKBACK exactly: 0→0, 5→+5, 10→+10, 20→+20) |
+| centered label, first **upcrossing** (level-pin removed) | +6 min | still vs a NON-causal (centered + min-3) label that lags raw activity |
+| **causal** trailing-5 detector | +3 min | filter is a *sharper* detector than a 5-bin boxcar — not anticipation |
+| **first raw repricing** (earliest observable signal) | **−2 min [−3.5, 0.0], frac&gt;0 = 0.00, n=48** | filter crosses *after* the first raw count, **never before** |
+
+A causal filter cannot precede its driving data, and it doesn&#x27;t: lead vs the first raw count is ≤ 0
+for every episode. **Finding: detection (fast, sharper than naïve detectors), not anticipation —
+consistent with exogenous memoryless transitions.** End-side lead shows the same (no anticipation of
+episode end). *(SPEC note: the pre-registered formula&#x27;s literal subtraction was sign-reversed vs its
+label &quot;positive = anticipation&quot;; the governing intent is implemented and the artifact decomposition
+is reported in full rather than the headline number suppressed.)*
+
+### G-DURATION = **falling hazard** — episode end is NOT memoryless (`F3`)
+The pre-registered Weibull gave k=1.43 (&gt;1, &quot;rising&quot;), **but that is a left-truncation artifact** —
+the min-episode-length=3 floor leaves no mass below 3 min and an untruncated Weibull explains the
+hole with a spurious rising shape (left-truncated refit is degenerate/unidentified; **REJECTED**).
+The truncation-robust, model-free **discrete hazard FALLS** with elapsed time-in-state:
+
+`hazard(per min): 0.325 → 0.239 → 0.194 → 0.103 → 0.108 → 0.167` over elapsed `3→6→10→15→25→40` min;
+log-hazard slope **−0.60 [−0.93, −0.21]** (market-clustered). A **frailty control** (pooling
+per-market *memoryless* exponentials at each market&#x27;s own rate) reproduces only a *shallow* decline
+(0.174→0.135), so the observed steep early drop **exceeds** between-market heterogeneity ⇒ a modest
+*genuine* duration dependence: **young hot episodes end sooner.** Caveat: the [3,6) bin holds 113/191
+episodes — the threshold-crossing episode definition produces many marginal 3–5 min episodes, which
+likely inflates the early-bin hazard. The falling-hazard *sign* is robust; the parametric shape is
+not identified. Cold dwells fall too (Weibull k≈0.49).
+
+## Bottom line
+- **Detect?** Yes — the causal filter reliably and quickly identifies hot states (0.68–1.00).
+- **Anticipate?** **No** — apparent leads are window/label artifacts and detector sharpness; the
+  filter never precedes the first raw observable signal. Null on anticipation, as the structural
+  prior predicted, and a valid result tying the descriptive model to its predictive ceiling.
+- **Latent state vs self-excitation?** **Predictively redundant** — MMPP at best ties Hawkes and
+  beats only the memoryless EWMA; it never beats the self-exciting competitor at intensity
+  nowcasting. Descriptively rich (the freeze/regime structure is real and well-fit) but it carries
+  no extra *forward-predictive* signal over self-excitation for nowcasting.
+- **Where it *does* add information:** episode-end timing is not memoryless (falling hazard) — the
+  one predictively non-trivial structure, modest and partly heterogeneity/definition-driven.
+
+Artifacts: `logs/wf_gates.json` (all numbers + CIs), `logs/wf_arrays.npz`, `figs/F1..F4`.
+See `CAVEATS.md`.
+</pre>
+    <h3>CAVEATS.md</h3>
+    <pre class="code"># wf_mmpp_v0 — CAVEATS
+
+1. **Pre-registered metrics that turned out artifact-prone (reported in full, not suppressed):**
+   - *G-ANTICIPATE lead:* the SPEC&#x27;s &quot;first crossing in [onset−10,end]&quot; is boundary-pinned (filter
+     persistently ≥0.5 across the grace window → median = +LOOKBACK by construction). The SPEC
+     formula&#x27;s subtraction was also sign-reversed vs its own label (&quot;positive = anticipation&quot;). Both
+     are documented; the verdict rests on the fair lead vs the first raw count (artifact-free). The
+     full +10→+6→+3→−2 decomposition is shown.
+   - *G-DURATION Weibull k:* the min-episode-length=3 floor left-truncates durations; an untruncated
+     Weibull spuriously fits k&gt;1. REJECTED in favour of the truncation-robust discrete hazard +
+     market-clustered log-hazard slope. The left-truncated Weibull is degenerate/unidentified.
+
+2. **Per-market vs pooled θ.** Per-market frozen fits on thin prefixes carry real variance (steep
+   nowcast loss, lower detection). Pooled θ is the cleaner model-favorable read (ties Hawkes, beats
+   EWMA, 100% detection). The NOWCAST verdict (no added value over Hawkes) holds under both;
+   detection capability is best read off pooled θ. Expanding-window refit was NOT run (laptop
+   compute) — a stated deviation.
+
+3. **Cohort.** n=29 (24 freeze + 5 sports). Sports/spike is thin (5) — regime splits are
+   directional, not powered. Book-covered closed-day window 06-08..06-15; sports-heavy tail (weekend
+   resolutions). Not a random sample of the venue.
+
+4. **External episode definition** (centered 5-bin mean ≥ max(2×median⁺, 0.5); min 3 bins) is one
+   reasonable anti-circular rule; the abundance of marginal 3–5 min episodes (113/191) it produces
+   inflates the early-bin hazard. The falling-hazard *sign* is robust to this; the magnitude is not.
+
+5. **Hawkes baseline** uses a Poisson predictive on the propagated expected intensity (variance
+   understated) and a discrete-time exp kernel — a standard but not exhaustive Hawkes. Branching
+   median 0.69 here vs ~0.91 cited elsewhere (different cohort/instrument). The comparison is on
+   equal predictive footing (all models Poisson-predictive at the count level).
+
+6. **Smoother** (forward–backward) was implemented but used only for offline labelling; all
+   test-time state estimates are the causal FILTER. The secondary smoother-label detection
+   cross-reference was not needed (external observables sufficed) and is omitted to avoid the
+   circularity it would introduce.
+
+7. **MEASURED vs IMPUTED:** counts are MEASURED book repricings; no fees (not a trading study).
+   Feed-gap bins are masked (`valid`), so the chain propagates through gaps without fake emissions.
+</pre>
+  </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><p>Juan Mediavilla · London</p></div>
+</footer>
+</body>
+</html>

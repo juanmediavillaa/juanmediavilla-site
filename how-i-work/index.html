@@ -28,7 +28,7 @@
     <h1>How I work</h1>
     <p class="standfirst">
       Anyone can get an agent to write code. The hard part is knowing when to believe the output.
-      My answer is that trust comes from structure, not from better prompting.
+      Trust comes from structure, not better prompting.
     </p>
   </div>
 </header>
@@ -38,24 +38,24 @@
     <p class="eyebrow">Contracts</p>
     <h2>An agent gets a written contract, with the autonomy boundary stated first</h2>
     <p>
-      I run a personal knowledge base entirely through an agent operating under a written
-      contract. The division of labour is that I produce thought and the agent owns structure: it
-      files, links and propagates, and it never asks me where something goes.
+      I run a personal knowledge base through an agent operating under a written contract. I
+      produce thought; the agent owns structure. It files, links and propagates, and never asks me
+      where something goes.
     </p>
     <p>
       The contract fixes what would otherwise be re-litigated every run. Autonomy is stated up
-      front as <em>file freely, report after</em>: placement is the agent's call and I veto
-      afterwards. Ambiguous items stay queued rather than placed, because an unfiled note is
-      recoverable and a misfiled one vanishes, so the agent is told which way to err. Routing keys
-      on what <em>kind</em> of fact something is rather than its topic, which makes it decidable.
-      Questions are batched to the end and capped at five.
+      front as <em>file freely, report after</em>: placement is the agent's call, I veto afterwards.
+      Ambiguous items stay queued rather than placed — an unfiled note is recoverable, a misfiled one
+      vanishes — so the agent knows which way to err. Routing keys on what <em>kind</em> of fact
+      something is, not its topic, which makes it decidable. Questions are batched and capped at
+      five.
     </p>
     <p>
-      It also names its own anti-patterns. One tracking file is capped at five rows, because I had
-      over-built a nineteen-item registry with rubrics and a dashboard once and retired it; if it
-      wants to grow, that is a signal to raise with me. The tag vocabulary is closed at five: a
-      vocabulary that grows without resistance stops separating anything. Blast radius is bounded
-      too: two directories frozen, two files append-only, no git access.
+      It also names its own anti-patterns. One tracking file is capped at five rows, because I once
+      over-built a nineteen-item registry with rubrics and a dashboard and retired it; if it wants to
+      grow, that is a signal to raise with me. The tag vocabulary is closed at five: one that grows
+      without resistance stops separating anything. Blast radius is bounded too: two directories
+      frozen, two files append-only, no git access.
     </p>
   </div>
 </section>
@@ -65,15 +65,13 @@
     <p class="eyebrow">Provenance</p>
     <h2>Every claim carries its source, and "not found" is a legal answer</h2>
     <p>
-      Anything the agent writes is tagged with where it came from: a dated attribution to something
-      I said, a git log, or a file path. Unconfirmed claims are marked as such rather than smoothed
-      over, and unknowns are marked unknown.
+      Anything the agent writes is tagged with where it came from: a dated attribution, a git log,
+      a file path. Unconfirmed claims are marked as such rather than smoothed over.
     </p>
     <p>
-      The rule doing the real work is that the agent must never invent a fact, a number or a date,
-      and that <span class="mono">NOT FOUND</span> is a valid and preferred answer. Hallucination
-      is not prompted against; it is designed out by making the absence of a fact something the
-      format can express.
+      The rule doing the real work: never invent a fact, a number or a date, and
+      <span class="mono">NOT FOUND</span> is a valid and preferred answer. Hallucination is not
+      prompted against; it is designed out by making the absence of a fact expressible.
     </p>
   </div>
 </section>
@@ -85,15 +83,42 @@
     <p>
       The clearest example is the
       <a href="../projects/index.html#data-portal">market-data portal</a>. Telling a model not to
-      leak internal material is a hope. A build gate that fails the build when internal material
-      reaches public output is a guarantee. That gate exists because two real leaks got past an
-      earlier exclusion that operated at the rendering layer instead of the build layer.
+      leak internal material is a hope; a build gate that fails the build when it happens is a
+      guarantee. That gate exists because two real leaks got past an earlier exclusion operating at
+      the rendering layer rather than the build layer.
     </p>
     <p>
       Two more from the same build. Every factual claim on that site lives in a single data file,
       so claims are auditable in one place. And the sample-extraction tool raises on every
       unimplemented path, so it cannot emit a plausible-looking fabricated sample. Silence is the
       dangerous failure mode; the system fails loudly instead.
+    </p>
+
+    <p class="code-src">tools/check_no_leaks.mjs — the gate that fails the build</p>
+    <pre class="code">let leaks = 0;
+for await (const file of walk(distDir)) {
+  const text = await readFile(file, 'utf8');
+  for (const { pattern, why } of FORBIDDEN) {
+    const match = text.match(pattern);
+    if (match) {
+      console.error(`LEAK  ${relative('.', file)}\n      matched "${match[0]}" — ${why}`);
+      leaks++;
+    }
+  }
+}
+if (leaks) {
+  console.error(`\n${leaks} leak(s). Internal material must not ship. Fix before deploying.`);
+  process.exit(1);
+}</pre>
+    <p class="code-src">tools/extract_sample.py — refusing to guess</p>
+    <pre class="code">    raise NotImplementedError(
+        "Archive layout unknown — see docs/schema.md 'File layout' [VERIFY]. "
+        "Do not guess a partition scheme; confirm it first."
+    )</pre>
+    <p>
+      Eight functions in that file raise rather than return. A half-built extractor emitting a
+      plausible sample is worse than one that does not run: the sample is what a buyer checks the
+      dataset against.
     </p>
   </div>
 </section>
@@ -104,13 +129,13 @@
     <h2>Decide what counts as success before the run, not after</h2>
     <p>
       In the <a href="../research/index.html">research work</a> this is literal: a specification
-      committed to version control before any outcome statistic exists. It is what made it possible
-      to report that my own model failed its primary test, rather than quietly re-cutting the
-      metric until something passed.
+      committed to version control before any outcome statistic exists. It is what let me report
+      that my own model failed its primary test, rather than re-cutting the metric until something
+      passed.
     </p>
     <p>
-      The same device works on agent output. If you decide what done means only after seeing what
-      the agent produced, you will grade it on what it happened to do.
+      The same device works on agent output: decide what done means after seeing the output and you
+      will grade it on whatever it happened to do.
     </p>
   </div>
 </section>
@@ -120,14 +145,14 @@
     <p class="eyebrow">Fan-out and reconcile</p>
     <h2>Parallel agents produce contradictions; the value is in resolving them</h2>
     <p>
-      I surveyed 53 project directories across parallel agents, each entry recording which agent
-      surveyed it, a confidence rating, and a flag for credentials or personal data.
+      I surveyed 53 project directories across parallel agents, each entry recording the surveying
+      agent, a confidence rating, and a flag for credentials or personal data.
     </p>
     <p>
-      What mattered was the reconciliation pass afterwards: twelve ambiguities resolved by hand.
-      Which of two checkouts was current, whether two repositories were one project or two, and
-      three similarly-named directories that proved unrelated. Fan-out is the cheap half; skipping
-      reconciliation is how you get a confident, internally inconsistent answer.
+      What mattered was the reconciliation afterwards: twelve ambiguities resolved by hand — which
+      checkout was current, whether two repositories were one project, three similarly-named
+      directories that proved unrelated. Fan-out is the cheap half; skipping reconciliation is how
+      you get a confident, internally inconsistent answer.
     </p>
   </div>
 </section>
@@ -137,8 +162,8 @@
     <p class="eyebrow">Propagation</p>
     <h2>Filing is the easy half; the job is asking what a new fact contradicts</h2>
     <p>
-      The agent's real task is checking a new fact against what is already recorded. Two catches,
-      both against me.
+      The agent's real task is checking new facts against what is recorded. Two catches, both
+      against me.
     </p>
 
     <div class="finding">
@@ -167,10 +192,10 @@
     <h2>Check what the agent says it did, including on this site</h2>
     <p>
       This site is the worked example. Contrast was checked programmatically across 30 colour pairs
-      in both themes, not eyeballed. Overflow was measured at 390px and 1440px on every page, and
-      the first harness produced a false positive, because headless Chrome on Windows clamps the
-      window size and crops instead of reflowing. The bug was in the instrument, and it surfaced
-      only because the result was checked rather than trusted.
+      in both themes, not eyeballed. Overflow was measured at 390px and 1440px on every page — and
+      the first harness produced a false positive, because headless Chrome clamps the window size and
+      crops instead of reflowing. The bug was in the instrument, and surfaced only because the result
+      was checked.
     </p>
     <p>
       Lighthouse was not run, so no Lighthouse score is claimed anywhere on this site. Six figures
@@ -178,6 +203,19 @@
       and are now listed in a committed rules file so they cannot creep back. That file is the
       build-gate principle again: write the constraint where it will be enforced, not where it will
       be remembered.
+    </p>
+
+    <p class="code-src">backend/app.py — the fund refuses to mark itself wrong</p>
+    <pre class="code"># Safety: never mark the fund to a wrong value when live prices are missing.
+if positions and not any(pinfo.get(p['ticker'], {}).get('price') is not None
+                         for p in positions):
+    return jsonify({'error': 'Live prices are unavailable right now, so the fund '
+                             'was not re-marked (marking now would misvalue it). '
+                             'Please try again in a moment.'}), 503</pre>
+    <p>
+      The same shape as the
+      <a href="../projects/index.html#prediction-market-system">abstaining strategy</a>: when a
+      required input is missing, return nothing rather than something.
     </p>
   </div>
 </section>
