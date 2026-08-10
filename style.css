@@ -12,7 +12,9 @@
   --surface: #FBFAFC;
   --ink: #0D0B14;
   --ink-2: #4A4759;
-  --muted: #7B7890;
+  --muted: #7B7890;   /* GRAPHICAL ONLY — 3.96:1, never carries text */
+  --ink-3: #6B687E;   /* tertiary text; clears AA on every light surface */
+  --surface-2: #EFEEF6;
   --line: #E4E2EE;
 
   /* categorical series — fixed order, never cycled */
@@ -80,6 +82,8 @@
     --ink: #F5F4FA;
     --ink-2: #BFBCD0;
     --muted: #8A87A0;
+    --ink-3: #8A87A0;
+    --surface-2: #1A1828;
     --line: #26233A;
     --c1: #8079F0; --c2: #DD5F24; --c3: #0F8B73;
     --c4: #B8880A; --c5: #DE5183; --c6: #2C8F4D;
@@ -98,6 +102,8 @@
   --ink: #F5F4FA;
   --ink-2: #BFBCD0;
   --muted: #8A87A0;
+    --ink-3: #8A87A0;
+    --surface-2: #1A1828;
   --line: #26233A;
   --c1: #8079F0; --c2: #DD5F24; --c3: #0F8B73;
   --c4: #B8880A; --c5: #DE5183; --c6: #2C8F4D;
@@ -181,12 +187,12 @@ code, .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums
 
 .head { padding: var(--s6) 0 var(--s3); }
 .head h1 { margin-bottom: var(--s3); }
-.standfirst { font-size: var(--fs-lg); color: var(--muted); max-width: 58ch; }
+.standfirst { font-size: var(--fs-lg); color: var(--ink-3); max-width: 58ch; }
 
 .meta {
   font-family: var(--mono);
   font-size: var(--fs-xs);
-  color: var(--muted);
+  color: var(--ink-3);
   line-height: 1.9;
   max-width: none;
 }
@@ -210,7 +216,7 @@ h2.eyebrow {
 }
 
 h1 + p, h2 + p, h3 + p { margin-top: var(--s3); }
-.lede { font-size: var(--fs-lg); color: var(--muted); }
+.lede { font-size: var(--fs-lg); color: var(--ink-3); }
 
 /* ---------- cards ---------- */
 
@@ -230,7 +236,7 @@ h1 + p, h2 + p, h3 + p { margin-top: var(--s3); }
 }
 a.card:hover { border-color: var(--accent); }
 a.card:hover h3 { text-decoration: underline; }
-.card p { font-size: var(--fs-sm); color: var(--muted); margin: var(--s2) 0 0; max-width: none; }
+.card p { font-size: var(--fs-sm); color: var(--ink-3); margin: var(--s2) 0 0; max-width: none; }
 .card__stat {
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
@@ -247,13 +253,13 @@ a.card:hover h3 { text-decoration: underline; }
 .entry__meta {
   font-family: var(--mono);
   font-size: var(--fs-xs);
-  color: var(--muted);
+  color: var(--ink-3);
   margin: var(--s2) 0 var(--s3);
   max-width: none;
 }
 .entry__stack {
   font-size: var(--fs-sm);
-  color: var(--muted);
+  color: var(--ink-3);
   border-top: 1px solid var(--line);
   padding-top: var(--s2);
   margin-top: var(--s3);
@@ -277,13 +283,13 @@ a.card:hover h3 { text-decoration: underline; }
 }
 .finding p:last-child { margin-bottom: 0; }
 
-.method { font-size: var(--fs-sm); color: var(--muted); margin-top: var(--s2); }
+.method { font-size: var(--fs-sm); color: var(--ink-3); margin-top: var(--s2); }
 .method b {
   font-family: var(--mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--ink-3);
 }
 
 /* ---------- plain-language layer ---------- */
@@ -317,7 +323,7 @@ details > summary {
   font-size: var(--fs-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink-3);
   list-style: none;
 }
 details > summary::-webkit-details-marker { display: none; }
@@ -351,7 +357,7 @@ details > .inner { padding-bottom: var(--s3); }
 .gterm p { margin: var(--s2) 0 0; }
 .gterm .mine {
   font-size: var(--fs-sm);
-  color: var(--muted);
+  color: var(--ink-3);
   border-left: 2px solid var(--line);
   padding-left: var(--s3);
   margin-top: var(--s2);
@@ -361,16 +367,16 @@ details > .inner { padding-bottom: var(--s3); }
 
 figure { margin: var(--s4) 0; }
 figure svg { display: block; width: 100%; height: auto; overflow: visible; }
-figcaption { font-size: var(--fs-sm); color: var(--muted); margin-top: var(--s2); }
+figcaption { font-size: var(--fs-sm); color: var(--ink-3); margin-top: var(--s2); }
 figcaption b { font-weight: 600; }
 .prov {
   font-family: var(--mono);
   font-size: var(--fs-xs);
-  color: var(--faint);
+  color: var(--ink-3);
   margin-top: var(--s1);
   display: block;
 }
-.prov a { color: var(--muted); }
+.prov a { color: var(--ink-3); }
 
 /* JS hover readout; absent and harmless when JS is off */
 #readout {
@@ -403,7 +409,7 @@ figcaption b { font-weight: 600; }
 .code-src {
   font-family: var(--mono);
   font-size: var(--fs-xs);
-  color: var(--faint);
+  color: var(--ink-3);
   margin: 0 0 var(--s1);
 }
 
@@ -411,7 +417,7 @@ figcaption b { font-weight: 600; }
 
 .scroll { overflow-x: auto; margin: var(--s4) 0; }
 table { border-collapse: collapse; width: 100%; font-size: var(--fs-sm); min-width: 30rem; }
-caption { text-align: left; font-size: var(--fs-sm); color: var(--muted); padding-bottom: var(--s2); }
+caption { text-align: left; font-size: var(--fs-sm); color: var(--ink-3); padding-bottom: var(--s2); }
 th, td {
   border-bottom: 1px solid var(--line);
   padding: var(--s2) var(--s3) var(--s2) 0;
@@ -422,7 +428,7 @@ thead th {
   font-size: var(--fs-xs);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--ink-3);
   font-weight: 600;
 }
 td.n, th.n { font-family: var(--mono); font-variant-numeric: tabular-nums; }
@@ -463,11 +469,11 @@ ul.plain > li:last-child { border-bottom: none; }
 .foot {
   border-top: 1px solid var(--line);
   padding: var(--s4) 0 var(--s6);
-  color: var(--faint);
+  color: var(--ink-3);
   font-size: var(--fs-sm);
 }
 .foot p { margin: 0; max-width: none; }
-.foot a { color: var(--muted); }
+.foot a { color: var(--ink-3); }
 
 /* ---------- cv ---------- */
 
@@ -476,7 +482,7 @@ ul.plain > li:last-child { border-bottom: none; }
 .cv-row .when {
   font-family: var(--mono);
   font-size: var(--fs-xs);
-  color: var(--muted);
+  color: var(--ink-3);
   margin-left: auto;
   flex: 0 0 auto;
   white-space: nowrap;
@@ -765,3 +771,27 @@ svg .pulse { animation: pulse 4.5s ease-in-out infinite; }
   .hero { animation: none; }
   svg .pulse { animation: none; opacity: 0; }
 }
+
+
+/* ---------- fixed-ground blocks ----------
+   The hero gradient, the institution card and the terminal keep their own ground
+   regardless of theme. Anything inside them that would otherwise inherit a themed
+   ink has to be pinned, or it inverts: near-black text on the gradient in light
+   mode, near-white text on the institution card in dark mode. */
+
+.hero strong, .hero b, .hero em, .hero code, .hero .num, .hero .mono,
+.hero .stat__v, .hero .stat__l, .hero li { color: var(--hero-ink); }
+.hero .lede, .hero .meta { color: var(--hero-ink); opacity: .92; }
+
+.inst strong, .inst b, .inst em, .inst code, .inst .num, .inst li { color: #0D0B14; }
+.inst .mono, .inst dfn { color: #4A4759; }
+
+.term strong, .term b, .term code, .term .num { color: #F5F4FA; }
+
+/* institution marks sit on the card's fixed light ground in both themes, which is
+   what keeps single-colour artwork legible without recolouring anyone's logo */
+.inst__mark { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s2); }
+.inst__mark img { display: block; height: auto; }
+.inst--ucl .inst__mark img { width: 132px; }
+.inst--leiden .inst__mark img { width: 46px; }
+@media (max-width: 30rem) { .inst--ucl .inst__mark img { width: 108px; } }

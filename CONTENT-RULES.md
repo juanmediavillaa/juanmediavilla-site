@@ -204,16 +204,31 @@ series palette, a figure, or the gradient system.
 - Colours are **sampled from the institutions' own artwork**, not recalled: UCL `#9A3BFF` and
   `#361A54` (from `ucl-logo--primary.svg`), Leiden `#014189` (consistent across its seal SVG and
   logo PNG).
-- **No logo files are copied into this repo.** The treatment is typographic. The source folder
-  holds mixed-quality assets — one official-looking UCL vector, a third-party low-resolution UCL
-  raster, a heavy Leiden seal — and a typographic block is both consistent across institutions
-  and free of trademark risk. It also avoids that folder entirely, which contains an
-  authorisation letter and tuition records.
+- **Two logo files are used**, both official vector artwork copied from the institution assets
+  folder: `assets/ucl-logo.svg` (1.5 KB) and `assets/leiden-seal.svg` (89 KB). Nothing else from
+  that folder is used — it also contains an authorisation letter, tuition records and a
+  third-party low-resolution UCL raster, none of which may be copied.
+- Logos state factually where I studied. Nothing on the site may imply endorsement by either
+  institution.
 - The institution card keeps a **fixed light ground in both themes**, because the measured brand
   colours fall to 1.28:1 and 1.90:1 on the dark plane. On the card they measure 14.09:1 (UCL
   dark), 4.54:1 (UCL bright) and 9.53:1 (Leiden).
 
-## 13. Checks before publishing
+## 13. Contrast is measured, not assumed
+
+`--muted` is **graphical only**. It measures 3.96:1 in light and must never appear in a `color:`
+declaration. Tertiary text uses `--ink-3` (`#6B687E` light, `#8A87A0` dark), which clears AA on
+every surface including the three section bands.
+
+Three blocks keep a **fixed ground regardless of theme** — the gradient hero, the institution
+card and the terminal. Anything inside them that would otherwise inherit a themed ink
+(`strong`, `b`, `em`, `code`, `.num`) must be pinned explicitly, or it inverts and vanishes.
+
+Run the computed-contrast audit before publishing: it walks every text node in a real browser,
+resolves the effective background through the ancestor chain, and reports any pair below AA. A
+palette table cannot catch token drift; this does.
+
+## 14. Checks before publishing
 
 ```sh
 # no external subresources anywhere

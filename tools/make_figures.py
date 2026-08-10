@@ -83,7 +83,8 @@ class Svg:
             # custom properties, so it carries its own, including the dark override.
             "svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;"
             "--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;"
-            "--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}"
+            "--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"
+            "--sans:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}"
             "@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;"
             "--muted:#8A87A0;--line:#26233A;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}"
             ".lbl{font:11px var(--mono,monospace);fill:var(--ink2,#4A4759)}"
