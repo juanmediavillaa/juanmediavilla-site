@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Juan Mediavilla — ML engineer</title>
-<meta name="description" content="MSc Machine Learning at UCL. I build research systems end to end and report what they actually show.">
+<meta name="description" content="MSc Machine Learning at UCL. I build research systems end to end: a 24/7 market data platform, a Bayesian sampler written from scratch, an on-chain wallet-intelligence engine, and a six-architecture deep-learning benchmark.">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:,">
 </head>
@@ -18,89 +19,97 @@
     <a href="research/index.html">Research</a>
     <a href="how-i-work/index.html">How I Work</a>
     <a href="about/index.html">About</a>
+    <span data-theme-slot></span>
   </div>
 </nav>
 
 <main id="main">
 
-<header class="head">
+<header class="hero">
+  <canvas class="hero__canvas" aria-hidden="true"></canvas>
   <div class="wrap">
+    <p class="eyebrow">MSc Machine Learning · University College London · London</p>
     <h1>Juan Mediavilla</h1>
-    <p class="standfirst">I build research systems end to end and report what they actually show.</p>
-    <p class="meta">
-      <b>MSc Machine Learning</b>, University College London — Sep 2025 to Sep 2026<br>
-      London, UK
+    <p class="standfirst">
+      I build research systems end to end — the data platform, the models, and the evaluation that
+      decides whether they are worth anything.
     </p>
+    <ul class="stats">
+      <li><span class="stat__v">718</span><span class="stat__l">commits on the research platform</span></li>
+      <li><span class="stat__v">188,856</span><span class="stat__l">trades in the audited panel</span></li>
+      <li><span class="stat__v">34/34</span><span class="stat__l">markets improved by pooling</span></li>
+      <li><span class="stat__v">6</span><span class="stat__l">architectures benchmarked</span></li>
+    </ul>
   </div>
 </header>
 
-<section class="section">
+<section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Position</p>
-    <h2>The method is the deliverable</h2>
+    <p class="eyebrow">What I do</p>
+    <h2>Build the system, then find out whether it works</h2>
     <p class="lede">
-      Four trading strategies I built turned out not to work, and I reported that rather than
-      shipping them. The main thing my thesis set out to prove did not hold, and the thesis says so.
-      What I am offering is the discipline underneath that: write down what would count as success
-      before you look at the answer, so you cannot move the goalposts afterwards.
+      A 24/7 market-data platform feeding a live inference and execution pipeline. A Bayesian
+      sampler written from scratch because the standard tools did not apply. An on-chain
+      wallet-intelligence engine. A fund-accounting system. A six-architecture deep-learning
+      benchmark. In each case I built the thing, and then built the test that could have shown it
+      was worthless.
     </p>
     <p>
-      That discipline is also how I work with AI tools: written rules about what the tool may decide
-      on its own, a requirement that every claim carries its source, and limits enforced in code
-      rather than asked for politely.
+      That second half is the part I would want to be judged on. It is also why I can tell you
+      which of these results I trust, and how much.
       <a href="how-i-work/index.html">How I work&nbsp;→</a>
     </p>
   </div>
 </section>
 
-<section class="section">
+<section class="section band reveal">
   <div class="wrap">
     <p class="eyebrow">Selected work</p>
     <h2>Four projects</h2>
 
     <div class="cards">
 
-      <a class="card" href="projects/index.html#prediction-market-system">
-        <h3>Prediction-market research system</h3>
+      <a class="card domain domain--markets" href="projects/index.html#prediction-market-system">
+        <h3>Prediction-market research platform</h3>
         <p>
-          A self-built collection, modelling and backtesting stack, evaluated on an audited panel
-          of resolved markets.
+          Six scheduled collectors, real-time ingest, a ~118 GB corpus, live inference and order
+          execution, and a walk-forward backtester with realistic fill simulation.
         </p>
-        <p class="card__stat">4 of 4 strategies → no edge</p>
+        <p class="card__stat">718 commits · 400-market audited panel</p>
       </a>
 
-      <a class="card" href="research/index.html">
-        <h3>MSc thesis — latent repricing dynamics</h3>
+      <a class="card domain domain--research" href="research/index.html#msc">
+        <h3>MSc thesis — latent market dynamics</h3>
         <p>
-          A point-process account of how prediction-market prices reprice into their deadline,
-          across fourteen pre-registered components.
+          A hierarchical point-process model of when prediction markets move, fitted with a
+          Metropolis-within-Gibbs sampler written from scratch.
         </p>
-        <p class="card__stat">Main hypothesis: not supported</p>
+        <p class="card__stat">Custom MCMC · pooling improved 34/34 markets</p>
       </a>
 
-      <a class="card" href="projects/index.html#data-portal">
+      <a class="card domain domain--systems" href="projects/index.html#data-portal">
         <h3>Market-data portal</h3>
         <p>
-          A zero-JavaScript static product documenting an order-book archive, with provenance
-          enforced at build time.
+          Productised a seven-stream archive into documented, DOI-versioned data, with provenance
+          enforced by the build itself.
         </p>
         <p class="card__stat">7 streams · 236 GB · 12.8 GiB/day</p>
       </a>
 
-      <a class="card" href="research/index.html#bsc">
+      <a class="card domain domain--research" href="research/index.html#bsc">
         <h3>BSc thesis — activity recognition</h3>
         <p>
-          Six architectures benchmarked on wearable-sensor data, then tested for whether the
-          ranking meant anything.
+          A full self-supervised learning pipeline benchmarking six architectures on wearable-sensor
+          data, tested on people the models had never seen.
         </p>
-        <p class="card__stat">6 models · no significant difference</p>
+        <p class="card__stat">6 architectures · 23-min model matched a 7-hour one</p>
       </a>
 
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
   <div class="wrap">
     <p class="eyebrow">Contact</p>
     <h2>Get in touch</h2>
@@ -121,5 +130,6 @@
   </div>
 </footer>
 
+<script src="app.js"></script>
 </body>
 </html>

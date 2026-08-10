@@ -1,56 +1,112 @@
 /* juanmediavilla.com — one stylesheet, no build step, no external requests.
-   Light is the authored base; dark is an override under prefers-color-scheme.
-   Colour is never load-bearing: every marker reads in greyscale.
-   Scales: 6 font sizes, 2 weights, 6 spacing steps. */
+   Light is the authored reading surface; dark is a fully atmospheric override.
+   Palette is externally validated: see tools/ and the round-5 report.
+   `muted` is a GRAPHICAL token (gridlines, axis rules) at 3:1 — it never carries
+   text, because in light mode it measures 3.96:1. Chart label text uses --ink-2. */
 
 :root {
-  /* light — authored base */
-  --bg: #FDFDFC;
-  --surface: #FFFFFF;
-  --surface-2: #F4F4F0;
-  --ink: #111111;
-  --ink-2: #262626;
-  --muted: #52524C;
-  --faint: #6A6A64;
-  --accent: #0B6B52;
-  --line: #E4E4DE;
+  color-scheme: light dark;
+
+  /* surfaces */
+  --plane: #F7F6FB;
+  --surface: #FBFAFC;
+  --ink: #0D0B14;
+  --ink-2: #4A4759;
+  --muted: #7B7890;
+  --line: #E4E2EE;
+
+  /* categorical series — fixed order, never cycled */
+  --c1: #4F46E5;  /* indigo */
+  --c2: #E8590C;  /* orange */
+  --c3: #0E9384;  /* teal   */
+  --c4: #CA8A04;  /* yellow — 2.82:1, always needs a direct label */
+  --c5: #DB2777;  /* pink   */
+  --c6: #15803D;  /* green  */
+  --accent: var(--c1);
+
+  /* atmosphere */
+  --hero-a: #312E81;
+  --hero-b: #4C1D95;
+  --hero-c: #0F766E;
+  --band-1: #EEF0FE;
+  --band-2: #F3EEFB;
+  --band-3: #EAF5F3;
+  --hero-ink: #FFFFFF;
+
+  /* elevation — three steps */
+  --e1: 0 1px 2px rgba(13, 11, 20, .06), 0 1px 1px rgba(13, 11, 20, .04);
+  --e2: 0 2px 6px rgba(13, 11, 20, .07), 0 6px 16px rgba(13, 11, 20, .06);
+  --e3: 0 8px 28px rgba(13, 11, 20, .10), 0 2px 8px rgba(13, 11, 20, .06);
 
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, "Cascadia Mono", "Segoe UI Mono",
     "Roboto Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  /* type scale */
-  --fs-xs: 0.75rem;
-  --fs-sm: 0.875rem;
-  --fs-md: 1rem;
-  --fs-lg: 1.125rem;
-  --fs-h2: clamp(1.35rem, 3vw, 1.6rem);
-  --fs-h1: clamp(1.9rem, 5vw, 2.5rem);
+  /* fluid type — continuous between 390px and 1440px */
+  --fs-xs: clamp(0.72rem, 0.70rem + 0.10vw, 0.78rem);
+  --fs-sm: clamp(0.84rem, 0.81rem + 0.14vw, 0.92rem);
+  --fs-md: clamp(1rem, 0.97rem + 0.16vw, 1.09rem);
+  --fs-lg: clamp(1.09rem, 1.03rem + 0.30vw, 1.28rem);
+  --fs-h3: clamp(1.12rem, 1.05rem + 0.34vw, 1.34rem);
+  --fs-h2: clamp(1.42rem, 1.25rem + 0.85vw, 1.95rem);
+  --fs-h1: clamp(2.1rem, 1.65rem + 2.2vw, 3.4rem);
 
-  /* spacing scale */
-  --s1: 0.25rem;
-  --s2: 0.5rem;
-  --s3: 1rem;
-  --s4: 1.5rem;
-  --s5: 2.5rem;
-  --s6: 4rem;
+  /* fluid spacing */
+  --s1: clamp(0.25rem, 0.24rem + 0.05vw, 0.3rem);
+  --s2: clamp(0.5rem, 0.47rem + 0.14vw, 0.62rem);
+  --s3: clamp(0.9rem, 0.84rem + 0.28vw, 1.15rem);
+  --s4: clamp(1.35rem, 1.2rem + 0.65vw, 1.9rem);
+  --s5: clamp(2.2rem, 1.8rem + 1.7vw, 3.4rem);
+  --s6: clamp(3.4rem, 2.6rem + 3.2vw, 5.6rem);
 
-  --measure: 68ch;
-  --page: 820px;
+  --measure: clamp(48ch, 42ch + 18vw, 70ch);
+  --page: 900px;
+
+  /* domain colour coding */
+  --dom-research: var(--c1);
+  --dom-markets: var(--c2);
+  --dom-systems: var(--c3);
+  --dom-teaching: var(--c5);
+}
+
+:root[data-theme="dark"], :root:not([data-theme="light"]) {
+  --dark-plane: #0B0A12;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #161614;
-    --surface: #1E1E1C;
-    --surface-2: #262623;
-    --ink: #F4F4F0;
-    --ink-2: #DEDED8;
-    --muted: #ADADA5;
-    --faint: #95958D;
-    --accent: #5FBFA0;
-    --line: #34342F;
+  :root:not([data-theme="light"]) {
+    --plane: #0B0A12;
+    --surface: #12101C;
+    --ink: #F5F4FA;
+    --ink-2: #BFBCD0;
+    --muted: #8A87A0;
+    --line: #26233A;
+    --c1: #8079F0; --c2: #DD5F24; --c3: #0F8B73;
+    --c4: #B8880A; --c5: #DE5183; --c6: #2C8F4D;
+    --hero-a: #231F5E; --hero-b: #331466; --hero-c: #0A5049;
+    --band-1: #141230; --band-2: #171029; --band-3: #0B1F22;
+    --hero-ink: #F5F4FA;
+    --e1: 0 1px 2px rgba(0, 0, 0, .5);
+    --e2: 0 2px 8px rgba(0, 0, 0, .55), 0 8px 22px rgba(0, 0, 0, .4);
+    --e3: 0 10px 34px rgba(0, 0, 0, .6), 0 2px 10px rgba(0, 0, 0, .5);
   }
+}
+
+:root[data-theme="dark"] {
+  --plane: #0B0A12;
+  --surface: #12101C;
+  --ink: #F5F4FA;
+  --ink-2: #BFBCD0;
+  --muted: #8A87A0;
+  --line: #26233A;
+  --c1: #8079F0; --c2: #DD5F24; --c3: #0F8B73;
+  --c4: #B8880A; --c5: #DE5183; --c6: #2C8F4D;
+  --hero-a: #231F5E; --hero-b: #331466; --hero-c: #0A5049;
+  --band-1: #141230; --band-2: #171029; --band-3: #0B1F22;
+  --hero-ink: #F5F4FA;
+  --e1: 0 1px 2px rgba(0, 0, 0, .5);
+  --e2: 0 2px 8px rgba(0, 0, 0, .55), 0 8px 22px rgba(0, 0, 0, .4);
+  --e3: 0 10px 34px rgba(0, 0, 0, .6), 0 2px 10px rgba(0, 0, 0, .5);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -59,7 +115,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--plane);
   color: var(--ink-2);
   font-family: var(--sans);
   font-size: var(--fs-md);
@@ -77,7 +133,7 @@ h1, h2, h3 {
 }
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
-h3 { font-size: var(--fs-md); }
+h3 { font-size: var(--fs-h3); }
 
 p, li { max-width: var(--measure); }
 p { margin: 0 0 var(--s3); }
@@ -448,3 +504,192 @@ ul.plain > li:last-child { border-bottom: none; }
   .cv-item { break-inside: avoid; margin: var(--s2) 0; }
   @page { margin: 12mm; }
 }
+
+/* ================= atmosphere ================= */
+
+.hero {
+  background:
+    radial-gradient(120% 140% at 12% 0%, var(--hero-b) 0%, transparent 58%),
+    linear-gradient(115deg, var(--hero-a) 0%, var(--hero-b) 52%, var(--hero-c) 100%);
+  color: var(--hero-ink);
+  padding: var(--s6) 0 var(--s5);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero h1, .hero h2, .hero .standfirst, .hero p { color: var(--hero-ink); }
+.hero .standfirst { opacity: .94; }
+.hero .eyebrow { color: var(--hero-ink); opacity: .8; }
+.hero a { color: var(--hero-ink); text-decoration-thickness: 1px; }
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+}
+.hero .wrap { position: relative; }
+
+/* section bands: a colour journey down the page */
+.band { background: var(--band-1); }
+.band-2 { background: var(--band-2); }
+.band-3 { background: var(--band-3); }
+.band, .band-2, .band-3 { border-top: 1px solid var(--line); }
+
+/* hero stat tiles */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: var(--s3);
+  margin-top: var(--s4);
+  padding: 0;
+  list-style: none;
+}
+.stats li { max-width: none; }
+.stat__v {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  display: block;
+}
+.stat__l { font-size: var(--fs-xs); opacity: .85; display: block; margin-top: var(--s1); }
+
+/* elevation on cards */
+.card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--e1);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+a.card:hover { box-shadow: var(--e2); transform: translateY(-2px); border-color: var(--c1); }
+
+/* domain colour coding — a rule, plus a text label, never colour alone */
+.domain { border-left: 3px solid var(--line); padding-left: var(--s3); }
+.domain--research { border-left-color: var(--dom-research); }
+.domain--markets  { border-left-color: var(--dom-markets); }
+.domain--systems  { border-left-color: var(--dom-systems); }
+.domain--teaching { border-left-color: var(--dom-teaching); }
+
+/* pull quote */
+.pull {
+  font-size: var(--fs-lg);
+  color: var(--ink);
+  border-left: 3px solid var(--c1);
+  padding: var(--s2) 0 var(--s2) var(--s4);
+  margin: var(--s4) 0;
+  max-width: 56ch;
+}
+
+/* callout */
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--c1);
+  border-radius: 8px;
+  box-shadow: var(--e1);
+  padding: var(--s3) var(--s4);
+  margin: var(--s4) 0;
+}
+
+hr.divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line) 18%, var(--line) 82%, transparent);
+  margin: var(--s5) 0;
+}
+
+/* ================= rendered terminal ================= */
+
+.term {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--e2);
+  margin: var(--s4) 0;
+  background: #12101C;
+  border: 1px solid #26233A;
+}
+.term__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) var(--s3);
+  background: #1B1830;
+  border-bottom: 1px solid #26233A;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: #BFBCD0;
+}
+.term__dot { width: .62em; height: .62em; border-radius: 50%; background: #3A3552; flex: none; }
+.term pre {
+  margin: 0;
+  padding: var(--s3);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  line-height: 1.7;
+  color: #D9D6E8;
+  white-space: pre;
+}
+.term .ok { color: #6FD3B4; }
+.term .dim { color: #8A87A0; }
+
+/* ================= data table under a figure ================= */
+
+.figdata { margin-top: var(--s2); }
+.figdata > summary {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: var(--s2) 0;
+  list-style: none;
+}
+.figdata > summary::-webkit-details-marker { display: none; }
+.figdata > summary::before { content: "▸ "; color: var(--c1); }
+.figdata[open] > summary::before { content: "▾ "; }
+.figdata table { font-size: var(--fs-xs); min-width: 0; }
+
+/* ================= motion ================= */
+
+/* Reveals are opt-in and applied by script. Nothing is hidden by CSS alone, so a
+   failed observer, a slow frame or a blocked app.js can never cost the reader
+   content — the worst case is that a section simply appears without animating. */
+.reveal { opacity: 1; }
+html.js .reveal.pending { opacity: 0; transform: translateY(10px); }
+html.js .reveal { transition: opacity .5s ease, transform .5s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html.js .reveal.pending { opacity: 1 !important; transform: none !important; }
+}
+
+@media (forced-colors: active) {
+  .card, .callout, .term { border: 1px solid CanvasText; box-shadow: none; }
+  .hero { background: Canvas; color: CanvasText; }
+  .hero h1, .hero .standfirst, .hero p, .hero a { color: CanvasText; }
+  .domain { border-left-color: CanvasText; }
+}
+
+/* theme toggle */
+.theme-toggle {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .3em .8em;
+  cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--c1); }

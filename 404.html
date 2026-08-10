@@ -8,6 +8,7 @@
 <!-- GitHub Pages serves this file for a missing path at ANY depth, so its links
      must be absolute. This is the one file on the site that is not relative, and
      the only one that does not resolve from file:// — by necessity, not oversight. -->
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="data:,">
 </head>
@@ -21,6 +22,7 @@
     <a href="/research/">Research</a>
     <a href="/how-i-work/">How I Work</a>
     <a href="/about/">About</a>
+    <span data-theme-slot></span>
   </div>
 </nav>
 
@@ -49,5 +51,6 @@
   </div>
 </footer>
 
+<script src="/app.js"></script>
 </body>
 </html>

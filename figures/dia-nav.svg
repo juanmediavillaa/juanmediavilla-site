@@ -1,0 +1,16 @@
+<svg viewBox="0 0 660 220" role="img" aria-labelledby="dt-dia-nav dd-dia-nav" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-nav">Unitisation, and the ledger invariant</title>
+  <desc id="dd-dia-nav">Money paid in is converted to units at today's price per unit. The fund's value always equals its cash plus the market value of its positions.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}</style>
+  <g><rect x="8" y="30" width="140" height="50" rx="6" class="bx bx3"/><title>a member deposits</title><text x="78" y="50" class="t" text-anchor="middle" dominant-baseline="middle">money in</text><text x="78" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">€ deposit</text></g>
+  <g><rect x="190" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>net asset value per unit, computed at the moment of the deposit</title><text x="265" y="50" class="t" text-anchor="middle" dominant-baseline="middle">price per unit</text><text x="265" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">value ÷ units</text></g>
+  <g><rect x="382" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>the member is issued units at that price</title><text x="457" y="50" class="t" text-anchor="middle" dominant-baseline="middle">units issued</text><text x="457" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">deposit ÷ price</text></g>
+  <path d="M150 55 L188 55" class="ar "/>
+  <path d="M342 55 L380 55" class="ar "/>
+  <rect x="8" y="112" width="524" height="50" rx="6" class="bx bx2"/>
+  <text x="270" y="132" class="t" text-anchor="middle">fund value  =  cash  +  Σ (position market value)</text>
+  <text x="270" y="150" class="ts" text-anchor="middle">checked on every write — the ledger cannot drift</text>
+  <text x="8" y="190" class="tm" text-anchor="start">money is held as exact decimals and written as text, so nothing rounds</text>
+  <text x="8" y="206" class="tm" text-anchor="start">withdrawals redeem units at the price of the day, by the same arithmetic</text>
+</svg>

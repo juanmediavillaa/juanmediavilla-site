@@ -1,0 +1,19 @@
+<svg viewBox="0 0 660 250" role="img" aria-labelledby="dt-dia-tiers dd-dia-tiers" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-tiers">The three-tier wallet engine</title>
+  <desc id="dd-dia-tiers">Three independent checks run on each wallet. Only when all three agree is a wallet labelled an insider; if on-chain tracing is unavailable the classification is capped rather than guessed.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}</style>
+  <g><rect x="8" y="18" width="220" height="44" rx="6" class="bx bx1"/><title>tier 1 · trading pattern: timing vs news</title><text x="118" y="35" class="t" text-anchor="middle" dominant-baseline="middle">tier 1 · trading pattern</text><text x="118" y="51" class="ts" text-anchor="middle" dominant-baseline="middle">timing vs news</text></g>
+  <g><rect x="8" y="76" width="220" height="44" rx="6" class="bx bx1"/><title>tier 2 · profit history: early on winners</title><text x="118" y="93" class="t" text-anchor="middle" dominant-baseline="middle">tier 2 · profit history</text><text x="118" y="109" class="ts" text-anchor="middle" dominant-baseline="middle">early on winners</text></g>
+  <g><rect x="8" y="134" width="220" height="44" rx="6" class="bx bx1"/><title>tier 3 · on-chain funding: traced up to 3 hops</title><text x="118" y="151" class="t" text-anchor="middle" dominant-baseline="middle">tier 3 · on-chain funding</text><text x="118" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">traced up to 3 hops</text></g>
+  <g><rect x="280" y="76" width="150" height="60" rx="6" class="bx bx2"/><title>corroboration gate — an insider label needs every tier</title><text x="355" y="106" class="t" text-anchor="middle" dominant-baseline="middle">all three agree?</text></g>
+  <path d="M230 40 L278 106" class="ar ar1"/>
+  <path d="M230 98 L278 106" class="ar ar1"/>
+  <path d="M230 156 L278 106" class="ar ar1"/>
+  <path d="M432 92 L500 60" class="ar ar2"/>
+  <path d="M432 120 L500 156" class="ar "/>
+  <g><rect x="500" y="38" width="152" height="44" rx="6" class="bx bx2"/><title>only when all tiers corroborate</title><text x="576" y="55" class="t" text-anchor="middle" dominant-baseline="middle">INSIDER</text><text x="576" y="71" class="ts" text-anchor="middle" dominant-baseline="middle">all three</text></g>
+  <g><rect x="500" y="134" width="152" height="44" rx="6" class="bx bx3"/><title>without an on-chain key, tier 3 is disabled and the label is capped here</title><text x="576" y="151" class="t" text-anchor="middle" dominant-baseline="middle">SHARP / WHALE</text><text x="576" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">capped</text></g>
+  <text x="8" y="210" class="tm" text-anchor="start">no on-chain key → tier 3 disabled → the label is capped, never guessed</text>
+  <text x="8" y="228" class="tm" text-anchor="start">one heuristic retired: it fired on the venue's proxy-wallet architecture</text>
+</svg>

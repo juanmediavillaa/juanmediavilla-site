@@ -81,27 +81,32 @@ class Svg:
         style = (
             # Self-contained palette: an <img>-referenced SVG has no access to the page's
             # custom properties, so it carries its own, including the dark override.
-            "svg{--ink:#111;--muted:#52524C;--line:#E4E4DE;--accent:#0B6B52;"
-            "--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"
-            "--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}"
-            "@media (prefers-color-scheme:dark){svg{--ink:#F4F4F0;--muted:#ADADA5;"
-            "--line:#34342F;--accent:#5FBFA0}}"
-            ".lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}"
-            ".lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}"
+            "svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;"
+            "--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;"
+            "--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}"
+            "@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;"
+            "--muted:#8A87A0;--line:#26233A;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}"
+            ".lbl{font:11px var(--mono,monospace);fill:var(--ink2,#4A4759)}"
+            ".lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#0D0B14)}"
             ".ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}"
-            ".axis{stroke:var(--line,#ddd);stroke-width:1}"
-            ".rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}"
-            ".bar{fill:var(--accent,#0B6B52)}"
-            ".bar-2{fill:var(--muted,#555)}"
-            ".ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}"
-            ".ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}"
-            ".dot{fill:var(--accent,#0B6B52)}"
-            ".dot-2{fill:var(--muted,#555)}"
-            ".cell{fill:var(--accent,#0B6B52)}"
+            ".axis{stroke:var(--line,#E4E2EE);stroke-width:1}"
+            ".rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}"
+            ".bar{fill:var(--c1,#4F46E5)}"
+            ".bar-2{fill:var(--c3,#0E9384)}"
+            ".ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}"
+            ".ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}"
+            ".dot{fill:var(--c1,#4F46E5)}"
+            ".dot-2{fill:var(--ink2,#4A4759)}"
+            ".cell{fill:var(--c1,#4F46E5)}"
             ".cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}"
             ".cv.hi{fill:#fff}"
         )
         body = "\n".join(self.parts)
+        # Compact the numeric literals. These figures are inlined into pages that
+        # carry a markup budget, and trailing zeros are pure weight.
+        body = re.sub(r"(\d)\.0(?=[^\d])", r"\1", body)
+        body = re.sub(r"(\.\d*?)0+(?=[^\d])", r"\1", body)
+        body = re.sub(r"(\d)\.(?=[^\d])", r"\1", body)
         return (
             f'<svg viewBox="0 0 {W} {self.h}" role="img" '
             f'aria-labelledby="t-{self.slug} d-{self.slug}" '
@@ -544,8 +549,10 @@ def fig_models() -> None:
         vals = [folds[m][sj] for sj in subjects]
         s.text(0, y + 4, m, cls="lbl-i")
         s.line(sx(min(vals)), y, sx(max(vals)), y, "axis")
-        for v in vals:
-            s.add(f'<circle cx="{sx(v):.1f}" cy="{y:.1f}" r="1.8" class="dot-2"/>')
+        # one group carries the class for all 22 subject dots rather than repeating it
+        s.add('<g class="dot-2">'
+              + "".join(f'<circle cx="{sx(v):.1f}" cy="{y:.1f}" r="1.8"/>' for v in vals)
+              + "</g>")
         s.add(f'<circle cx="{sx(agg[m]):.1f}" cy="{y:.1f}" r="4.5" class="dot">'
               f"<title>{m}: pooled macro-F1 {agg[m]:.4f}; per-subject range "
               f"{min(vals):.3f}–{max(vals):.3f}</title></circle>")
@@ -584,6 +591,7 @@ def fig_perclass() -> None:
         cx = x0 + j * cw
         s.text(cx + cw / 2 - 4, y0 - 18, f"c{c}", anchor="middle", cls="lbl-i")
         s.text(cx + cw / 2 - 4, y0 - 6, f"{support[c]:,}", anchor="middle")
+    s.add('<g class="bar">')
     for i, m in enumerate(BSC_MODELS):
         y = y0 + i * rh
         s.text(0, y + 13, m, cls="lbl-i")
@@ -591,8 +599,10 @@ def fig_perclass() -> None:
         for j, c in enumerate(classes):
             v = vmap[c]
             cx = x0 + j * cw
-            s.rect(cx, y + 14, (cw - 10) * v, 4, "bar", f"c{c}: {v:.3f}")
-            s.text(cx, y + 10, f"{v:.2f}", cls="lbl-i")
+            s.add(f'<rect x="{cx:.0f}" y="{y + 14:.0f}" width="{(cw - 10) * v:.1f}" '
+                  f'height="4"><title>c{c}: {v:.3f}</title></rect>'
+                  f'<text x="{cx:.0f}" y="{y + 10:.0f}">{v:.2f}</text>')
+    s.add("</g>")
     s.text(0, h - 26, "column = activity class, with its sample count below the label")
     s.text(0, h - 12, "bar length = F1 for that class; full width would be 1.00")
     write_svg("fig-perclass", s)
@@ -600,6 +610,49 @@ def fig_perclass() -> None:
 
 FIGURES = [fig_hazard, fig_lead, fig_lead_metrics, fig_pooling,
            fig_two_state, fig_strategies, fig_models, fig_perclass]
+
+
+# which published CSV backs which figure
+FIGURE_DATA = {
+    "fig-hazard": "hazard.csv",
+    "fig-lead": "lead-episodes.csv",
+    "fig-lead-metrics": "lead-metrics.csv",
+    "fig-pooling": "pooling-per-market.csv",
+    "fig-two-state": "two-state.csv",
+    "fig-strategies": "strategies.csv",
+    "fig-models": "models-macro-f1.csv",
+    "fig-perclass": "models-per-class-f1.csv",
+}
+MAX_ROWS = 12
+
+
+def data_table(name: str, up: str) -> str:
+    """A real table of the numbers behind a figure, as a native <details>.
+
+    This is the accessibility path and the evidence path at once: it needs no
+    JavaScript, it is keyboard reachable, it prints, and it lets a reader check
+    the chart against the data without downloading anything.
+    """
+    csv_name = FIGURE_DATA.get(name)
+    if not csv_name:
+        return ""
+    path = SITE / "data" / csv_name
+    if not path.exists():
+        return ""
+    with open(path, newline="") as fh:
+        rows = list(csv.reader(fh))
+    if not rows:
+        return ""
+    head, body = rows[0], rows[1:]
+    shown, note = body[:MAX_ROWS], ""
+    if len(body) > MAX_ROWS:
+        note = (f"<p class=\"prov\">First {MAX_ROWS} of {len(body)} rows. "
+                f'<a href="{up}data/{csv_name}">Download all {len(body)}</a>.</p>')
+    th = "".join(f"<th scope=\"col\">{esc(c.replace('_', ' '))}</th>" for c in head)
+    tb = "".join("<tr>" + "".join(f"<td>{esc(c)}</td>" for c in r) + "</tr>" for r in shown)
+    return (f'<details class="figdata"><summary>Show the numbers</summary>'
+            f'<div class="scroll"><table><thead><tr>{th}</tr></thead>'
+            f"<tbody>{tb}</tbody></table></div>{note}</details>\n")
 
 
 def inject() -> list[str]:
@@ -627,7 +680,8 @@ def inject() -> list[str]:
             block = (f"<!-- FIGURE:{name} -->\n"
                      f'<img src="{up}figures/{name}.svg" width="{vb.group(1)}" '
                      f'height="{vb.group(2)}" alt="{alt}">\n'
-                     f"<!-- /FIGURE:{name} -->")
+                     + data_table(name, up)
+                     + f"<!-- /FIGURE:{name} -->")
             text = text.replace(m.group(0), block)
         if text != original:
             page.write_text(text)

@@ -152,7 +152,38 @@ a smart person with no maths, statistics, machine-learning or markets background
   what the opposite result would have looked like. The provenance line comes second.
 - Axis labels carry a human reading. Where an axis is log-scaled, say so and say why.
 
-## 10. Checks before publishing
+## 10. Framing
+
+**Every project and finding is titled and summarised by what was built, explored or discovered.**
+A null result never appears in a heading, a card face, or an opening sentence. It appears under
+"What I found", stated plainly and without apology, because it is a finding.
+
+- Entry structure, in order: **what I built → what was hard → what I found → how I know**
+  (the last in a `<details>` expander).
+- Banned from headings and card faces: "no edge", "not significant", "failed", "redundant",
+  "does not", and any card whose single figure is a p-value.
+- The rigour is a property of the work, not its subject. The negative results are why the
+  positive ones can be believed — they are not the achievement.
+
+## 11. Colour, motion and script
+
+- The palette is **externally validated; do not substitute values.** Series slots are fixed and
+  never cycled or reordered.
+- **Slot 4 (yellow) measures 2.82:1 in light** — anything drawn in it needs a direct label or a
+  table. **Green and pink sit at ΔE 7.7 for deuteranopia in dark** — any chart using both needs a
+  second encoding. Scatter and small-multiple charts cap at the first three slots.
+- `--muted` is a **graphical** token (gridlines, axis rules) at 3:1. It measures 3.96:1 in light,
+  so it never carries text; chart label text uses `--ink-2`.
+- One y-axis per chart. Text wears text tokens, never a series colour.
+- **JavaScript ceiling: 25 KB site-wide** (currently ~7.8 KB). No framework, no build step, no
+  npm, no third-party request.
+- **Nothing may be hidden by CSS that only script can reveal.** Reveal animations are applied by
+  script only to elements it has already attached an observer to, so a blocked `app.js` costs the
+  reader nothing. Verify with scripting disabled: zero hidden sections.
+- Every animation stops under `prefers-reduced-motion`, and the hero pauses when the tab is
+  hidden.
+
+## 12. Checks before publishing
 
 ```sh
 # no external subresources anywhere

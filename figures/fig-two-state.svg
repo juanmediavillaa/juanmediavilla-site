@@ -1,21 +1,21 @@
 <svg viewBox="0 0 640 200" role="img" aria-labelledby="t-fig-two-state d-fig-two-state" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <title id="t-fig-two-state">Two-state repricing intensity</title>
   <desc id="d-fig-two-state">The hot state reprices about 27 times faster than the cold state. Cold dwells last about 37 minutes, hot about 8.</desc>
-  <style>svg{--ink:#111;--muted:#52524C;--line:#E4E4DE;--accent:#0B6B52;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F4F4F0;--muted:#ADADA5;--line:#34342F;--accent:#5FBFA0}}.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
-  <text x="0.0" y="56.0" class="lbl-i" text-anchor="start">cold state</text>
-  <rect x="96.0" y="41.0" width="14.32" height="22.00" class="bar-2"><title>cold: 0.041/min, CI [0.025, 0.063]</title></rect>
-  <line x1="104.8" y1="52.0" x2="118.0" y2="52.0" class="axis"/>
-  <text x="118.3" y="56.0" class="lbl-i" text-anchor="start">0.041 /min</text>
-  <text x="0.0" y="74.0" class="lbl" text-anchor="start">~37 min dwell</text>
-  <text x="0.0" y="118.0" class="lbl-i" text-anchor="start">hot state</text>
-  <rect x="96.0" y="103.0" width="401.59" height="22.00" class="bar"><title>hot: 1.141/min, CI [0.946, 1.383]</title></rect>
-  <line x1="428.9" y1="114.0" x2="582.9" y2="114.0" class="axis"/>
-  <text x="505.6" y="118.0" class="lbl-i" text-anchor="start">1.141 /min</text>
-  <text x="0.0" y="136.0" class="lbl" text-anchor="start">~8 min dwell</text>
-  <line x1="96.0" y1="164.0" x2="624.0" y2="164.0" class="axis"/>
-  <text x="96.0" y="179.0" class="lbl" text-anchor="middle">0</text>
-  <text x="272.0" y="179.0" class="lbl" text-anchor="middle">0.5</text>
-  <text x="448.0" y="179.0" class="lbl" text-anchor="middle">1</text>
-  <text x="624.0" y="179.0" class="lbl" text-anchor="middle">1.5</text>
-  <text x="360.0" y="194.0" class="lbl" text-anchor="middle">price moves per minute (further right = busier)</text>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.lbl{font:11px var(--mono,monospace);fill:var(--ink2,#4A4759)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink2,#4A4759)}.cell{fill:var(--c1,#4F46E5)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <text x="0" y="56" class="lbl-i" text-anchor="start">cold state</text>
+  <rect x="96" y="41" width="14.32" height="22" class="bar-2"><title>cold: 0.041/min, CI [0.025, 0.063]</title></rect>
+  <line x1="104.8" y1="52" x2="118" y2="52" class="axis"/>
+  <text x="118.3" y="56" class="lbl-i" text-anchor="start">0.041 /min</text>
+  <text x="0" y="74" class="lbl" text-anchor="start">~37 min dwell</text>
+  <text x="0" y="118" class="lbl-i" text-anchor="start">hot state</text>
+  <rect x="96" y="103" width="401.59" height="22" class="bar"><title>hot: 1.141/min, CI [0.946, 1.383]</title></rect>
+  <line x1="428.9" y1="114" x2="582.9" y2="114" class="axis"/>
+  <text x="505.6" y="118" class="lbl-i" text-anchor="start">1.141 /min</text>
+  <text x="0" y="136" class="lbl" text-anchor="start">~8 min dwell</text>
+  <line x1="96" y1="164" x2="624" y2="164" class="axis"/>
+  <text x="96" y="179" class="lbl" text-anchor="middle">0</text>
+  <text x="272" y="179" class="lbl" text-anchor="middle">0.5</text>
+  <text x="448" y="179" class="lbl" text-anchor="middle">1</text>
+  <text x="624" y="179" class="lbl" text-anchor="middle">1.5</text>
+  <text x="360" y="194" class="lbl" text-anchor="middle">price moves per minute (further right = busier)</text>
 </svg>
