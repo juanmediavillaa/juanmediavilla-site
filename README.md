@@ -55,6 +55,47 @@ open the page and print to PDF. The print stylesheet drops the navigation and fo
 Keeping the CV as HTML rather than a binary means it is diffable, and it is the only editable
 CV source that exists.
 
+## Evidence
+
+Every figure is generated from a real result file by a committed script. Nothing is drawn by
+hand and no number is retyped into markup.
+
+```sh
+python3 tools/make_figures.py           # regenerate figures + data, re-inline into pages
+python3 tools/make_figures.py --check   # non-zero exit if any figure is stale
+python3 tools/build_prereg.py           # rebuild the embargoed pre-registration page
+```
+
+`make_figures.py` reads the committed research result files, writes the source numbers to
+`data/*.csv`, writes hand-authored SVG to `figures/*.svg`, and inlines each figure into its page
+between `<!-- FIGURE:name -->` markers. Standard library only — no numpy, no plotting library.
+
+It also recomputes the BSc thesis Friedman test from the per-fold logs rather than quoting it:
+χ² = 6.104, df = 5, p = 0.296, which reproduces the thesis's own "not significant" verdict.
+
+Each figure caption states n, the date of the data, whether the analysis was pre-registered, and
+whether the result is in-sample or held-out, and links the CSV behind it. **Read
+[CONTENT-RULES.md](CONTENT-RULES.md) §7 before adding a figure** — the aggregate-only and
+10-minute-resolution rules are what keep this publishable.
+
+### The embargoed page
+
+`research/thesis/pre-registration/` is built but deliberately unpublished: unlinked, `noindex`,
+and absent from `sitemap.xml`. It publishes after the MSc thesis is submitted in September 2026.
+Publishing a pre-registered SPEC beside the report that fails its own primary test is the one
+claim on this site that cannot be constructed retroactively — the commit ordering is the proof —
+so it is worth doing properly after submission rather than half-doing before it. To publish:
+drop the robots meta, add it to the sitemap, and link it. Regenerate it with `build_prereg.py`,
+never by pasting the source documents, because that script pseudonymises venue market
+identifiers.
+
+## JavaScript
+
+There is none, and the site ships zero `<script>` tags. A hover readout on the figures is
+provided by SVG `<title>`, which browsers render natively at zero bytes. If script is ever
+added, `CONTENT-RULES.md` §8 caps it at 3 KB and requires every chart to stay fully readable
+with JS disabled.
+
 ## Design system
 
 One stylesheet, ~9 KB. Light and dark via `prefers-color-scheme`; no toggle, so there is no
