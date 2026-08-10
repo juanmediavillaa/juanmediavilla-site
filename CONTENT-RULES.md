@@ -210,9 +210,13 @@ series palette, a figure, or the gradient system.
   third-party low-resolution UCL raster, none of which may be copied.
 - Logos state factually where I studied. Nothing on the site may imply endorsement by either
   institution.
-- The institution card keeps a **fixed light ground in both themes**, because the measured brand
-  colours fall to 1.28:1 and 1.90:1 on the dark plane. On the card they measure 14.09:1 (UCL
-  dark), 4.54:1 (UCL bright) and 9.53:1 (Leiden).
+- **The institution card follows the theme.** Only the logo keeps a fixed light chip, which is the
+  usual treatment for single-colour artwork that would otherwise vanish on a dark ground.
+- The measured brand colours fall to **1.28:1 (UCL) and 1.90:1 (Leiden)** on the dark plane, so the
+  dark theme uses variants derived from them — **same hue and saturation, lightness raised only**
+  until they clear contrast: UCL name `#A54FFF` (4.62:1), Leiden name and rule `#0278FD` (4.57:1).
+  UCL's measured primary `#9A3BFF` already clears 3:1 on dark and is kept as the rule. Derive any
+  future variant the same way and record the measurement; never eyeball a brand colour.
 
 ## 13. Contrast is measured, not assumed
 

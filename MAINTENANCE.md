@@ -131,7 +131,9 @@ If a curve is *derived* rather than read from a file, the CSV column name must s
 - **No fund figures** — no value, returns, members or positions. **No repository links.** **No
   student names, grades or submissions.**
 - **University colours are quarantined** to `.inst` on `/about`. They never enter the series
-  palette, a figure, or the gradient system.
+  palette, a figure, or the gradient system. The card itself themes normally; only the logo sits
+  on a fixed light chip. Dark-theme brand tints are derived from the measured hex by raising
+  lightness alone — see `CONTENT-RULES.md` §12.
 - **`--muted` never carries text.** It is 3.96:1 in light. Tertiary text uses `--ink-3`.
 - **Three blocks keep a fixed ground in both themes** — the gradient hero, the institution card,
   the terminal. Anything inside them that would inherit a themed ink (`strong`, `b`, `em`, `code`,

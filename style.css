@@ -725,40 +725,74 @@ html.js .reveal { transition: opacity .5s ease, transform .5s ease; }
 .theme-toggle:hover { border-color: var(--c1); }
 
 /* ---------- institution identity ----------
-   Quarantined to the education block on /about. These colours are sampled from
-   the institutions' own artwork and never enter the series palette, a figure, or
-   the gradient system. The card keeps a fixed light ground in BOTH themes,
-   because the measured brand colours fall to 1.3:1 and 1.9:1 on the dark plane —
-   a neutral card is what keeps them legible and on-brand at once. */
+   Quarantined to the education block on /about: these colours never enter the
+   series palette, a figure, or the gradient system.
+
+   The card follows the theme like everything else. The brand colours are sampled
+   from the institutions' own artwork; the dark-theme variants are the SAME hue and
+   saturation with lightness raised until they clear contrast, because the measured
+   originals fall to 1.28:1 (UCL) and 1.90:1 (Leiden) on the dark plane. Only the
+   logo sits on a fixed light chip, which is the usual treatment for single-colour
+   artwork that would otherwise be invisible on a dark ground. */
 .inst {
-  --ucl-dark: #361A54;
-  --ucl-bright: #9A3BFF;
-  --leiden: #014189;
-  background: #FBFAFC;
-  color: #0D0B14;
-  border: 1px solid #E4E2EE;
+  --ucl-name: #361A54;    /* 14.09:1 on the light surface */
+  --ucl-rule: #9A3BFF;    /* measured primary; 4.54:1 light, 3.98:1 dark */
+  --leiden-name: #014189; /* 9.53:1 on the light surface */
+  --leiden-rule: #014189;
+  background: var(--surface);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
   border-left: 4px solid var(--line);
   border-radius: 8px;
   padding: var(--s3) var(--s4);
   margin: var(--s4) 0;
   box-shadow: var(--e1);
 }
-.inst--ucl { border-left-color: var(--ucl-bright); }
-.inst--leiden { border-left-color: var(--leiden); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .inst {
+    --ucl-name: #A54FFF;    /* 4.62:1 on the dark surface */
+    --leiden-name: #0278FD; /* 4.57:1 */
+    --leiden-rule: #0278FD;
+  }
+}
+:root[data-theme="dark"] .inst {
+  --ucl-name: #A54FFF;
+  --leiden-name: #0278FD;
+  --leiden-rule: #0278FD;
+}
+.inst--ucl { border-left-color: var(--ucl-rule); }
+.inst--leiden { border-left-color: var(--leiden-rule); }
 .inst__name { font-weight: 600; font-size: var(--fs-h3); display: block; }
-.inst--ucl .inst__name { color: var(--ucl-dark); }
-.inst--leiden .inst__name { color: var(--leiden); }
+.inst--ucl .inst__name { color: var(--ucl-name); }
+.inst--leiden .inst__name { color: var(--leiden-name); }
 .inst__meta {
   font-family: var(--mono);
   font-size: var(--fs-xs);
-  color: #4A4759;
+  color: var(--ink-3);
   display: block;
   margin: var(--s1) 0 var(--s2);
 }
-.inst p { color: #4A4759; margin: 0 0 var(--s2); max-width: 62ch; }
+.inst p { color: var(--ink-2); margin: 0 0 var(--s2); max-width: 62ch; }
 .inst p:last-child { margin-bottom: 0; }
-.inst a { color: var(--ucl-dark); }
-.inst--leiden a { color: var(--leiden); }
+.inst--ucl a { color: var(--ucl-name); }
+.inst--leiden a { color: var(--leiden-name); }
+.inst strong, .inst b, .inst em { color: var(--ink); }
+
+/* the logo keeps a light chip in both themes: these marks are supplied in one
+   colour and vanish on a dark ground */
+.inst__mark {
+  display: inline-flex;
+  align-items: center;
+  background: #FBFAFC;
+  border: 1px solid #E4E2EE;
+  border-radius: 6px;
+  padding: var(--s2) var(--s3);
+  margin: 0 0 var(--s3);
+}
+.inst__mark img { display: block; height: auto; }
+.inst--ucl .inst__mark img { width: 132px; }
+.inst--leiden .inst__mark img { width: 40px; }
+@media (max-width: 30rem) { .inst--ucl .inst__mark img { width: 108px; } }
 
 /* scroll progress */
 .progress {
@@ -807,8 +841,6 @@ svg .pulse { animation: pulse 4.5s ease-in-out infinite; }
 .hero .stat__v, .hero .stat__l, .hero li { color: var(--hero-ink); }
 .hero .lede, .hero .meta { color: var(--hero-ink); opacity: .92; }
 
-.inst strong, .inst b, .inst em, .inst code, .inst .num, .inst li { color: #0D0B14; }
-.inst .mono, .inst dfn { color: #4A4759; }
 
 .term strong, .term b, .term code, .term .num { color: #F5F4FA; }
 
