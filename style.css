@@ -230,6 +230,56 @@ a.card:hover h3 { text-decoration: underline; }
   color: var(--faint);
 }
 
+/* ---------- figures ---------- */
+
+figure { margin: var(--s4) 0; }
+figure svg { display: block; width: 100%; height: auto; overflow: visible; }
+figcaption { font-size: var(--fs-sm); color: var(--muted); margin-top: var(--s2); }
+figcaption b { font-weight: 600; }
+.prov {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--faint);
+  margin-top: var(--s1);
+  display: block;
+}
+.prov a { color: var(--muted); }
+
+/* JS hover readout; absent and harmless when JS is off */
+#readout {
+  position: fixed;
+  z-index: 20;
+  padding: var(--s1) var(--s2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  pointer-events: none;
+  max-width: 22rem;
+}
+
+/* ---------- code excerpts ---------- */
+
+.code {
+  margin: var(--s3) 0;
+  padding: var(--s3);
+  background: var(--surface-2);
+  border-left: 2px solid var(--line);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--ink-2);
+  white-space: pre;
+}
+.code-src {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--faint);
+  margin: 0 0 var(--s1);
+}
+
 /* ---------- tables ---------- */
 
 .scroll { overflow-x: auto; margin: var(--s4) 0; }

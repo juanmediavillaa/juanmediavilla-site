@@ -1,0 +1,5 @@
+strategy,n_markets,trades_taken,p_value_vs_random,verdict
+mean_reversion_v1,382,67,0.4978,NO_EDGE
+longshot_fade_v1,382,157,0.6007,NO_EDGE
+depth_imbalance_v1,382,0,NOT_APPLICABLE,NOT_APPLICABLE
+regime_conditioned_v1,382,4,0.6127,NO_EDGE

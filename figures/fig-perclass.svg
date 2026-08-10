@@ -1,0 +1,125 @@
+<svg viewBox="0 0 640 252" role="img" aria-labelledby="t-fig-perclass d-fig-perclass" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-perclass">Per-class F1 across six architectures</title>
+  <desc id="d-fig-perclass">Every architecture fails on the same two minority classes, which is the class imbalance the thesis records as its persistent limitation.</desc>
+  <style>.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <text x="157.0" y="34.0" class="lbl-i" text-anchor="middle">c1</text>
+  <text x="157.0" y="46.0" class="lbl" text-anchor="middle">4,862</text>
+  <text x="215.0" y="34.0" class="lbl-i" text-anchor="middle">c2</text>
+  <text x="215.0" y="46.0" class="lbl" text-anchor="middle">1,174</text>
+  <text x="273.0" y="34.0" class="lbl-i" text-anchor="middle">c3</text>
+  <text x="273.0" y="46.0" class="lbl" text-anchor="middle">769</text>
+  <text x="331.0" y="34.0" class="lbl-i" text-anchor="middle">c4</text>
+  <text x="331.0" y="46.0" class="lbl" text-anchor="middle">662</text>
+  <text x="389.0" y="34.0" class="lbl-i" text-anchor="middle">c5</text>
+  <text x="389.0" y="46.0" class="lbl" text-anchor="middle">1,999</text>
+  <text x="447.0" y="34.0" class="lbl-i" text-anchor="middle">c6</text>
+  <text x="447.0" y="46.0" class="lbl" text-anchor="middle">3,034</text>
+  <text x="505.0" y="34.0" class="lbl-i" text-anchor="middle">c7</text>
+  <text x="505.0" y="46.0" class="lbl" text-anchor="middle">11,612</text>
+  <text x="563.0" y="34.0" class="lbl-i" text-anchor="middle">c8</text>
+  <text x="563.0" y="46.0" class="lbl" text-anchor="middle">1,719</text>
+  <text x="0.0" y="65.0" class="lbl-i" text-anchor="start">SimCLR</text>
+  <rect x="132.0" y="66.0" width="44.05" height="4.00" class="bar"><title>c1: 0.918</title></rect/>
+  <text x="132.0" y="62.0" class="lbl-i" text-anchor="start">0.92</text>
+  <rect x="190.0" y="66.0" width="46.69" height="4.00" class="bar"><title>c2: 0.973</title></rect/>
+  <text x="190.0" y="62.0" class="lbl-i" text-anchor="start">0.97</text>
+  <rect x="248.0" y="66.0" width="25.26" height="4.00" class="bar"><title>c3: 0.526</title></rect/>
+  <text x="248.0" y="62.0" class="lbl-i" text-anchor="start">0.53</text>
+  <rect x="306.0" y="66.0" width="38.12" height="4.00" class="bar"><title>c4: 0.794</title></rect/>
+  <text x="306.0" y="62.0" class="lbl-i" text-anchor="start">0.79</text>
+  <rect x="364.0" y="66.0" width="46.24" height="4.00" class="bar"><title>c5: 0.963</title></rect/>
+  <text x="364.0" y="62.0" class="lbl-i" text-anchor="start">0.96</text>
+  <rect x="422.0" y="66.0" width="42.56" height="4.00" class="bar"><title>c6: 0.887</title></rect/>
+  <text x="422.0" y="62.0" class="lbl-i" text-anchor="start">0.89</text>
+  <rect x="480.0" y="66.0" width="47.65" height="4.00" class="bar"><title>c7: 0.993</title></rect/>
+  <text x="480.0" y="62.0" class="lbl-i" text-anchor="start">0.99</text>
+  <rect x="538.0" y="66.0" width="47.16" height="4.00" class="bar"><title>c8: 0.983</title></rect/>
+  <text x="538.0" y="62.0" class="lbl-i" text-anchor="start">0.98</text>
+  <text x="0.0" y="91.0" class="lbl-i" text-anchor="start">DeepConvLSTM</text>
+  <rect x="132.0" y="92.0" width="43.23" height="4.00" class="bar"><title>c1: 0.901</title></rect/>
+  <text x="132.0" y="88.0" class="lbl-i" text-anchor="start">0.90</text>
+  <rect x="190.0" y="92.0" width="46.62" height="4.00" class="bar"><title>c2: 0.971</title></rect/>
+  <text x="190.0" y="88.0" class="lbl-i" text-anchor="start">0.97</text>
+  <rect x="248.0" y="92.0" width="24.13" height="4.00" class="bar"><title>c3: 0.503</title></rect/>
+  <text x="248.0" y="88.0" class="lbl-i" text-anchor="start">0.50</text>
+  <rect x="306.0" y="92.0" width="37.80" height="4.00" class="bar"><title>c4: 0.787</title></rect/>
+  <text x="306.0" y="88.0" class="lbl-i" text-anchor="start">0.79</text>
+  <rect x="364.0" y="92.0" width="46.30" height="4.00" class="bar"><title>c5: 0.965</title></rect/>
+  <text x="364.0" y="88.0" class="lbl-i" text-anchor="start">0.96</text>
+  <rect x="422.0" y="92.0" width="40.96" height="4.00" class="bar"><title>c6: 0.853</title></rect/>
+  <text x="422.0" y="88.0" class="lbl-i" text-anchor="start">0.85</text>
+  <rect x="480.0" y="92.0" width="47.71" height="4.00" class="bar"><title>c7: 0.994</title></rect/>
+  <text x="480.0" y="88.0" class="lbl-i" text-anchor="start">0.99</text>
+  <rect x="538.0" y="92.0" width="47.54" height="4.00" class="bar"><title>c8: 0.991</title></rect/>
+  <text x="538.0" y="88.0" class="lbl-i" text-anchor="start">0.99</text>
+  <text x="0.0" y="117.0" class="lbl-i" text-anchor="start">SelfHARModel</text>
+  <rect x="132.0" y="118.0" width="43.11" height="4.00" class="bar"><title>c1: 0.898</title></rect/>
+  <text x="132.0" y="114.0" class="lbl-i" text-anchor="start">0.90</text>
+  <rect x="190.0" y="118.0" width="46.92" height="4.00" class="bar"><title>c2: 0.978</title></rect/>
+  <text x="190.0" y="114.0" class="lbl-i" text-anchor="start">0.98</text>
+  <rect x="248.0" y="118.0" width="22.06" height="4.00" class="bar"><title>c3: 0.460</title></rect/>
+  <text x="248.0" y="114.0" class="lbl-i" text-anchor="start">0.46</text>
+  <rect x="306.0" y="118.0" width="37.36" height="4.00" class="bar"><title>c4: 0.778</title></rect/>
+  <text x="306.0" y="114.0" class="lbl-i" text-anchor="start">0.78</text>
+  <rect x="364.0" y="118.0" width="46.35" height="4.00" class="bar"><title>c5: 0.966</title></rect/>
+  <text x="364.0" y="114.0" class="lbl-i" text-anchor="start">0.97</text>
+  <rect x="422.0" y="118.0" width="41.44" height="4.00" class="bar"><title>c6: 0.863</title></rect/>
+  <text x="422.0" y="114.0" class="lbl-i" text-anchor="start">0.86</text>
+  <rect x="480.0" y="118.0" width="47.42" height="4.00" class="bar"><title>c7: 0.988</title></rect/>
+  <text x="480.0" y="114.0" class="lbl-i" text-anchor="start">0.99</text>
+  <rect x="538.0" y="118.0" width="46.42" height="4.00" class="bar"><title>c8: 0.967</title></rect/>
+  <text x="538.0" y="114.0" class="lbl-i" text-anchor="start">0.97</text>
+  <text x="0.0" y="143.0" class="lbl-i" text-anchor="start">SelfPAB</text>
+  <rect x="132.0" y="144.0" width="42.52" height="4.00" class="bar"><title>c1: 0.886</title></rect/>
+  <text x="132.0" y="140.0" class="lbl-i" text-anchor="start">0.89</text>
+  <rect x="190.0" y="144.0" width="46.98" height="4.00" class="bar"><title>c2: 0.979</title></rect/>
+  <text x="190.0" y="140.0" class="lbl-i" text-anchor="start">0.98</text>
+  <rect x="248.0" y="144.0" width="23.83" height="4.00" class="bar"><title>c3: 0.496</title></rect/>
+  <text x="248.0" y="140.0" class="lbl-i" text-anchor="start">0.50</text>
+  <rect x="306.0" y="144.0" width="35.43" height="4.00" class="bar"><title>c4: 0.738</title></rect/>
+  <text x="306.0" y="140.0" class="lbl-i" text-anchor="start">0.74</text>
+  <rect x="364.0" y="144.0" width="46.18" height="4.00" class="bar"><title>c5: 0.962</title></rect/>
+  <text x="364.0" y="140.0" class="lbl-i" text-anchor="start">0.96</text>
+  <rect x="422.0" y="144.0" width="41.75" height="4.00" class="bar"><title>c6: 0.870</title></rect/>
+  <text x="422.0" y="140.0" class="lbl-i" text-anchor="start">0.87</text>
+  <rect x="480.0" y="144.0" width="47.51" height="4.00" class="bar"><title>c7: 0.990</title></rect/>
+  <text x="480.0" y="140.0" class="lbl-i" text-anchor="start">0.99</text>
+  <rect x="538.0" y="144.0" width="46.08" height="4.00" class="bar"><title>c8: 0.960</title></rect/>
+  <text x="538.0" y="140.0" class="lbl-i" text-anchor="start">0.96</text>
+  <text x="0.0" y="169.0" class="lbl-i" text-anchor="start">XGBoost</text>
+  <rect x="132.0" y="170.0" width="43.58" height="4.00" class="bar"><title>c1: 0.908</title></rect/>
+  <text x="132.0" y="166.0" class="lbl-i" text-anchor="start">0.91</text>
+  <rect x="190.0" y="170.0" width="47.03" height="4.00" class="bar"><title>c2: 0.980</title></rect/>
+  <text x="190.0" y="166.0" class="lbl-i" text-anchor="start">0.98</text>
+  <rect x="248.0" y="170.0" width="20.28" height="4.00" class="bar"><title>c3: 0.422</title></rect/>
+  <text x="248.0" y="166.0" class="lbl-i" text-anchor="start">0.42</text>
+  <rect x="306.0" y="170.0" width="32.88" height="4.00" class="bar"><title>c4: 0.685</title></rect/>
+  <text x="306.0" y="166.0" class="lbl-i" text-anchor="start">0.69</text>
+  <rect x="364.0" y="170.0" width="45.28" height="4.00" class="bar"><title>c5: 0.943</title></rect/>
+  <text x="364.0" y="166.0" class="lbl-i" text-anchor="start">0.94</text>
+  <rect x="422.0" y="170.0" width="42.94" height="4.00" class="bar"><title>c6: 0.895</title></rect/>
+  <text x="422.0" y="166.0" class="lbl-i" text-anchor="start">0.89</text>
+  <rect x="480.0" y="170.0" width="47.66" height="4.00" class="bar"><title>c7: 0.993</title></rect/>
+  <text x="480.0" y="166.0" class="lbl-i" text-anchor="start">0.99</text>
+  <rect x="538.0" y="170.0" width="47.10" height="4.00" class="bar"><title>c8: 0.981</title></rect/>
+  <text x="538.0" y="166.0" class="lbl-i" text-anchor="start">0.98</text>
+  <text x="0.0" y="195.0" class="lbl-i" text-anchor="start">MOMENT</text>
+  <rect x="132.0" y="196.0" width="45.38" height="4.00" class="bar"><title>c1: 0.945</title></rect/>
+  <text x="132.0" y="192.0" class="lbl-i" text-anchor="start">0.95</text>
+  <rect x="190.0" y="196.0" width="47.65" height="4.00" class="bar"><title>c2: 0.993</title></rect/>
+  <text x="190.0" y="192.0" class="lbl-i" text-anchor="start">0.99</text>
+  <rect x="248.0" y="196.0" width="27.48" height="4.00" class="bar"><title>c3: 0.573</title></rect/>
+  <text x="248.0" y="192.0" class="lbl-i" text-anchor="start">0.57</text>
+  <rect x="306.0" y="196.0" width="43.40" height="4.00" class="bar"><title>c4: 0.904</title></rect/>
+  <text x="306.0" y="192.0" class="lbl-i" text-anchor="start">0.90</text>
+  <rect x="364.0" y="196.0" width="46.42" height="4.00" class="bar"><title>c5: 0.967</title></rect/>
+  <text x="364.0" y="192.0" class="lbl-i" text-anchor="start">0.97</text>
+  <rect x="422.0" y="196.0" width="40.17" height="4.00" class="bar"><title>c6: 0.837</title></rect/>
+  <text x="422.0" y="192.0" class="lbl-i" text-anchor="start">0.84</text>
+  <rect x="480.0" y="196.0" width="45.04" height="4.00" class="bar"><title>c7: 0.938</title></rect/>
+  <text x="480.0" y="192.0" class="lbl-i" text-anchor="start">0.94</text>
+  <rect x="538.0" y="196.0" width="28.27" height="4.00" class="bar"><title>c8: 0.589</title></rect/>
+  <text x="538.0" y="192.0" class="lbl-i" text-anchor="start">0.59</text>
+  <text x="0.0" y="226.0" class="lbl" text-anchor="start">column = activity class, with its sample count below the label</text>
+  <text x="0.0" y="240.0" class="lbl" text-anchor="start">bar length = F1 for that class; full width would be 1.00</text>
+</svg>

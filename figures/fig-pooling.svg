@@ -1,0 +1,55 @@
+<svg viewBox="0 0 640 250" role="img" aria-labelledby="t-fig-pooling d-fig-pooling" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-pooling">Per-market change in held-out log-evidence</title>
+  <desc id="d-fig-pooling">Partial pooling improves held-out predictive log-evidence on all 34 of 34 markets, leave-one-market-out. Log scale; every bar is above zero.</desc>
+  <style>.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="66.0" y1="210.0" x2="624.0" y2="210.0" class="axis"/>
+  <text x="60.0" y="213.5" class="lbl" text-anchor="end">0.1</text>
+  <line x1="66.0" y1="174.4" x2="624.0" y2="174.4" class="axis"/>
+  <text x="60.0" y="177.9" class="lbl" text-anchor="end">1</text>
+  <line x1="66.0" y1="138.8" x2="624.0" y2="138.8" class="axis"/>
+  <text x="60.0" y="142.3" class="lbl" text-anchor="end">10</text>
+  <line x1="66.0" y1="103.2" x2="624.0" y2="103.2" class="axis"/>
+  <text x="60.0" y="106.7" class="lbl" text-anchor="end">100</text>
+  <line x1="66.0" y1="67.6" x2="624.0" y2="67.6" class="axis"/>
+  <text x="60.0" y="71.1" class="lbl" text-anchor="end">1,000</text>
+  <line x1="66.0" y1="32.0" x2="624.0" y2="32.0" class="axis"/>
+  <text x="60.0" y="35.5" class="lbl" text-anchor="end">10,000</text>
+  <line x1="66.0" y1="210.0" x2="624.0" y2="210.0" class="axis"/>
+  <rect x="66.6" y="181.5" width="15.21" height="28.45" class="bar"><title>market 1: +0.6 nats, 176 events, other</title></rect/>
+  <rect x="83.0" y="167.6" width="15.21" height="42.37" class="bar"><title>market 2: +1.5 nats, 365 events, geopolitics</title></rect/>
+  <rect x="99.4" y="164.6" width="15.21" height="45.36" class="bar"><title>market 3: +1.9 nats, 366 events, geopolitics</title></rect/>
+  <rect x="115.8" y="162.2" width="15.21" height="47.84" class="bar"><title>market 4: +2.2 nats, 690 events, other</title></rect/>
+  <rect x="132.2" y="161.5" width="15.21" height="48.55" class="bar"><title>market 5: +2.3 nats, 243 events, other</title></rect/>
+  <rect x="148.7" y="159.8" width="15.21" height="50.19" class="bar"><title>market 6: +2.6 nats, 981 events, other</title></rect/>
+  <rect x="165.1" y="156.2" width="15.21" height="53.81" class="bar"><title>market 7: +3.2 nats, 187 events, crypto</title></rect/>
+  <rect x="181.5" y="152.8" width="15.21" height="57.15" class="bar"><title>market 8: +4.0 nats, 704 events, politics</title></rect/>
+  <rect x="197.9" y="152.3" width="15.21" height="57.67" class="bar"><title>market 9: +4.2 nats, 3763 events, other</title></rect/>
+  <rect x="214.3" y="150.6" width="15.21" height="59.43" class="bar"><title>market 10: +4.7 nats, 1712 events, politics</title></rect/>
+  <rect x="230.7" y="149.4" width="15.21" height="60.63" class="bar"><title>market 11: +5.0 nats, 609 events, politics</title></rect/>
+  <rect x="247.1" y="147.7" width="15.21" height="62.30" class="bar"><title>market 12: +5.6 nats, 1056 events, geopolitics</title></rect/>
+  <rect x="263.5" y="147.0" width="15.21" height="62.96" class="bar"><title>market 13: +5.9 nats, 278 events, other</title></rect/>
+  <rect x="280.0" y="144.6" width="15.21" height="65.39" class="bar"><title>market 14: +6.9 nats, 1116 events, politics</title></rect/>
+  <rect x="296.4" y="143.6" width="15.21" height="66.36" class="bar"><title>market 15: +7.3 nats, 1014 events, sports</title></rect/>
+  <rect x="312.8" y="143.5" width="15.21" height="66.55" class="bar"><title>market 16: +7.4 nats, 653 events, geopolitics</title></rect/>
+  <rect x="329.2" y="143.3" width="15.21" height="66.74" class="bar"><title>market 17: +7.5 nats, 114 events, other</title></rect/>
+  <rect x="345.6" y="143.0" width="15.21" height="66.97" class="bar"><title>market 18: +7.6 nats, 1031 events, sports</title></rect/>
+  <rect x="362.0" y="143.0" width="15.21" height="67.03" class="bar"><title>market 19: +7.6 nats, 1183 events, geopolitics</title></rect/>
+  <rect x="378.4" y="142.8" width="15.21" height="67.22" class="bar"><title>market 20: +7.7 nats, 947 events, geopolitics</title></rect/>
+  <rect x="394.8" y="140.9" width="15.21" height="69.05" class="bar"><title>market 21: +8.7 nats, 842 events, crypto</title></rect/>
+  <rect x="411.2" y="139.3" width="15.21" height="70.71" class="bar"><title>market 22: +9.7 nats, 521 events, other</title></rect/>
+  <rect x="427.7" y="135.7" width="15.21" height="74.26" class="bar"><title>market 23: +12.2 nats, 135 events, other</title></rect/>
+  <rect x="444.1" y="114.9" width="15.21" height="95.14" class="bar"><title>market 24: +47.0 nats, 69 events, other</title></rect/>
+  <rect x="460.5" y="99.1" width="15.21" height="110.91" class="bar"><title>market 25: +130.5 nats, 148 events, sports</title></rect/>
+  <rect x="476.9" y="98.9" width="15.21" height="111.10" class="bar"><title>market 26: +132.1 nats, 133 events, other</title></rect/>
+  <rect x="493.3" y="91.5" width="15.21" height="118.45" class="bar"><title>market 27: +212.5 nats, 136 events, other</title></rect/>
+  <rect x="509.7" y="85.0" width="15.21" height="124.97" class="bar"><title>market 28: +323.8 nats, 118 events, sports</title></rect/>
+  <rect x="526.1" y="75.6" width="15.21" height="134.35" class="bar"><title>market 29: +594.2 nats, 254 events, sports</title></rect/>
+  <rect x="542.5" y="71.6" width="15.21" height="138.38" class="bar"><title>market 30: +771.1 nats, 380 events, sports</title></rect/>
+  <rect x="559.0" y="70.4" width="15.21" height="139.60" class="bar"><title>market 31: +834.3 nats, 402 events, other</title></rect/>
+  <rect x="575.4" y="61.4" width="15.21" height="148.61" class="bar"><title>market 32: +1494.7 nats, 577 events, sports</title></rect/>
+  <rect x="591.8" y="57.2" width="15.21" height="152.83" class="bar"><title>market 33: +1962.9 nats, 816 events, other</title></rect/>
+  <rect x="608.2" y="43.4" width="15.21" height="166.56" class="bar"><title>market 34: +4770.5 nats, 1449 events, sports</title></rect/>
+  <text x="345.0" y="242.0" class="lbl" text-anchor="middle">34 markets, sorted by gain (log scale)</text>
+  <text x="12.0" y="121.0" class="lbl" text-anchor="middle" transform="rotate(-90 12 121)">Δ nats</text>
+  <text x="624.0" y="36.0" class="lbl-i" text-anchor="end">all 34 positive</text>
+</svg>

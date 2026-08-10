@@ -1,0 +1,168 @@
+<svg viewBox="0 0 640 338" role="img" aria-labelledby="t-fig-models d-fig-models" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-models">Six architectures under leave-one-subject-out cross-validation</title>
+  <desc id="d-fig-models">Pooled macro-F1 spans 0.843 to 0.879, but the per-subject ranges overlap almost completely. A Friedman test over 22 subjects gives p = 0.296, so the ranking is not statistically significant.</desc>
+  <style>.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <text x="0.0" y="46.0" class="lbl-i" text-anchor="start">SimCLR</text>
+  <line x1="196.5" y1="42.0" x2="531.7" y2="42.0" class="axis"/>
+  <circle cx="384.3" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="306.1" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="196.5" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="288.6" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="445.7" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="466.9" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="425.8" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="504.0" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="531.7" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="455.8" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="472.6" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="516.0" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="491.1" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="478.6" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="486.7" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="438.4" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="394.0" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="474.2" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="397.5" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="367.1" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="373.3" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="483.5" cy="42.0" r="1.8" class="dot-2"/>
+  <circle cx="494.6" cy="42.0" r="4.5" class="dot"><title>SimCLR: pooled macro-F1 0.8795; per-subject range 0.362–0.944</title></circle>
+  <text x="624.0" y="46.0" class="lbl-i" text-anchor="end">0.879</text>
+  <text x="0.0" y="88.0" class="lbl-i" text-anchor="start">DeepConvLSTM</text>
+  <line x1="202.2" y1="84.0" x2="529.6" y2="84.0" class="axis"/>
+  <circle cx="394.1" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="315.8" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="202.2" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="267.8" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="445.5" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="485.6" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="368.5" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="485.9" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="520.9" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="452.8" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="468.6" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="529.6" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="490.4" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="448.3" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="490.3" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="433.8" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="389.5" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="454.5" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="369.4" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="350.6" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="367.5" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="462.9" cy="84.0" r="1.8" class="dot-2"/>
+  <circle cx="489.5" cy="84.0" r="4.5" class="dot"><title>DeepConvLSTM: pooled macro-F1 0.8706; per-subject range 0.372–0.940</title></circle>
+  <text x="624.0" y="88.0" class="lbl-i" text-anchor="end">0.871</text>
+  <text x="0.0" y="130.0" class="lbl-i" text-anchor="start">SelfHARModel</text>
+  <line x1="241.9" y1="126.0" x2="508.1" y2="126.0" class="axis"/>
+  <circle cx="362.2" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="305.8" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="241.9" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="277.7" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="391.5" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="458.5" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="441.2" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="486.6" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="505.4" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="443.6" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="476.3" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="504.9" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="484.5" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="482.1" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="482.7" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="392.6" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="403.6" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="455.7" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="407.3" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="368.2" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="324.5" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="508.1" cy="126.0" r="1.8" class="dot-2"/>
+  <circle cx="484.6" cy="126.0" r="4.5" class="dot"><title>SelfHARModel: pooled macro-F1 0.8622; per-subject range 0.441–0.903</title></circle>
+  <text x="624.0" y="130.0" class="lbl-i" text-anchor="end">0.862</text>
+  <text x="0.0" y="172.0" class="lbl-i" text-anchor="start">SelfPAB</text>
+  <line x1="179.3" y1="168.0" x2="519.1" y2="168.0" class="axis"/>
+  <circle cx="337.8" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="299.0" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="179.3" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="283.9" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="431.2" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="465.1" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="380.4" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="470.2" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="490.7" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="422.5" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="475.5" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="519.1" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="460.2" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="494.4" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="486.1" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="382.4" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="390.0" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="475.6" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="416.0" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="388.5" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="367.6" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="468.9" cy="168.0" r="1.8" class="dot-2"/>
+  <circle cx="483.4" cy="168.0" r="4.5" class="dot"><title>SelfPAB: pooled macro-F1 0.8601; per-subject range 0.332–0.922</title></circle>
+  <text x="624.0" y="172.0" class="lbl-i" text-anchor="end">0.860</text>
+  <text x="0.0" y="214.0" class="lbl-i" text-anchor="start">XGBoost</text>
+  <line x1="158.2" y1="210.0" x2="495.3" y2="210.0" class="axis"/>
+  <circle cx="394.5" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="281.5" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="158.2" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="244.4" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="429.7" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="464.8" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="458.6" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="470.7" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="462.3" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="429.6" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="442.2" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="494.9" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="494.7" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="482.7" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="492.6" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="417.9" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="386.4" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="488.3" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="385.4" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="364.2" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="364.6" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="495.3" cy="210.0" r="1.8" class="dot-2"/>
+  <circle cx="478.1" cy="210.0" r="4.5" class="dot"><title>XGBoost: pooled macro-F1 0.8509; per-subject range 0.295–0.881</title></circle>
+  <text x="624.0" y="214.0" class="lbl-i" text-anchor="end">0.851</text>
+  <text x="0.0" y="256.0" class="lbl-i" text-anchor="start">MOMENT</text>
+  <line x1="232.6" y1="252.0" x2="492.4" y2="252.0" class="axis"/>
+  <circle cx="281.7" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="266.1" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="232.6" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="296.0" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="375.8" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="457.0" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="436.0" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="431.3" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="469.7" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="444.8" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="455.2" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="491.1" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="492.4" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="482.7" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="487.2" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="405.5" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="399.8" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="468.0" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="427.8" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="388.0" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="368.0" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="472.8" cy="252.0" r="1.8" class="dot-2"/>
+  <circle cx="473.7" cy="252.0" r="4.5" class="dot"><title>MOMENT: pooled macro-F1 0.8432; per-subject range 0.425–0.876</title></circle>
+  <text x="624.0" y="256.0" class="lbl-i" text-anchor="end">0.843</text>
+  <line x1="132.0" y1="282.0" x2="564.0" y2="282.0" class="axis"/>
+  <text x="160.8" y="297.0" class="lbl" text-anchor="middle">0.3</text>
+  <text x="276.0" y="297.0" class="lbl" text-anchor="middle">0.5</text>
+  <text x="391.2" y="297.0" class="lbl" text-anchor="middle">0.7</text>
+  <text x="506.4" y="297.0" class="lbl" text-anchor="middle">0.9</text>
+  <text x="348.0" y="312.0" class="lbl" text-anchor="middle">macro-F1   ● pooled   · one subject</text>
+  <text x="0.0" y="332.0" class="lbl-i" text-anchor="start">Friedman χ² = 6.104, df = 5, p = 0.296 — not significant</text>
+</svg>

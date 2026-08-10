@@ -1,0 +1,3 @@
+state,lambda_per_min_median,lambda_lo,lambda_hi,dwell_min_median,dwell_lo,dwell_hi
+cold,0.0407,0.025,0.0625,37.1401,26.1942,55.2032
+hot,1.1409,0.9458,1.3834,8.0989,6.5432,10.2869

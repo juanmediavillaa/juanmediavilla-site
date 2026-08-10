@@ -1,0 +1,6 @@
+metric,label,median_min,ci_lo,ci_hi,n_episodes,frac_positive
+lead_preReg_min,pre-registered metric,10.0,9.0,10.0,68,0.941
+lead_upcross_vs_centered_min,vs centred label,6.0,2.0,8.0,48,0.812
+lead_vs_causal_detector_min,vs causal detector,3.0,3.0,7.0,48,0.833
+end_lead_min,episode end,6.0,-1.0,9.0,41,0.585
+lead_vs_first_raw_count_min,vs first raw repricing,-2.0,-3.5,0.0,48,0.0

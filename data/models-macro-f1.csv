@@ -1,0 +1,7 @@
+model,pooled_macro_f1,mean_per_fold_macro_f1,min_fold,max_fold,mean_friedman_rank
+SimCLR,0.8795,0.7609,0.3619,0.944,2.636
+DeepConvLSTM,0.8706,0.7464,0.3719,0.9403,3.591
+SelfHARModel,0.8622,0.7472,0.4408,0.903,3.5
+SelfPAB,0.8601,0.7377,0.3321,0.922,3.727
+XGBoost,0.8509,0.7392,0.2954,0.8808,3.864
+MOMENT,0.8432,0.7334,0.4247,0.8757,3.682

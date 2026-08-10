@@ -1,0 +1,7 @@
+bin_start_min,bin_end_min,hazard_per_min_observed,rejected_weibull_shape_from_k_normalised_at_first_bin,n_episodes_ending_in_bin
+3.0,6.0,0.3247,0.3247,113
+6.0,10.0,0.2394,0.4168,45
+10.0,15.0,0.1939,0.5059,19
+15.0,25.0,0.1026,0.6203,8
+25.0,40.0,0.1081,0.7659,4
+40.0,200.0,0.1667,0.8604,1
