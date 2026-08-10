@@ -102,7 +102,7 @@ class Svg:
 def write_csv(name: str, header: list[str], rows: list[list[object]]) -> pathlib.Path:
     p = SITE / "data" / name
     p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, "w", newline="") as fh:
+    with open(p, "w", newline="\n") as fh:  # LF, so --check survives a fresh clone
         w = csv.writer(fh)
         w.writerow(header)
         w.writerows(rows)
