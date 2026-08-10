@@ -32,9 +32,9 @@ CHROME=/path/to/chrome bash tools/audit.sh
 | **Generator idempotence** | a figure, diagram or glossary entry that has drifted from its source |
 | **Prohibited content** | external subresources, infrastructure, secrets, identifiers, student data, retired figures |
 | **Framing** | a heading, card face or one-liner built on a null result |
-| **Budgets** | markup over 90 KB, page over 600 KB (home 400 KB), JS over 25 KB |
+| **Budgets** | markup over 90 KB (110 KB for `/research`, see §7), page over 600 KB (home 400 KB), JS over 25 KB |
 
-**Why measured and not reviewed.** Three separate defects here were rules written into
+**Why measured and not reviewed.** Four separate defects here were rules written into
 `CONTENT-RULES.md` that nothing enforced in code:
 
 - `--muted` was documented as graphical-only while twenty rules used it for text (3.96:1);
@@ -46,7 +46,7 @@ CHROME=/path/to/chrome bash tools/audit.sh
   left the charts and diagrams on the opposite theme from the page. The contrast audit could not
   see it either, because it read `color` on SVG text when SVG text is painted by `fill`.
 
-A CSS review found none of them. Measuring the rendered page found all three in seconds. **If a
+A CSS review found none of them. Measuring the rendered page found all four in minutes. **If a
 rule matters, give it a checker, not a paragraph.**
 
 ---
