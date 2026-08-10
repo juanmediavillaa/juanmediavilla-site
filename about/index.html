@@ -114,9 +114,7 @@
 
       <dt>Experimental design and statistical validation</dt>
       <dd>
-        Specifications committed before outcome statistics; clustered bootstrap with the correct
-        resampling unit; leave-one-subject-out and leave-one-market-out cross-validation; Friedman
-        tests; Benjamini–Hochberg correction; walk-forward out-of-sample validation; recovery gates
+        Specifications committed before outcome statistics; clustered <a href="../glossary/index.html#bootstrap">bootstrap</a> with the correct resampling unit; <a href="../glossary/index.html#leave-one-out">leave-one-out</a> cross-validation over subjects and over markets; <a href="../glossary/index.html#friedman-test">Friedman</a> tests; Benjamini–Hochberg correction; walk-forward out-of-sample validation; recovery gates
         that must pass on simulated ground truth before a real result is read.
       </dd>
 
@@ -125,7 +123,7 @@
 
       <dt>Applied ML in production</dt>
       <dd>
-        XGBoost with isotonic calibration, live inference and order execution. Backtesting
+        <a href="../glossary/index.html#xgboost"><dfn>XGBoost</dfn></a> with <a href="../glossary/index.html#isotonic-calibration">isotonic calibration</a> — a method that makes a model's stated confidence match how often it is actually right — plus live inference and order execution. Backtesting
         discipline: realistic fill simulation, walk-forward evaluation, realized-at-resolution
         profit and loss, and honest abstention when a required signal is absent from the data rather
         than substituting a proxy.
@@ -133,13 +131,15 @@
 
       <dt>Point processes</dt>
       <dd>
-        Hawkes and Markov-modulated Poisson processes at thesis depth — hierarchical partial pooling
+        <a href="../glossary/index.html#point-process"><dfn>Point processes</dfn></a> are the mathematics of when things happen in time rather than how large they are. I work with two: <a href="../glossary/index.html#hawkes">self-exciting</a> models, where each event makes the next more likely, and <a href="../glossary/index.html#mmpp">hidden-mode</a> models, where the system switches between a quiet and a busy state you cannot observe directly. Hawkes and Markov-modulated Poisson processes at thesis depth — hierarchical partial pooling
         with a custom Metropolis-within-Gibbs sampler and a conjugate Normal-Inverse-Wishart
         population block, benchmarked against Hawkes and EWMA baselines.
       </dd>
 
       <dt>Self-supervised and representation learning</dt>
-      <dd>Fine-tuned SimCLR, SelfPAB and the MOMENT time-series foundation model.</dd>
+      <dd>
+        <a href="../glossary/index.html#self-supervised"><dfn>Self-supervised</dfn></a> learning trains a model on a large pile of unlabelled data first, then fine-tunes it on the small labelled set you actually have. Fine-tuned SimCLR, SelfPAB and the MOMENT time-series foundation model.
+      </dd>
 
       <dt>Data and systems engineering</dt>
       <dd>
@@ -161,7 +161,7 @@
       <dt>Markets and microstructure</dt>
       <dd>
         Market microstructure, Kelly sizing, options basics, resolution mechanics, prediction-market
-        structure, NAV unitization and decimal-exact ledgers.
+        structure, <a href="../glossary/index.html#nav"><dfn>NAV</dfn></a> (net asset value) unitization and decimal-exact ledgers.
       </dd>
 
       <dt>LaTeX</dt>
@@ -209,7 +209,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../cv/index.html">CV</a></p>
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../cv/index.html">CV</a> · <a href="../glossary/index.html">Glossary</a></p>
   </div>
 </footer>
 

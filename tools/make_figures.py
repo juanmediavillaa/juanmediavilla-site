@@ -26,6 +26,7 @@ import math
 import pathlib
 import re
 import sys
+import xml.etree.ElementTree as ET
 
 SITE = pathlib.Path(__file__).resolve().parent.parent
 DOCS = pathlib.Path("/mnt/c/Users/jmedi/Documents")
@@ -62,15 +63,29 @@ class Svg:
     def line(self, x1: float, y1: float, x2: float, y2: float, cls: str = "axis") -> None:
         self.add(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" class="{cls}"/>')
 
-    def rect(self, x: float, y: float, w: float, h: float, cls: str, extra: str = "") -> None:
-        self.add(f'<rect x="{x:.1f}" y="{y:.1f}" width="{max(w, 0):.2f}" '
-                 f'height="{max(h, 0):.2f}" class="{cls}"{extra}/>')
+    def rect(self, x: float, y: float, w: float, h: float, cls: str,
+             title: str = "") -> None:
+        """A rect, optionally carrying a <title> hover readout.
+
+        Emits a properly closed element in both cases: an SVG referenced by <img>
+        is parsed as strict XML, where `</rect/>` is fatal.
+        """
+        head = (f'<rect x="{x:.1f}" y="{y:.1f}" width="{max(w, 0):.2f}" '
+                f'height="{max(h, 0):.2f}" class="{cls}"')
+        self.add(f"{head}><title>{esc(title)}</title></rect>" if title else f"{head}/>")
 
     def path(self, d: str, cls: str) -> None:
         self.add(f'<path d="{d}" class="{cls}"/>')
 
     def render(self) -> str:
         style = (
+            # Self-contained palette: an <img>-referenced SVG has no access to the page's
+            # custom properties, so it carries its own, including the dark override.
+            "svg{--ink:#111;--muted:#52524C;--line:#E4E4DE;--accent:#0B6B52;"
+            "--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"
+            "--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}"
+            "@media (prefers-color-scheme:dark){svg{--ink:#F4F4F0;--muted:#ADADA5;"
+            "--line:#34342F;--accent:#5FBFA0}}"
             ".lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}"
             ".lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}"
             ".ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}"
@@ -113,9 +128,16 @@ def write_csv(name: str, header: list[str], rows: list[list[object]]) -> pathlib
 
 def write_svg(name: str, svg: Svg) -> pathlib.Path:
     svg.slug = name
+    markup = svg.render()
+    # An SVG referenced by <img> is parsed as strict XML, so a malformed element is
+    # fatal rather than merely untidy. Fail here instead of shipping a broken figure.
+    try:
+        ET.fromstring(markup)
+    except ET.ParseError as exc:
+        raise SystemExit(f"figure {name} is not well-formed XML: {exc}") from exc
     p = SITE / "figures" / f"{name}.svg"
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(svg.render() + "\n")
+    p.write_text(markup + "\n")
     return p
 
 
@@ -289,8 +311,8 @@ def fig_hazard() -> None:
     s.line(x0, y1, x1, y1)
     for t in (3, 10, 20, 30, 40):
         s.text(sx(t), y1 + 15, t, anchor="middle")
-    s.text((x0 + x1) / 2, h - 8, "minutes elapsed in episode", anchor="middle")
-    s.text(12, (y0 + y1) / 2, "hazard / min", anchor="middle",
+    s.text((x0 + x1) / 2, h - 8, "minutes the burst has already lasted", anchor="middle")
+    s.text(12, (y0 + y1) / 2, "chance it ends this minute", anchor="middle",
            extra=f' transform="rotate(-90 12 {(y0 + y1) / 2:.0f})"')
 
     s.path("M" + " L".join(f"{sx(m):.1f} {sy(v):.1f}" for m, v in zip(mids, weib)), "ser-2")
@@ -332,11 +354,11 @@ def fig_lead() -> None:
         c = counts[v]
         bh = (y1 - y0) * c / mx
         s.rect(x0 + i * bw + 1, y1 - bh, bw - 2, bh, "bar",
-               f'><title>lead {v:g} min: {c} episode(s)</title></rect'.replace("</rect", "</rect"))
+               f"lead {v:g} min: {c} episode(s)")
         if c == mx or i % 3 == 0:
             s.text(x0 + i * bw + bw / 2, y1 + 15, f"{v:g}", anchor="middle")
     s.line(x0, y1, x1, y1)
-    s.text((x0 + x1) / 2, h - 8, "lead (min) vs the causal detector", anchor="middle")
+    s.text((x0 + x1) / 2, h - 8, "minutes early (negative = the model was late)", anchor="middle")
     s.text(x0 - 6, y0 + 4, mx, anchor="end")
     s.text(12, (y0 + y1) / 2, "episodes", anchor="middle",
            extra=f' transform="rotate(-90 12 {(y0 + y1) / 2:.0f})"')
@@ -409,11 +431,12 @@ def fig_pooling() -> None:
     s.line(x0, y1, x1, y1)
     for i, r in enumerate(rows):
         s.rect(x0 + i * bw + 0.6, sy(r["delta"]), bw - 1.2, y1 - sy(r["delta"]), "bar",
-               f'><title>market {i + 1}: +{r["delta"]:.1f} nats, '
-               f'{int(r["n_events"])} events, {esc(r["category"])}</title></rect')
-    s.text((x0 + x1) / 2, h - 8, f"{len(vals)} markets, sorted by gain (log scale)",
+               f'market {i + 1}: +{r["delta"]:.1f} nats, '
+               f'{int(r["n_events"])} events, {r["category"]}')
+    s.text((x0 + x1) / 2, h - 8,
+           f"{len(vals)} markets, sorted — log scale, or one market flattens the other 33",
            anchor="middle")
-    s.text(12, (y0 + y1) / 2, "Δ nats", anchor="middle",
+    s.text(12, (y0 + y1) / 2, "better prediction \u2192", anchor="middle",
            extra=f' transform="rotate(-90 12 {(y0 + y1) / 2:.0f})"')
     s.text(x1, y0 + 4, f"all {len(vals)} positive", cls="lbl-i", anchor="end")
     write_svg("fig-pooling", s)
@@ -442,14 +465,14 @@ def fig_two_state() -> None:
         y = PAD_T + 30 + i * 62
         s.text(0, y + 4, f"{r[0]} state", cls="lbl-i")
         s.rect(x0, y - 11, sx(r[1]) - x0, 22, "bar" if i else "bar-2",
-               f'><title>{r[0]}: {r[1]:.3f}/min, CI [{r[2]:.3f}, {r[3]:.3f}]</title></rect')
+               f"{r[0]}: {r[1]:.3f}/min, CI [{r[2]:.3f}, {r[3]:.3f}]")
         s.line(sx(r[2]), y, sx(r[3]), y, "axis")
         s.text(sx(r[1]) + 8, y + 4, f"{r[1]:.3f} /min", cls="lbl-i")
         s.text(0, y + 22, f"~{r[4]:.0f} min dwell")
     s.line(x0, h - PAD_B + 4, x1, h - PAD_B + 4)
     for t in (0, 0.5, 1.0, 1.5):
         s.text(sx(t), h - PAD_B + 19, f"{t:g}", anchor="middle")
-    s.text((x0 + x1) / 2, h - 6, "repricings per minute", anchor="middle")
+    s.text((x0 + x1) / 2, h - 6, "price moves per minute (further right = busier)", anchor="middle")
     write_svg("fig-two-state", s)
 
 
@@ -461,7 +484,7 @@ def fig_strategies() -> None:
               [[r["strategy"], r["n_markets"], r["trades_taken"], r["p_value_vs_random"],
                 r["verdict"]] for r in rows])
 
-    h = 40 + 40 * len(rows)
+    h = 52 + 40 * len(rows)
     x0, x1 = 168, W - PAD_R - 96
     sx = lambda v: x0 + v * (x1 - x0)
     s = Svg(h, "Four strategies against a random baseline",
@@ -479,13 +502,14 @@ def fig_strategies() -> None:
         else:
             p = float(r["p_value_vs_random"])
             s.rect(x0, y - 9, sx(p) - x0, 18, "bar",
-                   f'><title>{r["strategy"]}: p = {p:.3f} vs random, {r["trades_taken"]} '
-                   f"trades</title></rect")
+                   f'{r["strategy"]}: p = {p:.3f} vs random, {r["trades_taken"]} trades')
             s.text(sx(p) + 8, y + 4, f"p = {p:.3f}", cls="lbl-i")
             s.text(W - PAD_R, y + 4, r["verdict"], anchor="end")
-    s.line(x0, h - 22, x1, h - 22)
+    s.line(x0, h - 30, x1, h - 30)
     for t in (0, 0.25, 0.5, 0.75):
-        s.text(sx(t), h - 8, f"{t:g}", anchor="middle")
+        s.text(sx(t), h - 18, f"{t:g}", anchor="middle")
+    s.text((x0 + x1) / 2, h - 5, "how easily chance alone explains it (longer = more likely chance)",
+           anchor="middle")
     write_svg("fig-strategies", s)
 
 
@@ -530,7 +554,9 @@ def fig_models() -> None:
     s.line(x0, yb, x1, yb)
     for t in (0.3, 0.5, 0.7, 0.9):
         s.text(sx(t), yb + 15, f"{t:g}", anchor="middle")
-    s.text((x0 + x1) / 2, yb + 30, "macro-F1   ● pooled   · one subject", anchor="middle")
+    s.text((x0 + x1) / 2, yb + 30,
+           "accuracy score, higher is better   \u25cf overall   \u00b7 one person",
+           anchor="middle")
     s.text(0, h - 6, f"Friedman χ² = {chi2:.3f}, df = {df}, p = {p:.3f} — not significant",
            cls="lbl-i")
     write_svg("fig-models", s)
@@ -565,8 +591,7 @@ def fig_perclass() -> None:
         for j, c in enumerate(classes):
             v = vmap[c]
             cx = x0 + j * cw
-            s.rect(cx, y + 14, (cw - 10) * v, 4, "bar",
-                   f"><title>c{c}: {v:.3f}</title></rect")
+            s.rect(cx, y + 14, (cw - 10) * v, 4, "bar", f"c{c}: {v:.3f}")
             s.text(cx, y + 10, f"{v:.2f}", cls="lbl-i")
     s.text(0, h - 26, "column = activity class, with its sample count below the label")
     s.text(0, h - 12, "bar length = F1 for that class; full width would be 1.00")
@@ -578,17 +603,31 @@ FIGURES = [fig_hazard, fig_lead, fig_lead_metrics, fig_pooling,
 
 
 def inject() -> list[str]:
-    """Inline each generated SVG into the pages between its FIGURE markers."""
+    """Reference each generated SVG from the pages, between its FIGURE markers.
+
+    Referenced rather than inlined: six inline figures pushed /research past its
+    60 KB markup budget. Each <img> carries explicit dimensions so nothing shifts,
+    and alt text drawn from the figure's own <title>.
+    """
     changed = []
     for page in sorted(SITE.rglob("*.html")):
         text = original = page.read_text()
+        depth = len(page.relative_to(SITE).parts) - 1
+        up = "../" * depth
         for m in re.finditer(r"<!-- FIGURE:([\w-]+) -->.*?<!-- /FIGURE:\1 -->", text, re.S):
             name = m.group(1)
             svg = SITE / "figures" / f"{name}.svg"
             if not svg.exists():
                 print(f"  ! {page.name}: no figure named {name}", file=sys.stderr)
                 continue
-            block = (f"<!-- FIGURE:{name} -->\n{svg.read_text().strip()}\n<!-- /FIGURE:{name} -->")
+            src = svg.read_text()
+            vb = re.search(r'viewBox="0 0 (\d+) (\d+)"', src)
+            title = re.search(r"<title[^>]*>(.*?)</title>", src, re.S)
+            alt = esc(title.group(1)) if title else name
+            block = (f"<!-- FIGURE:{name} -->\n"
+                     f'<img src="{up}figures/{name}.svg" width="{vb.group(1)}" '
+                     f'height="{vb.group(2)}" alt="{alt}">\n'
+                     f"<!-- /FIGURE:{name} -->")
             text = text.replace(m.group(0), block)
         if text != original:
             page.write_text(text)

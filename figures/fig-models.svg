@@ -1,7 +1,7 @@
 <svg viewBox="0 0 640 338" role="img" aria-labelledby="t-fig-models d-fig-models" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <title id="t-fig-models">Six architectures under leave-one-subject-out cross-validation</title>
   <desc id="d-fig-models">Pooled macro-F1 spans 0.843 to 0.879, but the per-subject ranges overlap almost completely. A Friedman test over 22 subjects gives p = 0.296, so the ranking is not statistically significant.</desc>
-  <style>.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <style>svg{--ink:#111;--muted:#52524C;--line:#E4E4DE;--accent:#0B6B52;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F4F4F0;--muted:#ADADA5;--line:#34342F;--accent:#5FBFA0}}.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
   <text x="0.0" y="46.0" class="lbl-i" text-anchor="start">SimCLR</text>
   <line x1="196.5" y1="42.0" x2="531.7" y2="42.0" class="axis"/>
   <circle cx="384.3" cy="42.0" r="1.8" class="dot-2"/>
@@ -163,6 +163,6 @@
   <text x="276.0" y="297.0" class="lbl" text-anchor="middle">0.5</text>
   <text x="391.2" y="297.0" class="lbl" text-anchor="middle">0.7</text>
   <text x="506.4" y="297.0" class="lbl" text-anchor="middle">0.9</text>
-  <text x="348.0" y="312.0" class="lbl" text-anchor="middle">macro-F1   ● pooled   · one subject</text>
+  <text x="348.0" y="312.0" class="lbl" text-anchor="middle">accuracy score, higher is better   ● overall   · one person</text>
   <text x="0.0" y="332.0" class="lbl-i" text-anchor="start">Friedman χ² = 6.104, df = 5, p = 0.296 — not significant</text>
 </svg>

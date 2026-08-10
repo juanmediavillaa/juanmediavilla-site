@@ -27,7 +27,7 @@
   <div class="wrap">
     <h1>How I work</h1>
     <p class="standfirst">
-      Anyone can get an agent to write code. The hard part is knowing when to believe the output.
+      An <dfn>agent</dfn>, here, means an AI tool given a task and allowed to act on its own for a while — reading files, writing code, making changes — rather than answering one question at a time. Anyone can get one to write code. The hard part is knowing when to believe the output.
       Trust comes from structure, not better prompting.
     </p>
   </div>
@@ -128,8 +128,9 @@ if (leaks) {
     <p class="eyebrow">Acceptance criteria</p>
     <h2>Decide what counts as success before the run, not after</h2>
     <p>
-      In the <a href="../research/index.html">research work</a> this is literal: a specification
-      committed to version control before any outcome statistic exists. It is what let me report
+      In the <a href="../research/index.html">research work</a> this is literal
+      <a href="../glossary/index.html#pre-registration"><dfn>pre-registration</dfn></a>: a written
+      specification committed to version control, with a timestamp, before any result exists. It is what let me report
       that my own model failed its primary test, rather than re-cutting the metric until something
       passed.
     </p>
@@ -198,6 +199,14 @@ if (leaks) {
       was checked.
     </p>
     <p>
+      This is worth one sentence of context, because it is not obvious from outside: reporting a
+      result that went against you is rare, and the reason is an incentive. When something comes out
+      flat, the quiet option is to adjust the measurement and try again until it looks convincing,
+      and nobody can tell afterwards. Fixing the target in advance is what removes that option, and
+      it is why a null result I pre-registered is better evidence about me than a strong result I
+      did not.
+    </p>
+    <p>
       Lighthouse was not run, so no Lighthouse score is claimed anywhere on this site. Six figures
       the previous version advertised were found dead or revised against the current thesis draft,
       and are now listed in a committed rules file so they cannot creep back. That file is the
@@ -224,7 +233,7 @@ if positions and not any(pinfo.get(p['ticker'], {}).get('price') is not None
 
 <footer class="foot">
   <div class="wrap">
-    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a> · <a href="../glossary/index.html">Glossary</a></p>
   </div>
 </footer>
 

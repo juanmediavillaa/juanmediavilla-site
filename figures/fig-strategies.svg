@@ -1,15 +1,15 @@
-<svg viewBox="0 0 640 200" role="img" aria-labelledby="t-fig-strategies d-fig-strategies" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 640 212" role="img" aria-labelledby="t-fig-strategies d-fig-strategies" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <title id="t-fig-strategies">Four strategies against a random baseline</title>
   <desc id="d-fig-strategies">Three strategies score no edge with p-values far above 0.05. The fourth is not plotted: it abstained on every market because the data lacks the signal it needs.</desc>
-  <style>.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
-  <line x1="186.0" y1="22.0" x2="186.0" y2="174.0" class="rule"/>
+  <style>svg{--ink:#111;--muted:#52524C;--line:#E4E4DE;--accent:#0B6B52;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F4F4F0;--muted:#ADADA5;--line:#34342F;--accent:#5FBFA0}}.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="186.0" y1="22.0" x2="186.0" y2="186.0" class="rule"/>
   <text x="186.0" y="16.0" class="lbl" text-anchor="middle">p = 0.05</text>
   <text x="0.0" y="48.0" class="lbl-i" text-anchor="start">mean_reversion_v1</text>
-  <rect x="168.0" y="35.0" width="179.21" height="18.00" class="bar"><title>mean_reversion_v1: p = 0.498 vs random, 67 trades</title></rect/>
+  <rect x="168.0" y="35.0" width="179.21" height="18.00" class="bar"><title>mean_reversion_v1: p = 0.498 vs random, 67 trades</title></rect>
   <text x="355.2" y="48.0" class="lbl-i" text-anchor="start">p = 0.498</text>
   <text x="624.0" y="48.0" class="lbl" text-anchor="end">NO_EDGE</text>
   <text x="0.0" y="88.0" class="lbl-i" text-anchor="start">longshot_fade_v1</text>
-  <rect x="168.0" y="75.0" width="216.25" height="18.00" class="bar"><title>longshot_fade_v1: p = 0.601 vs random, 157 trades</title></rect/>
+  <rect x="168.0" y="75.0" width="216.25" height="18.00" class="bar"><title>longshot_fade_v1: p = 0.601 vs random, 157 trades</title></rect>
   <text x="392.3" y="88.0" class="lbl-i" text-anchor="start">p = 0.601</text>
   <text x="624.0" y="88.0" class="lbl" text-anchor="end">NO_EDGE</text>
   <text x="0.0" y="128.0" class="lbl-i" text-anchor="start">depth_imbalance_v1</text>
@@ -17,12 +17,13 @@
   <text x="172.0" y="118.0" class="lbl-i" text-anchor="start">no bar — abstained on every market</text>
   <text x="624.0" y="128.0" class="lbl-i" text-anchor="end">NOT_APPLICABLE</text>
   <text x="0.0" y="168.0" class="lbl-i" text-anchor="start">regime_conditioned_v1</text>
-  <rect x="168.0" y="155.0" width="220.57" height="18.00" class="bar"><title>regime_conditioned_v1: p = 0.613 vs random, 4 trades</title></rect/>
+  <rect x="168.0" y="155.0" width="220.57" height="18.00" class="bar"><title>regime_conditioned_v1: p = 0.613 vs random, 4 trades</title></rect>
   <text x="396.6" y="168.0" class="lbl-i" text-anchor="start">p = 0.613</text>
   <text x="624.0" y="168.0" class="lbl" text-anchor="end">NO_EDGE</text>
-  <line x1="168.0" y1="178.0" x2="528.0" y2="178.0" class="axis"/>
-  <text x="168.0" y="192.0" class="lbl" text-anchor="middle">0</text>
-  <text x="258.0" y="192.0" class="lbl" text-anchor="middle">0.25</text>
-  <text x="348.0" y="192.0" class="lbl" text-anchor="middle">0.5</text>
-  <text x="438.0" y="192.0" class="lbl" text-anchor="middle">0.75</text>
+  <line x1="168.0" y1="182.0" x2="528.0" y2="182.0" class="axis"/>
+  <text x="168.0" y="194.0" class="lbl" text-anchor="middle">0</text>
+  <text x="258.0" y="194.0" class="lbl" text-anchor="middle">0.25</text>
+  <text x="348.0" y="194.0" class="lbl" text-anchor="middle">0.5</text>
+  <text x="438.0" y="194.0" class="lbl" text-anchor="middle">0.75</text>
+  <text x="348.0" y="207.0" class="lbl" text-anchor="middle">how easily chance alone explains it (longer = more likely chance)</text>
 </svg>

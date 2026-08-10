@@ -230,6 +230,77 @@ a.card:hover h3 { text-decoration: underline; }
   color: var(--faint);
 }
 
+/* ---------- plain-language layer ---------- */
+
+.plain { font-size: var(--fs-lg); }
+.oneline {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink);
+  margin: var(--s3) 0 var(--s2);
+  max-width: 58ch;
+}
+
+/* Inline definition. The gloss beside it is visible text, not a tooltip:
+   title attributes do not survive touch. */
+dfn {
+  font-style: normal;
+  border-bottom: 1px dotted var(--muted);
+  cursor: help;
+}
+a dfn { border-bottom-color: var(--accent); cursor: pointer; }
+
+details {
+  border-top: 1px solid var(--line);
+  margin: var(--s4) 0 0;
+}
+details > summary {
+  cursor: pointer;
+  padding: var(--s2) 0;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  list-style: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 1.2em;
+  color: var(--accent);
+}
+details[open] > summary::before { content: "▾"; }
+details > summary:hover { color: var(--ink); }
+details > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details > .inner { padding-bottom: var(--s3); }
+
+/* ---------- glossary ---------- */
+
+.gloss-nav {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  padding: 0;
+  list-style: none;
+  margin: var(--s3) 0 0;
+}
+.gloss-nav li { max-width: none; }
+.gterm { padding: var(--s3) 0; border-bottom: 1px solid var(--line); scroll-margin-top: var(--s3); }
+.gterm:last-child { border-bottom: none; }
+.gterm h2 { font-size: var(--fs-md); }
+.gterm p { margin: var(--s2) 0 0; }
+.gterm .mine {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  border-left: 2px solid var(--line);
+  padding-left: var(--s3);
+  margin-top: var(--s2);
+}
+
 /* ---------- figures ---------- */
 
 figure { margin: var(--s4) 0; }
@@ -360,6 +431,11 @@ ul.plain > li:last-child { border-bottom: none; }
 
 @media print {
   .nav, .foot, .no-print { display: none; }
+  /* a printed page carries everything, including collapsed detail */
+  details { border-top: none; }
+  details > summary { display: none; }
+  details > .inner { display: block !important; }
+  dfn { border-bottom: none; }
   body { background: #fff; color: #000; font-size: 9.5pt; line-height: 1.38; }
   h1, h2, h3 { color: #000; }
   h1 { font-size: 19pt; }

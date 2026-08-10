@@ -1,7 +1,7 @@
 <svg viewBox="0 0 640 250" role="img" aria-labelledby="t-fig-hazard d-fig-hazard" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <title id="t-fig-hazard">Hot-episode hazard against elapsed time</title>
   <desc id="d-fig-hazard">The truncation-robust discrete hazard falls from 0.325 to 0.167 per minute over 3 to 40 minutes elapsed. The rejected Weibull fit rises instead.</desc>
-  <style>.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <style>svg{--ink:#111;--muted:#52524C;--line:#E4E4DE;--accent:#0B6B52;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F4F4F0;--muted:#ADADA5;--line:#34342F;--accent:#5FBFA0}}.lbl{font:11px var(--mono,monospace);fill:var(--muted,#555)}.lbl-i{font:11px var(--mono,monospace);fill:var(--ink,#111)}.ttl{font:12px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#ddd);stroke-width:1}.rule{stroke:var(--ink,#111);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--accent,#0B6B52)}.bar-2{fill:var(--muted,#555)}.ser{fill:none;stroke:var(--accent,#0B6B52);stroke-width:2}.ser-2{fill:none;stroke:var(--muted,#555);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--accent,#0B6B52)}.dot-2{fill:var(--muted,#555)}.cell{fill:var(--accent,#0B6B52)}.cv{font:9.5px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
   <line x1="52.0" y1="210.0" x2="624.0" y2="210.0" class="axis"/>
   <text x="46.0" y="213.5" class="lbl" text-anchor="end">0.0</text>
   <line x1="52.0" y1="160.6" x2="624.0" y2="160.6" class="axis"/>
@@ -16,8 +16,8 @@
   <text x="283.5" y="225.0" class="lbl" text-anchor="middle">20</text>
   <text x="419.7" y="225.0" class="lbl" text-anchor="middle">30</text>
   <text x="555.9" y="225.0" class="lbl" text-anchor="middle">40</text>
-  <text x="338.0" y="242.0" class="lbl" text-anchor="middle">minutes elapsed in episode</text>
-  <text x="12.0" y="121.0" class="lbl" text-anchor="middle" transform="rotate(-90 12 121)">hazard / min</text>
+  <text x="338.0" y="242.0" class="lbl" text-anchor="middle">minutes the burst has already lasted</text>
+  <text x="12.0" y="121.0" class="lbl" text-anchor="middle" transform="rotate(-90 12 121)">chance it ends this minute</text>
   <path d="M72.4 145.8 L120.1 127.6 L181.4 109.9 L283.5 87.3 L453.8 58.5 L590.0 39.8" class="ser-2"/>
   <path d="M72.4 145.8 L120.1 162.7 L181.4 171.7 L283.5 189.7 L453.8 188.6 L590.0 177.0" class="ser"/>
   <circle cx="72.4" cy="145.8" r="3.5" class="dot"><title>0.3247/min, 113 episodes ended</title></circle>
