@@ -210,8 +210,11 @@ series palette, a figure, or the gradient system.
   third-party low-resolution UCL raster, none of which may be copied.
 - Logos state factually where I studied. Nothing on the site may imply endorsement by either
   institution.
-- **The institution card follows the theme.** Only the logo keeps a fixed light chip, which is the
-  usual treatment for single-colour artwork that would otherwise vanish on a dark ground.
+- **The institution card and its logos all follow the theme.** No chip, no border, no fixed ground.
+  The UCL logo is **inlined** so its two fills read the same tokens as the card. The Leiden seal is
+  effectively monochrome, so a page-driven `filter` lifts it on dark — and because that filter lives
+  in `style.css` it follows the manual toggle, which a variant file selected by
+  `prefers-color-scheme` could not.
 - The measured brand colours fall to **1.28:1 (UCL) and 1.90:1 (Leiden)** on the dark plane, so the
   dark theme uses variants derived from them — **same hue and saturation, lightness raised only**
   until they clear contrast: UCL name `#A54FFF` (4.62:1), Leiden name and rule `#0278FD` (4.57:1).

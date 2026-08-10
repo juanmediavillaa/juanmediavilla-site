@@ -778,21 +778,20 @@ html.js .reveal { transition: opacity .5s ease, transform .5s ease; }
 .inst--leiden a { color: var(--leiden-name); }
 .inst strong, .inst b, .inst em { color: var(--ink); }
 
-/* the logo keeps a light chip in both themes: these marks are supplied in one
-   colour and vanish on a dark ground */
-.inst__mark {
-  display: inline-flex;
-  align-items: center;
-  background: #FBFAFC;
-  border: 1px solid #E4E2EE;
-  border-radius: 6px;
-  padding: var(--s2) var(--s3);
-  margin: 0 0 var(--s3);
+/* No chip and no border: the marks themselves theme. The UCL logo is inlined so
+   its two fills read the same tokens as the card. The Leiden seal is effectively
+   monochrome, so a page-driven filter lifts it on dark — and because the filter
+   lives in this stylesheet it follows the manual theme toggle, which a variant
+   file selected by prefers-color-scheme could not. */
+.inst__mark { display: block; margin: 0 0 var(--s3); }
+.inst__logo { display: block; width: 132px; height: auto; }
+.inst__seal { display: block; width: 40px; height: auto; }
+@media (max-width: 30rem) { .inst__logo { width: 108px; } }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .inst__seal { filter: brightness(1.95) saturate(0.95); }
 }
-.inst__mark img { display: block; height: auto; }
-.inst--ucl .inst__mark img { width: 132px; }
-.inst--leiden .inst__mark img { width: 40px; }
-@media (max-width: 30rem) { .inst--ucl .inst__mark img { width: 108px; } }
+:root[data-theme="dark"] .inst__seal { filter: brightness(1.95) saturate(0.95); }
 
 /* scroll progress */
 .progress {
