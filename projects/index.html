@@ -52,7 +52,7 @@
     <div class="plain">
       <p>
         Six scheduled collectors running every 15 to 60 minutes, plus real-time ingest over
-        WebSockets, feeding a corpus of about 118 GB. Every gap in the feed is logged and masked
+        WebSockets, feeding an archive of <strong>~800 GB as of August 2026</strong> — that is the self-reported total on cloud storage; the server itself holds a 250 GB working set that fills and is periodically offloaded, which is its own small operational discipline. Every gap in the feed is logged and masked
         rather than interpolated, and continuity is accounted for rather than assumed — which is
         what makes the absence of activity evidence instead of missing data. Out of that corpus I
         built a licence-clean, hash-verified panel of <strong>400 resolved markets and 188,856
@@ -92,7 +92,7 @@ $ poly-status --audit
   <title id="dt-dia-pipeline">The collection pipeline</title>
   <desc id="dd-dia-pipeline">Six scheduled collectors write to storage on a 15 to 60 minute cadence. A gap audit checks continuity, and the audited output is a panel of 400 resolved markets and 188,856 trades.</desc>
   <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}</style>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
   <g><rect x="8" y="18" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 1, dispatched every 15–60 minutes</title><text x="67" y="28" class="t" text-anchor="middle" dominant-baseline="middle">collector 1</text></g>
   <g><rect x="8" y="42" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 2, dispatched every 15–60 minutes</title><text x="67" y="52" class="t" text-anchor="middle" dominant-baseline="middle">collector 2</text></g>
   <g><rect x="8" y="66" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 3, dispatched every 15–60 minutes</title><text x="67" y="76" class="t" text-anchor="middle" dominant-baseline="middle">collector 3</text></g>
@@ -101,7 +101,7 @@ $ poly-status --audit
   <g><rect x="8" y="138" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 6, dispatched every 15–60 minutes</title><text x="67" y="148" class="t" text-anchor="middle" dominant-baseline="middle">collector 6</text></g>
   <text x="8" y="172" class="ts" text-anchor="start">6 scheduled + 1 dormant</text>
   <g><rect x="160" y="60" width="116" height="56" rx="6" class="bx bx1"/><title>each collector runs on a systemd timer</title><text x="218" y="83" class="t" text-anchor="middle" dominant-baseline="middle">systemd timers</text><text x="218" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">15–60 min</text></g>
-  <g><rect x="310" y="60" width="110" height="56" rx="6" class="bx bx3"/><title>on-disk corpus at survey time</title><text x="365" y="83" class="t" text-anchor="middle" dominant-baseline="middle">storage</text><text x="365" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">~118 GB</text></g>
+  <g><rect x="302" y="60" width="126" height="56" rx="6" class="bx bx3"/><title>server working set; periodically offloaded to a ~800 GB archive</title><text x="365" y="83" class="t" text-anchor="middle" dominant-baseline="middle">storage</text><text x="365" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">250 GB working set</text></g>
   <g><rect x="452" y="20" width="200" height="46" rx="6" class="bx bx2"/><title>every feed gap is logged and masked, never interpolated</title><text x="552" y="38" class="t" text-anchor="middle" dominant-baseline="middle">gap audit</text><text x="552" y="54" class="ts" text-anchor="middle" dominant-baseline="middle">continuity accounting</text></g>
   <g><rect x="452" y="96" width="200" height="56" rx="6" class="bx bx3"/><title>licence-clean and hash-verified; 382 used in the backtests</title><text x="552" y="119" class="t" text-anchor="middle" dominant-baseline="middle">audited panel</text><text x="552" y="135" class="ts" text-anchor="middle" dominant-baseline="middle">400 markets · 188,856 trades</text></g>
   <path d="M128 28 L158 88" class="ar ar1"/>
@@ -114,7 +114,7 @@ $ poly-status --audit
   <path d="M422 80 L450 52" class="ar ar2"/>
   <path d="M422 96 L450 118" class="ar "/>
   <text x="8" y="196" class="tm" text-anchor="start">every gap logged and masked — never interpolated</text>
-  <text x="8" y="212" class="tm" text-anchor="start">reconstruction validated by delta replay</text>
+  <text x="8" y="212" class="tm" text-anchor="start">offloaded to a ~800 GB archive (self-reported, Aug 2026)</text>
 </svg>
 <!-- /DIAGRAM:dia-pipeline -->
       <figcaption>
@@ -281,7 +281,7 @@ $ poly-status --audit
   <title id="dt-dia-tiers">The three-tier wallet engine</title>
   <desc id="dd-dia-tiers">Three independent checks run on each wallet. Only when all three agree is a wallet labelled an insider; if on-chain tracing is unavailable the classification is capped rather than guessed.</desc>
   <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}</style>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
   <g><rect x="8" y="18" width="220" height="44" rx="6" class="bx bx1"/><title>tier 1 · trading pattern: timing vs news</title><text x="118" y="35" class="t" text-anchor="middle" dominant-baseline="middle">tier 1 · trading pattern</text><text x="118" y="51" class="ts" text-anchor="middle" dominant-baseline="middle">timing vs news</text></g>
   <g><rect x="8" y="76" width="220" height="44" rx="6" class="bx bx1"/><title>tier 2 · profit history: early on winners</title><text x="118" y="93" class="t" text-anchor="middle" dominant-baseline="middle">tier 2 · profit history</text><text x="118" y="109" class="ts" text-anchor="middle" dominant-baseline="middle">early on winners</text></g>
   <g><rect x="8" y="134" width="220" height="44" rx="6" class="bx bx1"/><title>tier 3 · on-chain funding: traced up to 3 hops</title><text x="118" y="151" class="t" text-anchor="middle" dominant-baseline="middle">tier 3 · on-chain funding</text><text x="118" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">traced up to 3 hops</text></g>
@@ -379,7 +379,7 @@ $ poly-status --audit
   <title id="dt-dia-nav">Unitisation, and the ledger invariant</title>
   <desc id="dd-dia-nav">Money paid in is converted to units at today's price per unit. The fund's value always equals its cash plus the market value of its positions.</desc>
   <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}</style>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
   <g><rect x="8" y="30" width="140" height="50" rx="6" class="bx bx3"/><title>a member deposits</title><text x="78" y="50" class="t" text-anchor="middle" dominant-baseline="middle">money in</text><text x="78" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">€ deposit</text></g>
   <g><rect x="190" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>net asset value per unit, computed at the moment of the deposit</title><text x="265" y="50" class="t" text-anchor="middle" dominant-baseline="middle">price per unit</text><text x="265" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">value ÷ units</text></g>
   <g><rect x="382" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>the member is issued units at that price</title><text x="457" y="50" class="t" text-anchor="middle" dominant-baseline="middle">units issued</text><text x="457" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">deposit ÷ price</text></g>
@@ -434,7 +434,7 @@ $ poly-status --audit
     <p class="entry__meta">Phase 1 complete, shipped July 2026 · not launched</p>
 
     <p class="oneline">
-      Productised a 236 GB, seven-stream archive into a documented, DOI-versioned dataset with a
+      Productised a seven-stream, ~800 GB archive into a documented, DOI-versioned dataset with a
       costed delivery architecture — and engineered provenance enforcement into the build.
     </p>
     <div class="plain">
@@ -466,7 +466,7 @@ $ poly-status --audit
       <div class="inner">
         <p>
           A static, zero-JavaScript site documenting a seven-stream order-book archive of roughly
-          <span class="num">236 GB</span>, growing about <span class="num">12.8 GiB</span> a day.
+          <span class="num">800 GB</span> as of August 2026, growing about <span class="num">12.8 GiB</span> a day. That total is self-reported from cloud storage rather than derived from a committed file, so it is dated; the curated tier beneath it (206 markets, 408,414 repricing events) is machine-verifiable and unchanged.
         </p>
         <div class="finding">
           <p class="finding__sign">Provenance enforced in code</p>

@@ -693,3 +693,75 @@ html.js .reveal { transition: opacity .5s ease, transform .5s ease; }
   cursor: pointer;
 }
 .theme-toggle:hover { border-color: var(--c1); }
+
+/* ---------- institution identity ----------
+   Quarantined to the education block on /about. These colours are sampled from
+   the institutions' own artwork and never enter the series palette, a figure, or
+   the gradient system. The card keeps a fixed light ground in BOTH themes,
+   because the measured brand colours fall to 1.3:1 and 1.9:1 on the dark plane —
+   a neutral card is what keeps them legible and on-brand at once. */
+.inst {
+  --ucl-dark: #361A54;
+  --ucl-bright: #9A3BFF;
+  --leiden: #014189;
+  background: #FBFAFC;
+  color: #0D0B14;
+  border: 1px solid #E4E2EE;
+  border-left: 4px solid var(--line);
+  border-radius: 8px;
+  padding: var(--s3) var(--s4);
+  margin: var(--s4) 0;
+  box-shadow: var(--e1);
+}
+.inst--ucl { border-left-color: var(--ucl-bright); }
+.inst--leiden { border-left-color: var(--leiden); }
+.inst__name { font-weight: 600; font-size: var(--fs-h3); display: block; }
+.inst--ucl .inst__name { color: var(--ucl-dark); }
+.inst--leiden .inst__name { color: var(--leiden); }
+.inst__meta {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: #4A4759;
+  display: block;
+  margin: var(--s1) 0 var(--s2);
+}
+.inst p { color: #4A4759; margin: 0 0 var(--s2); max-width: 62ch; }
+.inst p:last-child { margin-bottom: 0; }
+.inst a { color: var(--ucl-dark); }
+.inst--leiden a { color: var(--leiden); }
+
+/* scroll progress */
+.progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--c1), var(--c3));
+  z-index: 60; transition: width .1s linear;
+}
+@media (prefers-reduced-motion: reduce) { .progress { transition: none; } }
+
+/* chart tooltip, built from the data table already in the DOM */
+.tip {
+  position: fixed; z-index: 70; pointer-events: none;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: var(--e2);
+  font-family: var(--mono); font-size: var(--fs-xs);
+  padding: var(--s2); max-width: 20rem;
+}
+.tip b { color: var(--ink); }
+
+/* micro-interactions */
+a:not(.card):not(.nav__home) { text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); transition: text-decoration-color .15s ease; }
+a:not(.card):not(.nav__home):hover { text-decoration-color: currentColor; }
+details > .inner { animation: disclose .22s ease; }
+@keyframes disclose { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { details > .inner { animation: none; } }
+
+/* hero gradient drift and diagram pulse — both stop under reduced motion */
+@keyframes drift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.hero { background-size: 160% 160%, 180% 180%; animation: drift 34s ease-in-out infinite; }
+@keyframes pulse { 0% { opacity: 0; } 12% { opacity: .9; } 60% { opacity: .9; } 100% { opacity: 0; } }
+svg .pulse { animation: pulse 4.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero { animation: none; }
+  svg .pulse { animation: none; opacity: 0; }
+}

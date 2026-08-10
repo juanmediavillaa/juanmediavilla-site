@@ -25,75 +25,298 @@
 
 <main id="main">
 
-<header class="head">
+<header class="hero">
   <div class="wrap">
-    <h1>How I work</h1>
+    <p class="eyebrow">How I work</p>
+    <h1>The machine behind the output</h1>
     <p class="standfirst">
-      An <dfn>agent</dfn>, here, means an AI tool given a task and allowed to act on its own for a while — reading files, writing code, making changes — rather than answering one question at a time. Anyone can get one to write code. The hard part is knowing when to believe the output.
-      Trust comes from structure, not better prompting.
+      I ship more than one person should be able to. This page describes the system that makes
+      that possible, and the checks that stop it producing confident nonsense.
     </p>
   </div>
 </header>
 
-<section class="section">
+<section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Contracts</p>
-    <h2>An agent gets a written contract, with the autonomy boundary stated first</h2>
-    <p>
-      I run a personal knowledge base through an agent operating under a written contract. I
-      produce thought; the agent owns structure. It files, links and propagates, and never asks me
-      where something goes.
+    <p class="eyebrow">The argument</p>
+    <h2>Anyone can get an agent to write code</h2>
+    <p class="plain">
+      An <dfn>agent</dfn>, here, means an AI tool given a task and allowed to act on its own for a
+      while — reading files, writing code, running commands — rather than answering one question at
+      a time. Getting one to produce code is easy; knowing when to believe the result is not, and
+      that does not come from better prompting. It comes from structure: written contracts,
+      provenance requirements, limits enforced in code, and independent verification.
     </p>
-    <p>
-      The contract fixes what would otherwise be re-litigated every run. Autonomy is stated up
-      front as <em>file freely, report after</em>: placement is the agent's call, I veto afterwards.
-      Ambiguous items stay queued rather than placed — an unfiled note is recoverable, a misfiled one
-      vanishes — so the agent knows which way to err. Routing keys on what <em>kind</em> of fact
-      something is, not its topic, which makes it decidable. Questions are batched and capped at
-      five.
-    </p>
-    <p>
-      It also names its own anti-patterns. One tracking file is capped at five rows, because I once
-      over-built a nineteen-item registry with rubrics and a dashboard and retired it; if it wants to
-      grow, that is a signal to raise with me. The tag vocabulary is closed at five: one that grows
-      without resistance stops separating anything. Blast radius is bounded too: two directories
-      frozen, two files append-only, no git access.
+    <p class="plain">
+      What follows is the architecture I run, not a description of best practice.
     </p>
   </div>
 </section>
 
-<section class="section">
+<section class="section band reveal">
+  <div class="wrap">
+    <p class="eyebrow">Architecture</p>
+    <h2>One orchestrator, many narrow workers</h2>
+
+    <p class="plain">
+      A single orchestrator running the strongest model available holds the plan and makes the
+      judgement calls. It does not do the work. It delegates almost everything, and the reason is
+      the single most important design constraint in the whole system.
+    </p>
+
+    <figure>
+<!-- DIAGRAM:dia-orchestrator -->
+<svg viewBox="0 0 660 300" role="img" aria-labelledby="dt-dia-orchestrator dd-dia-orchestrator" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-orchestrator">The orchestrator topology</title>
+  <desc id="dd-dia-orchestrator">One orchestrator holds the plan. It delegates reading and implementation to subagents that fan out in parallel, each with its own model tier and permission scope, and returns conclusions rather than file contents.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="240" y="14" width="180" height="46" rx="6" class="bx bx1"/><title>owns the plan and the judgement calls; deliberately keeps its own context light</title><text x="330" y="32" class="t" text-anchor="middle" dominant-baseline="middle">orchestrator</text><text x="330" y="48" class="ts" text-anchor="middle" dominant-baseline="middle">strongest model</text></g>
+  <g><rect x="20" y="14" width="190" height="46" rx="6" class="bx bx3"/><title>per-repo and per-agent context: structure, conventions, what must never be touched</title><text x="115" y="32" class="t" text-anchor="middle" dominant-baseline="middle">context files</text><text x="115" y="48" class="ts" text-anchor="middle" dominant-baseline="middle">conventions · hard rules</text></g>
+  <path d="M212 37 L238 37" class="ar ar1"/>
+  <g><rect x="20" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>explore: fast · read-only</title><text x="90" y="135" class="t" text-anchor="middle" dominant-baseline="middle">explore</text><text x="90" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">fast · read-only</text></g>
+  <path d="M330 62 L90 112" class="ar ar1"/>
+  <path d="M90 166 L330 208" class="ar ar2"/>
+  <g><rect x="180" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>implement: mid · write, no git</title><text x="250" y="135" class="t" text-anchor="middle" dominant-baseline="middle">implement</text><text x="250" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">mid · write, no git</text></g>
+  <path d="M330 62 L250 112" class="ar ar1"/>
+  <path d="M250 166 L330 208" class="ar ar2"/>
+  <g><rect x="340" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>review: strong · read-only</title><text x="410" y="135" class="t" text-anchor="middle" dominant-baseline="middle">review</text><text x="410" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">strong · read-only</text></g>
+  <path d="M330 62 L410 112" class="ar ar1"/>
+  <path d="M410 166 L330 208" class="ar ar2"/>
+  <g><rect x="500" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>verify: fast · read-only</title><text x="570" y="135" class="t" text-anchor="middle" dominant-baseline="middle">verify</text><text x="570" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">fast · read-only</text></g>
+  <path d="M330 62 L570 112" class="ar ar1"/>
+  <path d="M570 166 L330 208" class="ar ar2"/>
+  <g class="pulse"><circle cx="330" cy="62" r="4" fill="var(--c1)"/></g>
+  <g><rect x="240" y="210" width="180" height="42" rx="6" class="bx bx2"/><title>a barrier is used only when a stage genuinely needs every prior result at once</title><text x="330" y="226" class="t" text-anchor="middle" dominant-baseline="middle">barrier</text><text x="330" y="242" class="ts" text-anchor="middle" dominant-baseline="middle">only where earned</text></g>
+  <path d="M330 254 L330 274" class="ar ar2"/>
+  <g><rect x="240" y="274" width="180" height="22" rx="6" class="bx bx2"/><title>anything irreversible or public stops here</title><text x="330" y="285" class="t" text-anchor="middle" dominant-baseline="middle">human gate → merge</text></g>
+  <text x="20" y="196" class="tm" text-anchor="start">results return as conclusions, not file dumps</text>
+</svg>
+<!-- /DIAGRAM:dia-orchestrator -->
+      <figcaption>
+        <b>What you're looking at:</b> the shape of a run. Context files feed the orchestrator
+        what it needs to know about the repository before it starts. Work fans out to subagents in
+        parallel, each with its own model tier and its own permission scope. Results come back as
+        conclusions rather than file contents, and anything irreversible stops at a human gate.
+        <span class="prov">The architecture as run · hover any box for its scope</span>
+      </figcaption>
+    </figure>
+
+    <h3>Context discipline is the design constraint, not an optimisation</h3>
+    <p class="plain">
+      An agent's attention is finite, and as its context fills, quality degrades
+      <em>gradually and invisibly</em>. No error, no warning, just steadily worse judgement — the
+      one failure mode you cannot catch by watching, so it has to be designed against up front.
+    </p>
+    <p class="plain">
+      So the orchestrator is instructed to keep its own context light. It delegates reading rather
+      than reading into itself, and subagents return conclusions instead of file dumps. An
+      orchestrator that has absorbed forty files is blunt. One that has absorbed forty summaries
+      is still sharp, and can still hold the whole plan.
+    </p>
+
+    <figure>
+<!-- DIAGRAM:dia-context -->
+<svg viewBox="0 0 660 240" role="img" aria-labelledby="dt-dia-context dd-dia-context" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-context">Context budget over a session</title>
+  <desc id="dd-dia-context">Conceptual, not measured. An orchestrator that reads everything itself fills its context and degrades; one that delegates reading and receives summaries stays sharp for far longer.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <line x1="56" y1="180" x2="620" y2="180" class="ar"/>
+  <line x1="56" y1="180" x2="56" y2="30" class="ar"/>
+  <path d="M56 180 Q260 50 620 36" fill="none" stroke="var(--c2)" stroke-width="2"/>
+  <path d="M56 180 Q320 154 620 126" fill="none" stroke="var(--c1)" stroke-width="2"/>
+  <text x="614" y="32" class="ts" text-anchor="end">reads everything itself</text>
+  <text x="614" y="120" class="ts" text-anchor="end">delegates reading</text>
+  <text x="50" y="36" class="ts" text-anchor="end">full</text>
+  <text x="50" y="180" class="ts" text-anchor="end">empty</text>
+  <text x="338.0" y="200" class="ts" text-anchor="middle">session length →</text>
+  <text x="8" y="214" class="t" text-anchor="start">CONCEPTUAL — the shape of the problem, not measured data</text>
+  <text x="8" y="230" class="tm" text-anchor="start">the failure mode is gradual and invisible, so it is designed against up front</text>
+</svg>
+<!-- /DIAGRAM:dia-context -->
+      <figcaption>
+        <b>What you're looking at:</b> the shape of the problem, drawn rather than measured. One
+        curve is an orchestrator that reads everything itself and fills up early; the other
+        delegates reading and stays usable for far longer. This is a conceptual diagram and is
+        labelled as such — there is no dataset behind it, and on this site that distinction
+        matters.
+        <span class="prov">Conceptual · not measured data</span>
+      </figcaption>
+    </figure>
+
+    <h3>Context files as durable infrastructure</h3>
+    <p class="plain">
+      An agent that rediscovers a codebase every session wastes most of its budget doing it, so
+      each repository and agent role carries a context file: where things live, the conventions,
+      the hard rules, what must never be touched. The repository-structure map is a maintained
+      artifact, not a byproduct.
+    </p>
+    <p class="plain">
+      Two of these are real and public in effect. One is the operating contract for my knowledge
+      base, described below. The other is the rules file in the repository for this website, which
+      carries a table of six figures that were retired as wrong — so that a future agent editing
+      this site cannot quietly reintroduce them. The constraint lives where it will be enforced,
+      not where it will be remembered.
+    </p>
+
+    <h3>Dispatch by difficulty</h3>
+    <p class="plain">
+      Not every task deserves the strongest model. Renames, greps, boilerplate, mechanical
+      refactors and formatting go to fast cheap models at low reasoning effort. Ordinary
+      implementation goes to the middle tier. The strongest model at the highest effort is
+      reserved for architecture, ambiguous debugging and adversarial review. The orchestrator makes
+      that call per task rather than the whole session running at one setting.
+    </p>
+    <p class="plain">
+      The economics are not subtle: running everything at maximum is slow and expensive, and a
+      rename does not benefit from deeper reasoning.
+    </p>
+
+    <figure>
+<!-- DIAGRAM:dia-dispatch -->
+<svg viewBox="0 0 660 250" role="img" aria-labelledby="dt-dia-dispatch dd-dia-dispatch" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-dispatch">The dispatch ladder</title>
+  <desc id="dd-dia-dispatch">Task difficulty decides the model tier and the reasoning effort. Mechanical work goes to fast cheap models; the strongest model is reserved for architecture, ambiguous debugging and adversarial review.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="30" width="120" height="46" rx="6" class="bx bx3"/><title>mechanical: renames · greps · formatting · boilerplate</title><text x="68" y="53" class="t" text-anchor="middle" dominant-baseline="middle">mechanical</text></g>
+  <text x="140" y="50" class="ts" text-anchor="start">renames · greps · formatting · boilerplate</text>
+  <text x="140" y="66" class="t" text-anchor="start">fast model, low effort</text>
+  <path d="M130 53 L136 53" class="ar "/>
+  <g><rect x="8" y="96" width="120" height="46" rx="6" class="bx bx1"/><title>standard: implement a described change · write tests</title><text x="68" y="119" class="t" text-anchor="middle" dominant-baseline="middle">standard</text></g>
+  <text x="140" y="116" class="ts" text-anchor="start">implement a described change · write tests</text>
+  <text x="140" y="132" class="t" text-anchor="start">mid model, medium effort</text>
+  <path d="M130 119 L136 119" class="ar "/>
+  <g><rect x="8" y="162" width="120" height="46" rx="6" class="bx bx2"/><title>hard: architecture · ambiguous debugging · review</title><text x="68" y="185" class="t" text-anchor="middle" dominant-baseline="middle">hard</text></g>
+  <text x="140" y="182" class="ts" text-anchor="start">architecture · ambiguous debugging · review</text>
+  <text x="140" y="198" class="t" text-anchor="start">strongest model, high effort</text>
+  <path d="M130 185 L136 185" class="ar "/>
+  <text x="8" y="232" class="tm" text-anchor="start">the orchestrator makes this call per task, not once per session</text>
+</svg>
+<!-- /DIAGRAM:dia-dispatch -->
+      <figcaption>
+        <b>What you're looking at:</b> which kind of work goes to which tier. The examples on each
+        row are real categories from my own runs, not illustrations.
+        <span class="prov">Dispatch policy as configured</span>
+      </figcaption>
+    </figure>
+
+    <h3>Parallelism, with barriers only where they are earned</h3>
+    <p class="plain">
+      Independent work fans out concurrently. The instinct is then to wait for all of it before the
+      next stage, and that instinct is usually wrong. A barrier is only justified when a stage
+      genuinely needs every prior result at once: deduplicating across a complete set, or exiting
+      early because there was nothing to find.
+    </p>
+    <p class="plain">
+      Otherwise the work pipelines, so one item can be in its third stage while another is still
+      in its first. The wall-clock cost is then the slowest single chain rather than the sum of the
+      slowest step in each stage. Where agents would edit the same files, each gets an isolated
+      copy of the repository so they cannot collide.
+    </p>
+
+    <h3>Permissions scoped per agent</h3>
+    <p class="plain">
+      Every agent class gets the narrowest scope that still lets it work. Read-only explorers
+      cannot write. Implementers can write but cannot touch version control. Anything irreversible
+      or public — a push, a deploy, a deletion, a published document — stops at an explicit human
+      gate.
+    </p>
+
+    <figure>
+<!-- DIAGRAM:dia-permissions -->
+<svg viewBox="0 0 660 240" role="img" aria-labelledby="dt-dia-permissions dd-dia-permissions" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-permissions">Permissions and gates</title>
+  <desc id="dd-dia-permissions">Each agent class gets the narrowest scope that lets it work. Anything irreversible or public stops at an explicit human gate.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <text x="250" y="26" class="ts" text-anchor="middle">read</text>
+  <text x="330" y="26" class="ts" text-anchor="middle">write</text>
+  <text x="410" y="26" class="ts" text-anchor="middle">git</text>
+  <text x="500" y="26" class="ts" text-anchor="middle">publish</text>
+  <g><rect x="8" y="44" width="210" height="26" rx="6" class="bx bx1"/><text x="113" y="57" class="t" text-anchor="middle" dominant-baseline="middle">explorer</text></g>
+  <text x="250" y="61" class="t" text-anchor="middle">yes</text>
+  <text x="330" y="61" class="ts" text-anchor="middle">no</text>
+  <text x="410" y="61" class="ts" text-anchor="middle">no</text>
+  <text x="500" y="61" class="ts" text-anchor="middle">no</text>
+  <g><rect x="8" y="78" width="210" height="26" rx="6" class="bx bx1"/><text x="113" y="91" class="t" text-anchor="middle" dominant-baseline="middle">implementer</text></g>
+  <text x="250" y="95" class="t" text-anchor="middle">yes</text>
+  <text x="330" y="95" class="t" text-anchor="middle">yes</text>
+  <text x="410" y="95" class="ts" text-anchor="middle">no</text>
+  <text x="500" y="95" class="ts" text-anchor="middle">no</text>
+  <g><rect x="8" y="112" width="210" height="26" rx="6" class="bx bx1"/><text x="113" y="125" class="t" text-anchor="middle" dominant-baseline="middle">reviewer</text></g>
+  <text x="250" y="129" class="t" text-anchor="middle">yes</text>
+  <text x="330" y="129" class="ts" text-anchor="middle">no</text>
+  <text x="410" y="129" class="ts" text-anchor="middle">no</text>
+  <text x="500" y="129" class="ts" text-anchor="middle">no</text>
+  <g><rect x="8" y="146" width="210" height="26" rx="6" class="bx bx2"/><text x="113" y="159" class="t" text-anchor="middle" dominant-baseline="middle">me</text></g>
+  <text x="250" y="163" class="t" text-anchor="middle">yes</text>
+  <text x="330" y="163" class="t" text-anchor="middle">yes</text>
+  <text x="410" y="163" class="t" text-anchor="middle">yes</text>
+  <text x="500" y="163" class="t" text-anchor="middle">yes</text>
+  <rect x="470" y="38" width="60" height="140" rx="6" class="bx bx2 dash"/>
+  <text x="8" y="200" class="tm" text-anchor="start">push · deploy · delete · publish → always a human gate</text>
+  <text x="8" y="218" class="tm" text-anchor="start">this site was built across five rounds on a branch never pushed unreviewed</text>
+</svg>
+<!-- /DIAGRAM:dia-permissions -->
+      <figcaption>
+        <b>What you're looking at:</b> what each class of agent may touch, and where the gates sit.
+        The dashed column on the right is the set of actions no agent performs unattended.
+        <span class="prov">Permission model as configured</span>
+      </figcaption>
+    </figure>
+
+    <p class="pull">
+      This website was built across five rounds on a branch never pushed without my review. Not
+      caution theatre — the control that makes the autonomy safe to grant.
+    </p>
+  </div>
+</section>
+
+<section class="section reveal">
   <div class="wrap">
     <p class="eyebrow">Provenance</p>
     <h2>Every claim carries its source, and "not found" is a legal answer</h2>
-    <p>
-      Anything the agent writes is tagged with where it came from: a dated attribution, a git log,
-      a file path. Unconfirmed claims are marked as such rather than smoothed over.
+    <p class="plain">
+      Anything the agent writes into my knowledge base is tagged with its source: a dated
+      attribution, a version-control log, a file path. Unconfirmed claims are marked as such.
     </p>
-    <p>
-      The rule doing the real work: never invent a fact, a number or a date, and
-      <span class="mono">NOT FOUND</span> is a valid and preferred answer. Hallucination is not
-      prompted against; it is designed out by making the absence of a fact expressible.
+    <p class="plain">
+      The rule doing the real work is that the agent must never invent a fact, a number or a date,
+      and that <span class="mono">NOT FOUND</span> is a valid and preferred answer. Hallucination
+      is not prompted against; it is designed out by making the absence of a fact something the
+      output format can express.
+    </p>
+
+    <h3>The contract the knowledge base runs under</h3>
+    <p class="plain">
+      I produce thought; the agent owns structure. It files, links and propagates, and never asks
+      me where something goes. Autonomy is stated up front as <em>file freely, report after</em>:
+      placement is the agent's call and I veto afterwards. Ambiguous items stay queued rather than
+      placed — an unfiled note is recoverable, a misfiled one vanishes — so the agent is told which
+      way to err. Routing keys on what <em>kind</em> of fact something is rather than its topic,
+      which makes it decidable. Questions are batched to the end and capped at five.
+    </p>
+    <p class="plain">
+      It also names its own anti-patterns. One tracking file is capped at five rows, because I once
+      over-built a nineteen-item registry with a dashboard and retired it; if it wants to grow, that
+      is a signal to raise with me. The tag vocabulary is closed at five: one that grows without
+      resistance stops separating anything. Blast radius is bounded too — two directories frozen,
+      two files append-only, no version-control access.
     </p>
   </div>
 </section>
 
-<section class="section">
+<section class="section band-2 reveal">
   <div class="wrap">
     <p class="eyebrow">Guardrails</p>
     <h2>Enforce it in code, because a prompt is a hope</h2>
-    <p>
-      The clearest example is the
-      <a href="../projects/index.html#data-portal">market-data portal</a>. Telling a model not to
-      leak internal material is a hope; a build gate that fails the build when it happens is a
-      guarantee. That gate exists because two real leaks got past an earlier exclusion operating at
-      the rendering layer rather than the build layer.
-    </p>
-    <p>
-      Two more from the same build. Every factual claim on that site lives in a single data file,
-      so claims are auditable in one place. And the sample-extraction tool raises on every
-      unimplemented path, so it cannot emit a plausible-looking fabricated sample. Silence is the
-      dangerous failure mode; the system fails loudly instead.
+    <p class="plain">
+      The clearest example is the <a href="../projects/index.html#data-portal">market-data
+      portal</a>. Telling a model not to leak internal material is a hope; a build gate that fails
+      the build when it happens is a guarantee. That gate exists because two real leaks got past an
+      earlier exclusion operating at the rendering layer rather than the build layer.
     </p>
 
     <p class="code-src">tools/check_no_leaks.mjs — the gate that fails the build</p>
@@ -112,12 +335,13 @@ if (leaks) {
   console.error(`\n${leaks} leak(s). Internal material must not ship. Fix before deploying.`);
   process.exit(1);
 }</pre>
+
     <p class="code-src">tools/extract_sample.py — refusing to guess</p>
     <pre class="code">    raise NotImplementedError(
         "Archive layout unknown — see docs/schema.md 'File layout' [VERIFY]. "
         "Do not guess a partition scheme; confirm it first."
     )</pre>
-    <p>
+    <p class="plain">
       Eight functions in that file raise rather than return. A half-built extractor emitting a
       plausible sample is worse than one that does not run: the sample is what a buyer checks the
       dataset against.
@@ -125,50 +349,41 @@ if (leaks) {
   </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
   <div class="wrap">
     <p class="eyebrow">Acceptance criteria</p>
-    <h2>Decide what counts as success before the run, not after</h2>
-    <p>
+    <h2>Decide what counts as success before the run</h2>
+    <p class="plain">
       In the <a href="../research/index.html">research work</a> this is literal
       <a href="../glossary/index.html#pre-registration"><dfn>pre-registration</dfn></a>: a written
-      specification committed to version control, with a timestamp, before any result exists. It is what let me report
-      that my own model failed its primary test, rather than re-cutting the metric until something
-      passed.
+      specification committed to version control, with a timestamp, before any result exists. It is
+      what let me report that my own model failed its primary test rather than re-cutting the
+      metric until something passed.
     </p>
-    <p>
-      The same device works on agent output: decide what done means after seeing the output and you
-      will grade it on whatever it happened to do.
+    <p class="plain">
+      The same device works on agent output. Decide what done means after seeing the output and you
+      will grade it on whatever it happened to do. This is worth one sentence of context, because
+      it is not obvious from outside: reporting a result that went against you is rare, and the
+      reason is an incentive. When something comes out flat, the quiet option is to adjust the
+      measurement and try again until it looks convincing, and nobody can tell afterwards. Fixing
+      the target in advance removes that option.
     </p>
-  </div>
-</section>
 
-<section class="section">
-  <div class="wrap">
-    <p class="eyebrow">Fan-out and reconcile</p>
-    <h2>Parallel agents produce contradictions; the value is in resolving them</h2>
-    <p>
+    <h3>Fan out, then reconcile</h3>
+    <p class="plain">
       I surveyed 53 project directories across parallel agents, each entry recording the surveying
-      agent, a confidence rating, and a flag for credentials or personal data.
-    </p>
-    <p>
-      What mattered was the reconciliation afterwards: twelve ambiguities resolved by hand — which
-      checkout was current, whether two repositories were one project, three similarly-named
-      directories that proved unrelated. Fan-out is the cheap half; skipping reconciliation is how
-      you get a confident, internally inconsistent answer.
-    </p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <p class="eyebrow">Propagation</p>
-    <h2>Filing is the easy half; the job is asking what a new fact contradicts</h2>
-    <p>
-      The agent's real task is checking new facts against what is recorded. Two catches, both
-      against me.
+      agent, a confidence rating, and a flag for credentials or personal data. What mattered was
+      the reconciliation afterwards: twelve ambiguities resolved by hand — which checkout was
+      current, whether two repositories were one project, three similarly-named directories that
+      proved unrelated. Fan-out is the cheap half; skipping reconciliation is how you get a
+      confident, internally inconsistent answer.
     </p>
 
+    <h3>Propagation, not filing</h3>
+    <p class="plain">
+      The agent's real task is checking new facts against what is already recorded. Two catches,
+      both against me.
+    </p>
     <div class="finding">
       <p class="finding__sign">Contradiction caught</p>
       <p>
@@ -176,7 +391,6 @@ if (leaks) {
         starting one as a future goal. The goal was wrong; the fund already existed.
       </p>
     </div>
-
     <div class="finding">
       <p class="finding__sign">Overstatement caught, corrected downward</p>
       <p>
@@ -189,45 +403,81 @@ if (leaks) {
   </div>
 </section>
 
-<section class="section">
+<section class="section band-3 reveal">
   <div class="wrap">
-    <p class="eyebrow">Verification</p>
-    <h2>Check what the agent says it did, including on this site</h2>
-    <p>
-      This site is the worked example. Contrast was checked programmatically across 30 colour pairs
-      in both themes, not eyeballed. Overflow was measured at 390px and 1440px on every page — and
-      the first harness produced a false positive, because headless Chrome clamps the window size and
-      crops instead of reflowing. The bug was in the instrument, and surfaced only because the result
-      was checked.
-    </p>
-    <p>
-      This is worth one sentence of context, because it is not obvious from outside: reporting a
-      result that went against you is rare, and the reason is an incentive. When something comes out
-      flat, the quiet option is to adjust the measurement and try again until it looks convincing,
-      and nobody can tell afterwards. Fixing the target in advance is what removes that option, and
-      it is why a null result I pre-registered is better evidence about me than a strong result I
-      did not.
-    </p>
-    <p>
-      Lighthouse was not run, so no Lighthouse score is claimed anywhere on this site. Six figures
-      the previous version advertised were found dead or revised against the current thesis draft,
-      and are now listed in a committed rules file so they cannot creep back. That file is the
-      build-gate principle again: write the constraint where it will be enforced, not where it will
-      be remembered.
+    <p class="eyebrow">Case study</p>
+    <h2>This website, and the six errors the pipeline caught</h2>
+    <p class="plain">
+      This site was built by the system described above, across five rounds. The point of the list
+      below is not that the agent was right — it is that these were found, by checks that existed
+      before the work started.
     </p>
 
-    <p class="code-src">backend/app.py — the fund refuses to mark itself wrong</p>
-    <pre class="code"># Safety: never mark the fund to a wrong value when live prices are missing.
-if positions and not any(pinfo.get(p['ticker'], {}).get('price') is not None
-                         for p in positions):
-    return jsonify({'error': 'Live prices are unavailable right now, so the fund '
-                             'was not re-marked (marking now would misvalue it). '
-                             'Please try again in a moment.'}), 503</pre>
-    <p>
-      The same shape as the
-      <a href="../projects/index.html#prediction-market-system">abstaining strategy</a>: when a
-      required input is missing, return nothing rather than something.
+    <ul class="plain">
+      <li>
+        <strong>A verification harness that lied.</strong> The mobile-overflow check reported
+        failures that were not real, because headless Chrome on Windows clamps the window size and
+        crops the screenshot instead of reflowing the page. Rebuilt on the browser's debugging
+        protocol so the viewport is genuinely emulated.
+      </li>
+      <li>
+        <strong>Five of eight figures silently broken.</strong> The chart generator emitted
+        unclosed elements — harmless while the markup sat inside a page, fatal once the same file
+        was loaded as an image and parsed strictly. Caught in a dark-mode screenshot showing alt
+        text where a chart should have been. The generator now validates every figure before
+        writing it.
+      </li>
+      <li>
+        <strong>Identifiers leaking on an embargoed page.</strong> Shortened market identifiers are
+        effectively unique within the corpus, so publishing them alongside per-market statistics
+        would have identified specific markets. Pseudonymised, and the page now forbids pasting the
+        raw documents in.
+      </li>
+      <li>
+        <strong>A contrast failure no amount of tuning could fix.</strong> A colour-shaded table
+        could not hold legible text in both light and dark themes at any shade. Replaced with a
+        value-and-bar encoding at 18:1.
+      </li>
+      <li>
+        <strong>Two numbers that disagreed.</strong> Prose said one figure was 27 times another;
+        the published data divided to 28. One had been computed on averages and the other on
+        medians. A reader could have checked it in seconds.
+      </li>
+      <li>
+        <strong>Content hidden behind JavaScript.</strong> A scroll animation hid every below-fold
+        section and handed visibility back via script — what the rules forbid. Caught by the check
+        that loads every page with scripting disabled.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <p class="eyebrow">Verification</p>
+    <h2>Check what the agent says it did</h2>
+    <p class="plain">
+      Gates run before anything merges: contrast across every colour pair in both themes, layout at
+      two widths, prohibited-content sweeps, and idempotence checks on every generator so a stale
+      figure is detectable rather than silent. The agent proposes; I merge.
     </p>
+    <p class="plain">
+      Just as important, the agent reports what it did <em>not</em> verify: no Lighthouse score
+      appears on this site, because Lighthouse was never run.
+    </p>
+
+    <h3>Where I am taking it next</h3>
+    <div class="callout">
+      <p>
+        <strong>Planned, not built.</strong> The next piece is a knowledge graph agents can navigate
+        instead of searching: entities and relationships across repositories and notes, so an agent
+        asks what depends on a thing and traverses to the answer rather than grepping and hoping.
+      </p>
+      <p>
+        It does not exist yet. I am labelling it that way deliberately — a page arguing for
+        trustworthy process that overstated its own maturity would refute itself.
+      </p>
+    </div>
   </div>
 </section>
 

@@ -36,6 +36,7 @@ STYLE = (
     ".ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}"
     ".ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}"
     ".dash{stroke-dasharray:4 3}"
+    ".pulse{opacity:0}"
 )
 
 
@@ -88,7 +89,8 @@ def d_pipeline() -> tuple[str, Dia]:
     d.label(8, 172, "6 scheduled + 1 dormant")
     d.box(160, 60, 116, 56, "systemd timers", "15–60 min", cls="bx1",
           tip="each collector runs on a systemd timer")
-    d.box(310, 60, 110, 56, "storage", "~118 GB", cls="bx3", tip="on-disk corpus at survey time")
+    d.box(302, 60, 126, 56, "storage", "250 GB working set", cls="bx3",
+          tip="server working set; periodically offloaded to a ~800 GB archive")
     d.box(452, 20, 200, 46, "gap audit", "continuity accounting", cls="bx2",
           tip="every feed gap is logged and masked, never interpolated")
     d.box(452, 96, 200, 56, "audited panel",
@@ -100,7 +102,7 @@ def d_pipeline() -> tuple[str, Dia]:
     d.arrow(422, 80, 450, 52, "ar2")
     d.arrow(422, 96, 450, 118)
     d.label(8, 196, "every gap logged and masked — never interpolated", cls="tm")
-    d.label(8, 212, "reconstruction validated by delta replay", cls="tm")
+    d.label(8, 212, "offloaded to a ~800 GB archive (self-reported, Aug 2026)", cls="tm")
     return "dia-pipeline", d
 
 
@@ -190,7 +192,98 @@ def d_ssl() -> tuple[str, Dia]:
     return "dia-ssl", d
 
 
-DIAGRAMS = [d_pipeline, d_two_state, d_tiers, d_nav, d_ssl]
+def d_orchestrator() -> tuple[str, Dia]:
+    d = Dia(300, "The orchestrator topology",
+            "One orchestrator holds the plan. It delegates reading and implementation to "
+            "subagents that fan out in parallel, each with its own model tier and permission "
+            "scope, and returns conclusions rather than file contents.")
+    d.box(240, 14, 180, 46, "orchestrator", "strongest model", cls="bx1",
+          tip="owns the plan and the judgement calls; deliberately keeps its own context light")
+    d.box(20, 14, 190, 46, "context files", "conventions · hard rules", cls="bx3",
+          tip="per-repo and per-agent context: structure, conventions, what must never be touched")
+    d.arrow(212, 37, 238, 37, "ar1")
+    agents = [("explore", "fast · read-only", 20), ("implement", "mid · write, no git", 180),
+              ("review", "strong · read-only", 340), ("verify", "fast · read-only", 500)]
+    for label, sub, x in agents:
+        d.box(x, 116, 140, 48, label, sub, cls="bx1", tip=f"{label}: {sub}")
+        d.arrow(330, 62, x + 70, 112, "ar1")
+        d.arrow(x + 70, 166, 330, 208, "ar2")
+    d.add('<g class="pulse"><circle cx="330" cy="62" r="4" fill="var(--c1)"/></g>')
+    d.box(240, 210, 180, 42, "barrier", "only where earned", cls="bx2",
+          tip="a barrier is used only when a stage genuinely needs every prior result at once")
+    d.arrow(330, 254, 330, 274, "ar2")
+    d.box(240, 274, 180, 22, "human gate → merge", cls="bx2",
+          tip="anything irreversible or public stops here")
+    d.label(20, 196, "results return as conclusions, not file dumps", cls="tm")
+    return "dia-orchestrator", d
+
+
+def d_dispatch() -> tuple[str, Dia]:
+    d = Dia(250, "The dispatch ladder",
+            "Task difficulty decides the model tier and the reasoning effort. Mechanical work "
+            "goes to fast cheap models; the strongest model is reserved for architecture, "
+            "ambiguous debugging and adversarial review.")
+    rows = [("mechanical", "renames · greps · formatting · boilerplate", "fast model, low effort", "bx3"),
+            ("standard", "implement a described change · write tests", "mid model, medium effort", "bx1"),
+            ("hard", "architecture · ambiguous debugging · review", "strongest model, high effort", "bx2")]
+    for i, (k, ex, tier, cls) in enumerate(rows):
+        y = 30 + i * 66
+        d.box(8, y, 120, 46, k, cls=cls, tip=f"{k}: {ex}")
+        d.label(140, y + 20, ex, cls="ts")
+        d.label(140, y + 36, tier, cls="t")
+        d.arrow(130, y + 23, 136, y + 23)
+    d.label(8, 232, "the orchestrator makes this call per task, not once per session", cls="tm")
+    return "dia-dispatch", d
+
+
+def d_context() -> tuple[str, Dia]:
+    d = Dia(240, "Context budget over a session",
+            "Conceptual, not measured. An orchestrator that reads everything itself fills its "
+            "context and degrades; one that delegates reading and receives summaries stays sharp "
+            "for far longer.")
+    x0, y0, x1, y1 = 56, 30, 620, 180
+    d.add(f'<line x1="{x0}" y1="{y1}" x2="{x1}" y2="{y1}" class="ar"/>')
+    d.add(f'<line x1="{x0}" y1="{y1}" x2="{x0}" y2="{y0}" class="ar"/>')
+    d.add(f'<path d="M{x0} {y1} Q260 {y1 - 130} {x1} {y0 + 6}" fill="none" '
+          f'stroke="var(--c2)" stroke-width="2"/>')
+    d.add(f'<path d="M{x0} {y1} Q320 {y1 - 26} {x1} {y1 - 54}" fill="none" '
+          f'stroke="var(--c1)" stroke-width="2"/>')
+    d.label(x1 - 6, y0 + 2, "reads everything itself", cls="ts", anchor="end")
+    d.label(x1 - 6, y1 - 60, "delegates reading", cls="ts", anchor="end")
+    d.label(x0 - 6, y0 + 6, "full", cls="ts", anchor="end")
+    d.label(x0 - 6, y1, "empty", cls="ts", anchor="end")
+    d.label((x0 + x1) / 2, y1 + 20, "session length →", cls="ts", anchor="middle")
+    d.label(8, 214, "CONCEPTUAL — the shape of the problem, not measured data", cls="t")
+    d.label(8, 230, "the failure mode is gradual and invisible, so it is designed against up front",
+            cls="tm")
+    return "dia-context", d
+
+
+def d_permissions() -> tuple[str, Dia]:
+    d = Dia(240, "Permissions and gates",
+            "Each agent class gets the narrowest scope that lets it work. Anything irreversible "
+            "or public stops at an explicit human gate.")
+    cols = [("read", 250), ("write", 330), ("git", 410), ("publish", 500)]
+    for c, x in cols:
+        d.label(x, 26, c, cls="ts", anchor="middle")
+    rows = [("explorer", ["yes", "no", "no", "no"]),
+            ("implementer", ["yes", "yes", "no", "no"]),
+            ("reviewer", ["yes", "no", "no", "no"]),
+            ("me", ["yes", "yes", "yes", "yes"])]
+    for i, (name, vals) in enumerate(rows):
+        y = 44 + i * 34
+        d.box(8, y, 210, 26, name, cls="bx1" if i < 3 else "bx2")
+        for (c, x), v in zip(cols, vals):
+            d.label(x, y + 17, v, cls="t" if v == "yes" else "ts", anchor="middle")
+    d.add('<rect x="470" y="38" width="60" height="140" rx="6" class="bx bx2 dash"/>')
+    d.label(8, 200, "push · deploy · delete · publish → always a human gate", cls="tm")
+    d.label(8, 218, "this site was built across five rounds on a branch never pushed unreviewed",
+            cls="tm")
+    return "dia-permissions", d
+
+
+DIAGRAMS = [d_pipeline, d_two_state, d_tiers, d_nav, d_ssl,
+            d_orchestrator, d_dispatch, d_context, d_permissions]
 
 
 def build() -> dict[str, str]:

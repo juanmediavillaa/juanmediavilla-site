@@ -1,0 +1,26 @@
+<svg viewBox="0 0 660 300" role="img" aria-labelledby="dt-dia-orchestrator dd-dia-orchestrator" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-orchestrator">The orchestrator topology</title>
+  <desc id="dd-dia-orchestrator">One orchestrator holds the plan. It delegates reading and implementation to subagents that fan out in parallel, each with its own model tier and permission scope, and returns conclusions rather than file contents.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="240" y="14" width="180" height="46" rx="6" class="bx bx1"/><title>owns the plan and the judgement calls; deliberately keeps its own context light</title><text x="330" y="32" class="t" text-anchor="middle" dominant-baseline="middle">orchestrator</text><text x="330" y="48" class="ts" text-anchor="middle" dominant-baseline="middle">strongest model</text></g>
+  <g><rect x="20" y="14" width="190" height="46" rx="6" class="bx bx3"/><title>per-repo and per-agent context: structure, conventions, what must never be touched</title><text x="115" y="32" class="t" text-anchor="middle" dominant-baseline="middle">context files</text><text x="115" y="48" class="ts" text-anchor="middle" dominant-baseline="middle">conventions · hard rules</text></g>
+  <path d="M212 37 L238 37" class="ar ar1"/>
+  <g><rect x="20" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>explore: fast · read-only</title><text x="90" y="135" class="t" text-anchor="middle" dominant-baseline="middle">explore</text><text x="90" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">fast · read-only</text></g>
+  <path d="M330 62 L90 112" class="ar ar1"/>
+  <path d="M90 166 L330 208" class="ar ar2"/>
+  <g><rect x="180" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>implement: mid · write, no git</title><text x="250" y="135" class="t" text-anchor="middle" dominant-baseline="middle">implement</text><text x="250" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">mid · write, no git</text></g>
+  <path d="M330 62 L250 112" class="ar ar1"/>
+  <path d="M250 166 L330 208" class="ar ar2"/>
+  <g><rect x="340" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>review: strong · read-only</title><text x="410" y="135" class="t" text-anchor="middle" dominant-baseline="middle">review</text><text x="410" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">strong · read-only</text></g>
+  <path d="M330 62 L410 112" class="ar ar1"/>
+  <path d="M410 166 L330 208" class="ar ar2"/>
+  <g><rect x="500" y="116" width="140" height="48" rx="6" class="bx bx1"/><title>verify: fast · read-only</title><text x="570" y="135" class="t" text-anchor="middle" dominant-baseline="middle">verify</text><text x="570" y="151" class="ts" text-anchor="middle" dominant-baseline="middle">fast · read-only</text></g>
+  <path d="M330 62 L570 112" class="ar ar1"/>
+  <path d="M570 166 L330 208" class="ar ar2"/>
+  <g class="pulse"><circle cx="330" cy="62" r="4" fill="var(--c1)"/></g>
+  <g><rect x="240" y="210" width="180" height="42" rx="6" class="bx bx2"/><title>a barrier is used only when a stage genuinely needs every prior result at once</title><text x="330" y="226" class="t" text-anchor="middle" dominant-baseline="middle">barrier</text><text x="330" y="242" class="ts" text-anchor="middle" dominant-baseline="middle">only where earned</text></g>
+  <path d="M330 254 L330 274" class="ar ar2"/>
+  <g><rect x="240" y="274" width="180" height="22" rx="6" class="bx bx2"/><title>anything irreversible or public stops here</title><text x="330" y="285" class="t" text-anchor="middle" dominant-baseline="middle">human gate → merge</text></g>
+  <text x="20" y="196" class="tm" text-anchor="start">results return as conclusions, not file dumps</text>
+</svg>

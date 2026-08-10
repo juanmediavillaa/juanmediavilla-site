@@ -1,0 +1,19 @@
+<svg viewBox="0 0 660 250" role="img" aria-labelledby="dt-dia-dispatch dd-dia-dispatch" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-dispatch">The dispatch ladder</title>
+  <desc id="dd-dia-dispatch">Task difficulty decides the model tier and the reasoning effort. Mechanical work goes to fast cheap models; the strongest model is reserved for architecture, ambiguous debugging and adversarial review.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>svg{--ink:#0D0B14;--ink2:#4A4759;--muted:#7B7890;--line:#E4E2EE;--surface:#FBFAFC;--c1:#4F46E5;--c2:#E8590C;--c3:#0E9384;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}@media (prefers-color-scheme:dark){svg{--ink:#F5F4FA;--ink2:#BFBCD0;--muted:#8A87A0;--line:#26233A;--surface:#12101C;--c1:#8079F0;--c2:#DD5F24;--c3:#0F8B73}}.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:12px var(--sans);fill:var(--ink)}.ts{font:10.5px var(--mono);fill:var(--ink2)}.tm{font:10.5px var(--mono);fill:var(--ink2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="30" width="120" height="46" rx="6" class="bx bx3"/><title>mechanical: renames · greps · formatting · boilerplate</title><text x="68" y="53" class="t" text-anchor="middle" dominant-baseline="middle">mechanical</text></g>
+  <text x="140" y="50" class="ts" text-anchor="start">renames · greps · formatting · boilerplate</text>
+  <text x="140" y="66" class="t" text-anchor="start">fast model, low effort</text>
+  <path d="M130 53 L136 53" class="ar "/>
+  <g><rect x="8" y="96" width="120" height="46" rx="6" class="bx bx1"/><title>standard: implement a described change · write tests</title><text x="68" y="119" class="t" text-anchor="middle" dominant-baseline="middle">standard</text></g>
+  <text x="140" y="116" class="ts" text-anchor="start">implement a described change · write tests</text>
+  <text x="140" y="132" class="t" text-anchor="start">mid model, medium effort</text>
+  <path d="M130 119 L136 119" class="ar "/>
+  <g><rect x="8" y="162" width="120" height="46" rx="6" class="bx bx2"/><title>hard: architecture · ambiguous debugging · review</title><text x="68" y="185" class="t" text-anchor="middle" dominant-baseline="middle">hard</text></g>
+  <text x="140" y="182" class="ts" text-anchor="start">architecture · ambiguous debugging · review</text>
+  <text x="140" y="198" class="t" text-anchor="start">strongest model, high effort</text>
+  <path d="M130 185 L136 185" class="ar "/>
+  <text x="8" y="232" class="tm" text-anchor="start">the orchestrator makes this call per task, not once per session</text>
+</svg>

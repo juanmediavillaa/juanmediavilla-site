@@ -29,6 +29,19 @@ The previous site advertised these. They are wrong, superseded, or were retracte
 | Brier `0.063` | Retired — traced to a lifetime-mean price on a different pull. |
 | Brier `0.0585` | A legitimate variant on a disjoint archive, **not** interchangeable with the canonical `0.040`. |
 | `n=105` as the corpus size | The final corpus is `n=318`. Pre-registered values must be labelled as such. |
+| `~118 GB` corpus | Superseded. That was the **on-server working set**, not the archive. |
+| `~236 GB` archive | Superseded. Was the portal documentation's figure at the time. |
+
+**The corpus figure is `~800 GB archived as of August 2026`, and it is self-reported.** Unlike the
+git-derived counts it cannot be verified from a committed file, so it always carries the as-of
+date. Keep the two quantities distinct: the **250 GB server working set** that fills and is
+periodically offloaded, and the **archived total on cloud storage**. Sanity-checked against the
+recorded 12.8 GiB/day: over the 83-day window the ceiling is ~1,141 GB, so 800 GB implies a 9.0
+GiB/day realised average (70% of peak), which the disclosed outage and the offload cycle explain.
+
+**Growing the corpus figure must not inflate anything downstream.** The audited panel (400
+resolved markets, 188,856 trades) and the curated tier (206 markets, 408,414 repricing events)
+are derived from committed files and do not move.
 
 ## 3. Language that is not licensed
 
@@ -183,7 +196,24 @@ A null result never appears in a heading, a card face, or an opening sentence. I
 - Every animation stops under `prefers-reduced-motion`, and the hero pauses when the tab is
   hidden.
 
-## 12. Checks before publishing
+## 12. Institution identity
+
+University colours are **quarantined to the education block on `/about`**. They never enter the
+series palette, a figure, or the gradient system.
+
+- Colours are **sampled from the institutions' own artwork**, not recalled: UCL `#9A3BFF` and
+  `#361A54` (from `ucl-logo--primary.svg`), Leiden `#014189` (consistent across its seal SVG and
+  logo PNG).
+- **No logo files are copied into this repo.** The treatment is typographic. The source folder
+  holds mixed-quality assets — one official-looking UCL vector, a third-party low-resolution UCL
+  raster, a heavy Leiden seal — and a typographic block is both consistent across institutions
+  and free of trademark risk. It also avoids that folder entirely, which contains an
+  authorisation letter and tuition records.
+- The institution card keeps a **fixed light ground in both themes**, because the measured brand
+  colours fall to 1.28:1 and 1.90:1 on the dark plane. On the card they measure 14.09:1 (UCL
+  dark), 4.54:1 (UCL bright) and 9.53:1 (Leiden).
+
+## 13. Checks before publishing
 
 ```sh
 # no external subresources anywhere

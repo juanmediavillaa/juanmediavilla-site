@@ -172,3 +172,105 @@
     boot();
   }
 })();
+
+/* ============================ round-6 motion ============================
+   Everything below is additive. With this file blocked the page is complete:
+   counters show their final value, the progress bar is absent, and tooltips
+   are replaced by the data table that is already in the DOM under each figure. */
+
+(() => {
+  "use strict";
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const idle = (fn) => (window.requestIdleCallback || setTimeout)(fn, 1);
+
+  /* ------------------------------------------------ scroll progress */
+  function mountProgress() {
+    if (document.body.scrollHeight < innerHeight * 2.5) return;
+    const bar = document.createElement("div");
+    bar.className = "progress";
+    bar.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bar);
+    let ticking = false;
+    const paint = () => {
+      const max = document.body.scrollHeight - innerHeight;
+      bar.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+      ticking = false;
+    };
+    addEventListener("scroll", () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+    paint();
+  }
+
+  /* ------------------------------------------------ stat counters */
+  // Counts to the value already in the markup, so the final state is identical
+  // whether or not this runs. Tabular numerals keep the width stable.
+  function mountCounters() {
+    const tiles = document.querySelectorAll(".stat__v");
+    if (!tiles.length || reduced.matches || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        const el = e.target;
+        const final = el.textContent;
+        const m = final.match(/^([\d,]+)(.*)$/);
+        if (!m) return;
+        const target = Number(m[1].replace(/,/g, ""));
+        if (!target || target > 1e7) return;
+        const t0 = performance.now(), dur = 900;
+        const step = (now) => {
+          const k = Math.min(1, (now - t0) / dur);
+          const eased = 1 - Math.pow(1 - k, 3);
+          el.textContent = Math.round(target * eased).toLocaleString("en-GB") + m[2];
+          if (k < 1) requestAnimationFrame(step); else el.textContent = final;
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    tiles.forEach((t) => io.observe(t));
+  }
+
+  /* ------------------------------------------------ chart tooltips */
+  // Built from the data table already published under each figure, so the
+  // numbers cost no extra markup and stay identical to what a reader can read.
+  function mountTooltips() {
+    const figures = document.querySelectorAll("figure");
+    let tip = null;
+    const hide = () => { if (tip) { tip.remove(); tip = null; } };
+
+    figures.forEach((fig) => {
+      const img = fig.querySelector("img[src$='.svg']");
+      const table = fig.querySelector("details.figdata table");
+      if (!img || !table) return;
+      const head = [...table.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+      const rows = [...table.querySelectorAll("tbody tr")]
+        .map((tr) => [...tr.children].map((td) => td.textContent.trim()));
+      if (!rows.length) return;
+
+      img.addEventListener("pointermove", (e) => {
+        const r = img.getBoundingClientRect();
+        const k = Math.min(rows.length - 1,
+          Math.max(0, Math.floor(((e.clientX - r.left) / r.width) * rows.length)));
+        const row = rows[k];
+        if (!tip) {
+          tip = document.createElement("div");
+          tip.className = "tip";
+          tip.setAttribute("role", "presentation");
+          document.body.appendChild(tip);
+        }
+        tip.innerHTML = row
+          .map((v, i) => `<b>${head[i] || ""}</b> ${v}`)
+          .join("<br>");
+        const w = tip.offsetWidth, h = tip.offsetHeight;
+        tip.style.left = `${Math.min(e.clientX + 14, innerWidth - w - 8)}px`;
+        tip.style.top = `${Math.max(8, e.clientY - h - 12)}px`;
+      });
+      img.addEventListener("pointerleave", hide);
+      img.addEventListener("pointercancel", hide);
+    });
+    addEventListener("scroll", hide, { passive: true });
+  }
+
+  idle(() => { mountProgress(); mountCounters(); mountTooltips(); });
+})();
