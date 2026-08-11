@@ -4,10 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How I Work — Juan Mediavilla</title>
-<meta name="description" content="Agentic systems, and the structures that make their output trustworthy: written contracts, provenance requirements, guardrails enforced in code, and independent verification.">
+<meta name="description" content="Agentic systems stated as artifacts rather than claims: one orchestrator, narrow workers, provenance requirements, and guardrails enforced in code.">
+<link rel="canonical" href="https://juanmediavilla.com/how-i-work/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/how-i-work/">
+<meta property="og:title" content="How I Work — Juan Mediavilla">
+<meta property="og:description" content="Agentic systems stated as artifacts rather than claims: one orchestrator, narrow workers, provenance requirements, and guardrails enforced in code.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
 <script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="stylesheet" href="../style.css">
-<link rel="icon" href="data:,">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -17,7 +25,7 @@
     <a class="nav__home" href="../index.html">Juan Mediavilla</a>
     <a href="../projects/index.html">Projects</a>
     <a href="../research/index.html">Research</a>
-    <a href="index.html" aria-current="page">How I Work</a>
+    <a href="../how-i-work/index.html" aria-current="page">How I Work</a>
     <a href="../about/index.html">About</a>
     <span data-theme-slot></span>
   </div>
@@ -38,9 +46,11 @@
 
 <section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">The argument</p>
-    <h2>Anyone can get an agent to write code</h2>
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The argument</p></div>
+      <div class="rail__body">
+<h2>Anyone can get an agent to write code</h2>
+<p class="plain">
       An <dfn>agent</dfn>, here, means an AI tool given a task and allowed to act on its own for a
       while — reading files, writing code, running commands — rather than answering one question at
       a time. Getting one to produce code is easy; knowing when to believe the result is not, and
@@ -50,15 +60,18 @@
     <p class="plain">
       What follows is the architecture I run, not a description of best practice.
     </p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="section band reveal">
+<section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Architecture</p>
-    <h2>One orchestrator, many narrow workers</h2>
-
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Architecture</p></div>
+      <div class="rail__body">
+<h2>One orchestrator, many narrow workers</h2>
+<p class="plain">
       A single orchestrator running the strongest model available holds the plan and makes the
       judgement calls. It does not do the work. It delegates almost everything, and the reason is
       the single most important design constraint in the whole system.
@@ -271,14 +284,18 @@
       This website was built across five rounds on a branch never pushed without my review. Not
       caution theatre — the control that makes the autonomy safe to grant.
     </p>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Provenance</p>
-    <h2>Every claim carries its source, and "not found" is a legal answer</h2>
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Provenance</p></div>
+      <div class="rail__body">
+<h2>Every claim carries its source, and "not found" is a legal answer</h2>
+<p class="plain">
       Anything the agent writes into my knowledge base is tagged with its source: a dated
       attribution, a version-control log, a file path. Unconfirmed claims are marked as such.
     </p>
@@ -305,14 +322,18 @@
       resistance stops separating anything. Blast radius is bounded too — two directories frozen,
       two files append-only, no version-control access.
     </p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="section band-2 reveal">
+<section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Guardrails</p>
-    <h2>Enforce it in code, because a prompt is a hope</h2>
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Guardrails</p></div>
+      <div class="rail__body">
+<h2>Enforce it in code, because a prompt is a hope</h2>
+<p class="plain">
       The clearest example is the <a href="../projects/index.html#data-portal">market-data
       portal</a>. Telling a model not to leak internal material is a hope; a build gate that fails
       the build when it happens is a guarantee. That gate exists because two real leaks got past an
@@ -346,14 +367,18 @@ if (leaks) {
       plausible sample is worse than one that does not run: the sample is what a buyer checks the
       dataset against.
     </p>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Acceptance criteria</p>
-    <h2>Decide what counts as success before the run</h2>
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Acceptance criteria</p></div>
+      <div class="rail__body">
+<h2>Decide what counts as success before the run</h2>
+<p class="plain">
       In the <a href="../research/index.html">research work</a> this is literal
       <a href="../glossary/index.html#pre-registration"><dfn>pre-registration</dfn></a>: a written
       specification committed to version control, with a timestamp, before any result exists. It is
@@ -400,14 +425,18 @@ if (leaks) {
         <a href="../projects/index.html#wound-down">this site</a>.
       </p>
     </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="section band-3 reveal">
+<section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Case study</p>
-    <h2>This website, and the six errors the pipeline caught</h2>
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Case study</p></div>
+      <div class="rail__body">
+<h2>This website, and the six errors the pipeline caught</h2>
+<p class="plain">
       This site was built by the system described above, across five rounds. The point of the list
       below is not that the agent was right — it is that these were found, by checks that existed
       before the work started.
@@ -449,14 +478,18 @@ if (leaks) {
         that loads every page with scripting disabled.
       </li>
     </ul>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Verification</p>
-    <h2>Check what the agent says it did</h2>
-    <p class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Verification</p></div>
+      <div class="rail__body">
+<h2>Check what the agent says it did</h2>
+<p class="plain">
       Gates run before anything merges: contrast across every colour pair in both themes, layout at
       two widths, prohibited-content sweeps, and idempotence checks on every generator so a stale
       figure is detectable rather than silent. The agent proposes; I merge.
@@ -478,14 +511,15 @@ if (leaks) {
         trustworthy process that overstated its own maturity would refute itself.
       </p>
     </div>
+      </div>
+    </div>
   </div>
 </section>
-
 </main>
 
 <footer class="foot">
   <div class="wrap">
-    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a> · <a href="../glossary/index.html">Glossary</a></p>
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a> · <a href="../glossary/index.html">Glossary</a></p>
   </div>
 </footer>
 

@@ -20,6 +20,13 @@ import sys
 SITE = pathlib.Path(__file__).resolve().parent.parent
 OUT = SITE / "glossary" / "index.html"
 
+# The favicon is an inline data: URI, so it costs no request and matches the
+# hand-written pages exactly. Keep it identical to the one in those pages.
+ICON = ("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'"
+        "%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20"
+        "y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20"
+        "fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E")
+
 # (slug, term, plain definition, worked example from my own results or None)
 TERMS: list[tuple[str, str, str, str | None]] = [
     ("bootstrap", "Bootstrap (and why “clustered”)",
@@ -222,8 +229,10 @@ def render() -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Glossary — Juan Mediavilla</title>
 <meta name="description" content="Every technical term used on this site, defined in plain words, with the number from my own work as the example.">
+<link rel="canonical" href="https://juanmediavilla.com/glossary/">
+<script>try{{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}}catch(e){{}}</script>
 <link rel="stylesheet" href="../style.css">
-<link rel="icon" href="data:,">
+<link rel="icon" href="{ICON}">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -235,6 +244,7 @@ def render() -> str:
     <a href="../research/index.html">Research</a>
     <a href="../how-i-work/index.html">How I Work</a>
     <a href="../about/index.html">About</a>
+    <span data-theme-slot></span>
   </div>
 </nav>
 
@@ -260,6 +270,8 @@ def render() -> str:
     <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
   </div>
 </footer>
+
+<script src="../app.js"></script>
 </body>
 </html>
 """

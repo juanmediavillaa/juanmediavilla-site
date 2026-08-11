@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- Source for assets/og.png, the link-preview card. Regenerate with:
+       chrome --headless=new --window-size=1200,630 --hide-scrollbars \
+              --blink-settings=preferredColorScheme=1 --virtual-time-budget=3000 \
+              --screenshot=assets/og.png tools/og-card.html
+     Numbers here are the home page's stat tiles and must match them exactly. -->
+<html lang="en"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Instrument Sans";src:url(../assets/fonts/instrument-sans-latin.woff2)format('woff2');font-weight:400 700}
+@font-face{font-family:"Plex Mono";src:url(../assets/fonts/plex-mono-400-latin.woff2)format('woff2');font-weight:400}
+@font-face{font-family:"Plex Mono";src:url(../assets/fonts/plex-mono-600-latin.woff2)format('woff2');font-weight:600}
+*{box-sizing:border-box;margin:0}
+body{width:1200px;height:630px;background:#FBFBFC;font-family:"Instrument Sans",sans-serif;
+     display:flex;flex-direction:column;justify-content:space-between;padding:74px 80px 66px;overflow:hidden}
+.eyebrow{font-family:"Plex Mono",monospace;font-size:19px;font-weight:600;letter-spacing:.14em;
+     text-transform:uppercase;color:#4F46E5}
+h1{font-size:82px;line-height:1.03;letter-spacing:-.034em;color:#0E0E13;font-weight:600;max-width:15ch;margin-top:26px}
+.sf{font-size:26px;line-height:1.4;color:#43434E;max-width:44ch;margin-top:26px}
+.stats{display:flex;gap:64px;border-top:2px solid #0E0E13;padding-top:20px}
+.v{font-family:"Plex Mono",monospace;font-size:34px;font-weight:600;color:#0E0E13;
+   font-variant-numeric:tabular-nums;letter-spacing:-.02em;display:block;line-height:1}
+.l{font-size:16px;color:#63636F;display:block;margin-top:10px}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:36px}
+.dom{font-family:"Plex Mono",monospace;font-size:19px;color:#63636F}
+</style></head>
+<body>
+  <div>
+    <p class="eyebrow">Juan Mediavilla · MSc Machine Learning, UCL · London</p>
+    <h1>I build research systems end to end.</h1>
+    <p class="sf">The data platform, the models, and the evaluation that decides whether they are worth anything.</p>
+  </div>
+  <div>
+    <div class="stats">
+      <div><span class="v">~800 GB</span><span class="l">market data archived</span></div>
+      <div><span class="v">188,856</span><span class="l">trades audited</span></div>
+      <div><span class="v">34/34</span><span class="l">markets improved</span></div>
+      <div><span class="v">718</span><span class="l">commits, built solo</span></div>
+    </div>
+    <div class="foot"><span class="dom">juanmediavilla.com</span></div>
+  </div>
+</body></html>

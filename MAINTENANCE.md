@@ -29,10 +29,11 @@ CHROME=/path/to/chrome bash tools/audit.sh
 | **Layout** at 320, 390, 768, 1440 | page overflow, elements overflowing a non-scrolling parent, any text under 12px, scroll regions missing `role`/`aria-label`/`tabindex` |
 | **Computed contrast**, both themes | any text below WCAG AA against its *effective* background, resolved through the ancestor chain — **including SVG text, measured on `fill`** |
 | **Structure**, scripting on and off | heading order, one `h1`, five nav items, landmarks, dead in-page anchors, external subresources, and anything hidden when JS is off |
+| **Internal links** | every relative `href` resolves to a file, and every `#fragment` to a real `id` |
 | **Generator idempotence** | a figure, diagram or glossary entry that has drifted from its source |
 | **Prohibited content** | external subresources, infrastructure, secrets, identifiers, student data, retired figures |
 | **Framing** | a heading, card face or one-liner built on a null result |
-| **Budgets** | markup over 90 KB (110 KB for `/research`, see §7), page over 600 KB (home 400 KB), JS over 25 KB |
+| **Budgets** | markup over 90 KB, page over 600 KB (home 400 KB), JS over 25 KB — fonts included |
 
 **Why measured and not reviewed.** Four separate defects here were rules written into
 `CONTENT-RULES.md` that nothing enforced in code:
@@ -45,6 +46,12 @@ CHROME=/path/to/chrome bash tools/audit.sh
 - every generated SVG carried its own `prefers-color-scheme` palette, so using the theme toggle
   left the charts and diagrams on the opposite theme from the page. The contrast audit could not
   see it either, because it read `color` on SVG text when SVG text is painted by `fill`.
+
+The August 2026 redesign added two more checkers for the same reason. **Internal links** are
+checked because splitting the long pages into per-project pages moved a dozen targets, and a
+stale `href` is invisible until someone clicks it — it caught two immediately. **Fonts are now
+charged to the page-weight budget**: they are referenced from `style.css`, not from the markup,
+so the old budget script never counted them and 70 KB of typeface was invisible to it.
 
 A CSS review found none of them. Measuring the rendered page found all four in minutes. **If a
 rule matters, give it a checker, not a paragraph.**
@@ -61,6 +68,18 @@ python3 tools/make_figures.py     # charts from real result files + their source
 python3 tools/make_diagrams.py    # the nine explainer diagrams
 python3 tools/build_glossary.py   # /glossary from one term list
 ```
+
+The link-preview card is the fourth generated artifact, and the only one that needs a browser:
+
+```sh
+chrome --headless=new --window-size=1200,630 --hide-scrollbars \
+       --blink-settings=preferredColorScheme=1 --virtual-time-budget=3000 \
+       --screenshot=assets/og.png tools/og-card.html
+```
+
+`tools/og-card.html` is the source. Its four numbers are the home page's stat tiles — if those
+change, change both. It is referenced only from `og:image` / `twitter:image` `<meta>` tags, which
+are absolute by necessity and never fetched by a reader's browser.
 
 Each takes `--check`, which re-runs and fails if any output would change. That is the idempotence
 contract: **a stale figure is a detectable condition, never a silent one.**
@@ -82,18 +101,34 @@ fatal there. Five of eight figures were silently broken this way once.
 
 ---
 
-## 3. How to add a project entry
+## 3. How to add a project
 
-Order is fixed, and it is the framing rule:
+Each substantial project is **its own page** at `projects/<slug>/index.html`. Copy the nearest
+existing one — they all share a single shell, so head, nav and footer must not drift apart.
+
+1. `projects/<slug>/index.html` — `<header class="head">` with the eyebrow, `<h1>`, the one-line
+   summary as `.standfirst`, `.case__meta`, and a `<ul class="keyfacts">` of four traced numbers.
+2. Body sections go inside `<div class="rail">`: the label column carries the eyebrow, the content
+   column everything else.
+3. Add a `<a class="work__row">` to `projects/index.html`, with `id="<slug>"` so any old anchor
+   into the long page still resolves.
+4. Add the page to `PAGES` in `tools/audit.js` and a `<url>` to `sitemap.xml`. **The audit only
+   checks pages it is told about.**
+5. Wire the `.pager` at the foot of the neighbouring case studies.
+
+Within the page, order is fixed, and it is the framing rule:
 
 1. `<p class="oneline">` — **what was built**, in one sentence. Concrete nouns.
-2. `<h3>What I built</h3>` + `<div class="plain">` — the system, the scale, the engineering.
-3. `<h3>What was hard</h3>` — the real problem and the choice made. This is the section engineers
+2. `<h2>What I built</h2>` + `<div class="plain">` — the system, the scale, the engineering.
+3. `<h2>What was hard</h2>` — the real problem and the choice made. This is the section engineers
    read.
-4. `<h3>What I found</h3>` — results, positive first where positive exists. Nulls stated plainly,
+4. `<h2>What I found</h2>` — results, positive first where positive exists. Nulls stated plainly,
    in context.
 5. `<details><summary>The technical version</summary><div class="inner">` — statistics, method,
    intervals, pre-registration.
+
+Headings inside a case page start at `<h2>`, because the project title is the page's `<h1>`. The
+audit fails on a skipped level, so do not open a section with `<h3>`.
 
 **No heading, card face or opening sentence may be built on a null result.** The negative results
 are why the positive ones can be believed; they are not the achievement. `tools/audit.sh` enforces
@@ -177,11 +212,15 @@ retroactively, because the commit ordering proves it.
   8/255, edge antialiasing only). An aggressive pass that stripped elements dropped two visible
   fills, so it was reverted. A real optimiser (`svgo`) would do better but needs npm, which this
   repo does not use.
-- **`/research` markup is 106.5 KB against a 110 KB cap**, higher than the 90 KB other pages get.
-  That is deliberate: its six charts are inlined, and inlining is the only way an SVG can inherit
-  the page's custom properties and therefore follow the manual theme toggle. A referenced `<img>`
-  can only see `prefers-color-scheme`, so it desynchronises the moment someone overrides the OS.
-  If that page grows further, move a section rather than going back to referenced figures.
+- **`/research/msc/` is 80.7 KB against the 90 KB cap** — the largest page on the site. Its charts
+  are inlined, and inlining is the only way an SVG can inherit the page's custom properties and so
+  follow the manual theme toggle; a referenced `<img>` can only see `prefers-color-scheme` and
+  desynchronises the moment someone overrides the OS. `/research` needed a raised 110 KB cap while
+  both theses shared one page; splitting them removed the exception. **If that page grows again,
+  split it — do not raise the cap and do not go back to referenced figures.**
+- **Two typefaces are committed under `assets/fonts/`**, 69.9 KB in total, and the budget check now
+  charges every page for all of them. A reader typically downloads about 60 KB, because the
+  latin-ext subsets carry a `unicode-range` and are only fetched if an accented character appears.
 - **Charts scroll horizontally at 320px** rather than having hand-built portrait variants. The
   charts stay at 1:1 so their 12px type is legible, each scroll region is labelled and
   keyboard-reachable, and the same numbers are in the data table beside it. Building narrow

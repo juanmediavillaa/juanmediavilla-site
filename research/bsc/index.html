@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-supervised models for human activity recognition — Juan Mediavilla</title>
+<meta name="description" content="BSc thesis: a full self-supervised pipeline benchmarking six architectures on wearable-sensor data under leave-one-subject-out validation.">
+<link rel="canonical" href="https://juanmediavilla.com/research/bsc/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/research/bsc/">
+<meta property="og:title" content="Self-supervised models for human activity recognition — Juan Mediavilla">
+<meta property="og:description" content="BSc thesis: a full self-supervised pipeline benchmarking six architectures on wearable-sensor data under leave-one-subject-out validation.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html">Projects</a>
+    <a href="../../research/index.html" aria-current="page">Research</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">BSc thesis · Leiden (LIACS) · 2025</p>
+    <h1>Self-supervised models for human activity recognition</h1>
+  </div>
+</header>
+
+<article class="section">
+  <div class="wrap">
+<div class="rail">
+  <div class="rail__label"><p class="eyebrow">The work</p></div>
+  <div class="rail__body">
+<p class="oneline">
+      A full self-supervised learning pipeline benchmarking six architectures for recognising
+      physical activity from a wrist sensor.
+    </p>
+    <div class="plain">
+      <p>
+        Given movement data from a wearable sensor, can a model tell walking from cycling from
+        sitting? I benchmarked six approaches, from a twenty-year-old method to a modern transformer, three of them <a href="../../glossary/index.html#self-supervised"><dfn>self-supervised</dfn></a>, on the same dataset with the same protocol. Each was tested <a href="../../glossary/index.html#held-out"><dfn>on people it had never seen during training</dfn></a>, which is the only version of the question that matters if you
+        want to ship something.
+      </p>
+      <p>
+        The scores ranged from 0.880 down to 0.843, which looks like a ranking. It is not one. A
+        statistical test designed for exactly this comparison says the differences are
+        indistinguishable from chance, so I did not run the follow-up test that would have ranked
+        them — there was nothing to rank. The practical consequence is the interesting part: the
+        state-of-the-art model the project was built around took about seven hours and finished
+        fourth, while a conventional method took about twenty-three minutes and was statistically
+        tied with it.
+      </p>
+    </div>
+
+    <figure>
+<!-- DIAGRAM:dia-ssl -->
+<svg viewBox="0 0 660 230" role="img" aria-labelledby="dt-dia-ssl dd-dia-ssl" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-ssl">The self-supervised pipeline</title>
+  <desc id="dd-dia-ssl">A model learns structure from a large pile of unlabelled sensor data, is then fine-tuned on the small labelled set, and is finally tested on people it has never seen.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="26" width="176" height="58" rx="6" class="bx bx3"/><title>learn the shape of the data without labels</title><text x="96" y="50" class="t" text-anchor="middle" dominant-baseline="middle">unlabelled sensor data</text><text x="96" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">pretraining</text></g>
+  <g><rect x="240" y="26" width="160" height="58" rx="6" class="bx bx1"/><title>labels are expensive; only a small set exists</title><text x="320" y="50" class="t" text-anchor="middle" dominant-baseline="middle">small labelled set</text><text x="320" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">fine-tuning</text></g>
+  <g><rect x="456" y="26" width="196" height="58" rx="6" class="bx bx2"/><title>tested on a person never seen in training — the only question that matters</title><text x="554" y="50" class="t" text-anchor="middle" dominant-baseline="middle">held-out person</text><text x="554" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">leave-one-subject-out</text></g>
+  <path d="M186 55 L238 55" class="ar ar1"/>
+  <path d="M402 55 L454 55" class="ar ar2"/>
+  <text x="8" y="116" class="tm" text-anchor="start">repeated for each of 22 people in turn, then pooled</text>
+  <rect x="8" y="132" width="644" height="76" rx="6" class="bx dash"/>
+  <text x="24" y="154" class="t" text-anchor="start">six architectures compared this way:</text>
+  <text x="24" y="174" class="ts" text-anchor="start">SimCLR · DeepConvLSTM · SelfHARModel · SelfPAB · XGBoost · MOMENT</text>
+  <text x="24" y="194" class="ts" text-anchor="start">spread 0.880 to 0.843 — a Friedman test says that ordering is noise</text>
+</svg>
+<!-- /DIAGRAM:dia-ssl -->
+      <figcaption>
+        <b>What you're looking at:</b> how each of the six models was trained and judged. Three of
+        them learn from unlabelled sensor data first, then fine-tune on the small labelled set.
+        All six are finally tested on a person held out of training entirely, which is the only
+        version of the question that matters for a product.
+        <span class="prov">Protocol · HARTH v1.2, 22 subjects · data 2025</span>
+      </figcaption>
+    </figure>
+
+    <figure>
+<!-- FIGURE:fig-models -->
+<div class="scroll" role="region" tabindex="0" aria-label="Six architectures under leave-one-subject-out cross-validation — scrollable chart">
+<svg viewBox="0 0 640 338" role="img" aria-labelledby="t-fig-models d-fig-models" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-models">Six architectures under leave-one-subject-out cross-validation</title>
+  <desc id="d-fig-models">Pooled macro-F1 spans 0.843 to 0.879, but the per-subject ranges overlap almost completely. A Friedman test over 22 subjects gives p = 0.296, so the ranking is not statistically significant.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <text x="0" y="46" class="lbl-i" text-anchor="start">SimCLR</text>
+  <line x1="196.5" y1="42" x2="531.7" y2="42" class="axis"/>
+  <g class="dot-2"><circle cx="384.3" cy="42" r="1.8"/><circle cx="306.1" cy="42" r="1.8"/><circle cx="196.5" cy="42" r="1.8"/><circle cx="288.6" cy="42" r="1.8"/><circle cx="445.7" cy="42" r="1.8"/><circle cx="466.9" cy="42" r="1.8"/><circle cx="425.8" cy="42" r="1.8"/><circle cx="504" cy="42" r="1.8"/><circle cx="531.7" cy="42" r="1.8"/><circle cx="455.8" cy="42" r="1.8"/><circle cx="472.6" cy="42" r="1.8"/><circle cx="516" cy="42" r="1.8"/><circle cx="491.1" cy="42" r="1.8"/><circle cx="478.6" cy="42" r="1.8"/><circle cx="486.7" cy="42" r="1.8"/><circle cx="438.4" cy="42" r="1.8"/><circle cx="394" cy="42" r="1.8"/><circle cx="474.2" cy="42" r="1.8"/><circle cx="397.5" cy="42" r="1.8"/><circle cx="367.1" cy="42" r="1.8"/><circle cx="373.3" cy="42" r="1.8"/><circle cx="483.5" cy="42" r="1.8"/></g>
+  <circle cx="494.6" cy="42" r="4.5" class="dot"><title>SimCLR: pooled macro-F1 0.8795; per-subject range 0.362–0.944</title></circle>
+  <text x="624" y="46" class="lbl-i" text-anchor="end">0.879</text>
+  <text x="0" y="88" class="lbl-i" text-anchor="start">DeepConvLSTM</text>
+  <line x1="202.2" y1="84" x2="529.6" y2="84" class="axis"/>
+  <g class="dot-2"><circle cx="394.1" cy="84" r="1.8"/><circle cx="315.8" cy="84" r="1.8"/><circle cx="202.2" cy="84" r="1.8"/><circle cx="267.8" cy="84" r="1.8"/><circle cx="445.5" cy="84" r="1.8"/><circle cx="485.6" cy="84" r="1.8"/><circle cx="368.5" cy="84" r="1.8"/><circle cx="485.9" cy="84" r="1.8"/><circle cx="520.9" cy="84" r="1.8"/><circle cx="452.8" cy="84" r="1.8"/><circle cx="468.6" cy="84" r="1.8"/><circle cx="529.6" cy="84" r="1.8"/><circle cx="490.4" cy="84" r="1.8"/><circle cx="448.3" cy="84" r="1.8"/><circle cx="490.3" cy="84" r="1.8"/><circle cx="433.8" cy="84" r="1.8"/><circle cx="389.5" cy="84" r="1.8"/><circle cx="454.5" cy="84" r="1.8"/><circle cx="369.4" cy="84" r="1.8"/><circle cx="350.6" cy="84" r="1.8"/><circle cx="367.5" cy="84" r="1.8"/><circle cx="462.9" cy="84" r="1.8"/></g>
+  <circle cx="489.5" cy="84" r="4.5" class="dot"><title>DeepConvLSTM: pooled macro-F1 0.8706; per-subject range 0.372–0.94</title></circle>
+  <text x="624" y="88" class="lbl-i" text-anchor="end">0.871</text>
+  <text x="0" y="130" class="lbl-i" text-anchor="start">SelfHARModel</text>
+  <line x1="241.9" y1="126" x2="508.1" y2="126" class="axis"/>
+  <g class="dot-2"><circle cx="362.2" cy="126" r="1.8"/><circle cx="305.8" cy="126" r="1.8"/><circle cx="241.9" cy="126" r="1.8"/><circle cx="277.7" cy="126" r="1.8"/><circle cx="391.5" cy="126" r="1.8"/><circle cx="458.5" cy="126" r="1.8"/><circle cx="441.2" cy="126" r="1.8"/><circle cx="486.6" cy="126" r="1.8"/><circle cx="505.4" cy="126" r="1.8"/><circle cx="443.6" cy="126" r="1.8"/><circle cx="476.3" cy="126" r="1.8"/><circle cx="504.9" cy="126" r="1.8"/><circle cx="484.5" cy="126" r="1.8"/><circle cx="482.1" cy="126" r="1.8"/><circle cx="482.7" cy="126" r="1.8"/><circle cx="392.6" cy="126" r="1.8"/><circle cx="403.6" cy="126" r="1.8"/><circle cx="455.7" cy="126" r="1.8"/><circle cx="407.3" cy="126" r="1.8"/><circle cx="368.2" cy="126" r="1.8"/><circle cx="324.5" cy="126" r="1.8"/><circle cx="508.1" cy="126" r="1.8"/></g>
+  <circle cx="484.6" cy="126" r="4.5" class="dot"><title>SelfHARModel: pooled macro-F1 0.8622; per-subject range 0.441–0.903</title></circle>
+  <text x="624" y="130" class="lbl-i" text-anchor="end">0.862</text>
+  <text x="0" y="172" class="lbl-i" text-anchor="start">SelfPAB</text>
+  <line x1="179.3" y1="168" x2="519.1" y2="168" class="axis"/>
+  <g class="dot-2"><circle cx="337.8" cy="168" r="1.8"/><circle cx="299" cy="168" r="1.8"/><circle cx="179.3" cy="168" r="1.8"/><circle cx="283.9" cy="168" r="1.8"/><circle cx="431.2" cy="168" r="1.8"/><circle cx="465.1" cy="168" r="1.8"/><circle cx="380.4" cy="168" r="1.8"/><circle cx="470.2" cy="168" r="1.8"/><circle cx="490.7" cy="168" r="1.8"/><circle cx="422.5" cy="168" r="1.8"/><circle cx="475.5" cy="168" r="1.8"/><circle cx="519.1" cy="168" r="1.8"/><circle cx="460.2" cy="168" r="1.8"/><circle cx="494.4" cy="168" r="1.8"/><circle cx="486.1" cy="168" r="1.8"/><circle cx="382.4" cy="168" r="1.8"/><circle cx="390" cy="168" r="1.8"/><circle cx="475.6" cy="168" r="1.8"/><circle cx="416" cy="168" r="1.8"/><circle cx="388.5" cy="168" r="1.8"/><circle cx="367.6" cy="168" r="1.8"/><circle cx="468.9" cy="168" r="1.8"/></g>
+  <circle cx="483.4" cy="168" r="4.5" class="dot"><title>SelfPAB: pooled macro-F1 0.8601; per-subject range 0.332–0.922</title></circle>
+  <text x="624" y="172" class="lbl-i" text-anchor="end">0.86</text>
+  <text x="0" y="214" class="lbl-i" text-anchor="start">XGBoost</text>
+  <line x1="158.2" y1="210" x2="495.3" y2="210" class="axis"/>
+  <g class="dot-2"><circle cx="394.5" cy="210" r="1.8"/><circle cx="281.5" cy="210" r="1.8"/><circle cx="158.2" cy="210" r="1.8"/><circle cx="244.4" cy="210" r="1.8"/><circle cx="429.7" cy="210" r="1.8"/><circle cx="464.8" cy="210" r="1.8"/><circle cx="458.6" cy="210" r="1.8"/><circle cx="470.7" cy="210" r="1.8"/><circle cx="462.3" cy="210" r="1.8"/><circle cx="429.6" cy="210" r="1.8"/><circle cx="442.2" cy="210" r="1.8"/><circle cx="494.9" cy="210" r="1.8"/><circle cx="494.7" cy="210" r="1.8"/><circle cx="482.7" cy="210" r="1.8"/><circle cx="492.6" cy="210" r="1.8"/><circle cx="417.9" cy="210" r="1.8"/><circle cx="386.4" cy="210" r="1.8"/><circle cx="488.3" cy="210" r="1.8"/><circle cx="385.4" cy="210" r="1.8"/><circle cx="364.2" cy="210" r="1.8"/><circle cx="364.6" cy="210" r="1.8"/><circle cx="495.3" cy="210" r="1.8"/></g>
+  <circle cx="478.1" cy="210" r="4.5" class="dot"><title>XGBoost: pooled macro-F1 0.8509; per-subject range 0.295–0.881</title></circle>
+  <text x="624" y="214" class="lbl-i" text-anchor="end">0.851</text>
+  <text x="0" y="256" class="lbl-i" text-anchor="start">MOMENT</text>
+  <line x1="232.6" y1="252" x2="492.4" y2="252" class="axis"/>
+  <g class="dot-2"><circle cx="281.7" cy="252" r="1.8"/><circle cx="266.1" cy="252" r="1.8"/><circle cx="232.6" cy="252" r="1.8"/><circle cx="296" cy="252" r="1.8"/><circle cx="375.8" cy="252" r="1.8"/><circle cx="457" cy="252" r="1.8"/><circle cx="436" cy="252" r="1.8"/><circle cx="431.3" cy="252" r="1.8"/><circle cx="469.7" cy="252" r="1.8"/><circle cx="444.8" cy="252" r="1.8"/><circle cx="455.2" cy="252" r="1.8"/><circle cx="491.1" cy="252" r="1.8"/><circle cx="492.4" cy="252" r="1.8"/><circle cx="482.7" cy="252" r="1.8"/><circle cx="487.2" cy="252" r="1.8"/><circle cx="405.5" cy="252" r="1.8"/><circle cx="399.8" cy="252" r="1.8"/><circle cx="468" cy="252" r="1.8"/><circle cx="427.8" cy="252" r="1.8"/><circle cx="388" cy="252" r="1.8"/><circle cx="368" cy="252" r="1.8"/><circle cx="472.8" cy="252" r="1.8"/></g>
+  <circle cx="473.7" cy="252" r="4.5" class="dot"><title>MOMENT: pooled macro-F1 0.8432; per-subject range 0.425–0.876</title></circle>
+  <text x="624" y="256" class="lbl-i" text-anchor="end">0.843</text>
+  <line x1="132" y1="282" x2="564" y2="282" class="axis"/>
+  <text x="160.8" y="297" class="lbl" text-anchor="middle">0.3</text>
+  <text x="276" y="297" class="lbl" text-anchor="middle">0.5</text>
+  <text x="391.2" y="297" class="lbl" text-anchor="middle">0.7</text>
+  <text x="506.4" y="297" class="lbl" text-anchor="middle">0.9</text>
+  <text x="348" y="312" class="lbl" text-anchor="middle">accuracy score, higher is better   ● overall   · one person</text>
+  <text x="0" y="332" class="lbl-i" text-anchor="start">Friedman χ² = 6.104, df = 5, p = 0.296 — not significant</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">model</th><th scope="col">pooled macro f1</th><th scope="col">mean per fold macro f1</th><th scope="col">min fold</th><th scope="col">max fold</th><th scope="col">mean friedman rank</th></tr></thead><tbody><tr><td>SimCLR</td><td>0.8795</td><td>0.7609</td><td>0.3619</td><td>0.944</td><td>2.636</td></tr><tr><td>DeepConvLSTM</td><td>0.8706</td><td>0.7464</td><td>0.3719</td><td>0.9403</td><td>3.591</td></tr><tr><td>SelfHARModel</td><td>0.8622</td><td>0.7472</td><td>0.4408</td><td>0.903</td><td>3.5</td></tr><tr><td>SelfPAB</td><td>0.8601</td><td>0.7377</td><td>0.3321</td><td>0.922</td><td>3.727</td></tr><tr><td>XGBoost</td><td>0.8509</td><td>0.7392</td><td>0.2954</td><td>0.8808</td><td>3.864</td></tr><tr><td>MOMENT</td><td>0.8432</td><td>0.7334</td><td>0.4247</td><td>0.8757</td><td>3.682</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-models -->
+      <figcaption>
+        <b>What you're looking at:</b> six models, one row each. The large dot is the model's
+        overall score; every small dot is one person it was tested on. The rows overlap almost
+        completely, and the spread within any one model dwarfs the gap between models — which is
+        why the apparent ranking does not survive a statistical test. If the models really differed,
+        the rows would separate.
+        <span class="prov">n = 22 subjects × 6 models on HARTH v1.2 (a public wearable-sensor dataset) · data 2025 · not pre-registered ·
+        held-out, leave-one-subject-out · <a href="../../data/models-macro-f1.csv">models-macro-f1.csv</a>,
+        <a href="../../data/models-per-fold.csv">models-per-fold.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <figure>
+<!-- FIGURE:fig-perclass -->
+<div class="scroll" role="region" tabindex="0" aria-label="Per-class F1 across six architectures — scrollable chart">
+<svg viewBox="0 0 640 276" role="img" aria-labelledby="t-fig-perclass d-fig-perclass" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-perclass">Per-class F1 across six architectures</title>
+  <desc id="d-fig-perclass">Every architecture fails on the same two minority classes, which is the class imbalance the thesis records as its persistent limitation.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <text x="161" y="34" class="lbl-i" text-anchor="middle">c1</text>
+  <text x="161" y="46" class="lbl" text-anchor="middle">4,862</text>
+  <text x="227" y="34" class="lbl-i" text-anchor="middle">c2</text>
+  <text x="227" y="46" class="lbl" text-anchor="middle">1,174</text>
+  <text x="293" y="34" class="lbl-i" text-anchor="middle">c3</text>
+  <text x="293" y="46" class="lbl" text-anchor="middle">769</text>
+  <text x="359" y="34" class="lbl-i" text-anchor="middle">c4</text>
+  <text x="359" y="46" class="lbl" text-anchor="middle">662</text>
+  <text x="425" y="34" class="lbl-i" text-anchor="middle">c5</text>
+  <text x="425" y="46" class="lbl" text-anchor="middle">1,999</text>
+  <text x="491" y="34" class="lbl-i" text-anchor="middle">c6</text>
+  <text x="491" y="46" class="lbl" text-anchor="middle">3,034</text>
+  <text x="557" y="34" class="lbl-i" text-anchor="middle">c7</text>
+  <text x="557" y="46" class="lbl" text-anchor="middle">11,612</text>
+  <text x="623" y="34" class="lbl-i" text-anchor="middle">c8</text>
+  <text x="623" y="46" class="lbl" text-anchor="middle">1,719</text>
+  <g class="bar">
+  <text x="0" y="65" class="lbl-i" text-anchor="start">SimCLR</text>
+  <rect x="132" y="66" width="51.4" height="4"><title>c1: 0.918</title></rect><text x="132" y="62">0.92</text>
+  <rect x="198" y="66" width="54.5" height="4"><title>c2: 0.973</title></rect><text x="198" y="62">0.97</text>
+  <rect x="264" y="66" width="29.5" height="4"><title>c3: 0.526</title></rect><text x="264" y="62">0.53</text>
+  <rect x="330" y="66" width="44.5" height="4"><title>c4: 0.794</title></rect><text x="330" y="62">0.79</text>
+  <rect x="396" y="66" width="53.9" height="4"><title>c5: 0.963</title></rect><text x="396" y="62">0.96</text>
+  <rect x="462" y="66" width="49.6" height="4"><title>c6: 0.887</title></rect><text x="462" y="62">0.89</text>
+  <rect x="528" y="66" width="55.6" height="4"><title>c7: 0.993</title></rect><text x="528" y="62">0.99</text>
+  <rect x="594" y="66" width="55" height="4"><title>c8: 0.983</title></rect><text x="594" y="62">0.98</text>
+  <text x="0" y="95" class="lbl-i" text-anchor="start">DeepConvLSTM</text>
+  <rect x="132" y="96" width="50.4" height="4"><title>c1: 0.901</title></rect><text x="132" y="92">0.9</text>
+  <rect x="198" y="96" width="54.4" height="4"><title>c2: 0.971</title></rect><text x="198" y="92">0.97</text>
+  <rect x="264" y="96" width="28.2" height="4"><title>c3: 0.503</title></rect><text x="264" y="92">0.5</text>
+  <rect x="330" y="96" width="44.1" height="4"><title>c4: 0.787</title></rect><text x="330" y="92">0.79</text>
+  <rect x="396" y="96" width="54" height="4"><title>c5: 0.965</title></rect><text x="396" y="92">0.96</text>
+  <rect x="462" y="96" width="47.8" height="4"><title>c6: 0.853</title></rect><text x="462" y="92">0.85</text>
+  <rect x="528" y="96" width="55.7" height="4"><title>c7: 0.994</title></rect><text x="528" y="92">0.99</text>
+  <rect x="594" y="96" width="55.5" height="4"><title>c8: 0.991</title></rect><text x="594" y="92">0.99</text>
+  <text x="0" y="125" class="lbl-i" text-anchor="start">SelfHARModel</text>
+  <rect x="132" y="126" width="50.3" height="4"><title>c1: 0.898</title></rect><text x="132" y="122">0.9</text>
+  <rect x="198" y="126" width="54.7" height="4"><title>c2: 0.978</title></rect><text x="198" y="122">0.98</text>
+  <rect x="264" y="126" width="25.7" height="4"><title>c3: 0.46</title></rect><text x="264" y="122">0.46</text>
+  <rect x="330" y="126" width="43.6" height="4"><title>c4: 0.778</title></rect><text x="330" y="122">0.78</text>
+  <rect x="396" y="126" width="54.1" height="4"><title>c5: 0.966</title></rect><text x="396" y="122">0.97</text>
+  <rect x="462" y="126" width="48.4" height="4"><title>c6: 0.863</title></rect><text x="462" y="122">0.86</text>
+  <rect x="528" y="126" width="55.3" height="4"><title>c7: 0.988</title></rect><text x="528" y="122">0.99</text>
+  <rect x="594" y="126" width="54.2" height="4"><title>c8: 0.967</title></rect><text x="594" y="122">0.97</text>
+  <text x="0" y="155" class="lbl-i" text-anchor="start">SelfPAB</text>
+  <rect x="132" y="156" width="49.6" height="4"><title>c1: 0.886</title></rect><text x="132" y="152">0.89</text>
+  <rect x="198" y="156" width="54.8" height="4"><title>c2: 0.979</title></rect><text x="198" y="152">0.98</text>
+  <rect x="264" y="156" width="27.8" height="4"><title>c3: 0.496</title></rect><text x="264" y="152">0.5</text>
+  <rect x="330" y="156" width="41.3" height="4"><title>c4: 0.738</title></rect><text x="330" y="152">0.74</text>
+  <rect x="396" y="156" width="53.9" height="4"><title>c5: 0.962</title></rect><text x="396" y="152">0.96</text>
+  <rect x="462" y="156" width="48.7" height="4"><title>c6: 0.87</title></rect><text x="462" y="152">0.87</text>
+  <rect x="528" y="156" width="55.4" height="4"><title>c7: 0.99</title></rect><text x="528" y="152">0.99</text>
+  <rect x="594" y="156" width="53.8" height="4"><title>c8: 0.96</title></rect><text x="594" y="152">0.96</text>
+  <text x="0" y="185" class="lbl-i" text-anchor="start">XGBoost</text>
+  <rect x="132" y="186" width="50.8" height="4"><title>c1: 0.908</title></rect><text x="132" y="182">0.91</text>
+  <rect x="198" y="186" width="54.9" height="4"><title>c2: 0.98</title></rect><text x="198" y="182">0.98</text>
+  <rect x="264" y="186" width="23.7" height="4"><title>c3: 0.422</title></rect><text x="264" y="182">0.42</text>
+  <rect x="330" y="186" width="38.4" height="4"><title>c4: 0.685</title></rect><text x="330" y="182">0.69</text>
+  <rect x="396" y="186" width="52.8" height="4"><title>c5: 0.943</title></rect><text x="396" y="182">0.94</text>
+  <rect x="462" y="186" width="50.1" height="4"><title>c6: 0.895</title></rect><text x="462" y="182">0.89</text>
+  <rect x="528" y="186" width="55.6" height="4"><title>c7: 0.993</title></rect><text x="528" y="182">0.99</text>
+  <rect x="594" y="186" width="55" height="4"><title>c8: 0.981</title></rect><text x="594" y="182">0.98</text>
+  <text x="0" y="215" class="lbl-i" text-anchor="start">MOMENT</text>
+  <rect x="132" y="216" width="52.9" height="4"><title>c1: 0.945</title></rect><text x="132" y="212">0.95</text>
+  <rect x="198" y="216" width="55.6" height="4"><title>c2: 0.993</title></rect><text x="198" y="212">0.99</text>
+  <rect x="264" y="216" width="32.1" height="4"><title>c3: 0.573</title></rect><text x="264" y="212">0.57</text>
+  <rect x="330" y="216" width="50.6" height="4"><title>c4: 0.904</title></rect><text x="330" y="212">0.9</text>
+  <rect x="396" y="216" width="54.2" height="4"><title>c5: 0.967</title></rect><text x="396" y="212">0.97</text>
+  <rect x="462" y="216" width="46.9" height="4"><title>c6: 0.837</title></rect><text x="462" y="212">0.84</text>
+  <rect x="528" y="216" width="52.5" height="4"><title>c7: 0.938</title></rect><text x="528" y="212">0.94</text>
+  <rect x="594" y="216" width="33" height="4"><title>c8: 0.589</title></rect><text x="594" y="212">0.59</text>
+  </g>
+  <text x="0" y="250" class="lbl" text-anchor="start">column = activity class, with its sample count below the label</text>
+  <text x="0" y="264" class="lbl" text-anchor="start">bar length = F1 for that class; full width would be 1</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">class</th><th scope="col">support</th><th scope="col">SimCLR</th><th scope="col">DeepConvLSTM</th><th scope="col">SelfHARModel</th><th scope="col">SelfPAB</th><th scope="col">XGBoost</th><th scope="col">MOMENT</th></tr></thead><tbody><tr><td>1</td><td>4862</td><td>0.9178</td><td>0.9007</td><td>0.8981</td><td>0.8858</td><td>0.908</td><td>0.9454</td></tr><tr><td>2</td><td>1174</td><td>0.9728</td><td>0.9713</td><td>0.9775</td><td>0.9788</td><td>0.9797</td><td>0.9928</td></tr><tr><td>3</td><td>769</td><td>0.5263</td><td>0.5028</td><td>0.4595</td><td>0.4965</td><td>0.4224</td><td>0.5725</td></tr><tr><td>4</td><td>662</td><td>0.7941</td><td>0.7875</td><td>0.7783</td><td>0.7381</td><td>0.6851</td><td>0.9041</td></tr><tr><td>5</td><td>1999</td><td>0.9633</td><td>0.9646</td><td>0.9657</td><td>0.962</td><td>0.9434</td><td>0.9671</td></tr><tr><td>6</td><td>3034</td><td>0.8866</td><td>0.8533</td><td>0.8634</td><td>0.8698</td><td>0.8946</td><td>0.8368</td></tr><tr><td>7</td><td>11612</td><td>0.9928</td><td>0.994</td><td>0.988</td><td>0.9898</td><td>0.993</td><td>0.9383</td></tr><tr><td>8</td><td>1719</td><td>0.9825</td><td>0.9905</td><td>0.967</td><td>0.96</td><td>0.9813</td><td>0.5889</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-perclass -->
+      <figcaption>
+        <b>What you're looking at:</b> how well each model handles each type of activity. Columns
+        are activities, with how many examples each had underneath. Every model collapses on the
+        same two columns — the two with the fewest examples. That is a property of the data, not of
+        any one model, and it is the limitation the thesis records.
+        <span class="prov">8 classes, 25,831 pooled samples · data 2025 · not pre-registered ·
+        held-out, pooled across folds ·
+        <a href="../../data/models-per-class-f1.csv">models-per-class-f1.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <p>
+      <a href="../../docs/bsc-thesis-mediavilla-2025.pdf">Read the full BSc thesis (PDF, 4.6 MB, 30
+      pages)</a>. The timings above are from its results chapter.
+    </p>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <div class="finding">
+          <p class="finding__sign">The load-bearing finding is negative</p>
+          <p>
+            <a href="../../glossary/index.html#macro-f1"><dfn>Macro-F1</dfn></a> (an accuracy score that weights rare activities equally) under <a href="../../glossary/index.html#leave-one-out"><dfn>leave-one-subject-out</dfn></a> cross-validation on HARTH v1.2 — a public research dataset of wearable-sensor recordings — across 12 activity classes: SimCLR <span class="num">0.880</span>, DeepConvLSTM
+            <span class="num">0.871</span>, SelfHARModel <span class="num">0.862</span>, SelfPAB
+            <span class="num">0.860</span>, XGBoost <span class="num">0.851</span>, MOMENT
+            <span class="num">0.843</span>. A <a href="../../glossary/index.html#friedman-test">Friedman
+            test</a> <strong>failed to reject the null</strong> at
+            <span class="num">α = 0.05</span>; the Nemenyi post-hoc was therefore not run. The
+            thesis states the spread "could reasonably be attributed to random chance."
+          </p>
+          <p class="method">
+            <b>Recomputed, not quoted</b> — <code>tools/make_figures.py</code> re-derives the test
+            from the committed per-fold logs: <span class="num">χ² = 6.104</span>,
+            <span class="num">df = 5</span>, <span class="num">p = 0.296</span>. Note the headline
+            scores are the pooled report across all folds; the mean of the per-fold scores is a
+            different and lower quantity (SimCLR <span class="num">0.761</span>), and the two are
+            not interchangeable.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">The practical finding</p>
+          <p>
+            SelfPAB cost about <span class="num">7 hours</span> for the full cross-validation
+            against <span class="num">1.7 hours</span> for SimCLR and
+            <span class="num">23 minutes</span> for <a href="../../glossary/index.html#xgboost">XGBoost</a>,
+            and finished fourth. Recorded honestly rather than claimed: SelfPAB scored
+            <span class="num">0.860</span> here against <span class="num">0.813</span> in its
+            original paper on the same dataset, attributed to setup variation and <em>not</em>
+            claimed as an improvement. Known persistent limitation: class imbalance.
+          </p>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+  </div>
+</article>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p><span>Previous</span><a href="../../research/msc/index.html">← MSc thesis — latent market dynamics</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

@@ -5,9 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Projects — Juan Mediavilla</title>
 <meta name="description" content="Research systems, a fund-accounting terminal, a data product, and two shipped products wound down — each with its result, including the negative ones.">
+<link rel="canonical" href="https://juanmediavilla.com/projects/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://juanmediavilla.com/projects/">
+<meta property="og:title" content="Projects — Juan Mediavilla">
+<meta property="og:description" content="Research systems, a fund-accounting terminal, a data product, and two shipped products wound down — each with its result, including the negative ones.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
 <script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="stylesheet" href="../style.css">
-<link rel="icon" href="data:,">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -15,7 +23,7 @@
 <nav class="nav" aria-label="Primary">
   <div class="wrap">
     <a class="nav__home" href="../index.html">Juan Mediavilla</a>
-    <a href="index.html" aria-current="page">Projects</a>
+    <a href="../projects/index.html" aria-current="page">Projects</a>
     <a href="../research/index.html">Research</a>
     <a href="../how-i-work/index.html">How I Work</a>
     <a href="../about/index.html">About</a>
@@ -27,524 +35,79 @@
 
 <header class="head">
   <div class="wrap">
-    <h1>Projects</h1>
+    <p class="eyebrow">Projects</p>
+    <h1>What I have built, and what it returned</h1>
     <p class="standfirst">
-      What each one is, how big it got, and what it returned — including when that was nothing.
-      Each entry opens in plain language; the technical detail is one click below it. Source
-      repositories are private and are not linked.
+      Each entry opens in plain language, states what was hard, and reports what it found —
+      including when the answer was that there was nothing there. The technical version is one
+      click below it. Source repositories are private and are not linked.
     </p>
   </div>
 </header>
 
-<article class="entry" id="prediction-market-system">
+<section class="section">
   <div class="wrap">
-    <p class="eyebrow">Research system</p>
-    <h2>Prediction-market research and trading system</h2>
-    <p class="entry__meta">Self-built, end to end · May 2026 – ongoing · 718 commits as of 9 Aug 2026</p>
-
-    <p class="oneline">
-      A 24/7 platform that watches <a href="../glossary/index.html#prediction-market"><dfn>prediction
+    <div class="rail">
+      <div class="rail__label">
+        <p class="eyebrow">Case studies</p>
+        <p class="meta">Four builds.<br>Each has its own page.</p>
+      </div>
+      <div class="rail__body">
+        <h2>Built end to end, then measured</h2>
+        <div class="work">
+          <a class="work__row" id="prediction-market-system" href="prediction-market/index.html">
+            <span class="work__num">01</span>
+            <span class="work__main">
+              <h3>Prediction-market research and trading system</h3>
+              <span class="work__sum">A 24/7 platform that watches <a href="../glossary/index.html#prediction-market"><dfn>prediction
       markets</dfn></a> continuously, and the machine-learning and evaluation stack built on top of
-      it.
-    </p>
-
-    <h3>What I built</h3>
-    <div class="plain">
-      <p>
-        Six scheduled collectors running every 15 to 60 minutes, plus real-time ingest over
-        WebSockets, feeding an archive of <strong>~800 GB as of August 2026</strong> — that is the self-reported total on cloud storage; the server itself holds a 250 GB working set that fills and is periodically offloaded, which is its own small operational discipline. Every gap in the feed is logged and masked
-        rather than interpolated, and continuity is accounted for rather than assumed — which is
-        what makes the absence of activity evidence instead of missing data. Out of that corpus I
-        built a licence-clean, hash-verified panel of <strong>400 resolved markets and 188,856
-        trades</strong>.
-      </p>
-      <p>
-        On top sits the machine learning: gradient-boosted models with
-        <a href="../glossary/index.html#isotonic-calibration"><dfn>isotonic calibration</dfn></a>
-        running <strong>live inference and order execution</strong>, a
-        <a href="../glossary/index.html#walk-forward"><dfn>walk-forward</dfn></a> backtester with
-        realistic fill simulation, and a behavioural clustering pipeline — UMAP, HDBSCAN and
-        Gaussian mixtures — over 3,413 wallets.
-      </p>
-    </div>
-
-    <div class="term">
-      <div class="term__bar"><span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span> collector status — hostnames and paths removed</div>
-      <pre role="region" tabindex="0" aria-label="Terminal output">$ systemctl --user list-timers 'poly-*'
-UNIT                      ACTIVATES              EVERY
-poly-books.timer          poly-books.service     15min
-poly-trades.timer         poly-trades.service    15min
-poly-markets.timer        poly-markets.service   30min
-poly-resolved.timer       poly-resolved.service  60min
-poly-wallets.timer        poly-wallets.service   60min
-poly-crypto5m.timer       poly-crypto5m.service  15min
-<span class="dim">6 timers listed. 1 dormant unit not shown.</span>
-
-$ poly-status --audit
-<span class="ok">gaps  19 &gt;1s over an 18-day window, 74.6 min total (~4.1 min/day)</span>
-<span class="ok">replay median touch-match 0.9992 across 19 markets</span>
-<span class="dim">structural audit: 219 markets, 0 defects</span></pre>
-    </div>
-
-    <figure>
-<!-- DIAGRAM:dia-pipeline -->
-<svg viewBox="0 0 660 240" role="img" aria-labelledby="dt-dia-pipeline dd-dia-pipeline" xmlns="http://www.w3.org/2000/svg">
-  <title id="dt-dia-pipeline">The collection pipeline</title>
-  <desc id="dd-dia-pipeline">Six scheduled collectors write to storage on a 15 to 60 minute cadence. A gap audit checks continuity, and the audited output is a panel of 400 resolved markets and 188,856 trades.</desc>
-  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
-  <g><rect x="8" y="18" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 1, dispatched every 15–60 minutes</title><text x="67" y="28" class="t" text-anchor="middle" dominant-baseline="middle">collector 1</text></g>
-  <g><rect x="8" y="42" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 2, dispatched every 15–60 minutes</title><text x="67" y="52" class="t" text-anchor="middle" dominant-baseline="middle">collector 2</text></g>
-  <g><rect x="8" y="66" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 3, dispatched every 15–60 minutes</title><text x="67" y="76" class="t" text-anchor="middle" dominant-baseline="middle">collector 3</text></g>
-  <g><rect x="8" y="90" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 4, dispatched every 15–60 minutes</title><text x="67" y="100" class="t" text-anchor="middle" dominant-baseline="middle">collector 4</text></g>
-  <g><rect x="8" y="114" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 5, dispatched every 15–60 minutes</title><text x="67" y="124" class="t" text-anchor="middle" dominant-baseline="middle">collector 5</text></g>
-  <g><rect x="8" y="138" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 6, dispatched every 15–60 minutes</title><text x="67" y="148" class="t" text-anchor="middle" dominant-baseline="middle">collector 6</text></g>
-  <text x="8" y="172" class="ts" text-anchor="start">6 scheduled + 1 dormant</text>
-  <g><rect x="160" y="60" width="116" height="56" rx="6" class="bx bx1"/><title>each collector runs on a systemd timer</title><text x="218" y="83" class="t" text-anchor="middle" dominant-baseline="middle">systemd timers</text><text x="218" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">15–60 min</text></g>
-  <g><rect x="302" y="60" width="126" height="56" rx="6" class="bx bx3"/><title>server working set; periodically offloaded to a ~800 GB archive</title><text x="365" y="83" class="t" text-anchor="middle" dominant-baseline="middle">storage</text><text x="365" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">250 GB working set</text></g>
-  <g><rect x="452" y="20" width="200" height="46" rx="6" class="bx bx2"/><title>every feed gap is logged and masked, never interpolated</title><text x="552" y="38" class="t" text-anchor="middle" dominant-baseline="middle">gap audit</text><text x="552" y="54" class="ts" text-anchor="middle" dominant-baseline="middle">continuity accounting</text></g>
-  <g><rect x="452" y="96" width="200" height="56" rx="6" class="bx bx3"/><title>licence-clean and hash-verified; 382 used in the backtests</title><text x="552" y="119" class="t" text-anchor="middle" dominant-baseline="middle">audited panel</text><text x="552" y="135" class="ts" text-anchor="middle" dominant-baseline="middle">400 markets · 188,856 trades</text></g>
-  <path d="M128 28 L158 88" class="ar ar1"/>
-  <path d="M128 52 L158 88" class="ar ar1"/>
-  <path d="M128 76 L158 88" class="ar ar1"/>
-  <path d="M128 100 L158 88" class="ar ar1"/>
-  <path d="M128 124 L158 88" class="ar ar1"/>
-  <path d="M128 148 L158 88" class="ar ar1"/>
-  <path d="M278 88 L308 88" class="ar "/>
-  <path d="M422 80 L450 52" class="ar ar2"/>
-  <path d="M422 96 L450 118" class="ar "/>
-  <text x="8" y="196" class="tm" text-anchor="start">every gap logged and masked — never interpolated</text>
-  <text x="8" y="212" class="tm" text-anchor="start">offloaded to a ~800 GB archive (self-reported, Aug 2026)</text>
-</svg>
-<!-- /DIAGRAM:dia-pipeline -->
-      <figcaption>
-        <b>What you're looking at:</b> how the platform is wired. Six collectors run on their own
-        timers, write to storage, and everything passes a gap audit before it becomes the panel the
-        models are evaluated on. The audit is the part that matters: it is what lets a quiet market
-        count as evidence rather than as missing data.
-        <span class="prov">Cadences and audit figures as of the 18-day server window ·
-        infrastructure detail deliberately omitted</span>
-      </figcaption>
-    </figure>
-
-    <h3>What was hard</h3>
-    <div class="plain">
-      <p>
-        Reliability turned out to be an auditing problem rather than an uptime problem. A collector
-        that misses an hour is not a disaster; a collector that misses an hour <em>silently</em>
-        destroys the analysis, because in this work the absence of a price move is itself the
-        signal. So the pipeline records what it failed to see and masks those windows, and one lost
-        collection day is carried as a declared 45-hour gap rather than quietly interpolated away.
-      </p>
-      <p>
-        The second hard choice was in the backtester. One strategy needed the queue of resting buy
-        and sell offers, which the historical data does not contain. Substituting a rough stand-in
-        would have produced a number — and that number would have been fiction. It declines to run
-        instead, and reports why.
-      </p>
-    </div>
-
-    <h3>What I found</h3>
-    <div class="plain">
-      <p>
-        <strong>Trader behaviour predicts profit.</strong> The behavioural clustering produced types
-        that hold up against held-out profit and loss, which mattered beyond the result itself: it
-        broke a circular definition — "informed traders are the ones who make money" — that had
-        blocked two earlier research directions.
-      </p>
-      <p>
-        <strong>None of the four candidate strategies beat a random baseline.</strong> That is the
-        answer the platform was built to produce, and it is worth as much as a positive would have
-        been: it is a measurement, not a disappointment. The fourth strategy is the one I would
-        point at in an interview — it abstained on every market rather than trade on a signal the
-        data could not supply.
-      </p>
-    </div>
-    <figure>
-<!-- FIGURE:fig-strategies -->
-<div class="scroll" role="region" tabindex="0" aria-label="Four strategies against a random baseline — scrollable chart">
-<svg viewBox="0 0 640 212" role="img" aria-labelledby="t-fig-strategies d-fig-strategies" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-  <title id="t-fig-strategies">Four strategies against a random baseline</title>
-  <desc id="d-fig-strategies">Three strategies score no edge with p-values far above 0.05. The fourth is not plotted: it abstained on every market because the data lacks the signal it needs.</desc>
-  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
-  <line x1="186" y1="22" x2="186" y2="186" class="rule"/>
-  <text x="186" y="16" class="lbl" text-anchor="middle">p = 0.05</text>
-  <text x="0" y="48" class="lbl-i" text-anchor="start">mean_reversion_v1</text>
-  <rect x="168" y="35" width="179.21" height="18" class="bar"><title>mean_reversion_v1: p = 0.498 vs random, 67 trades</title></rect>
-  <text x="355.2" y="48" class="lbl-i" text-anchor="start">p = 0.498</text>
-  <text x="624" y="48" class="lbl" text-anchor="end">NO_EDGE</text>
-  <text x="0" y="88" class="lbl-i" text-anchor="start">longshot_fade_v1</text>
-  <rect x="168" y="75" width="216.25" height="18" class="bar"><title>longshot_fade_v1: p = 0.601 vs random, 157 trades</title></rect>
-  <text x="392.3" y="88" class="lbl-i" text-anchor="start">p = 0.601</text>
-  <text x="624" y="88" class="lbl" text-anchor="end">NO_EDGE</text>
-  <text x="0" y="128" class="lbl-i" text-anchor="start">depth_imbalance_v1</text>
-  <line x1="168" y1="124" x2="528" y2="124" class="axis"/>
-  <text x="172" y="118" class="lbl-i" text-anchor="start">no bar — abstained on every market</text>
-  <text x="624" y="128" class="lbl-i" text-anchor="end">NOT_APPLICABLE</text>
-  <text x="0" y="168" class="lbl-i" text-anchor="start">regime_conditioned_v1</text>
-  <rect x="168" y="155" width="220.57" height="18" class="bar"><title>regime_conditioned_v1: p = 0.613 vs random, 4 trades</title></rect>
-  <text x="396.6" y="168" class="lbl-i" text-anchor="start">p = 0.613</text>
-  <text x="624" y="168" class="lbl" text-anchor="end">NO_EDGE</text>
-  <line x1="168" y1="182" x2="528" y2="182" class="axis"/>
-  <text x="168" y="194" class="lbl" text-anchor="middle">0</text>
-  <text x="258" y="194" class="lbl" text-anchor="middle">0.25</text>
-  <text x="348" y="194" class="lbl" text-anchor="middle">0.5</text>
-  <text x="438" y="194" class="lbl" text-anchor="middle">0.75</text>
-  <text x="348" y="207" class="lbl" text-anchor="middle">how easily chance alone explains it (longer = more likely chance)</text>
-</svg>
-</div>
-<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
-<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">strategy</th><th scope="col">n markets</th><th scope="col">trades taken</th><th scope="col">p value vs random</th><th scope="col">verdict</th></tr></thead><tbody><tr><td>mean_reversion_v1</td><td>382</td><td>67</td><td>0.4978</td><td>NO_EDGE</td></tr><tr><td>longshot_fade_v1</td><td>382</td><td>157</td><td>0.6007</td><td>NO_EDGE</td></tr><tr><td>depth_imbalance_v1</td><td>382</td><td>0</td><td>NOT_APPLICABLE</td><td>NOT_APPLICABLE</td></tr><tr><td>regime_conditioned_v1</td><td>382</td><td>4</td><td>0.6127</td><td>NO_EDGE</td></tr></tbody></table></div></details>
-<!-- /FIGURE:fig-strategies -->
-      <figcaption>
-        <b>What you're looking at:</b> four strategies, one row each. The bar length is the <a href="../glossary/index.html#p-value"><dfn>p-value</dfn></a> — how easily random chance alone could have produced a result this good — so a <em>short</em> bar would
-        be a real signal, and all three of these are long. The dashed line is the usual threshold
-        for taking a result seriously; nothing comes close to it. The fourth row has no bar at all,
-        because that strategy refused to run on data that lacked the information it needed.
-        <span class="prov">n = 382 resolved markets · 2,000 clustered resamples, seed 17 · data
-        2026-05-31 · <b>pre-registered</b> · out-of-sample ·
-        <a href="../data/strategies.csv">strategies.csv</a></span>
-      </figcaption>
-    </figure>
-
-    <p class="code-src">strategies/depth_imbalance.py — the abstention path</p>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt">    snap = market_state.get("latest_snapshot")
-    if snap is None:
-        return _abstain("latest_snapshot missing from state")
-    dimb = getattr(snap, "depth_imbalance", None)
-    if dimb is None:
-        return _abstain("L2 depth_imbalance not available (L1-only snapshot)")
-    mid = float(getattr(snap, "mid", 0.0))
-    if not (self.extreme_lo &lt; mid &lt; self.extreme_hi):
-        return _abstain(
-            f"mid {mid:.3f} is at extreme; depth imbalance there is "
-            f"artifactual not informational")</pre>
-    <p>
-      Here <code>L2</code> means the full list of resting buy and sell offers, and <code>L1</code> only the single best price on each side. Three separate reasons to decline, and no branch that guesses. <code>_abstain</code> returns
-      "no trade" with the reason attached, so the refusal is recorded rather than silent.
-    </p>
-
-    <details>
-      <summary>The technical version</summary>
-      <div class="inner">
-        <p>
-          A complete research stack for a prediction-market venue: continuous collection, a
-          modelling layer, and a fee-aware backtester. Six scheduled collectors feed an audited
-          panel of <span class="num">400</span> resolved markets and
-          <span class="num">188,856</span> trades, licence-clean and hash-verified. A predecessor
-          execution line on BTC used gradient boosting with
-          <a href="../glossary/index.html#isotonic-calibration"><dfn>isotonic calibration</dfn></a>
-          across 35 tested hypotheses; its recorded limitation is that win rate is flat across edge
-          magnitude, so the model captures direction but not conviction.
-        </p>
-        <div class="finding">
-          <p class="finding__sign">Headline result — negative</p>
-          <p>
-            All four candidate strategies scored <span class="num">NO_EDGE</span> against a random
-            baseline under a market-clustered
-            <a href="../glossary/index.html#bootstrap">bootstrap</a>:
-            <code>mean_reversion_v1</code> <a href="../glossary/index.html#p-value"><dfn>p</dfn></a><span class="num">=0.498</span>,
-            <code>longshot_fade_v1</code> <span class="num">p=0.601</span>,
-            <code>regime_conditioned_v1</code> <span class="num">p=0.613</span>. Verdict bands were
-            fixed in advance: below 0.05 beats random, 0.05–0.20 weak, at or above 0.20 no edge.
-          </p>
-          <p>
-            <code>depth_imbalance_v1</code> returned <span class="num">NOT_APPLICABLE</span>: the
-            historical dataset carries no
-            <a href="../glossary/index.html#order-book"><dfn>L2 depth</dfn></a> — bid and ask are
-            null on every snapshot per the data audit — so its only signal is missing everywhere and
-            it abstains universally. Reported as not applicable rather than faked with a
-            tape-derived proxy.
-          </p>
-        </div>
-        <div class="finding">
-          <p class="finding__sign">One positive, with its caveat</p>
-          <p>
-            A behavioural trader typology reached <span class="num">BEHAVIOR_PREDICTS_PNL</span> on
-            held-out profit and loss — Kruskal–Wallis <span class="num">p=7.7e-07</span>, with 6 of
-            45 pairs surviving Bonferroni correction. Cluster stability was only
-            <span class="num">MIXED</span>: mean bootstrap adjusted Rand index
-            <span class="num">0.41</span>. Reported with that caveat attached rather than on the
-            strength of the p-value alone.
-          </p>
-        </div>
-        <p class="entry__stack">
-          Real-time WebSocket pipelines, XGBoost with isotonic calibration, live inference and order
-          execution, <a href="../glossary/index.html#walk-forward"><dfn>walk-forward</dfn></a>
-          backtesting with realistic fill simulation, Linux, systemd.
-        </p>
-      </div>
-    </details>
-  </div>
-</article>
-
-<article class="entry" id="wallet-intelligence">
-  <div class="wrap">
-    <p class="eyebrow">Anomaly detection</p>
-    <h2>Wallet-intelligence and manipulation-detection engine</h2>
-    <p class="entry__meta">Ships inside the research system · standalone predecessor archived May 2026</p>
-
-    <p class="oneline">
-      A three-tier scoring engine that traces on-chain funding up to three hops and flags
-      coordinated clusters of accounts across daily scans of the 200 busiest markets.
-    </p>
-    <div class="plain">
-      <p>
-        These markets run on a public ledger, so every trade and every transfer of funds is visible.
-        That makes it possible to ask whether a cluster of accounts is really one person, or whether
-        an account that consistently buys just before news breaks was funded from the same source as
-        several others.
-      </p>
-      <p>
-        The design decision that matters is the threshold for saying so. An accusation of insider
-        trading is serious and the evidence is circumstantial, so the tool requires three separate
-        lines of evidence to agree before it will use that label. If it cannot trace funding on the
-        ledger, it does not lower the bar — it caps what it is willing to conclude and says so.
-        Several known blind spots are documented rather than hidden, and one detection rule was
-        removed entirely after I found it was firing on an ordinary feature of how the venue holds
-        user funds.
-      </p>
-    </div>
-
-    <figure>
-<!-- DIAGRAM:dia-tiers -->
-<svg viewBox="0 0 660 250" role="img" aria-labelledby="dt-dia-tiers dd-dia-tiers" xmlns="http://www.w3.org/2000/svg">
-  <title id="dt-dia-tiers">The three-tier wallet engine</title>
-  <desc id="dd-dia-tiers">Three independent checks run on each wallet. Only when all three agree is a wallet labelled an insider; if on-chain tracing is unavailable the classification is capped rather than guessed.</desc>
-  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
-  <g><rect x="8" y="18" width="220" height="44" rx="6" class="bx bx1"/><title>tier 1 · trading pattern: timing vs news</title><text x="118" y="35" class="t" text-anchor="middle" dominant-baseline="middle">tier 1 · trading pattern</text><text x="118" y="51" class="ts" text-anchor="middle" dominant-baseline="middle">timing vs news</text></g>
-  <g><rect x="8" y="76" width="220" height="44" rx="6" class="bx bx1"/><title>tier 2 · profit history: early on winners</title><text x="118" y="93" class="t" text-anchor="middle" dominant-baseline="middle">tier 2 · profit history</text><text x="118" y="109" class="ts" text-anchor="middle" dominant-baseline="middle">early on winners</text></g>
-  <g><rect x="8" y="134" width="220" height="44" rx="6" class="bx bx1"/><title>tier 3 · on-chain funding: traced up to 3 hops</title><text x="118" y="151" class="t" text-anchor="middle" dominant-baseline="middle">tier 3 · on-chain funding</text><text x="118" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">traced up to 3 hops</text></g>
-  <g><rect x="280" y="76" width="150" height="60" rx="6" class="bx bx2"/><title>corroboration gate — an insider label needs every tier</title><text x="355" y="106" class="t" text-anchor="middle" dominant-baseline="middle">all three agree?</text></g>
-  <path d="M230 40 L278 106" class="ar ar1"/>
-  <path d="M230 98 L278 106" class="ar ar1"/>
-  <path d="M230 156 L278 106" class="ar ar1"/>
-  <path d="M432 92 L500 60" class="ar ar2"/>
-  <path d="M432 120 L500 156" class="ar "/>
-  <g><rect x="500" y="38" width="152" height="44" rx="6" class="bx bx2"/><title>only when all tiers corroborate</title><text x="576" y="55" class="t" text-anchor="middle" dominant-baseline="middle">INSIDER</text><text x="576" y="71" class="ts" text-anchor="middle" dominant-baseline="middle">all three</text></g>
-  <g><rect x="500" y="134" width="152" height="44" rx="6" class="bx bx3"/><title>without an on-chain key, tier 3 is disabled and the label is capped here</title><text x="576" y="151" class="t" text-anchor="middle" dominant-baseline="middle">SHARP / WHALE</text><text x="576" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">capped</text></g>
-  <text x="8" y="210" class="tm" text-anchor="start">no on-chain key → tier 3 disabled → the label is capped, never guessed</text>
-  <text x="8" y="228" class="tm" text-anchor="start">one heuristic retired: it fired on the venue's proxy-wallet architecture</text>
-</svg>
-<!-- /DIAGRAM:dia-tiers -->
-      <figcaption>
-        <b>What you're looking at:</b> the corroboration gate. Three independent checks run on each
-        wallet, and the strongest label is only available when all three agree. If on-chain tracing
-        is unavailable the tool caps what it will conclude rather than guessing — the design choice
-        the whole engine turns on.
-        <span class="prov">Engine design · wallet identifiers never published</span>
-      </figcaption>
-    </figure>
-
-    <details>
-      <summary>The technical version</summary>
-      <div class="inner">
-        <p>
-          A three-tier scoring engine running daily scans over the top 200 markets by volume, tracing
-          on-chain funding up to <span class="num">3</span> hops, with <span class="num">51</span>
-          tests under pytest. A wallet is classified as an insider <strong>only when all three tiers
-          corroborate</strong>. Without an on-chain key the third tier is disabled and
-          classifications cap out one level lower, by design rather than by degradation.
-        </p>
-        <div class="finding">
-          <p class="finding__sign">Documented limits</p>
-          <p>
-            Wallets using mixers are opaque to the third tier and are downgraded rather than guessed
-            at. The venue's per-user history endpoints return empty for most wallets, so trading
-            history cannot be reconstructed. The backtest's definition of a winner is retrospective,
-            and therefore slightly optimistic.
-          </p>
-          <p>
-            One heuristic was <strong>retired outright</strong>: a dormant-wallet signal fired
-            falsely on the venue's safe-proxy architecture, where activity routes through a proxy
-            contract, so proxy-funded wallets are now excluded from it.
-          </p>
-        </div>
-        <p class="entry__stack">
-          Python, on-chain tracing via an RPC (remote procedure call) endpoint — a server that answers queries about the public ledger — venue REST APIs, SQLite, pytest; scikit-learn, UMAP, HDBSCAN
-          and Gaussian mixtures on the clustering side.
-        </p>
-      </div>
-    </details>
-  </div>
-</article>
-
-<article class="entry" id="fund-terminal">
-  <div class="wrap">
-    <p class="eyebrow">Financial systems</p>
-    <h2>Fund-accounting terminal</h2>
-    <p class="entry__meta">Active · July 2025 – present · the longest-running build here</p>
-
-    <p class="oneline">
-      A working fund-accounting system: four generations of command-line tool evolved into a web
+      it.</span>
+            </span>
+            <span class="work__stat">718<br>~800 GB</span>
+          </a>
+          <a class="work__row" id="wallet-intelligence" href="wallet-intelligence/index.html">
+            <span class="work__num">02</span>
+            <span class="work__main">
+              <h3>Wallet-intelligence and manipulation-detection engine</h3>
+              <span class="work__sum">A three-tier scoring engine that traces on-chain funding up to three hops and flags
+      coordinated clusters of accounts across daily scans of the 200 busiest markets.</span>
+            </span>
+            <span class="work__stat">3<br>3 hops</span>
+          </a>
+          <a class="work__row" id="fund-terminal" href="fund-terminal/index.html">
+            <span class="work__num">03</span>
+            <span class="work__main">
+              <h3>Fund-accounting terminal</h3>
+              <span class="work__sum">A working fund-accounting system: four generations of command-line tool evolved into a web
       terminal sharing one ledger, with <a href="../glossary/index.html#nav"><dfn>NAV</dfn></a>
-      unitisation, decimal-exact money handling and a benchmark overlay.
-    </p>
-    <div class="plain">
-      <p>
-        When several people put money into one pot, you need to track who owns what share as money
-        goes in and out at different times. The standard answer is
-        <a href="../glossary/index.html#nav"><dfn>unitization</dfn></a>: the fund's value is divided
-        into units, like shares in a fund. Put money in and you are issued units at today's price;
-        take money out and units are redeemed at today's price. Everything else exists to keep that
-        arithmetic exactly right.
-      </p>
-      <p>
-        Two decisions do most of the work. Money is never stored as an ordinary decimal number,
-        because those cannot represent amounts like 0.10 exactly and the error compounds silently
-        over thousands of operations; it is stored in a form that is exact and written to disk as
-        text so nothing is lost in translation. And the older command-line tool and the newer web
-        interface read and write the same files, so the two can never disagree about what the ledger
-        says.
-      </p>
-      <p>
-        No figures from the fund appear anywhere on this site — no value, no returns, no members,
-        no positions — and the repository is not linked.
-      </p>
-    </div>
-
-    <figure>
-<!-- DIAGRAM:dia-nav -->
-<svg viewBox="0 0 660 220" role="img" aria-labelledby="dt-dia-nav dd-dia-nav" xmlns="http://www.w3.org/2000/svg">
-  <title id="dt-dia-nav">Unitisation, and the ledger invariant</title>
-  <desc id="dd-dia-nav">Money paid in is converted to units at today's price per unit. The fund's value always equals its cash plus the market value of its positions.</desc>
-  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
-  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
-  <g><rect x="8" y="30" width="140" height="50" rx="6" class="bx bx3"/><title>a member deposits</title><text x="78" y="50" class="t" text-anchor="middle" dominant-baseline="middle">money in</text><text x="78" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">€ deposit</text></g>
-  <g><rect x="190" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>net asset value per unit, computed at the moment of the deposit</title><text x="265" y="50" class="t" text-anchor="middle" dominant-baseline="middle">price per unit</text><text x="265" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">value ÷ units</text></g>
-  <g><rect x="382" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>the member is issued units at that price</title><text x="457" y="50" class="t" text-anchor="middle" dominant-baseline="middle">units issued</text><text x="457" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">deposit ÷ price</text></g>
-  <path d="M150 55 L188 55" class="ar "/>
-  <path d="M342 55 L380 55" class="ar "/>
-  <rect x="8" y="112" width="524" height="50" rx="6" class="bx bx2"/>
-  <text x="270" y="132" class="t" text-anchor="middle">fund value  =  cash  +  Σ (position market value)</text>
-  <text x="270" y="150" class="ts" text-anchor="middle">checked on every write — the ledger cannot drift</text>
-  <text x="8" y="190" class="tm" text-anchor="start">money is held as exact decimals and written as text, so nothing rounds</text>
-  <text x="8" y="206" class="tm" text-anchor="start">withdrawals redeem units at the price of the day, by the same arithmetic</text>
-</svg>
-<!-- /DIAGRAM:dia-nav -->
-      <figcaption>
-        <b>What you're looking at:</b> what happens when someone puts money in. The deposit is
-        divided by the current price per unit to decide how many units they receive, and the
-        invariant along the bottom is checked on every write, so the ledger cannot drift.
-        <span class="prov">System design · no fund values, holdings or members are shown</span>
-      </figcaption>
-    </figure>
-
-    <details>
-      <summary>The technical version</summary>
-      <div class="inner">
-        <p>
-          A NAV-based accounting system with per-member units, ownership, return and full
-          transaction history across five screens. Four generations of command-line tool preceded
-          the web application.
-        </p>
-        <div class="finding">
-          <p class="finding__sign">Correctness is the story</p>
-          <p>
-            Money is handled as <code>Decimal</code> end to end and serialised to JSON <em>as
-            strings</em>, so no float drift can enter the ledger. The core invariant, that fund
-            value equals cash plus the market value of positions, is enforced rather than assumed.
-            Deposits and withdrawals issue or redeem units at the current NAV. The web terminal and
-            the command-line tool read and write the same state files, so the ledger cannot fork
-            between them.
-          </p>
+      unitisation, decimal-exact money handling and a benchmark overlay.</span>
+            </span>
+            <span class="work__stat">4<br>Jul 2025</span>
+          </a>
+          <a class="work__row" id="data-portal" href="data-portal/index.html">
+            <span class="work__num">04</span>
+            <span class="work__main">
+              <h3>Market-data portal</h3>
+              <span class="work__sum">Productised a seven-stream, ~800 GB archive into a documented, DOI-versioned dataset with a
+      costed delivery architecture — and engineered provenance enforcement into the build.</span>
+            </span>
+            <span class="work__stat">7<br>~800 GB</span>
+          </a>
         </div>
-        <p class="entry__stack">
-          Flask, pandas and yfinance on the backend; React, Vite and Recharts on the front end.
-        </p>
       </div>
-    </details>
-  </div>
-</article>
-
-<article class="entry" id="data-portal">
-  <div class="wrap">
-    <p class="eyebrow">Product engineering</p>
-    <h2>Market-data portal</h2>
-    <p class="entry__meta">Phase 1 complete, shipped July 2026 · not launched</p>
-
-    <p class="oneline">
-      Productised a seven-stream, ~800 GB archive into a documented, DOI-versioned dataset with a
-      costed delivery architecture — and engineered provenance enforcement into the build.
-    </p>
-    <div class="plain">
-      <p>
-        Running the collection pipeline produces a large archive of market history as a by-product.
-        This was the attempt to turn that into something someone else could use — a small website
-        documenting what the data contains, precisely enough that a buyer could write code against
-        it before paying for anything. It is presented here as an engineering case study; nothing is
-        offered for sale and there is no purchase path.
-      </p>
-      <p>
-        The engineering worth describing is about preventing my own mistakes. Every factual claim on
-        the site lives in a single file, so claims can be audited in one place instead of being
-        scattered through templates. A check runs at build time and stops the build outright if
-        internal working material reaches the public output — added after two such leaks got through
-        an earlier check that ran too late in the process. And the tool that produces sample data
-        raises an error on every path I had not finished, specifically so it cannot emit a
-        realistic-looking sample that is actually made up.
-      </p>
-      <p>
-        The other thing worth reporting is that I killed the product's original selling point.
-        It claimed coverage that competitors turned out to advertise too, so the claim came off the
-        site rather than staying up unverified.
-      </p>
     </div>
-
-    <details>
-      <summary>The technical version</summary>
-      <div class="inner">
-        <p>
-          A static, zero-JavaScript site documenting a seven-stream order-book archive of roughly
-          <span class="num">800 GB</span> as of August 2026, growing about <span class="num">12.8 GiB</span> a day. That total is self-reported from cloud storage rather than derived from a committed file, so it is dated; the curated tier beneath it (206 markets, 408,414 repricing events) is machine-verifiable and unchanged.
-        </p>
-        <div class="finding">
-          <p class="finding__sign">Provenance enforced in code</p>
-          <p>
-            Every factual claim on the site is confined to a single data file, so claims are
-            auditable in one place. Unknown dataset fields are flagged rather than invented. The
-            sample-extraction tool <strong>raises on every unimplemented path</strong>, so it cannot
-            emit a plausible-looking fabricated sample. A custom build gate <strong>fails the
-            build</strong> if internal material reaches public output — added after two real leaks
-            got past an earlier exclusion that worked at the rendering layer rather than the build
-            layer.
-          </p>
-          <p class="method">
-            <b>More on this</b> — the same discipline applied to agent work, on
-            <a href="../how-i-work/index.html">how I work</a>.
-          </p>
-        </div>
-        <div class="finding">
-          <p class="finding__sign">Killed differentiator</p>
-          <p>
-            The product's original headline claim, continuous coverage through resolution, was
-            researched, found indefensible once competitors were shown to advertise the same
-            coverage, and <strong>removed from the site</strong> rather than kept as an unverified
-            boast. It was replaced with a structurally verifiable claim instead. A separate draft
-            claim, that no third party redistributed the feed, was checked, found
-            <strong>false</strong>, and corrected.
-          </p>
-        </div>
-        <p class="entry__stack">
-          Astro with static output, self-hosted fonts, zero JavaScript by default; no backend,
-          database, authentication or payments by design. Custom Node build gate.
-        </p>
-      </div>
-    </details>
   </div>
-</article>
+</section>
 
-<article class="entry" id="wound-down">
+<article class="section" id="wound-down">
   <div class="wrap">
-    <p class="eyebrow">Shipped, then wound down</p>
-    <h2>Two products, shipped</h2>
-
-    <p class="oneline">
-      Two products I designed, built and shipped to real users, and the specific external
-      constraints that ended each one.
-    </p>
-    <div class="plain">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Shipped, then wound down</p></div>
+      <div class="rail__body">
+        <h2>Two products, shipped</h2>
+        <p class="oneline">Two products I designed, built and shipped to real users, and the specific external
+      constraints that ended each one.</p>
+<div class="plain">
       <p>
         <strong>ResolveIt</strong> was a five-person university course project; I built the web
         application on my own. It let someone in debt gather what they owed in one place and receive
@@ -588,21 +151,21 @@ $ poly-status --audit
         </div>
       </div>
     </details>
+      </div>
+    </div>
   </div>
 </article>
 
-<article class="entry" id="ai4mde">
+<article class="section" id="ai4mde">
   <div class="wrap">
-    <p class="eyebrow">Contribution</p>
-    <h2>AI4MDE Studio</h2>
-    <p class="entry__meta">May – June 2026 · 10 of 354 commits in a ~7-contributor codebase</p>
-
-    <p class="oneline">
-      Contributed to an open-source platform that generates working Django applications from UML
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Contribution</p><p class="entry__meta">May – June 2026 · 10 of 354 commits in a ~7-contributor codebase</p></div>
+      <div class="rail__body">
+        <h2>AI4MDE Studio</h2>
+        <p class="oneline">Contributed to an open-source platform that generates working Django applications from UML
       (unified modelling language) diagrams, inside a seven-contributor codebase with automated
-      quality gates.
-    </p>
-    <div class="plain">
+      quality gates.</p>
+<div class="plain">
       <p>
         The project turns diagrams describing a system's structure into working application code. My
         share is about three per cent of its history, so this is not my project and is not presented
@@ -611,26 +174,32 @@ $ poly-status --audit
         work actually looks like.
       </p>
     </div>
+      </div>
+    </div>
   </div>
 </article>
 
-<section class="section">
+<section class="section" id="write-ups">
   <div class="wrap">
-    <p class="eyebrow">Also</p>
-    <h2>Research write-ups</h2>
-    <p>
-      The MSc thesis on prediction-market price dynamics and the BSc thesis on activity recognition
-      are research rather than products, and are covered on the
-      <a href="../research/index.html">research page</a>.
-    </p>
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Also</p></div>
+      <div class="rail__body">
+        <h2>Research write-ups</h2>
+        <p>
+          The two theses are written up in full on the research pages: a point-process model of
+          when prediction markets move, and a six-architecture benchmark of self-supervised models
+          for activity recognition.
+        </p>
+        <p><a href="../research/index.html">Research&nbsp;→</a></p>
+      </div>
+    </div>
   </div>
 </section>
-
 </main>
 
 <footer class="foot">
   <div class="wrap">
-    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a> · <a href="../glossary/index.html">Glossary</a></p>
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a> · <a href="../glossary/index.html">Glossary</a></p>
   </div>
 </footer>
 
