@@ -72,9 +72,12 @@
   }
 
   /* ----------------------------------------------------------- hero field */
-  // A point process drifting across the hero: long quiet stretches, then a
-  // burst. The inter-arrival times come from the fitted population rates, so the
-  // rhythm on screen is the thesis's own finding rather than an invented one.
+  // A simulated repricing process for one prediction market, drawn as the chart
+  // it actually is: the model's intensity as a step line above a time axis, and
+  // every price move as a tick below it. Both levels and both dwell times are
+  // the population rates fitted in the MSc thesis, so the rhythm on screen is
+  // the thesis's own finding rather than an invented one. Nothing here is
+  // measured price data — only the timing model, simulated live.
   const LAMBDA_COLD = 0.041 / 60;   // moves per second, quiet state
   const LAMBDA_HOT = 1.141 / 60;    // moves per second, busy state
   const DWELL_COLD = 37 * 60;
@@ -85,22 +88,46 @@
     if (!canvas || !canvas.getContext) return;
 
     const ctx = canvas.getContext("2d");
-    let w = 0, h = 0, dots = [], hot = false, until = 0, next = 0, raf = 0, last = 0;
-    let cold = "#C2C2CE", warm = "#4F46E5";
-    const SPEED = 26;           // px per second of drift
-    // Simulated seconds per real second. This is the only free parameter: the
-    // gaps and the dwell times come from the fitted rates, and SCALE just sets
-    // how much of that timeline fits on screen. At 90 the quiet state put one
-    // mark every ~420px, which on a strip reads as an empty box rather than as
-    // a quiet market; at 520 a quiet stretch is legibly sparse and a burst is
-    // legibly a burst.
-    const SCALE = 520;
+    let w = 0, h = 0, raf = 0, last = 0;
+    let moves = [];               // {x, hot} — one per simulated price move
+    let runs = [];                // {x0, x1, hot} — stretches of the hidden state
+    let head = 0;                 // x of the simulation frontier
+    let hot = false, flipIn = 0;  // current state, and seconds until it switches
+    let cold = "#C2C2CE", warm = "#4F46E5", ink3 = "#63636F", rule = "#E3E3E9";
 
-    // Canvas cannot inherit a custom property, so the two inks are resolved
-    // from the page and re-resolved whenever the theme changes.
+    const SPEED = 26;           // px per second of drift
+    // Simulated seconds per real second, and the only free parameter here: the
+    // gaps and the dwell times come from the fitted rates, and SCALE only sets
+    // how much of that timeline fits on screen.
+    //
+    // It is set by what the busy state needs to be legible, because the dwell
+    // is exponential and therefore skewed — the mean is 8 min but the median is
+    // 5.5, so most bursts are shorter than average. At 520 a typical burst was
+    // ~15px on a 1000px strip, which reads as a glitch rather than as a burst.
+    // At 260 the mean burst is ~48px and the median ~33px, and about four
+    // quiet/busy cycles fit on screen. Widening the burst by shortening the
+    // dwell would have been the dishonest fix; this changes only the zoom.
+    const SCALE = 260;
+    const GUT = 46;             // left gutter, reserved for the axis labels
+    const PAD_T = 15;           // headroom above the busy level
+    const RUG = 14;             // band below the axis holding the move ticks
+    const FOOT = 18;            // footline, for the time-span label
+
+    // Rates in moves per minute, and the log axis they are drawn on. Busy is
+    // 28x quiet, so on a linear axis the quiet level sits 3.6% above the
+    // baseline — it merges with the axis rule and the whole chart reads as
+    // empty. A log axis separates the two levels and is the ordinary treatment
+    // for a rate spanning more than a decade; the footline declares it.
+    const RATE_QUIET = 0.041, RATE_BUSY = 1.141;
+    const AXIS_LO = 0.02, AXIS_HI = 2.0;
+
+    // Canvas cannot inherit a custom property, so the inks are resolved from
+    // the page and re-resolved whenever the theme changes.
     function inks() {
       const cs = getComputedStyle(document.documentElement);
       cold = cs.getPropertyValue("--dot").trim() || cold;
+      ink3 = cs.getPropertyValue("--ink-3").trim() || ink3;
+      rule = cs.getPropertyValue("--line-2").trim() || rule;
       warm = cs.getPropertyValue("--dot-hot").trim() || warm;
       if (warm.startsWith("var")) warm = cs.getPropertyValue("--c1").trim() || "#4F46E5";
     }
@@ -114,61 +141,149 @@
     }
 
     const exp = (rate) => -Math.log(1 - Math.random()) / rate;
+    const toPx = (secs) => (secs / SCALE) * SPEED;
+    const yBase = () => h - FOOT - RUG;                  // the time axis
+    const yOf = (rate) => {
+      const f = (Math.log(rate) - Math.log(AXIS_LO)) / (Math.log(AXIS_HI) - Math.log(AXIS_LO));
+      return yBase() - (yBase() - PAD_T) * f;
+    };
+    const level = (isHot) => yOf(isHot ? RATE_BUSY : RATE_QUIET);
+
+    // Extend the simulation until it runs past the right edge.
+    function extend() {
+      let guard = 4000;
+      while (head < w + 60 && guard-- > 0) {
+        let waited = 0;
+        for (;;) {
+          const gap = exp(hot ? LAMBDA_HOT : LAMBDA_COLD);
+          if (gap <= flipIn) { waited += gap; flipIn -= gap; break; }
+          // The hidden state switches before the next move. Advance to the
+          // switch and redraw the wait under the new rate — the process is
+          // memoryless, so the part already waited carries no information.
+          waited += flipIn;
+          const xs = head + toPx(waited);
+          hot = !hot;
+          flipIn = exp(1 / (hot ? DWELL_HOT : DWELL_COLD));
+          runs[runs.length - 1].x1 = xs;
+          runs.push({ x0: xs, x1: xs, hot });
+        }
+        head += toPx(waited);
+        runs[runs.length - 1].x1 = head;
+        moves.push({ x: head, hot });
+      }
+    }
 
     function seed() {
-      dots = [];
-      let t = 0, x = 0, isHot = false, flip = exp(1 / DWELL_COLD);
-      while (x < w) {
-        const gap = exp(isHot ? LAMBDA_HOT : LAMBDA_COLD);
-        t += gap; x += (gap / SCALE) * SPEED;
-        if (t > flip) { isHot = !isHot; flip = t + exp(1 / (isHot ? DWELL_HOT : DWELL_COLD)); }
-        dots.push({ x, hot: isHot });
+      hot = false;
+      flipIn = exp(1 / DWELL_COLD);
+      head = GUT - 30;
+      moves = [];
+      runs = [{ x0: head, x1: head, hot }];
+      extend();
+    }
+
+    function shift(dx) {
+      for (const m of moves) m.x -= dx;
+      for (const r of runs) { r.x0 -= dx; r.x1 -= dx; }
+      head -= dx;
+      while (moves.length && moves[0].x < GUT - 30) moves.shift();
+      while (runs.length > 1 && runs[0].x1 < GUT - 30) runs.shift();
+      extend();
+    }
+
+    function paint() {
+      const base = yBase();
+      ctx.clearRect(0, 0, w, h);
+      ctx.lineJoin = "round";
+
+      // everything that scrolls is clipped out of the label gutter
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(GUT, 0, Math.max(w - GUT, 0), h);
+      ctx.clip();
+
+      // Busy stretches, tinted so a burst reads before you look at anything.
+      // Filled from the busy level down to the axis, not from the top of the
+      // plot: filling to the top put shading above the step line, so a wide
+      // burst looked like a block the line was buried inside rather than an
+      // area the line is the top edge of.
+      const yHot = level(true);
+      ctx.fillStyle = warm;
+      ctx.globalAlpha = 0.11;
+      for (const r of runs) if (r.hot) ctx.fillRect(r.x0, yHot, r.x1 - r.x0, base - yHot);
+      ctx.globalAlpha = 1;
+
+      // the intensity itself: a step line between the two fitted rates
+      ctx.strokeStyle = warm;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      runs.forEach((r, i) => {
+        const y = level(r.hot);
+        if (i === 0) ctx.moveTo(r.x0, y); else ctx.lineTo(r.x0, y);
+        ctx.lineTo(r.x1, y);
+      });
+      ctx.stroke();
+
+      // one tick per price move, below the axis: the events the line explains
+      ctx.lineWidth = 1;
+      for (const m of moves) {
+        ctx.strokeStyle = m.hot ? warm : cold;
+        ctx.beginPath();
+        ctx.moveTo(m.x, base + 3);
+        ctx.lineTo(m.x, base + 3 + (m.hot ? 9 : 5));
+        ctx.stroke();
       }
-      hot = isHot; until = flip; next = t;
+      ctx.restore();
+
+      // the axis, and the labels that make the two levels readable
+      ctx.strokeStyle = rule;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(GUT, base + 0.5);
+      ctx.lineTo(w, base + 0.5);
+      ctx.stroke();
+
+      ctx.font = "12px 'Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace";
+      ctx.fillStyle = ink3;
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      ctx.fillText("1.14", GUT - 9, level(true));
+      ctx.fillText("0.04", GUT - 9, level(false));
+
+      // The hidden state, named as it switches — the thing the model infers.
+      // Read at the right edge, where the newest simulated time is, rather than
+      // at the frontier, which is up to 60px off-screen.
+      const now = runs.find((r) => r.x0 <= w && r.x1 >= w) || runs[runs.length - 1];
+      const state = now && now.hot ? "BUSY" : "QUIET";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = now && now.hot ? warm : ink3;
+      ctx.fillText(state, w, h - 5);
+
+      // The footline declares the units and the log scale. At 320px the full
+      // wording is wider than the canvas, so it degrades instead of colliding
+      // with the state label.
+      ctx.textAlign = "left";
+      ctx.fillStyle = ink3;
+      const hours = Math.max(1, Math.round((w - GUT) / SPEED * SCALE / 3600));
+      const room = w - GUT - ctx.measureText(state).width - 14;
+      const foot = [
+        `${hours} h simulated  ·  moves per minute, log scale`,
+        `${hours} h  ·  moves/min, log`,
+        `${hours} h`,
+      ].find((s) => ctx.measureText(s).width <= room);
+      if (foot) ctx.fillText(foot, GUT, h - 5);
     }
 
     function draw(now) {
       raf = requestAnimationFrame(draw);
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
-      const dx = dt * SPEED;
-      ctx.clearRect(0, 0, w, h);
-      const mid = h / 2;
-      for (const d of dots) {
-        d.x -= dx;
-        const a = Math.min(1, Math.max(0, 1 - Math.abs(d.x - w * 0.5) / (w * 0.62)));
-        ctx.globalAlpha = (d.hot ? 1 : 0.85) * a;
-        ctx.fillStyle = d.hot ? warm : cold;
-        ctx.beginPath();
-        ctx.arc(d.x, mid + (d.hot ? -13 : 13), d.hot ? 2.4 : 1.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-      while (dots.length && dots[0].x < -8) dots.shift();
-      const lastX = dots.length ? dots[dots.length - 1].x : 0;
-      if (lastX < w + 40) {
-        const t = next, gap = exp(hot ? LAMBDA_HOT : LAMBDA_COLD);
-        next = t + gap;
-        if (next > until) {
-          hot = !hot;
-          until = next + exp(1 / (hot ? DWELL_HOT : DWELL_COLD));
-        }
-        dots.push({ x: lastX + (gap / SCALE) * SPEED, hot });
-      }
+      shift(dt * SPEED);
+      paint();
     }
 
-    function still() {                       // one static frame, no motion
-      ctx.clearRect(0, 0, w, h);
-      const mid = h / 2;
-      for (const d of dots) {
-        ctx.globalAlpha = d.hot ? 1 : 0.8;
-        ctx.fillStyle = d.hot ? warm : cold;
-        ctx.beginPath();
-        ctx.arc(d.x, mid + (d.hot ? -13 : 13), d.hot ? 2.4 : 1.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
+    function still() { paint(); }            // one static frame, no motion
 
     function start() {
       if (raf || reduced.matches || document.hidden) return;
@@ -181,13 +296,23 @@
     // draws it: no canvas, no orphaned sentence describing an empty strip.
     const note = document.querySelector("[data-field-note]");
     if (note) {
-      note.textContent = "Above: each mark is one price move. The gaps between them are drawn " +
-        "from the quiet and busy arrival rates fitted in my MSc thesis — long still stretches, " +
-        "then a burst.";
+      note.textContent =
+        "Above: a simulation of when one prediction market reprices. The step line is how fast " +
+        "the price is moving — on a log scale, because the busy rate is 28 times the quiet one — " +
+        "and each tick below the axis is one move. Both levels are fitted in my MSc thesis: about " +
+        "one move every 25 minutes while the market is quiet, one every 53 seconds while it is " +
+        "busy. Which of the two it is in is never observed, only inferred.";
     }
 
     inks(); size(); seed();
     if (reduced.matches) still(); else start();
+
+    // Under reduced motion the strip is painted exactly once, which can land
+    // before the mono webfont has loaded and leave the axis labels in the
+    // fallback face for good. The animated path repaints anyway.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { if (reduced.matches) still(); });
+    }
 
     addEventListener("resize", () => { stop(); size(); seed(); reduced.matches ? still() : start(); },
       { passive: true });
