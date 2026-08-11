@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://juanmediavilla.com/</loc></url>
   <url><loc>https://juanmediavilla.com/projects/</loc></url>
+  <url><loc>https://juanmediavilla.com/projects/prediction-market/</loc></url>
+  <url><loc>https://juanmediavilla.com/projects/wallet-intelligence/</loc></url>
+  <url><loc>https://juanmediavilla.com/projects/fund-terminal/</loc></url>
+  <url><loc>https://juanmediavilla.com/projects/data-portal/</loc></url>
   <url><loc>https://juanmediavilla.com/research/</loc></url>
+  <url><loc>https://juanmediavilla.com/research/msc/</loc></url>
+  <url><loc>https://juanmediavilla.com/research/bsc/</loc></url>
   <url><loc>https://juanmediavilla.com/research/thesis/</loc></url>
   <url><loc>https://juanmediavilla.com/how-i-work/</loc></url>
   <url><loc>https://juanmediavilla.com/about/</loc></url>
   <url><loc>https://juanmediavilla.com/cv/</loc></url>
+  <url><loc>https://juanmediavilla.com/glossary/</loc></url>
 </urlset>

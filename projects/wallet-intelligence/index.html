@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wallet-intelligence and manipulation-detection engine — Juan Mediavilla</title>
+<meta name="description" content="A three-tier on-chain scoring engine that requires all three tiers to agree before it will call a wallet an insider, and caps its own conclusion when it cannot trace funding.">
+<link rel="canonical" href="https://juanmediavilla.com/projects/wallet-intelligence/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/projects/wallet-intelligence/">
+<meta property="og:title" content="Wallet-intelligence and manipulation-detection engine — Juan Mediavilla">
+<meta property="og:description" content="A three-tier on-chain scoring engine that requires all three tiers to agree before it will call a wallet an insider, and caps its own conclusion when it cannot trace funding.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html" aria-current="page">Projects</a>
+    <a href="../../research/index.html">Research</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Anomaly detection</p>
+    <h1>Wallet-intelligence and manipulation-detection engine</h1>
+    <p class="standfirst">A three-tier scoring engine that traces on-chain funding up to three hops and flags
+      coordinated clusters of accounts across daily scans of the 200 busiest markets.</p>
+    <p class="case__meta">Ships inside the research system · standalone predecessor archived May 2026</p>
+    <ul class="keyfacts">
+      <li><b>3</b><span>independent tiers, all must agree</span></li>
+      <li><b>3 hops</b><span>of on-chain funding traced</span></li>
+      <li><b>200</b><span>busiest markets scanned daily</span></li>
+      <li><b>51</b><span>tests under pytest</span></li>
+    </ul>
+  </div>
+</header>
+
+<article class="section">
+  <div class="wrap">
+<div class="rail">
+  <div class="rail__label"><p class="eyebrow">The build</p></div>
+  <div class="rail__body">
+<div class="plain">
+      <p>
+        These markets run on a public ledger, so every trade and every transfer of funds is visible.
+        That makes it possible to ask whether a cluster of accounts is really one person, or whether
+        an account that consistently buys just before news breaks was funded from the same source as
+        several others.
+      </p>
+      <p>
+        The design decision that matters is the threshold for saying so. An accusation of insider
+        trading is serious and the evidence is circumstantial, so the tool requires three separate
+        lines of evidence to agree before it will use that label. If it cannot trace funding on the
+        ledger, it does not lower the bar — it caps what it is willing to conclude and says so.
+        Several known blind spots are documented rather than hidden, and one detection rule was
+        removed entirely after I found it was firing on an ordinary feature of how the venue holds
+        user funds.
+      </p>
+    </div>
+
+    <figure>
+<!-- DIAGRAM:dia-tiers -->
+<svg viewBox="0 0 660 250" role="img" aria-labelledby="dt-dia-tiers dd-dia-tiers" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-tiers">The three-tier wallet engine</title>
+  <desc id="dd-dia-tiers">Three independent checks run on each wallet. Only when all three agree is a wallet labelled an insider; if on-chain tracing is unavailable the classification is capped rather than guessed.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="18" width="220" height="44" rx="6" class="bx bx1"/><title>tier 1 · trading pattern: timing vs news</title><text x="118" y="35" class="t" text-anchor="middle" dominant-baseline="middle">tier 1 · trading pattern</text><text x="118" y="51" class="ts" text-anchor="middle" dominant-baseline="middle">timing vs news</text></g>
+  <g><rect x="8" y="76" width="220" height="44" rx="6" class="bx bx1"/><title>tier 2 · profit history: early on winners</title><text x="118" y="93" class="t" text-anchor="middle" dominant-baseline="middle">tier 2 · profit history</text><text x="118" y="109" class="ts" text-anchor="middle" dominant-baseline="middle">early on winners</text></g>
+  <g><rect x="8" y="134" width="220" height="44" rx="6" class="bx bx1"/><title>tier 3 · on-chain funding: traced up to 3 hops</title><text x="118" y="151" class="t" text-anchor="middle" dominant-baseline="middle">tier 3 · on-chain funding</text><text x="118" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">traced up to 3 hops</text></g>
+  <g><rect x="280" y="76" width="150" height="60" rx="6" class="bx bx2"/><title>corroboration gate — an insider label needs every tier</title><text x="355" y="106" class="t" text-anchor="middle" dominant-baseline="middle">all three agree?</text></g>
+  <path d="M230 40 L278 106" class="ar ar1"/>
+  <path d="M230 98 L278 106" class="ar ar1"/>
+  <path d="M230 156 L278 106" class="ar ar1"/>
+  <path d="M432 92 L500 60" class="ar ar2"/>
+  <path d="M432 120 L500 156" class="ar "/>
+  <g><rect x="500" y="38" width="152" height="44" rx="6" class="bx bx2"/><title>only when all tiers corroborate</title><text x="576" y="55" class="t" text-anchor="middle" dominant-baseline="middle">INSIDER</text><text x="576" y="71" class="ts" text-anchor="middle" dominant-baseline="middle">all three</text></g>
+  <g><rect x="500" y="134" width="152" height="44" rx="6" class="bx bx3"/><title>without an on-chain key, tier 3 is disabled and the label is capped here</title><text x="576" y="151" class="t" text-anchor="middle" dominant-baseline="middle">SHARP / WHALE</text><text x="576" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">capped</text></g>
+  <text x="8" y="210" class="tm" text-anchor="start">no on-chain key → tier 3 disabled → the label is capped, never guessed</text>
+  <text x="8" y="228" class="tm" text-anchor="start">one heuristic retired: it fired on the venue's proxy-wallet architecture</text>
+</svg>
+<!-- /DIAGRAM:dia-tiers -->
+      <figcaption>
+        <b>What you're looking at:</b> the corroboration gate. Three independent checks run on each
+        wallet, and the strongest label is only available when all three agree. If on-chain tracing
+        is unavailable the tool caps what it will conclude rather than guessing — the design choice
+        the whole engine turns on.
+        <span class="prov">Engine design · wallet identifiers never published</span>
+      </figcaption>
+    </figure>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <p>
+          A three-tier scoring engine running daily scans over the top 200 markets by volume, tracing
+          on-chain funding up to <span class="num">3</span> hops, with <span class="num">51</span>
+          tests under pytest. A wallet is classified as an insider <strong>only when all three tiers
+          corroborate</strong>. Without an on-chain key the third tier is disabled and
+          classifications cap out one level lower, by design rather than by degradation.
+        </p>
+        <div class="finding">
+          <p class="finding__sign">Documented limits</p>
+          <p>
+            Wallets using mixers are opaque to the third tier and are downgraded rather than guessed
+            at. The venue's per-user history endpoints return empty for most wallets, so trading
+            history cannot be reconstructed. The backtest's definition of a winner is retrospective,
+            and therefore slightly optimistic.
+          </p>
+          <p>
+            One heuristic was <strong>retired outright</strong>: a dormant-wallet signal fired
+            falsely on the venue's safe-proxy architecture, where activity routes through a proxy
+            contract, so proxy-funded wallets are now excluded from it.
+          </p>
+        </div>
+        <p class="entry__stack">
+          Python, on-chain tracing via an RPC (remote procedure call) endpoint — a server that answers queries about the public ledger — venue REST APIs, SQLite, pytest; scikit-learn, UMAP, HDBSCAN
+          and Gaussian mixtures on the clustering side.
+        </p>
+      </div>
+    </details>
+  </div>
+</div>
+  </div>
+</article>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p><span>Previous</span><a href="../../projects/prediction-market/index.html">← Prediction-market research platform</a></p><p><span>Next</span><a href="../../projects/fund-terminal/index.html">Fund-accounting terminal →</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

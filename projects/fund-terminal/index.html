@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fund-accounting terminal — Juan Mediavilla</title>
+<meta name="description" content="A working fund-accounting system: four generations of command-line tool evolved into a web terminal sharing one ledger, with NAV unitisation and decimal-exact money handling.">
+<link rel="canonical" href="https://juanmediavilla.com/projects/fund-terminal/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/projects/fund-terminal/">
+<meta property="og:title" content="Fund-accounting terminal — Juan Mediavilla">
+<meta property="og:description" content="A working fund-accounting system: four generations of command-line tool evolved into a web terminal sharing one ledger, with NAV unitisation and decimal-exact money handling.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html" aria-current="page">Projects</a>
+    <a href="../../research/index.html">Research</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Financial systems</p>
+    <h1>Fund-accounting terminal</h1>
+    <p class="standfirst">A working fund-accounting system: four generations of command-line tool evolved into a web
+      terminal sharing one ledger, with <a href="../../glossary/index.html#nav"><dfn>NAV</dfn></a>
+      unitisation, decimal-exact money handling and a benchmark overlay.</p>
+    <p class="case__meta">Active · July 2025 – present · the longest-running build here</p>
+    <ul class="keyfacts">
+      <li><b>4</b><span>generations, one shared ledger</span></li>
+      <li><b>Jul 2025</b><span>running since</span></li>
+      <li><b>exact</b><span>decimal money, written as text</span></li>
+      <li><b>0</b><span>fund figures published anywhere</span></li>
+    </ul>
+  </div>
+</header>
+
+<article class="section">
+  <div class="wrap">
+<div class="rail">
+  <div class="rail__label"><p class="eyebrow">The build</p></div>
+  <div class="rail__body">
+<div class="plain">
+      <p>
+        When several people put money into one pot, you need to track who owns what share as money
+        goes in and out at different times. The standard answer is
+        <a href="../../glossary/index.html#nav"><dfn>unitization</dfn></a>: the fund's value is divided
+        into units, like shares in a fund. Put money in and you are issued units at today's price;
+        take money out and units are redeemed at today's price. Everything else exists to keep that
+        arithmetic exactly right.
+      </p>
+      <p>
+        Two decisions do most of the work. Money is never stored as an ordinary decimal number,
+        because those cannot represent amounts like 0.10 exactly and the error compounds silently
+        over thousands of operations; it is stored in a form that is exact and written to disk as
+        text so nothing is lost in translation. And the older command-line tool and the newer web
+        interface read and write the same files, so the two can never disagree about what the ledger
+        says.
+      </p>
+      <p>
+        No figures from the fund appear anywhere on this site — no value, no returns, no members,
+        no positions — and the repository is not linked.
+      </p>
+    </div>
+
+    <figure>
+<!-- DIAGRAM:dia-nav -->
+<svg viewBox="0 0 660 220" role="img" aria-labelledby="dt-dia-nav dd-dia-nav" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-nav">Unitisation, and the ledger invariant</title>
+  <desc id="dd-dia-nav">Money paid in is converted to units at today's price per unit. The fund's value always equals its cash plus the market value of its positions.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="30" width="140" height="50" rx="6" class="bx bx3"/><title>a member deposits</title><text x="78" y="50" class="t" text-anchor="middle" dominant-baseline="middle">money in</text><text x="78" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">€ deposit</text></g>
+  <g><rect x="190" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>net asset value per unit, computed at the moment of the deposit</title><text x="265" y="50" class="t" text-anchor="middle" dominant-baseline="middle">price per unit</text><text x="265" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">value ÷ units</text></g>
+  <g><rect x="382" y="30" width="150" height="50" rx="6" class="bx bx1"/><title>the member is issued units at that price</title><text x="457" y="50" class="t" text-anchor="middle" dominant-baseline="middle">units issued</text><text x="457" y="66" class="ts" text-anchor="middle" dominant-baseline="middle">deposit ÷ price</text></g>
+  <path d="M150 55 L188 55" class="ar "/>
+  <path d="M342 55 L380 55" class="ar "/>
+  <rect x="8" y="112" width="524" height="50" rx="6" class="bx bx2"/>
+  <text x="270" y="132" class="t" text-anchor="middle">fund value  =  cash  +  Σ (position market value)</text>
+  <text x="270" y="150" class="ts" text-anchor="middle">checked on every write — the ledger cannot drift</text>
+  <text x="8" y="190" class="tm" text-anchor="start">money is held as exact decimals and written as text, so nothing rounds</text>
+  <text x="8" y="206" class="tm" text-anchor="start">withdrawals redeem units at the price of the day, by the same arithmetic</text>
+</svg>
+<!-- /DIAGRAM:dia-nav -->
+      <figcaption>
+        <b>What you're looking at:</b> what happens when someone puts money in. The deposit is
+        divided by the current price per unit to decide how many units they receive, and the
+        invariant along the bottom is checked on every write, so the ledger cannot drift.
+        <span class="prov">System design · no fund values, holdings or members are shown</span>
+      </figcaption>
+    </figure>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <p>
+          A NAV-based accounting system with per-member units, ownership, return and full
+          transaction history across five screens. Four generations of command-line tool preceded
+          the web application.
+        </p>
+        <div class="finding">
+          <p class="finding__sign">Correctness is the story</p>
+          <p>
+            Money is handled as <code>Decimal</code> end to end and serialised to JSON <em>as
+            strings</em>, so no float drift can enter the ledger. The core invariant, that fund
+            value equals cash plus the market value of positions, is enforced rather than assumed.
+            Deposits and withdrawals issue or redeem units at the current NAV. The web terminal and
+            the command-line tool read and write the same state files, so the ledger cannot fork
+            between them.
+          </p>
+        </div>
+        <p class="entry__stack">
+          Flask, pandas and yfinance on the backend; React, Vite and Recharts on the front end.
+        </p>
+      </div>
+    </details>
+  </div>
+</div>
+  </div>
+</article>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p><span>Previous</span><a href="../../projects/wallet-intelligence/index.html">← Wallet-intelligence engine</a></p><p><span>Next</span><a href="../../projects/data-portal/index.html">Market-data portal →</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

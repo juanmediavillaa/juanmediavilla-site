@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market-data portal — Juan Mediavilla</title>
+<meta name="description" content="A seven-stream market-data archive turned into a documented, DOI-versioned dataset, with provenance enforced by the build — including killing its own original selling point.">
+<link rel="canonical" href="https://juanmediavilla.com/projects/data-portal/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/projects/data-portal/">
+<meta property="og:title" content="Market-data portal — Juan Mediavilla">
+<meta property="og:description" content="A seven-stream market-data archive turned into a documented, DOI-versioned dataset, with provenance enforced by the build — including killing its own original selling point.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html" aria-current="page">Projects</a>
+    <a href="../../research/index.html">Research</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Product engineering</p>
+    <h1>Market-data portal</h1>
+    <p class="standfirst">Productised a seven-stream, ~800 GB archive into a documented, DOI-versioned dataset with a
+      costed delivery architecture — and engineered provenance enforcement into the build.</p>
+    <p class="case__meta">Phase 1 complete, shipped July 2026 · not launched</p>
+    <ul class="keyfacts">
+      <li><b>7</b><span>documented data streams</span></li>
+      <li><b>~800 GB</b><span>archive behind it, Aug 2026</span></li>
+      <li><b>12.8 GiB</b><span>recorded peak intake per day</span></li>
+      <li><b>Phase 1</b><span>complete Jul 2026, not launched</span></li>
+    </ul>
+  </div>
+</header>
+
+<article class="section">
+  <div class="wrap">
+<div class="rail">
+  <div class="rail__label"><p class="eyebrow">The build</p></div>
+  <div class="rail__body">
+<div class="plain">
+      <p>
+        Running the collection pipeline produces a large archive of market history as a by-product.
+        This was the attempt to turn that into something someone else could use — a small website
+        documenting what the data contains, precisely enough that a buyer could write code against
+        it before paying for anything. It is presented here as an engineering case study; nothing is
+        offered for sale and there is no purchase path.
+      </p>
+      <p>
+        The engineering worth describing is about preventing my own mistakes. Every factual claim on
+        the site lives in a single file, so claims can be audited in one place instead of being
+        scattered through templates. A check runs at build time and stops the build outright if
+        internal working material reaches the public output — added after two such leaks got through
+        an earlier check that ran too late in the process. And the tool that produces sample data
+        raises an error on every path I had not finished, specifically so it cannot emit a
+        realistic-looking sample that is actually made up.
+      </p>
+      <p>
+        The other thing worth reporting is that I killed the product's original selling point.
+        It claimed coverage that competitors turned out to advertise too, so the claim came off the
+        site rather than staying up unverified.
+      </p>
+    </div>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <p>
+          A static, zero-JavaScript site documenting a seven-stream order-book archive of roughly
+          <span class="num">800 GB</span> as of August 2026, growing about <span class="num">12.8 GiB</span> a day. That total is self-reported from cloud storage rather than derived from a committed file, so it is dated; the curated tier beneath it (206 markets, 408,414 repricing events) is machine-verifiable and unchanged.
+        </p>
+        <div class="finding">
+          <p class="finding__sign">Provenance enforced in code</p>
+          <p>
+            Every factual claim on the site is confined to a single data file, so claims are
+            auditable in one place. Unknown dataset fields are flagged rather than invented. The
+            sample-extraction tool <strong>raises on every unimplemented path</strong>, so it cannot
+            emit a plausible-looking fabricated sample. A custom build gate <strong>fails the
+            build</strong> if internal material reaches public output — added after two real leaks
+            got past an earlier exclusion that worked at the rendering layer rather than the build
+            layer.
+          </p>
+          <p class="method">
+            <b>More on this</b> — the same discipline applied to agent work, on
+            <a href="../../how-i-work/index.html">how I work</a>.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">Killed differentiator</p>
+          <p>
+            The product's original headline claim, continuous coverage through resolution, was
+            researched, found indefensible once competitors were shown to advertise the same
+            coverage, and <strong>removed from the site</strong> rather than kept as an unverified
+            boast. It was replaced with a structurally verifiable claim instead. A separate draft
+            claim, that no third party redistributed the feed, was checked, found
+            <strong>false</strong>, and corrected.
+          </p>
+        </div>
+        <p class="entry__stack">
+          Astro with static output, self-hosted fonts, zero JavaScript by default; no backend,
+          database, authentication or payments by design. Custom Node build gate.
+        </p>
+      </div>
+    </details>
+  </div>
+</div>
+  </div>
+</article>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p><span>Previous</span><a href="../../projects/fund-terminal/index.html">← Fund-accounting terminal</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

@@ -3,11 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Juan Mediavilla — ML engineer</title>
-<meta name="description" content="MSc Machine Learning at UCL. I build research systems end to end: a 24/7 market data platform, a Bayesian sampler written from scratch, an on-chain wallet-intelligence engine, and a six-architecture deep-learning benchmark.">
+<title>Juan Mediavilla — machine-learning engineer</title>
+<meta name="description" content="MSc Machine Learning at UCL. I build research systems end to end: a 24/7 market-data platform, a Bayesian sampler written from scratch, an on-chain wallet-intelligence engine, and a six-architecture deep-learning benchmark.">
+<link rel="canonical" href="https://juanmediavilla.com/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://juanmediavilla.com/">
+<meta property="og:title" content="Juan Mediavilla — machine-learning engineer">
+<meta property="og:description" content="I build research systems end to end — the data platform, the models, and the evaluation that decides whether they are worth anything.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Juan Mediavilla — machine-learning engineer">
+<meta name="twitter:description" content="I build research systems end to end — the data platform, the models, and the evaluation that decides whether they are worth anything.">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
 <script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:,">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -26,99 +38,148 @@
 <main id="main">
 
 <header class="hero">
-  <canvas class="hero__canvas" aria-hidden="true"></canvas>
   <div class="wrap">
-    <p class="eyebrow">MSc Machine Learning · University College London · London</p>
-    <h1>Juan Mediavilla</h1>
+    <p class="eyebrow">Juan Mediavilla · MSc Machine Learning, UCL · London</p>
+    <h1>I build research systems end to end.</h1>
     <p class="standfirst">
-      I build research systems end to end — the data platform, the models, and the evaluation that
-      decides whether they are worth anything.
+      The data platform, the models, and the evaluation that decides whether they are worth
+      anything. That last part is the one I would want to be judged on.
     </p>
-    <ul class="stats">
-      <li><span class="stat__v">718</span><span class="stat__l">commits on the research platform</span></li>
-      <li><span class="stat__v">188,856</span><span class="stat__l">trades in the audited panel</span></li>
-      <li><span class="stat__v">34/34</span><span class="stat__l">markets improved by pooling</span></li>
-      <li><span class="stat__v">6</span><span class="stat__l">architectures benchmarked</span></li>
-    </ul>
+  </div>
+  <div class="wrap">
+    <div class="field">
+      <canvas class="field__canvas" aria-hidden="true"></canvas>
+    </div>
+    <p class="field__note" data-field-note></p>
   </div>
 </header>
 
-<section class="section reveal">
+<section class="section reveal" aria-label="Key figures">
   <div class="wrap">
-    <p class="eyebrow">What I do</p>
-    <h2>Build the system, then find out whether it works</h2>
-    <p class="lede">
-      A 24/7 market-data platform feeding a live inference and execution pipeline. A Bayesian
-      sampler written from scratch because the standard tools did not apply. An on-chain
-      wallet-intelligence engine. A fund-accounting system. A six-architecture deep-learning
-      benchmark. In each case I built the thing, and then built the test that could have shown it
-      was worthless.
-    </p>
-    <p>
-      That second half is the part I would want to be judged on. It is also why I can tell you
-      which of these results I trust, and how much.
-      <a href="how-i-work/index.html">How I work&nbsp;→</a>
-    </p>
+    <ul class="stats">
+      <li><span class="stat__v">~800 GB</span><span class="stat__l">of market data collected and archived, as of Aug 2026</span></li>
+      <li><span class="stat__v">188,856</span><span class="stat__l">trades in the licence-clean audited panel</span></li>
+      <li><span class="stat__v">34/34</span><span class="stat__l">markets improved by pooling across markets</span></li>
+      <li><span class="stat__v">718</span><span class="stat__l">commits on the research platform, built solo</span></li>
+    </ul>
   </div>
 </section>
 
-<section class="section band reveal">
+<section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Selected work</p>
-    <h2>Four projects</h2>
+    <div class="rail">
+      <div class="rail__label">
+        <p class="eyebrow">Selected work</p>
+        <p class="meta">Four builds.<br>Each one has its own page,<br>with the results.</p>
+      </div>
+      <div class="rail__body">
+        <h2>Built end to end, then measured</h2>
+        <div class="work">
 
-    <div class="cards">
+          <a class="work__row" id="prediction-market-system" href="projects/prediction-market/index.html">
+            <span class="work__num">01</span>
+            <span class="work__main">
+              <h3>Prediction-market research platform</h3>
+              <span class="work__sum">
+                Six scheduled collectors and real-time ingest feeding an ~800 GB archive, with live
+                inference, order execution, and a backtester that simulates realistic fills.
+              </span>
+            </span>
+            <span class="work__stat">718 commits<br>400-market panel</span>
+          </a>
 
-      <a class="card domain domain--markets" href="projects/index.html#prediction-market-system">
-        <h3>Prediction-market research platform</h3>
-        <p>
-          Six scheduled collectors, real-time ingest, a ~800 GB archive, live inference and order
-          execution, and a walk-forward backtester with realistic fill simulation.
-        </p>
-        <p class="card__stat">718 commits · 400-market audited panel</p>
-      </a>
+          <a class="work__row" id="msc-thesis" href="research/msc/index.html">
+            <span class="work__num">02</span>
+            <span class="work__main">
+              <h3>Latent market dynamics — MSc thesis</h3>
+              <span class="work__sum">
+                A model of <em>when</em> prediction markets move rather than where they go, fitted
+                with a Metropolis-within-Gibbs sampler I wrote from scratch.
+              </span>
+            </span>
+            <span class="work__stat">custom MCMC<br>34/34 markets</span>
+          </a>
 
-      <a class="card domain domain--research" href="research/index.html#msc">
-        <h3>MSc thesis — latent market dynamics</h3>
-        <p>
-          A hierarchical point-process model of when prediction markets move, fitted with a
-          Metropolis-within-Gibbs sampler written from scratch.
-        </p>
-        <p class="card__stat">Custom MCMC · pooling improved 34/34 markets</p>
-      </a>
+          <a class="work__row" id="data-portal" href="projects/data-portal/index.html">
+            <span class="work__num">03</span>
+            <span class="work__main">
+              <h3>Market-data portal</h3>
+              <span class="work__sum">
+                A seven-stream archive turned into a documented, versioned data product, with
+                provenance enforced by the build rather than by a promise.
+              </span>
+            </span>
+            <span class="work__stat">7 streams<br>12.8 GiB/day</span>
+          </a>
 
-      <a class="card domain domain--systems" href="projects/index.html#data-portal">
-        <h3>Market-data portal</h3>
-        <p>
-          Productised a seven-stream archive into documented, DOI-versioned data, with provenance
-          enforced by the build itself.
-        </p>
-        <p class="card__stat">7 streams · ~800 GB archived · 12.8 GiB/day</p>
-      </a>
+          <a class="work__row" id="bsc-thesis" href="research/bsc/index.html">
+            <span class="work__num">04</span>
+            <span class="work__main">
+              <h3>Activity recognition — BSc thesis</h3>
+              <span class="work__sum">
+                A full self-supervised pipeline benchmarking six architectures on wearable-sensor
+                data, with every model tested on people it had never seen.
+              </span>
+            </span>
+            <span class="work__stat">6 architectures<br>23-min baseline held</span>
+          </a>
 
-      <a class="card domain domain--research" href="research/index.html#bsc">
-        <h3>BSc thesis — activity recognition</h3>
-        <p>
-          A full self-supervised learning pipeline benchmarking six architectures on wearable-sensor
-          data, tested on people the models had never seen.
-        </p>
-        <p class="card__stat">6 architectures · 23-min model matched a 7-hour one</p>
-      </a>
-
+        </div>
+        <p class="work__go"><a href="projects/index.html">All projects&nbsp;→</a></p>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="section reveal">
   <div class="wrap">
-    <p class="eyebrow">Contact</p>
-    <h2>Get in touch</h2>
-    <ul class="contact">
-      <li><a href="mailto:&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
-      <li><a href="https://github.com/juanmediavillaa">GitHub</a></li>
-      <li><a href="https://www.linkedin.com/in/juanmediavilla">LinkedIn</a></li>
-      <li><a href="cv/index.html">CV</a></li>
-    </ul>
+    <div class="rail">
+      <div class="rail__label">
+        <p class="eyebrow">Approach</p>
+      </div>
+      <div class="rail__body">
+        <h2>Build the system, then find out whether it works</h2>
+        <p class="lede">
+          A 24/7 market-data platform feeding a live inference and execution pipeline. A Bayesian
+          sampler written from scratch because the standard tools did not apply. An on-chain
+          wallet-intelligence engine. A fund-accounting system. A six-architecture deep-learning
+          benchmark.
+        </p>
+        <p>
+          In each case I built the thing, and then built the test that could have shown it was
+          worthless. That second half is the part I would want to be judged on. It is also why I can
+          tell you which of these results I trust, and how much.
+        </p>
+        <p class="pull">
+          A result that goes against you is a credential. It is the evidence that the rest of the
+          numbers were not chosen after the fact.
+        </p>
+        <p><a href="how-i-work/index.html">How I work, with the artifacts&nbsp;→</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label">
+        <p class="eyebrow">Contact</p>
+      </div>
+      <div class="rail__body">
+        <h2>Available from September 2026, in London</h2>
+        <p>
+          Looking for machine-learning engineer, applied scientist, or quant research and
+          development work at a place where the results have to survive someone checking them.
+        </p>
+        <ul class="contact">
+          <li><a href="mailto:&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#106;&#109;&#101;&#100;&#105;&#97;&#118;&#105;&#108;&#108;&#97;&#115;&#97;&#101;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
+          <li><a href="https://github.com/juanmediavillaa">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/juanmediavilla">LinkedIn</a></li>
+          <li><a href="cv/index.html">CV</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -130,6 +191,7 @@
   </div>
 </footer>
 
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Juan Mediavilla","url":"https://juanmediavilla.com/","jobTitle":"Machine-learning engineer","address":{"@type":"PostalAddress","addressLocality":"London","addressCountry":"GB"},"alumniOf":[{"@type":"CollegeOrUniversity","name":"University College London"},{"@type":"CollegeOrUniversity","name":"Leiden University"}],"knowsAbout":["Machine learning","Point processes","Bayesian inference","Data engineering","Prediction markets"],"sameAs":["https://github.com/juanmediavillaa","https://www.linkedin.com/in/juanmediavilla"]}</script>
 <script src="app.js"></script>
 </body>
 </html>

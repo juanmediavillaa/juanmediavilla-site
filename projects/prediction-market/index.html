@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prediction-market research and trading system — Juan Mediavilla</title>
+<meta name="description" content="A 24/7 prediction-market data platform with live inference, order execution and a walk-forward backtester — and the pre-registered test that found no edge.">
+<link rel="canonical" href="https://juanmediavilla.com/projects/prediction-market/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/projects/prediction-market/">
+<meta property="og:title" content="Prediction-market research and trading system — Juan Mediavilla">
+<meta property="og:description" content="A 24/7 prediction-market data platform with live inference, order execution and a walk-forward backtester — and the pre-registered test that found no edge.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html" aria-current="page">Projects</a>
+    <a href="../../research/index.html">Research</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Research system</p>
+    <h1>Prediction-market research and trading system</h1>
+    <p class="standfirst">A 24/7 platform that watches <a href="../../glossary/index.html#prediction-market"><dfn>prediction
+      markets</dfn></a> continuously, and the machine-learning and evaluation stack built on top of
+      it.</p>
+    <p class="case__meta">Self-built, end to end · May 2026 – ongoing · 718 commits as of 9 Aug 2026</p>
+    <ul class="keyfacts">
+      <li><b>718</b><span>commits, built solo</span></li>
+      <li><b>~800 GB</b><span>archived, as of Aug 2026</span></li>
+      <li><b>400</b><span>resolved markets in the audited panel</span></li>
+      <li><b>188,856</b><span>trades in that panel</span></li>
+    </ul>
+  </div>
+</header>
+
+<article class="section">
+  <div class="wrap">
+<div class="rail">
+  <div class="rail__label"><p class="eyebrow">The build</p></div>
+  <div class="rail__body">
+<h2>What I built</h2>
+    <div class="plain">
+      <p>
+        Six scheduled collectors running every 15 to 60 minutes, plus real-time ingest over
+        WebSockets, feeding an archive of <strong>~800 GB as of August 2026</strong> — that is the self-reported total on cloud storage; the server itself holds a 250 GB working set that fills and is periodically offloaded, which is its own small operational discipline. Every gap in the feed is logged and masked
+        rather than interpolated, and continuity is accounted for rather than assumed — which is
+        what makes the absence of activity evidence instead of missing data. Out of that corpus I
+        built a licence-clean, hash-verified panel of <strong>400 resolved markets and 188,856
+        trades</strong>.
+      </p>
+      <p>
+        On top sits the machine learning: gradient-boosted models with
+        <a href="../../glossary/index.html#isotonic-calibration"><dfn>isotonic calibration</dfn></a>
+        running <strong>live inference and order execution</strong>, a
+        <a href="../../glossary/index.html#walk-forward"><dfn>walk-forward</dfn></a> backtester with
+        realistic fill simulation, and a behavioural clustering pipeline — UMAP, HDBSCAN and
+        Gaussian mixtures — over 3,413 wallets.
+      </p>
+    </div>
+
+    <div class="term">
+      <div class="term__bar"><span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span> collector status — hostnames and paths removed</div>
+      <pre role="region" tabindex="0" aria-label="Terminal output">$ systemctl --user list-timers 'poly-*'
+UNIT                      ACTIVATES              EVERY
+poly-books.timer          poly-books.service     15min
+poly-trades.timer         poly-trades.service    15min
+poly-markets.timer        poly-markets.service   30min
+poly-resolved.timer       poly-resolved.service  60min
+poly-wallets.timer        poly-wallets.service   60min
+poly-crypto5m.timer       poly-crypto5m.service  15min
+<span class="dim">6 timers listed. 1 dormant unit not shown.</span>
+
+$ poly-status --audit
+<span class="ok">gaps  19 &gt;1s over an 18-day window, 74.6 min total (~4.1 min/day)</span>
+<span class="ok">replay median touch-match 0.9992 across 19 markets</span>
+<span class="dim">structural audit: 219 markets, 0 defects</span></pre>
+    </div>
+
+    <figure>
+<!-- DIAGRAM:dia-pipeline -->
+<svg viewBox="0 0 660 240" role="img" aria-labelledby="dt-dia-pipeline dd-dia-pipeline" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-pipeline">The collection pipeline</title>
+  <desc id="dd-dia-pipeline">Six scheduled collectors write to storage on a 15 to 60 minute cadence. A gap audit checks continuity, and the audited output is a panel of 400 resolved markets and 188,856 trades.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="18" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 1, dispatched every 15–60 minutes</title><text x="67" y="28" class="t" text-anchor="middle" dominant-baseline="middle">collector 1</text></g>
+  <g><rect x="8" y="42" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 2, dispatched every 15–60 minutes</title><text x="67" y="52" class="t" text-anchor="middle" dominant-baseline="middle">collector 2</text></g>
+  <g><rect x="8" y="66" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 3, dispatched every 15–60 minutes</title><text x="67" y="76" class="t" text-anchor="middle" dominant-baseline="middle">collector 3</text></g>
+  <g><rect x="8" y="90" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 4, dispatched every 15–60 minutes</title><text x="67" y="100" class="t" text-anchor="middle" dominant-baseline="middle">collector 4</text></g>
+  <g><rect x="8" y="114" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 5, dispatched every 15–60 minutes</title><text x="67" y="124" class="t" text-anchor="middle" dominant-baseline="middle">collector 5</text></g>
+  <g><rect x="8" y="138" width="118" height="20" rx="6" class="bx bx1"/><title>scheduled collector 6, dispatched every 15–60 minutes</title><text x="67" y="148" class="t" text-anchor="middle" dominant-baseline="middle">collector 6</text></g>
+  <text x="8" y="172" class="ts" text-anchor="start">6 scheduled + 1 dormant</text>
+  <g><rect x="160" y="60" width="116" height="56" rx="6" class="bx bx1"/><title>each collector runs on a systemd timer</title><text x="218" y="83" class="t" text-anchor="middle" dominant-baseline="middle">systemd timers</text><text x="218" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">15–60 min</text></g>
+  <g><rect x="302" y="60" width="126" height="56" rx="6" class="bx bx3"/><title>server working set; periodically offloaded to a ~800 GB archive</title><text x="365" y="83" class="t" text-anchor="middle" dominant-baseline="middle">storage</text><text x="365" y="99" class="ts" text-anchor="middle" dominant-baseline="middle">250 GB working set</text></g>
+  <g><rect x="452" y="20" width="200" height="46" rx="6" class="bx bx2"/><title>every feed gap is logged and masked, never interpolated</title><text x="552" y="38" class="t" text-anchor="middle" dominant-baseline="middle">gap audit</text><text x="552" y="54" class="ts" text-anchor="middle" dominant-baseline="middle">continuity accounting</text></g>
+  <g><rect x="452" y="96" width="200" height="56" rx="6" class="bx bx3"/><title>licence-clean and hash-verified; 382 used in the backtests</title><text x="552" y="119" class="t" text-anchor="middle" dominant-baseline="middle">audited panel</text><text x="552" y="135" class="ts" text-anchor="middle" dominant-baseline="middle">400 markets · 188,856 trades</text></g>
+  <path d="M128 28 L158 88" class="ar ar1"/>
+  <path d="M128 52 L158 88" class="ar ar1"/>
+  <path d="M128 76 L158 88" class="ar ar1"/>
+  <path d="M128 100 L158 88" class="ar ar1"/>
+  <path d="M128 124 L158 88" class="ar ar1"/>
+  <path d="M128 148 L158 88" class="ar ar1"/>
+  <path d="M278 88 L308 88" class="ar "/>
+  <path d="M422 80 L450 52" class="ar ar2"/>
+  <path d="M422 96 L450 118" class="ar "/>
+  <text x="8" y="196" class="tm" text-anchor="start">every gap logged and masked — never interpolated</text>
+  <text x="8" y="212" class="tm" text-anchor="start">offloaded to a ~800 GB archive (self-reported, Aug 2026)</text>
+</svg>
+<!-- /DIAGRAM:dia-pipeline -->
+      <figcaption>
+        <b>What you're looking at:</b> how the platform is wired. Six collectors run on their own
+        timers, write to storage, and everything passes a gap audit before it becomes the panel the
+        models are evaluated on. The audit is the part that matters: it is what lets a quiet market
+        count as evidence rather than as missing data.
+        <span class="prov">Cadences and audit figures as of the 18-day server window ·
+        infrastructure detail deliberately omitted</span>
+      </figcaption>
+    </figure>
+
+    <h2>What was hard</h2>
+    <div class="plain">
+      <p>
+        Reliability turned out to be an auditing problem rather than an uptime problem. A collector
+        that misses an hour is not a disaster; a collector that misses an hour <em>silently</em>
+        destroys the analysis, because in this work the absence of a price move is itself the
+        signal. So the pipeline records what it failed to see and masks those windows, and one lost
+        collection day is carried as a declared 45-hour gap rather than quietly interpolated away.
+      </p>
+      <p>
+        The second hard choice was in the backtester. One strategy needed the queue of resting buy
+        and sell offers, which the historical data does not contain. Substituting a rough stand-in
+        would have produced a number — and that number would have been fiction. It declines to run
+        instead, and reports why.
+      </p>
+    </div>
+
+    <h2>What I found</h2>
+    <div class="plain">
+      <p>
+        <strong>Trader behaviour predicts profit.</strong> The behavioural clustering produced types
+        that hold up against held-out profit and loss, which mattered beyond the result itself: it
+        broke a circular definition — "informed traders are the ones who make money" — that had
+        blocked two earlier research directions.
+      </p>
+      <p>
+        <strong>None of the four candidate strategies beat a random baseline.</strong> That is the
+        answer the platform was built to produce, and it is worth as much as a positive would have
+        been: it is a measurement, not a disappointment. The fourth strategy is the one I would
+        point at in an interview — it abstained on every market rather than trade on a signal the
+        data could not supply.
+      </p>
+    </div>
+    <figure>
+<!-- FIGURE:fig-strategies -->
+<div class="scroll" role="region" tabindex="0" aria-label="Four strategies against a random baseline — scrollable chart">
+<svg viewBox="0 0 640 212" role="img" aria-labelledby="t-fig-strategies d-fig-strategies" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-strategies">Four strategies against a random baseline</title>
+  <desc id="d-fig-strategies">Three strategies score no edge with p-values far above 0.05. The fourth is not plotted: it abstained on every market because the data lacks the signal it needs.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="186" y1="22" x2="186" y2="186" class="rule"/>
+  <text x="186" y="16" class="lbl" text-anchor="middle">p = 0.05</text>
+  <text x="0" y="48" class="lbl-i" text-anchor="start">mean_reversion_v1</text>
+  <rect x="168" y="35" width="179.21" height="18" class="bar"><title>mean_reversion_v1: p = 0.498 vs random, 67 trades</title></rect>
+  <text x="355.2" y="48" class="lbl-i" text-anchor="start">p = 0.498</text>
+  <text x="624" y="48" class="lbl" text-anchor="end">NO_EDGE</text>
+  <text x="0" y="88" class="lbl-i" text-anchor="start">longshot_fade_v1</text>
+  <rect x="168" y="75" width="216.25" height="18" class="bar"><title>longshot_fade_v1: p = 0.601 vs random, 157 trades</title></rect>
+  <text x="392.3" y="88" class="lbl-i" text-anchor="start">p = 0.601</text>
+  <text x="624" y="88" class="lbl" text-anchor="end">NO_EDGE</text>
+  <text x="0" y="128" class="lbl-i" text-anchor="start">depth_imbalance_v1</text>
+  <line x1="168" y1="124" x2="528" y2="124" class="axis"/>
+  <text x="172" y="118" class="lbl-i" text-anchor="start">no bar — abstained on every market</text>
+  <text x="624" y="128" class="lbl-i" text-anchor="end">NOT_APPLICABLE</text>
+  <text x="0" y="168" class="lbl-i" text-anchor="start">regime_conditioned_v1</text>
+  <rect x="168" y="155" width="220.57" height="18" class="bar"><title>regime_conditioned_v1: p = 0.613 vs random, 4 trades</title></rect>
+  <text x="396.6" y="168" class="lbl-i" text-anchor="start">p = 0.613</text>
+  <text x="624" y="168" class="lbl" text-anchor="end">NO_EDGE</text>
+  <line x1="168" y1="182" x2="528" y2="182" class="axis"/>
+  <text x="168" y="194" class="lbl" text-anchor="middle">0</text>
+  <text x="258" y="194" class="lbl" text-anchor="middle">0.25</text>
+  <text x="348" y="194" class="lbl" text-anchor="middle">0.5</text>
+  <text x="438" y="194" class="lbl" text-anchor="middle">0.75</text>
+  <text x="348" y="207" class="lbl" text-anchor="middle">how easily chance alone explains it (longer = more likely chance)</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">strategy</th><th scope="col">n markets</th><th scope="col">trades taken</th><th scope="col">p value vs random</th><th scope="col">verdict</th></tr></thead><tbody><tr><td>mean_reversion_v1</td><td>382</td><td>67</td><td>0.4978</td><td>NO_EDGE</td></tr><tr><td>longshot_fade_v1</td><td>382</td><td>157</td><td>0.6007</td><td>NO_EDGE</td></tr><tr><td>depth_imbalance_v1</td><td>382</td><td>0</td><td>NOT_APPLICABLE</td><td>NOT_APPLICABLE</td></tr><tr><td>regime_conditioned_v1</td><td>382</td><td>4</td><td>0.6127</td><td>NO_EDGE</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-strategies -->
+      <figcaption>
+        <b>What you're looking at:</b> four strategies, one row each. The bar length is the <a href="../../glossary/index.html#p-value"><dfn>p-value</dfn></a> — how easily random chance alone could have produced a result this good — so a <em>short</em> bar would
+        be a real signal, and all three of these are long. The dashed line is the usual threshold
+        for taking a result seriously; nothing comes close to it. The fourth row has no bar at all,
+        because that strategy refused to run on data that lacked the information it needed.
+        <span class="prov">n = 382 resolved markets · 2,000 clustered resamples, seed 17 · data
+        2026-05-31 · <b>pre-registered</b> · out-of-sample ·
+        <a href="../../data/strategies.csv">strategies.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <p class="code-src">strategies/depth_imbalance.py — the abstention path</p>
+    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt">    snap = market_state.get("latest_snapshot")
+    if snap is None:
+        return _abstain("latest_snapshot missing from state")
+    dimb = getattr(snap, "depth_imbalance", None)
+    if dimb is None:
+        return _abstain("L2 depth_imbalance not available (L1-only snapshot)")
+    mid = float(getattr(snap, "mid", 0.0))
+    if not (self.extreme_lo &lt; mid &lt; self.extreme_hi):
+        return _abstain(
+            f"mid {mid:.3f} is at extreme; depth imbalance there is "
+            f"artifactual not informational")</pre>
+    <p>
+      Here <code>L2</code> means the full list of resting buy and sell offers, and <code>L1</code> only the single best price on each side. Three separate reasons to decline, and no branch that guesses. <code>_abstain</code> returns
+      "no trade" with the reason attached, so the refusal is recorded rather than silent.
+    </p>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <p>
+          A complete research stack for a prediction-market venue: continuous collection, a
+          modelling layer, and a fee-aware backtester. Six scheduled collectors feed an audited
+          panel of <span class="num">400</span> resolved markets and
+          <span class="num">188,856</span> trades, licence-clean and hash-verified. A predecessor
+          execution line on BTC used gradient boosting with
+          <a href="../../glossary/index.html#isotonic-calibration"><dfn>isotonic calibration</dfn></a>
+          across 35 tested hypotheses; its recorded limitation is that win rate is flat across edge
+          magnitude, so the model captures direction but not conviction.
+        </p>
+        <div class="finding">
+          <p class="finding__sign">Headline result — negative</p>
+          <p>
+            All four candidate strategies scored <span class="num">NO_EDGE</span> against a random
+            baseline under a market-clustered
+            <a href="../../glossary/index.html#bootstrap">bootstrap</a>:
+            <code>mean_reversion_v1</code> <a href="../../glossary/index.html#p-value"><dfn>p</dfn></a><span class="num">=0.498</span>,
+            <code>longshot_fade_v1</code> <span class="num">p=0.601</span>,
+            <code>regime_conditioned_v1</code> <span class="num">p=0.613</span>. Verdict bands were
+            fixed in advance: below 0.05 beats random, 0.05–0.20 weak, at or above 0.20 no edge.
+          </p>
+          <p>
+            <code>depth_imbalance_v1</code> returned <span class="num">NOT_APPLICABLE</span>: the
+            historical dataset carries no
+            <a href="../../glossary/index.html#order-book"><dfn>L2 depth</dfn></a> — bid and ask are
+            null on every snapshot per the data audit — so its only signal is missing everywhere and
+            it abstains universally. Reported as not applicable rather than faked with a
+            tape-derived proxy.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">One positive, with its caveat</p>
+          <p>
+            A behavioural trader typology reached <span class="num">BEHAVIOR_PREDICTS_PNL</span> on
+            held-out profit and loss — Kruskal–Wallis <span class="num">p=7.7e-07</span>, with 6 of
+            45 pairs surviving Bonferroni correction. Cluster stability was only
+            <span class="num">MIXED</span>: mean bootstrap adjusted Rand index
+            <span class="num">0.41</span>. Reported with that caveat attached rather than on the
+            strength of the p-value alone.
+          </p>
+        </div>
+        <p class="entry__stack">
+          Real-time WebSocket pipelines, XGBoost with isotonic calibration, live inference and order
+          execution, <a href="../../glossary/index.html#walk-forward"><dfn>walk-forward</dfn></a>
+          backtesting with realistic fill simulation, Linux, systemd.
+        </p>
+      </div>
+    </details>
+  </div>
+</div>
+  </div>
+</article>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p></p><p><span>Next</span><a href="../../projects/wallet-intelligence/index.html">Wallet-intelligence engine →</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

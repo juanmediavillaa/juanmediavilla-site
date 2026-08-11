@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latent Dynamics of Prediction-Market Price Paths — Juan Mediavilla</title>
+<meta name="description" content="MSc thesis: a hierarchical point-process model of when prediction markets move, fitted with a Metropolis-within-Gibbs sampler written from scratch.">
+<link rel="canonical" href="https://juanmediavilla.com/research/msc/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/research/msc/">
+<meta property="og:title" content="Latent Dynamics of Prediction-Market Price Paths — Juan Mediavilla">
+<meta property="og:description" content="MSc thesis: a hierarchical point-process model of when prediction markets move, fitted with a Metropolis-within-Gibbs sampler written from scratch.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html">Projects</a>
+    <a href="../../research/index.html" aria-current="page">Research</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">MSc thesis · UCL · in write-up, submission Sep 2026</p>
+    <h1>Latent Dynamics of Prediction-Market Price Paths</h1>
+  </div>
+</header>
+
+<article class="section">
+  <div class="wrap">
+<div class="rail">
+  <div class="rail__label"><p class="eyebrow">The work</p></div>
+  <div class="rail__body">
+<p class="meta">Supervised by Prof. Philip Treleaven, University College London</p>
+
+    <p class="plain">
+      The raw material is the <a href="../../glossary/index.html#repricing"><dfn>repricing
+      event</dfn></a> — a moment when a market's price actually moves. Not what the price is, but
+      when it changes.
+    </p>
+
+    <h2>What I built</h2>
+    <div class="plain">
+      <p>
+        A hierarchical point-process model of market activity, and the inference machinery to fit
+        it. The likelihood runs through a forward algorithm that had no automatic-differentiation
+        gradient in this codebase, which put the usual gradient-based samplers out of reach — so I
+        <strong>wrote a Metropolis-within-Gibbs sampler from scratch</strong>, with a conjugate
+        Normal-Inverse-Wishart block for the population level and a Laplace-EM fit as an
+        independent cross-check. Four chains, 3,500 sweeps each. Alongside it,
+        <a href="../../glossary/index.html#hawkes">self-exciting</a> and moving-average baselines to
+        compare against, and a market-clustered bootstrap for the uncertainty.
+      </p>
+    </div>
+    <figure>
+<!-- DIAGRAM:dia-two-state -->
+<svg viewBox="0 0 660 230" role="img" aria-labelledby="dt-dia-two-state dd-dia-two-state" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-two-state">The two-state market</title>
+  <desc id="dd-dia-two-state">A market switches between a quiet state, moving its price about once every 25 minutes, and a busy state, moving about once every 53 seconds. The state itself is hidden and has to be inferred from the price moves.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="60" y="30" width="200" height="66" rx="6" class="bx bx3"/><title>lambda_cold 0.041 moves per minute; dwell about 37 minutes</title><text x="160" y="58" class="t" text-anchor="middle" dominant-baseline="middle">QUIET state</text><text x="160" y="74" class="ts" text-anchor="middle" dominant-baseline="middle">one move ≈ every 25 min</text></g>
+  <g><rect x="400" y="30" width="200" height="66" rx="6" class="bx bx2"/><title>lambda_hot 1.141 moves per minute; dwell about 8 minutes</title><text x="500" y="58" class="t" text-anchor="middle" dominant-baseline="middle">BUSY state</text><text x="500" y="74" class="ts" text-anchor="middle" dominant-baseline="middle">one move ≈ every 53 s</text></g>
+  <path d="M262 50 Q330 18 398 50" class="ar"/>
+  <path d="M398 82 Q330 114 262 82" class="ar"/>
+  <text x="330" y="14" class="ts" text-anchor="middle">switches</text>
+  <text x="330" y="132" class="ts" text-anchor="middle">switches back</text>
+  <text x="160" y="112" class="ts" text-anchor="middle">stays ~37 min</text>
+  <text x="500" y="112" class="ts" text-anchor="middle">stays ~8 min</text>
+  <text x="330" y="160" class="t" text-anchor="middle">28× faster in the busy state</text>
+  <rect x="60" y="180" width="540" height="34" rx="6" class="bx dash"/>
+  <text x="330" y="201" class="ts" text-anchor="middle">you never observe the state — only the moves it produces</text>
+</svg>
+<!-- /DIAGRAM:dia-two-state -->
+      <figcaption>
+        <b>What you're looking at:</b> the structure the model is built to find. A market sits in a
+        quiet state, moving its price about once every twenty-five minutes, then switches into a
+        busy one moving roughly every fifty-three seconds. The dashed box is the whole difficulty:
+        the state is never observed directly, only inferred from the moves it produces.
+        <span class="prov">Population estimates, n = 34 markets · data 2026-06-17 ·
+        <a href="../../data/two-state.csv">two-state.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <h2>What I found</h2>
+
+    <!-- ============================ finding 1 ============================ -->
+    <p class="oneline">
+      Markets go quiet as their deadline approaches, and busy spells that survive their first
+      minutes tend to keep running.
+    </p>
+    <div class="plain">
+      <p>
+        I expected activity to intensify as a market ran out of time, the way a deadline usually
+        concentrates attention. The opposite happens: price movement slows down. That result held
+        as I went from 9 markets to 318, and got stronger when I measured time against the official
+        settlement instead of the last observed trade.
+      </p>
+      <p>
+        Then I looked at how long busy spells last. A standard model said the longer a burst had
+        run, the sooner it would end. That was wrong, and wrong for an instructive reason: I had
+        only counted bursts above a minimum length, so the short ones were invisible to me. It is
+        the same mistake as surveying people who have already been at a party for twenty minutes
+        and concluding that nobody ever leaves early. Once I removed that floor the answer
+        reversed — <strong>the longer a burst has already lasted, the more likely it is to keep
+        going</strong>.
+      </p>
+    </div>
+
+    <figure>
+<!-- FIGURE:fig-hazard -->
+<div class="scroll" role="region" tabindex="0" aria-label="Hot-episode hazard against elapsed time — scrollable chart">
+<svg viewBox="0 0 640 250" role="img" aria-labelledby="t-fig-hazard d-fig-hazard" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-hazard">Hot-episode hazard against elapsed time</title>
+  <desc id="d-fig-hazard">The truncation-robust discrete hazard falls from 0.325 to 0.167 per minute over 3 to 40 minutes elapsed. The rejected Weibull fit rises instead.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="52" y1="210" x2="624" y2="210" class="axis"/>
+  <text x="46" y="213.5" class="lbl" text-anchor="end">0</text>
+  <line x1="52" y1="160.6" x2="624" y2="160.6" class="axis"/>
+  <text x="46" y="164.1" class="lbl" text-anchor="end">0.2</text>
+  <line x1="52" y1="111.1" x2="624" y2="111.1" class="axis"/>
+  <text x="46" y="114.6" class="lbl" text-anchor="end">0.5</text>
+  <line x1="52" y1="61.7" x2="624" y2="61.7" class="axis"/>
+  <text x="46" y="65.2" class="lbl" text-anchor="end">0.8</text>
+  <line x1="52" y1="210" x2="624" y2="210" class="axis"/>
+  <text x="52" y="225" class="lbl" text-anchor="middle">3</text>
+  <text x="147.3" y="225" class="lbl" text-anchor="middle">10</text>
+  <text x="283.5" y="225" class="lbl" text-anchor="middle">20</text>
+  <text x="419.7" y="225" class="lbl" text-anchor="middle">30</text>
+  <text x="555.9" y="225" class="lbl" text-anchor="middle">40</text>
+  <text x="338" y="242" class="lbl" text-anchor="middle">minutes the burst has already lasted</text>
+  <text x="12" y="121" class="lbl" text-anchor="middle" transform="rotate(-90 12 121)">chance it ends this minute</text>
+  <path d="M72.4 145.8 L120.1 127.6 L181.4 109.9 L283.5 87.3 L453.8 58.5 L590 39.8" class="ser-2"/>
+  <path d="M72.4 145.8 L120.1 162.7 L181.4 171.7 L283.5 189.7 L453.8 188.6 L590 177" class="ser"/>
+  <circle cx="72.4" cy="145.8" r="3.5" class="dot"><title>0.3247/min, 113 episodes ended</title></circle>
+  <circle cx="120.1" cy="162.7" r="3.5" class="dot"><title>0.2394/min, 45 episodes ended</title></circle>
+  <circle cx="181.4" cy="171.7" r="3.5" class="dot"><title>0.1939/min, 19 episodes ended</title></circle>
+  <circle cx="283.5" cy="189.7" r="3.5" class="dot"><title>0.1026/min, 8 episodes ended</title></circle>
+  <circle cx="453.8" cy="188.6" r="3.5" class="dot"><title>0.1081/min, 4 episodes ended</title></circle>
+  <circle cx="590" cy="177" r="3.5" class="dot"><title>0.1667/min, 1 episodes ended</title></circle>
+  <circle cx="72.4" cy="145.8" r="2.5" class="dot-2"/>
+  <circle cx="120.1" cy="127.6" r="2.5" class="dot-2"/>
+  <circle cx="181.4" cy="109.9" r="2.5" class="dot-2"/>
+  <circle cx="283.5" cy="87.3" r="2.5" class="dot-2"/>
+  <circle cx="453.8" cy="58.5" r="2.5" class="dot-2"/>
+  <circle cx="590" cy="39.8" r="2.5" class="dot-2"/>
+  <text x="128.1" y="152.7" class="lbl-i" text-anchor="start">observed — falls</text>
+  <text x="453.8" y="46.5" class="lbl" text-anchor="end">rejected Weibull (k=1.43) — rises</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">bin start min</th><th scope="col">bin end min</th><th scope="col">hazard per min observed</th><th scope="col">rejected weibull shape from k normalised at first bin</th><th scope="col">n episodes ending in bin</th></tr></thead><tbody><tr><td>3.0</td><td>6.0</td><td>0.3247</td><td>0.3247</td><td>113</td></tr><tr><td>6.0</td><td>10.0</td><td>0.2394</td><td>0.4168</td><td>45</td></tr><tr><td>10.0</td><td>15.0</td><td>0.1939</td><td>0.5059</td><td>19</td></tr><tr><td>15.0</td><td>25.0</td><td>0.1026</td><td>0.6203</td><td>8</td></tr><tr><td>25.0</td><td>40.0</td><td>0.1081</td><td>0.7659</td><td>4</td></tr><tr><td>40.0</td><td>200.0</td><td>0.1667</td><td>0.8604</td><td>1</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-hazard -->
+      <figcaption>
+        <b>What you're looking at:</b> the solid line is the <a href="../../glossary/index.html#hazard-rate"><dfn>chance a busy spell ends in the next minute</dfn></a>, given it has lasted this long already. It falls, so bursts that survive their first
+        few minutes tend to keep running. The dashed line is what the rejected model claimed — that
+        the chance rises — which would have meant the opposite.
+        <span class="prov">n = 191 busy spells · data 2026-06-17 · <b>pre-registered</b> ·
+        truncation-robust re-analysis, not held-out ·
+        <a href="../../data/hazard.csv">hazard.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <div class="finding">
+          <p class="finding__sign">Reversal — the conjecture was wrong</p>
+          <p>
+            Repricing intensity freezes rather than sharpens as a market approaches the end of its
+            activity: the time-trend coefficient <a href="../../glossary/index.html#lambda"><dfn>β_τ</dfn></a> (beta-tau — how the move rate changes as the deadline nears; negative means slowing) <span class="num">= −0.131</span>, <a href="../../glossary/index.html#credible-interval"><dfn>credible interval</dfn></a>
+            <span class="num">[−0.188, −0.074]</span>, with 8 of 9 markets frozen at the first
+            cohort. Re-anchoring at the settlement record makes it <em>stronger</em>. The direction
+            held from <span class="num">n=9</span> through <span class="num">n=318</span> under
+            frozen specifications.
+          </p>
+          <p class="method">
+            <b>Evidence</b> — pre-registered, with recovery and identifiability gates that had to
+            pass before any empirical number was read; both directions and the null admissible in
+            advance. <b>Caveat</b> — on the trade-tape re-run the freeze survives as a
+            median-market property but the pooled-rate gate fails; that robustness slice is graded
+            partial.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">Reversal — a rejected parametric fit</p>
+          <p>
+            A pre-registered <a href="../../glossary/index.html#weibull"><dfn>Weibull</dfn></a> gave shape
+            <span class="num">k = 1.434</span>, <a href="../../glossary/index.html#credible-interval">CI</a> (credible interval — the range the true value plausibly sits in) <span class="num">[1.305, 1.575]</span> — a
+            rising hazard. It is flagged in the committed result file as
+            <code>weibull_hot_ARTIFACT</code>, <a href="../../glossary/index.html#truncation"><dfn>left-truncation-biased</dfn></a> by the three-minute
+            minimum-episode floor, and is not the verdict basis. The truncation-robust model-free
+            discrete hazard falls from <span class="num">0.325</span> to
+            <span class="num">0.167</span> per minute over 3→40 minutes elapsed, log-hazard slope
+            <span class="num">−0.603</span>, CI <span class="num">[−0.933, −0.205]</span>, and
+            survives a frailty control. Note the last bin rests on a single episode.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <!-- ============================ finding 2 ============================ -->
+    <p class="oneline">
+      The thesis asked whether a market's closeness to a settled consensus predicts its activity,
+      and answered the question with evidence.
+    </p>
+    <div class="plain">
+      <p>
+        I had a specific hypothesis, written down and committed to version control before I looked
+        at any result — a practice called
+        <a href="../../glossary/index.html#pre-registration"><dfn>pre-registration</dfn></a>, which
+        exists precisely so you cannot quietly change what you were testing after seeing how it
+        came out. The hypothesis was that knowing how close a market's price had come to a settled
+        consensus would help predict its activity, beyond simply knowing how much time was left.
+        It did not. The measured effect was almost exactly zero, with a range wide enough to
+        include a decent effect in either direction. That is not a near miss; it is a genuine
+        no-answer, and the thesis reports it as one.
+      </p>
+      <p>
+        The same study produced a cleaner lesson about measurement. A pre-registered way of scoring
+        how far ahead the model detected activity gave an encouraging ten minutes. Measured
+        instead against the first actual price move — the very data the model reads — the model was
+        two minutes <em>late</em>, and was early in none of the 48 cases. Both numbers are correct.
+        They measure different things, and the flattering one is not the one I report.
+      </p>
+    </div>
+
+    <figure>
+<!-- FIGURE:fig-lead-metrics -->
+<div class="scroll" role="region" tabindex="0" aria-label="Five definitions of detection lead — scrollable chart">
+<svg viewBox="0 0 640 210" role="img" aria-labelledby="t-fig-lead-metrics d-fig-lead-metrics" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-lead-metrics">Five definitions of detection lead</title>
+  <desc id="d-fig-lead-metrics">The pre-registered metric reports a +10 minute lead. Measured against the first raw repricing the same model is 2 minutes late, and never early.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="292" y1="22" x2="292" y2="184" class="rule"/>
+  <text x="292" y="200" class="lbl" text-anchor="middle">0 = simultaneous</text>
+  <text x="0" y="42" class="lbl-i" text-anchor="start">pre-registered metric (n=68)</text>
+  <line x1="415" y1="38" x2="428.7" y2="38" class="axis"/>
+  <circle cx="428.7" cy="38" r="4.5" class="dot"><title>median 10 min, CI [9, 10], n=68, frac&gt;0 = 0.941</title></circle>
+  <text x="624" y="42" class="lbl" text-anchor="end">+10 min · frac&gt;0 0.94</text>
+  <text x="0" y="76" class="lbl-i" text-anchor="start">vs centred label (n=48)</text>
+  <line x1="319.3" y1="72" x2="401.3" y2="72" class="axis"/>
+  <circle cx="374" cy="72" r="4.5" class="dot"><title>median 6 min, CI [2, 8], n=48, frac&gt;0 = 0.812</title></circle>
+  <text x="624" y="76" class="lbl" text-anchor="end">+6 min · frac&gt;0 0.81</text>
+  <text x="0" y="110" class="lbl-i" text-anchor="start">vs causal detector (n=48)</text>
+  <line x1="333" y1="106" x2="387.7" y2="106" class="axis"/>
+  <circle cx="333" cy="106" r="4.5" class="dot"><title>median 3 min, CI [3, 7], n=48, frac&gt;0 = 0.833</title></circle>
+  <text x="624" y="110" class="lbl" text-anchor="end">+3 min · frac&gt;0 0.83</text>
+  <text x="0" y="144" class="lbl-i" text-anchor="start">episode end (n=41)</text>
+  <line x1="278.3" y1="140" x2="415" y2="140" class="axis"/>
+  <circle cx="374" cy="140" r="4.5" class="dot"><title>median 6 min, CI [-1, 9], n=41, frac&gt;0 = 0.585</title></circle>
+  <text x="624" y="144" class="lbl" text-anchor="end">+6 min · frac&gt;0 0.58</text>
+  <text x="0" y="178" class="lbl-i" text-anchor="start">vs first raw repricing (n=48)</text>
+  <line x1="244.2" y1="174" x2="292" y2="174" class="axis"/>
+  <circle cx="264.7" cy="174" r="4.5" class="dot-2"><title>median -2 min, CI [-3.5, 0], n=48, frac&gt;0 = 0</title></circle>
+  <text x="624" y="178" class="lbl" text-anchor="end">-2 min · frac&gt;0 0</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">metric</th><th scope="col">label</th><th scope="col">median min</th><th scope="col">ci lo</th><th scope="col">ci hi</th><th scope="col">n episodes</th><th scope="col">frac positive</th></tr></thead><tbody><tr><td>lead_preReg_min</td><td>pre-registered metric</td><td>10.0</td><td>9.0</td><td>10.0</td><td>68</td><td>0.941</td></tr><tr><td>lead_upcross_vs_centered_min</td><td>vs centred label</td><td>6.0</td><td>2.0</td><td>8.0</td><td>48</td><td>0.812</td></tr><tr><td>lead_vs_causal_detector_min</td><td>vs causal detector</td><td>3.0</td><td>3.0</td><td>7.0</td><td>48</td><td>0.833</td></tr><tr><td>end_lead_min</td><td>episode end</td><td>6.0</td><td>-1.0</td><td>9.0</td><td>41</td><td>0.585</td></tr><tr><td>lead_vs_first_raw_count_min</td><td>vs first raw repricing</td><td>-2.0</td><td>-3.5</td><td>0.0</td><td>48</td><td>0.0</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-lead-metrics -->
+      <figcaption>
+        <b>What you're looking at:</b> five ways of scoring the same question — how far ahead did
+        the model see activity coming? Each dot is the typical answer under one definition, and the
+        line through it is the range. Dots to the right of the dashed line mean the model was
+        early. The bottom row is the one that compares against the first real price move, and it
+        sits on the wrong side of the line.
+        <span class="prov">n = 48–68 episodes depending on metric · data 2026-06-17 ·
+        <b>pre-registered</b> · held-out, walk-forward ·
+        <a href="../../data/lead-metrics.csv">lead-metrics.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <div class="finding">
+          <p class="finding__sign">Null — the primary pre-registered test failed</p>
+          <p>
+            The thesis's own primary hypothesis was that a consensus term would improve prediction
+            beyond a calendar term. It did not: <span class="num">−1.1 nats</span>, CI
+            <span class="num">[−394.6, +409.1]</span> at <span class="num">n=318</span>, with 46% of
+            markets positive. The thesis calls this "a genuine equipoise, not an underpowered
+            near-miss", and states the consequence against its own interest — the licensed claim
+            becomes mechanism-existence, not mechanism-primacy.
+          </p>
+          <p class="method">
+            <b>Evidence</b> — pre-registered, leave-one-market-out, market-clustered bootstrap,
+            carried from n=105 to n=318 with zero re-specification.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">The five lead definitions</p>
+          <p>
+            <span class="num">lead_preReg_min</span> median <span class="num">+10.0</span>, CI
+            <span class="num">[9.0, 10.0]</span>, n=68, frac&gt;0 = 0.941. Against the first raw
+            repricing, <span class="num">lead_vs_first_raw_count_min</span> median
+            <span class="num">−2.0</span>, CI <span class="num">[−3.5, 0.0]</span>, n=48,
+            frac&gt;0 = <span class="num">0.000</span>. Detection rate 0.68, CI
+            <span class="num">[0.412, 0.891]</span>, rising to 1.00 pooled. The pre-registered
+            metric's apparent lead tracks the length of its own lookback window, which is what
+            makes it an artifact rather than a finding.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <!-- ============================ finding 3 ============================ -->
+    <p class="oneline">
+      Letting each market learn from all the others improved prediction on every market tested.
+    </p>
+    <div class="plain">
+      <p>
+        Most of these markets are individually data-poor. The fix is
+        <a href="../../glossary/index.html#partial-pooling"><dfn>partial pooling</dfn></a>: rather than
+        estimating each market alone, let a thin market borrow the shape of the typical market. It
+        worked on all 34 markets tested, with none going the other way, and it pulled the
+        data-poorest markets about forty times harder than the data-rich ones — which is exactly
+        the behaviour you want from it.
+      </p>
+      <p>
+        Then the awkward part. My pre-registered comparison showed that a
+        <a href="../../glossary/index.html#hawkes"><dfn>self-exciting model</dfn></a> — one where each
+        price move simply makes the next more likely, with nothing hidden driving it — beat the
+        hidden-mood model by a wide margin. After that comparison was closed, I tested a variant I
+        had flagged in advance but not registered: giving the hidden-mood model a third mode
+        instead of two. It reversed the result. So I narrowed the claim rather than defending it.
+        What I can say is that a self-exciting account beat <em>the specific two-mode model I
+        tested</em>, not that it beats hidden-mood models in general.
+      </p>
+    </div>
+
+    <figure>
+<!-- FIGURE:fig-pooling -->
+<div class="scroll" role="region" tabindex="0" aria-label="Per-market change in held-out log-evidence — scrollable chart">
+<svg viewBox="0 0 640 250" role="img" aria-labelledby="t-fig-pooling d-fig-pooling" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-pooling">Per-market change in held-out log-evidence</title>
+  <desc id="d-fig-pooling">Partial pooling improves held-out predictive log-evidence on all 34 of 34 markets, leave-one-market-out. Log scale; every bar is above zero.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <line x1="66" y1="210" x2="624" y2="210" class="axis"/>
+  <text x="60" y="213.5" class="lbl" text-anchor="end">0.1</text>
+  <line x1="66" y1="174.4" x2="624" y2="174.4" class="axis"/>
+  <text x="60" y="177.9" class="lbl" text-anchor="end">1</text>
+  <line x1="66" y1="138.8" x2="624" y2="138.8" class="axis"/>
+  <text x="60" y="142.3" class="lbl" text-anchor="end">10</text>
+  <line x1="66" y1="103.2" x2="624" y2="103.2" class="axis"/>
+  <text x="60" y="106.7" class="lbl" text-anchor="end">100</text>
+  <line x1="66" y1="67.6" x2="624" y2="67.6" class="axis"/>
+  <text x="60" y="71.1" class="lbl" text-anchor="end">1,000</text>
+  <line x1="66" y1="32" x2="624" y2="32" class="axis"/>
+  <text x="60" y="35.5" class="lbl" text-anchor="end">10,000</text>
+  <line x1="66" y1="210" x2="624" y2="210" class="axis"/>
+  <rect x="66.6" y="181.5" width="15.21" height="28.45" class="bar"><title>market 1: +0.6 nats, 176 events, other</title></rect>
+  <rect x="83" y="167.6" width="15.21" height="42.37" class="bar"><title>market 2: +1.5 nats, 365 events, geopolitics</title></rect>
+  <rect x="99.4" y="164.6" width="15.21" height="45.36" class="bar"><title>market 3: +1.9 nats, 366 events, geopolitics</title></rect>
+  <rect x="115.8" y="162.2" width="15.21" height="47.84" class="bar"><title>market 4: +2.2 nats, 690 events, other</title></rect>
+  <rect x="132.2" y="161.5" width="15.21" height="48.55" class="bar"><title>market 5: +2.3 nats, 243 events, other</title></rect>
+  <rect x="148.7" y="159.8" width="15.21" height="50.19" class="bar"><title>market 6: +2.6 nats, 981 events, other</title></rect>
+  <rect x="165.1" y="156.2" width="15.21" height="53.81" class="bar"><title>market 7: +3.2 nats, 187 events, crypto</title></rect>
+  <rect x="181.5" y="152.8" width="15.21" height="57.15" class="bar"><title>market 8: +4 nats, 704 events, politics</title></rect>
+  <rect x="197.9" y="152.3" width="15.21" height="57.67" class="bar"><title>market 9: +4.2 nats, 3763 events, other</title></rect>
+  <rect x="214.3" y="150.6" width="15.21" height="59.43" class="bar"><title>market 10: +4.7 nats, 1712 events, politics</title></rect>
+  <rect x="230.7" y="149.4" width="15.21" height="60.63" class="bar"><title>market 11: +5 nats, 609 events, politics</title></rect>
+  <rect x="247.1" y="147.7" width="15.21" height="62.3" class="bar"><title>market 12: +5.6 nats, 1056 events, geopolitics</title></rect>
+  <rect x="263.5" y="147" width="15.21" height="62.96" class="bar"><title>market 13: +5.9 nats, 278 events, other</title></rect>
+  <rect x="280" y="144.6" width="15.21" height="65.39" class="bar"><title>market 14: +6.9 nats, 1116 events, politics</title></rect>
+  <rect x="296.4" y="143.6" width="15.21" height="66.36" class="bar"><title>market 15: +7.3 nats, 1014 events, sports</title></rect>
+  <rect x="312.8" y="143.5" width="15.21" height="66.55" class="bar"><title>market 16: +7.4 nats, 653 events, geopolitics</title></rect>
+  <rect x="329.2" y="143.3" width="15.21" height="66.74" class="bar"><title>market 17: +7.5 nats, 114 events, other</title></rect>
+  <rect x="345.6" y="143" width="15.21" height="66.97" class="bar"><title>market 18: +7.6 nats, 1031 events, sports</title></rect>
+  <rect x="362" y="143" width="15.21" height="67.03" class="bar"><title>market 19: +7.6 nats, 1183 events, geopolitics</title></rect>
+  <rect x="378.4" y="142.8" width="15.21" height="67.22" class="bar"><title>market 20: +7.7 nats, 947 events, geopolitics</title></rect>
+  <rect x="394.8" y="140.9" width="15.21" height="69.05" class="bar"><title>market 21: +8.7 nats, 842 events, crypto</title></rect>
+  <rect x="411.2" y="139.3" width="15.21" height="70.71" class="bar"><title>market 22: +9.7 nats, 521 events, other</title></rect>
+  <rect x="427.7" y="135.7" width="15.21" height="74.26" class="bar"><title>market 23: +12.2 nats, 135 events, other</title></rect>
+  <rect x="444.1" y="114.9" width="15.21" height="95.14" class="bar"><title>market 24: +47 nats, 69 events, other</title></rect>
+  <rect x="460.5" y="99.1" width="15.21" height="110.91" class="bar"><title>market 25: +130.5 nats, 148 events, sports</title></rect>
+  <rect x="476.9" y="98.9" width="15.21" height="111.1" class="bar"><title>market 26: +132.1 nats, 133 events, other</title></rect>
+  <rect x="493.3" y="91.5" width="15.21" height="118.45" class="bar"><title>market 27: +212.5 nats, 136 events, other</title></rect>
+  <rect x="509.7" y="85" width="15.21" height="124.97" class="bar"><title>market 28: +323.8 nats, 118 events, sports</title></rect>
+  <rect x="526.1" y="75.6" width="15.21" height="134.35" class="bar"><title>market 29: +594.2 nats, 254 events, sports</title></rect>
+  <rect x="542.5" y="71.6" width="15.21" height="138.38" class="bar"><title>market 30: +771.1 nats, 380 events, sports</title></rect>
+  <rect x="559" y="70.4" width="15.21" height="139.6" class="bar"><title>market 31: +834.3 nats, 402 events, other</title></rect>
+  <rect x="575.4" y="61.4" width="15.21" height="148.61" class="bar"><title>market 32: +1494.7 nats, 577 events, sports</title></rect>
+  <rect x="591.8" y="57.2" width="15.21" height="152.83" class="bar"><title>market 33: +1962.9 nats, 816 events, other</title></rect>
+  <rect x="608.2" y="43.4" width="15.21" height="166.56" class="bar"><title>market 34: +4770.5 nats, 1449 events, sports</title></rect>
+  <text x="345" y="242" class="lbl" text-anchor="middle">34 markets, sorted — log scale, or one market flattens the other 33</text>
+  <text x="12" y="121" class="lbl" text-anchor="middle" transform="rotate(-90 12 121)">better prediction →</text>
+  <text x="624" y="36" class="lbl-i" text-anchor="end">all 34 positive</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">rank</th><th scope="col">delta nats</th><th scope="col">n events</th><th scope="col">category</th><th scope="col">regime</th></tr></thead><tbody><tr><td>1</td><td>0.63</td><td>176</td><td>other</td><td>reveal_before_wire</td></tr><tr><td>2</td><td>1.549</td><td>365</td><td>geopolitics</td><td>reveal_before_wire</td></tr><tr><td>3</td><td>1.88</td><td>366</td><td>geopolitics</td><td>reveal_before_wire</td></tr><tr><td>4</td><td>2.207</td><td>690</td><td>other</td><td>reveal_before_wire</td></tr><tr><td>5</td><td>2.311</td><td>243</td><td>other</td><td>reveal_before_wire</td></tr><tr><td>6</td><td>2.57</td><td>981</td><td>other</td><td>reveal_before_wire</td></tr><tr><td>7</td><td>3.248</td><td>187</td><td>crypto</td><td>reveal_before_wire</td></tr><tr><td>8</td><td>4.031</td><td>704</td><td>politics</td><td>reveal_before_wire</td></tr><tr><td>9</td><td>4.168</td><td>3763</td><td>other</td><td>reveal_before_wire</td></tr><tr><td>10</td><td>4.671</td><td>1712</td><td>politics</td><td>reveal_before_wire</td></tr><tr><td>11</td><td>5.048</td><td>609</td><td>politics</td><td>reveal_before_wire</td></tr><tr><td>12</td><td>5.625</td><td>1056</td><td>geopolitics</td><td>reveal_before_wire</td></tr></tbody></table></div><p class="prov">First 12 of 34 rows. <a href="../../data/pooling-per-market.csv">Download all 34</a>.</p></details>
+<!-- /FIGURE:fig-pooling -->
+      <figcaption>
+        <b>What you're looking at:</b> each bar is one prediction market. A bar's height is how much
+        better the pooled model predicted that market's unseen data than a model fitted to that
+        market alone. Every one of the 34 is above zero, which is the result — a single bar below
+        the line would have counted against it. The scale is logarithmic because one market gains
+        about 4,770 and the typical market gains about 8; on a straight scale two thirds of the bars
+        would be invisible.
+        <span class="prov">n = 34 markets · data 2026-06-17 · <b>pre-registered</b> (SPEC ab05bc1
+        committed before results 5293b7a) · held-out, leave-one-market-out ·
+        <a href="../../data/pooling-per-market.csv">pooling-per-market.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <div class="finding">
+          <p class="finding__sign">Positive — partial pooling</p>
+          <p>
+            Partial pooling improved held-out predictive log-evidence on
+            <span class="num">34/34</span> markets leave-one-market-out: total
+            <span class="num">+11,400</span> <a href="../../glossary/index.html#nats"><dfn>nats</dfn></a>, CI <span class="num">[3,256, 23,292]</span>,
+            mean <span class="num">+335</span>/market, CI <span class="num">[+32, +639]</span>.
+            <a href="../../glossary/index.html#shrinkage"><dfn>Shrinkage</dfn></a> regularizes sparse markets <span class="num">40.5×</span> harder than
+            data-rich ones on λ_cold. Σ's top-3 eigen-axes carry
+            <span class="num">87.6%</span> of variance.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">Reversal — a post-hoc competitor beat my own headline</p>
+          <p>
+            A pre-registered comparison found a self-exciting model predicting repricing far better
+            than the two-state latent-state model: <span class="num">+48,970 nats</span>, CI
+            <span class="num">[+35,238, +67,016]</span>, zero drop-one flips. After the
+            pre-registration closed I tested the flank I had disclosed — and a <em>three-state</em>
+            competitor <strong>reverses that ordering</strong> by
+            <span class="num">37,868 nats</span>, CI <span class="num">[+30,156, +46,662]</span>. A
+            simulation control rules out a parameter-count artifact.
+          </p>
+          <p>
+            So the claim was narrowed rather than defended: the result is scoped to the <em>tested
+            two-state</em> model, not to the model class. One-step-ahead count likelihood does not
+            separate the two accounts. The licensed wording is "consistent with self-excitation",
+            never identified endogeneity, because a self-exciting kernel and serially-correlated
+            exogenous information generate the same counts.
+          </p>
+          <p class="method">
+            <b>Evidence</b> — the winning arm pre-registered and recovery-gated; the competitor
+            exploratory, post-freeze and <em>not</em> pre-registered. Both numbers are published
+            together or neither.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <!-- ============================ finding 4 ============================ -->
+    <p class="oneline">
+      I benchmarked the interpretable models against neural networks to find out how much
+      simplicity was costing.
+    </p>
+    <div class="plain">
+      <p>
+        The models above are deliberately simple: a handful of numbers each, chosen so a human can
+        read what they mean. The obvious objection is that a large neural network would do better,
+        so I ran that comparison, decided the rules in advance, and evaluated the test set exactly
+        once. The neural network won, ahead on every one of the 51 markets held back for testing.
+      </p>
+      <p>
+        The simple models still capture about ninety per cent of the total gap between doing nothing
+        and the neural network's performance, using three to six numbers instead of millions. The
+        honest reading of that is the unflattering one: the neural model's learning curve was still
+        improving when the data ran out, so its advantage is a floor rather than a ceiling, and the
+        ninety per cent is the most generous figure the simple models can claim rather than the
+        least.
+      </p>
+    </div>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <div class="finding">
+          <p class="finding__sign">Negative — my own model class lost its benchmark</p>
+          <p>
+            A pre-registered neural benchmark put the interpretable models on trial, and they lost:
+            an LSTM (long short-term memory network, a standard neural network for sequences) beat the champion by <span class="num">+15,600 nats</span>, CI
+            <span class="num">[+10,675, +21,640]</span>, ahead on <span class="num">51/51</span>
+            held-out test markets, zero drop-one flips, Benjamini–Hochberg-corrected p &lt; 0.001 (a correction applied because testing many things at once makes a lucky-looking result more likely). The interpretable ladder
+            still covers <span class="num">90.8%</span> of the Poisson-to-LSTM gap, CI
+            <span class="num">[88.2, 92.7]</span>, using 3 to 6 parameters.
+          </p>
+          <p>
+            The direction of the bound is the unflattering one, and is reported that way: the
+            learning curve is still rising at n=206, so <span class="num">+15,600</span> is a
+            <strong>lower</strong> bound on the neural advantage and
+            <span class="num">90.8%</span> is an <strong>upper</strong> bound on the interpretable
+            share. The share is defined relative to this baseline and this champion on this split,
+            not as an intrinsic fraction of learnable structure.
+          </p>
+          <p class="method">
+            <b>Evidence</b> — pre-registered, falsification-tested in both directions, test set
+            evaluated exactly once. <b>Disclosed deviation</b> — a single frozen split at n=206, not
+            the leave-one-market-out standard used elsewhere. Model-selection validation only: no
+            costs, no fills, no trading claim.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <!-- ============================ the state itself ============================ -->
+    <p class="oneline">
+      The hidden quiet/busy split is real, well identified, and about twenty-eight-fold.
+    </p>
+    <div class="plain">
+      <p>
+        The model does recover two genuinely distinct modes. In the quiet mode a market moves its
+        price about once every twenty-five minutes; in the busy mode, about once every fifty-three
+        seconds — roughly twenty-eight times faster. Markets stay quiet for around thirty-seven
+        minutes at a time and busy for around eight. None of that is in doubt.
+      </p>
+      <p>
+        The problem is what it is worth. Knowing which mode a market is in does not tell you what
+        happens next any better than simply noting that it has been active recently. A real
+        structure that carries no forecasting value is still a finding — it is just not the finding
+        I wanted.
+      </p>
+    </div>
+
+    <figure>
+<!-- FIGURE:fig-two-state -->
+<div class="scroll" role="region" tabindex="0" aria-label="Two-state repricing intensity — scrollable chart">
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="t-fig-two-state d-fig-two-state" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-two-state">Two-state repricing intensity</title>
+  <desc id="d-fig-two-state">The hot state reprices about 27 times faster than the cold state. Cold dwells last about 37 minutes, hot about 8.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <text x="0" y="56" class="lbl-i" text-anchor="start">cold state</text>
+  <rect x="96" y="41" width="14.32" height="22" class="bar-2"><title>cold: 0.041/min, CI [0.025, 0.063]</title></rect>
+  <line x1="104.8" y1="52" x2="118" y2="52" class="axis"/>
+  <text x="118.3" y="56" class="lbl-i" text-anchor="start">0.041 /min</text>
+  <text x="0" y="74" class="lbl" text-anchor="start">~37 min dwell</text>
+  <text x="0" y="118" class="lbl-i" text-anchor="start">hot state</text>
+  <rect x="96" y="103" width="401.59" height="22" class="bar"><title>hot: 1.141/min, CI [0.946, 1.383]</title></rect>
+  <line x1="428.9" y1="114" x2="582.9" y2="114" class="axis"/>
+  <text x="505.6" y="118" class="lbl-i" text-anchor="start">1.141 /min</text>
+  <text x="0" y="136" class="lbl" text-anchor="start">~8 min dwell</text>
+  <line x1="96" y1="164" x2="624" y2="164" class="axis"/>
+  <text x="96" y="179" class="lbl" text-anchor="middle">0</text>
+  <text x="272" y="179" class="lbl" text-anchor="middle">0.5</text>
+  <text x="448" y="179" class="lbl" text-anchor="middle">1</text>
+  <text x="624" y="179" class="lbl" text-anchor="middle">1.5</text>
+  <text x="360" y="194" class="lbl" text-anchor="middle">price moves per minute (further right = busier)</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">state</th><th scope="col">lambda per min median</th><th scope="col">lambda lo</th><th scope="col">lambda hi</th><th scope="col">dwell min median</th><th scope="col">dwell lo</th><th scope="col">dwell hi</th></tr></thead><tbody><tr><td>cold</td><td>0.0407</td><td>0.025</td><td>0.0625</td><td>37.1401</td><td>26.1942</td><td>55.2032</td></tr><tr><td>hot</td><td>1.1409</td><td>0.9458</td><td>1.3834</td><td>8.0989</td><td>6.5432</td><td>10.2869</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-two-state -->
+      <figcaption>
+        <b>What you're looking at:</b> how fast prices move in each of the two modes, in moves per
+        minute. The quiet bar is so short next to the busy one because the gap is about
+        twenty-eight-fold — that gap is the point. The thin line through each bar is the range the
+        true value plausibly sits in.
+        <span class="prov">n = 34 markets · data 2026-06-17 · <b>pre-registered</b> · in-sample
+        population fit, bars show 95% credible intervals ·
+        <a href="../../data/two-state.csv">two-state.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <div class="finding">
+          <p class="finding__sign">Population parameters</p>
+          <p>
+            <a href="../../glossary/index.html#lambda"><dfn>λ_cold</dfn></a> (lambda-cold — the quiet-mode move rate) median <span class="num">0.0407</span>/min, CI
+            <span class="num">[0.0250, 0.0625]</span>; <span class="num">λ_hot</span> median
+            <span class="num">1.1409</span>/min, CI <span class="num">[0.9458, 1.3834]</span>.
+            <a href="../../glossary/index.html#dwell-time"><dfn>Dwell times</dfn></a> <span class="num">37.1</span> min cold, <span class="num">8.1</span> min
+            hot. The published medians give a ratio of <span class="num">28.05×</span>; the
+            committed report states <span class="num">27×</span>, computed on the posterior means
+            (<span class="num">27.58×</span>). Both are correct on their own basis and the prose
+            above uses the medians, because those are the numbers published in the CSV.
+          </p>
+          <p class="method">
+            <b>Carried limitation</b> — the hazard/trigger block is weakly identified at this n
+            (R-hat <span class="num">1.23–1.37</span>, ESS <span class="num">26–41</span>). Only the
+            sign and ordering are claimed robust, not the magnitudes; sharpening is expected to need
+            n ≈ 50.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">Limitation — the winner fails its own absolute fit test</p>
+          <p>
+            A time-rescaling check rejects the best-performing model on most markets. It is the
+            best-performing <em>tested approximation</em>, not a generatively adequate description —
+            and the residual clustering it misses is the same headroom the neural benchmark
+            exploits. The two strands agree on where the ladder ends.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <p>
+      <a href="../thesis/index.html">The full write-up, with the method and every caveat&nbsp;→</a>
+    </p>
+  </div>
+</div>
+  </div>
+</article>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p></p><p><span>Next</span><a href="../../research/bsc/index.html">BSc thesis — activity recognition →</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

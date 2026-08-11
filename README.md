@@ -3,25 +3,44 @@
 Personal site. Hand-written static HTML and one stylesheet. No framework, no build step, no
 package manager, no dependencies, and **no third-party network requests of any kind**.
 
+The design is editorial: a paper ground, one ink, one accent, hairline rules, and an asymmetric
+label/content rail that every page is built from. Two typefaces are self-hosted from this
+repository — Instrument Sans and IBM Plex Mono, both SIL Open Font Licence — so the page still
+makes no request to anyone else's server.
+
 Read [CONTENT-RULES.md](CONTENT-RULES.md) before editing anything. It is not optional — it
 records claims that had to be retracted from the previous version of this site.
 
 ## Structure
 
 ```
-index.html              home
-projects/index.html     one entry per project, with results including the negative ones
-research/index.html     MSc thesis + BSc thesis + the method
-research/thesis/        MSc thesis deep-dive (deliberately not in the primary nav)
-how-i-work/index.html   agentic systems, stated as artifacts rather than claims
-about/index.html        education, teaching, skills tiered by demonstrability
-cv/index.html           the CV; prints to a 2-page PDF (not in the primary nav)
-404.html                served by Pages for any missing path
-style.css               the entire design system
+index.html                     home
+projects/index.html            the work index — four case studies, then the smaller entries
+projects/prediction-market/    case study: the 24/7 platform, live execution, the backtest
+projects/wallet-intelligence/  case study: three-tier on-chain scoring
+projects/fund-terminal/        case study: NAV unitisation and decimal-exact money
+projects/data-portal/          case study: the archive as a documented data product
+research/index.html            start here, the two theses, why it is unusual, the method
+research/msc/                  MSc thesis write-up, with its four charts
+research/bsc/                  BSc thesis write-up, with its two charts
+research/thesis/               MSc process, results-with-status and limits
+how-i-work/index.html          agentic systems, stated as artifacts rather than claims
+about/index.html               contact, experience, education, skills tiered by demonstrability
+cv/index.html                  the CV; prints to a 2-page PDF (not in the primary nav)
+glossary/index.html            generated from one term list
+404.html                       served by Pages for any missing path
+style.css                      the entire design system
+assets/fonts/                  two self-hosted OFL typefaces, subset, with their licences
+assets/og.png                  the link-preview card, generated from tools/ (see MAINTENANCE)
 ```
 
-Nav is exactly five items: Home, Projects, Research, How I Work, About. `/cv` and
+Nav is exactly five items: Home, Projects, Research, How I Work, About — and
+`tools/audit.js` fails if a page has any other number. `/cv`, `/glossary` and
 `/research/thesis/` are reachable but unlisted.
+
+Each project and thesis has its own URL so it can be linked on its own, and the
+index rows keep the old anchor `id`s (`#prediction-market-system`, `#msc`, `#bsc`
+and so on) so links made before the split still land somewhere sensible.
 
 ## Build
 

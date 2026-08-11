@@ -38,13 +38,44 @@ python3 tools/make_diagrams.py --check  || FAIL=1
 python3 tools/build_glossary.py --check || FAIL=1
 
 note "no external subresources"
-if grep -rnoE '<(link|script|img|iframe)[^>]*(src|href)="(https?:)?//[^"]*"' --include='*.html' .; then
+# rel=canonical/alternate/me name a URL for crawlers and are never fetched, so
+# they are exempt. Anything the browser actually requests is not.
+if grep -rnoE '<(link|script|img|iframe)[^>]*(src|href)="(https?:)?//[^"]*"' --include='*.html' . \
+     | grep -vE 'rel="(canonical|alternate|me|author)"'; then
   FAIL=1; else echo "  none"; fi
 
 note "no infrastructure, secrets, identifiers or student data"
 if grep -rniE '0x[0-9a-f]{6,}|s3565122|ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}|api[_-]?key|bearer ' \
      --include='*.html' --include='*.css' --include='*.csv' .; then
   FAIL=1; else echo "  none"; fi
+
+note "every internal link resolves"
+# Pages moved when projects and the theses each became their own page. A link
+# that still points at the old location is invisible until someone clicks it,
+# so it gets a checker rather than a proofread.
+python3 - <<'PY' || FAIL=1
+import pathlib, re, sys
+bad = 0
+for f in sorted(pathlib.Path('.').glob('**/*.html')):
+    if str(f) == '404.html': continue          # served at any depth; absolute by necessity
+    text = f.read_text()
+    ids = set(re.findall(r'\sid="([^"]+)"', text))
+    for href in re.findall(r'href="([^"]+)"', text):
+        if re.match(r'^(https?:|mailto:|data:|#$)', href): continue
+        target, _, frag = href.partition('#')
+        if not target:
+            if frag and frag not in ids:
+                print(f"  {f}: dead anchor #{frag}"); bad += 1
+            continue
+        dest = (f.parent / target).resolve()
+        if not dest.exists():
+            print(f"  {f}: missing {href}"); bad += 1
+        elif frag and dest.suffix == '.html' and frag not in set(
+                re.findall(r'\sid="([^"]+)"', dest.read_text())):
+            print(f"  {f}: {target} has no #{frag}"); bad += 1
+print("  none" if not bad else f"  {bad} broken")
+sys.exit(1 if bad else 0)
+PY
 
 note "no retired figures"
 if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB)' --include='*.html' .; then
@@ -73,17 +104,25 @@ import pathlib, re, sys
 css = pathlib.Path('style.css').stat().st_size
 js  = pathlib.Path('app.js').stat().st_size
 figs = {p.name: p.stat().st_size for p in pathlib.Path('figures').glob('*.svg')}
+# Fonts are referenced from the stylesheet, not the markup, so counting only
+# assets named in the HTML missed them entirely. Charged to every page as the
+# full set: a unicode-range means a reader may fetch less, never more.
+fonts = sum(pathlib.Path(m).stat().st_size
+            for m in sorted(set(re.findall(r'url\("(assets/fonts/[\w.-]+)"\)',
+                                           pathlib.Path('style.css').read_text()))))
+print(f"  fonts {fonts/1024:.1f} KB (self-hosted, charged to every page)")
 bad = 0
 for f in sorted(pathlib.Path('.').glob('**/index.html')):
     if 'pre-registration' in str(f): continue
     s = f.read_text(); h = len(s.encode())
     used = sum(figs.get(m+'.svg', 0) for m in re.findall(r'figures/([\w-]+)\.svg', s))
     used += sum(pathlib.Path('assets', m).stat().st_size for m in re.findall(r'assets/([\w.-]+)', s))
-    markup, total = h + css, h + css + used + js
+    markup, total = h + css, h + css + used + js + fonts
     cap = 400*1024 if str(f) == 'index.html' else 600*1024
-    # /research carries six inline charts; inlining is what lets them follow the
-    # manual theme toggle, which a referenced <img> cannot do. Authorised at 110 KB.
-    markup_cap = 110*1024 if str(f) == 'research/index.html' else 90*1024
+    # /research used to need 110 KB because it carried all six inline charts on
+    # one page. The two theses are now separate pages, so the largest of them
+    # fits the ordinary budget and the exception is gone.
+    markup_cap = 90*1024
     flag = ''
     if markup > markup_cap: flag += ' MARKUP OVER'; bad += 1
     if total > cap:      flag += ' TOTAL OVER';  bad += 1

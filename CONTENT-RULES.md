@@ -69,8 +69,16 @@ are derived from committed files and do not move.
 7. **No user counts, traffic figures or analytics** — none exist for any project.
 8. **No personal-life content.** No interests, reading, routines, health, relationships, or
    introspection. This site is professional only.
-9. **No third-party network requests.** No CDN, no web fonts, no analytics, no external images,
-   no embeds. Fonts are system stacks; the only subresource is the relative `style.css`.
+9. **No third-party network requests.** No CDN, no analytics, no external images, no embeds, and
+   no font served from anyone else's host. Every subresource is same-origin and relative, so the
+   site works from `file://` and no third party learns who read it.
+   **Self-hosted fonts are permitted**, and there are two: Instrument Sans and IBM Plex Mono, both
+   under the SIL Open Font Licence, subset to latin and latin-ext, committed under `assets/fonts/`
+   with their licences beside them. They are `@font-face`d from `style.css` with a `unicode-range`,
+   so a reader who never hits an accented character never downloads the latin-ext file.
+   `rel="canonical"` and the Open Graph `<meta>` tags may carry absolute `https://juanmediavilla.com`
+   URLs: they name a page for crawlers and are never fetched. `tools/audit.sh` enforces exactly
+   this line — anything the browser actually requests must be same-origin.
 10. **No raw feed data** hosted or linked, and no implication that the research repository is
     public or reader-verifiable.
 
@@ -138,10 +146,13 @@ holding may appear.
 
 ## 8. JavaScript ceiling
 
-JS is permitted but currently **unused: 0 of the 3 KB budget**. SVG `<title>` gives a native hover
-readout at zero bytes, so adding script to duplicate it would be worse. If that changes:
+JS is permitted and currently uses **~15.5 KB of the 25 KB budget** (see §11). It adds the theme
+toggle, a reveal, the hero point field, a scroll progress bar, stat counters and chart tooltips —
+and **nothing that enables content**. SVG `<title>` already gives a native hover readout at zero
+bytes.
 
-- Hard ceiling **3 KB total across the whole site**. No library, no build step, no npm.
+- Hard ceiling **25 KB total across the whole site**, inline scripts included. No library, no build
+  step, no npm.
 - **Every chart must be complete and readable as static SVG with JS disabled** — all labels, all
   values, all axes in the markup. JS may add a hover readout and nothing else.
 - No JS for navigation, layout, theming or content. The site must keep working from `file://`.
@@ -181,14 +192,20 @@ A null result never appears in a heading, a card face, or an opening sentence. I
 ## 11. Colour, motion and script
 
 - The palette is **externally validated; do not substitute values.** Series slots are fixed and
-  never cycled or reordered.
+  never cycled or reordered. The August 2026 redesign changed the page *around* the figures — the
+  ground, the type, the layout — and deliberately left `--c1`..`--c6` untouched, so nothing that
+  was validated had to be revalidated. Keep it that way: if a future design wants different series
+  colours, they get measured first.
+- **The page measure is measured, not assumed.** `ch` is the width of `0`, and Instrument Sans
+  draws figures wide, so a `68ch` column rendered an 83-character line. `--measure` is `58ch`,
+  which measures ~71 characters. Re-measure if the typeface ever changes.
 - **Slot 4 (yellow) measures 2.82:1 in light** — anything drawn in it needs a direct label or a
   table. **Green and pink sit at ΔE 7.7 for deuteranopia in dark** — any chart using both needs a
   second encoding. Scatter and small-multiple charts cap at the first three slots.
 - `--muted` is a **graphical** token (gridlines, axis rules) at 3:1. It measures 3.96:1 in light,
   so it never carries text; chart label text uses `--ink-2`.
 - One y-axis per chart. Text wears text tokens, never a series colour.
-- **JavaScript ceiling: 25 KB site-wide** (currently ~7.8 KB). No framework, no build step, no
+- **JavaScript ceiling: 25 KB site-wide** (currently ~15.5 KB; see §8). No framework, no build step, no
   npm, no third-party request.
 - **Nothing may be hidden by CSS that only script can reveal.** Reveal animations are applied by
   script only to elements it has already attached an observer to, so a blocked `app.js` costs the
@@ -269,8 +286,12 @@ properties, which respond to `prefers-color-scheme` *and* to the manual `data-th
 self-contained palette can only see the OS setting, so the moment someone overrides the theme the
 figure renders on the opposite scheme from the page it sits in — near-black boxes on a white page.
 
-That also means **figures are inlined, not referenced**. `/research` carries a 110 KB markup cap
-instead of 90 KB for this reason.
+That also means **figures are inlined, not referenced**. That used to cost `/research` a raised
+110 KB markup cap, because all six charts sat on one page. Since the two theses each became their
+own page (`/research/msc/` and `/research/bsc/`), the largest of them fits the ordinary 90 KB
+budget and **the exception has been removed**. If a page approaches the cap again, split it rather
+than raising it — going back to referenced `<img>` figures would desynchronise them from the
+theme toggle.
 
 Token names inside an SVG must match the page exactly: it is `--ink-2`, not `--ink2`. An
 undefined custom property in a `fill` silently falls back to black, which is invisible in dark
@@ -278,9 +299,12 @@ mode and which the audit only catches because it measures `fill` rather than `co
 
 ## 17. Checks before publishing
 
+Run `bash tools/audit.sh` — it does all of this and more. The two sweeps it wraps:
+
 ```sh
-# no external subresources anywhere
-grep -rnoE '<(link|script|img|iframe)[^>]*(src|href)="(https?:)?//[^"]*"' --include='*.html' .
+# no external subresources anywhere (rel=canonical/alternate/me are metadata, never fetched)
+grep -rnoE '<(link|script|img|iframe)[^>]*(src|href)="(https?:)?//[^"]*"' --include='*.html' . \
+  | grep -vE 'rel="(canonical|alternate|me|author)"'
 
 # no infrastructure leakage
 grep -rniE '(ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}|api[_-]?key|secret|bearer |infura|alchemy)' \

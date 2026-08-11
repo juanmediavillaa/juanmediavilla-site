@@ -20,6 +20,9 @@
     if (mode === "system") root.removeAttribute("data-theme");
     else root.setAttribute("data-theme", mode);
     try { localStorage.setItem("theme", mode); } catch (_) {}
+    // The hero field paints from --dot / --dot-hot, which the attribute above
+    // has just changed. Canvas cannot inherit a custom property, so it is told.
+    dispatchEvent(new CustomEvent("themechange"));
   }
 
   function currentTheme() {
@@ -78,13 +81,29 @@
   const DWELL_HOT = 8 * 60;
 
   function mountHero() {
-    const canvas = document.querySelector(".hero__canvas");
+    const canvas = document.querySelector(".field__canvas");
     if (!canvas || !canvas.getContext) return;
 
     const ctx = canvas.getContext("2d");
     let w = 0, h = 0, dots = [], hot = false, until = 0, next = 0, raf = 0, last = 0;
+    let cold = "#C2C2CE", warm = "#4F46E5";
     const SPEED = 26;           // px per second of drift
-    const SCALE = 90;           // simulated seconds per real second
+    // Simulated seconds per real second. This is the only free parameter: the
+    // gaps and the dwell times come from the fitted rates, and SCALE just sets
+    // how much of that timeline fits on screen. At 90 the quiet state put one
+    // mark every ~420px, which on a strip reads as an empty box rather than as
+    // a quiet market; at 520 a quiet stretch is legibly sparse and a burst is
+    // legibly a burst.
+    const SCALE = 520;
+
+    // Canvas cannot inherit a custom property, so the two inks are resolved
+    // from the page and re-resolved whenever the theme changes.
+    function inks() {
+      const cs = getComputedStyle(document.documentElement);
+      cold = cs.getPropertyValue("--dot").trim() || cold;
+      warm = cs.getPropertyValue("--dot-hot").trim() || warm;
+      if (warm.startsWith("var")) warm = cs.getPropertyValue("--c1").trim() || "#4F46E5";
+    }
 
     function size() {
       const r = canvas.getBoundingClientRect();
@@ -117,12 +136,14 @@
       const mid = h / 2;
       for (const d of dots) {
         d.x -= dx;
-        const a = Math.min(1, Math.max(0, 1 - Math.abs(d.x - w * 0.5) / (w * 0.6)));
+        const a = Math.min(1, Math.max(0, 1 - Math.abs(d.x - w * 0.5) / (w * 0.62)));
+        ctx.globalAlpha = (d.hot ? 1 : 0.85) * a;
+        ctx.fillStyle = d.hot ? warm : cold;
         ctx.beginPath();
-        ctx.arc(d.x, mid + (d.hot ? -14 : 14), d.hot ? 2.6 : 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${(d.hot ? 0.85 : 0.45) * a})`;
+        ctx.arc(d.x, mid + (d.hot ? -13 : 13), d.hot ? 2.4 : 1.5, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.globalAlpha = 1;
       while (dots.length && dots[0].x < -8) dots.shift();
       const lastX = dots.length ? dots[dots.length - 1].x : 0;
       if (lastX < w + 40) {
@@ -140,11 +161,13 @@
       ctx.clearRect(0, 0, w, h);
       const mid = h / 2;
       for (const d of dots) {
+        ctx.globalAlpha = d.hot ? 1 : 0.8;
+        ctx.fillStyle = d.hot ? warm : cold;
         ctx.beginPath();
-        ctx.arc(d.x, mid + (d.hot ? -14 : 14), d.hot ? 2.6 : 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${d.hot ? 0.8 : 0.4})`;
+        ctx.arc(d.x, mid + (d.hot ? -13 : 13), d.hot ? 2.4 : 1.5, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.globalAlpha = 1;
     }
 
     function start() {
@@ -154,11 +177,23 @@
     }
     function stop() { cancelAnimationFrame(raf); raf = 0; }
 
-    size(); seed();
+    // The caption belongs to the canvas, so it is written by the same code that
+    // draws it: no canvas, no orphaned sentence describing an empty strip.
+    const note = document.querySelector("[data-field-note]");
+    if (note) {
+      note.textContent = "Above: each mark is one price move. The gaps between them are drawn " +
+        "from the quiet and busy arrival rates fitted in my MSc thesis — long still stretches, " +
+        "then a burst.";
+    }
+
+    inks(); size(); seed();
     if (reduced.matches) still(); else start();
 
     addEventListener("resize", () => { stop(); size(); seed(); reduced.matches ? still() : start(); },
       { passive: true });
+    addEventListener("themechange", () => { inks(); if (reduced.matches) still(); });
+    matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", () => { inks(); if (reduced.matches) still(); });
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
     reduced.addEventListener("change", () => { stop(); reduced.matches ? still() : start(); });
   }

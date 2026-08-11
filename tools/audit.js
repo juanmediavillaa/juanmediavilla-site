@@ -23,7 +23,10 @@ const PORT = 9222;
 const SITE = path.resolve(__dirname, "..");
 const WIN = process.argv[2]; // windows-style site root with forward slashes
 const PAGES = [
-  "index.html", "projects/index.html", "research/index.html",
+  "index.html", "projects/index.html",
+  "projects/prediction-market/index.html", "projects/wallet-intelligence/index.html",
+  "projects/fund-terminal/index.html", "projects/data-portal/index.html",
+  "research/index.html", "research/msc/index.html", "research/bsc/index.html",
   "research/thesis/index.html", "how-i-work/index.html", "about/index.html",
   "cv/index.html", "glossary/index.html",
 ];
@@ -214,7 +217,13 @@ const STRUCT = `(() => {
     main: !!document.querySelector('main'), skip: !!document.querySelector('a.skip'),
     deadAnchors: [...document.querySelectorAll('a[href^="#"]')]
       .map(a => a.getAttribute('href').slice(1)).filter(id => id && !document.getElementById(id)),
+    // Subresources only. rel=canonical / alternate / me are metadata: they name
+    // a URL for crawlers and are never fetched, so an absolute one costs the
+    // reader nothing. Everything that IS fetched — stylesheet, icon, preload,
+    // script, img, iframe — still fails here if it points off-origin.
     external: [...document.querySelectorAll('link[href],script[src],img[src],iframe[src]')]
+      .filter(e => !(e.tagName === 'LINK' &&
+        /^(canonical|alternate|me|author)$/i.test(e.getAttribute('rel') || '')))
       .map(e => e.getAttribute('href') || e.getAttribute('src'))
       .filter(u => /^(https?:)?\\/\\//.test(u)),
     hidden: [...document.querySelectorAll('section, article, figure, .card')].filter(el => {
