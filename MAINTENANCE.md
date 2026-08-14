@@ -163,8 +163,9 @@ If a curve is *derived* rather than read from a file, the CSV column name must s
   hedge.
 - **Aggregate and derived statistics only**, nothing below 10-minute resolution, and **never a
   venue market identifier** — an 8-hex prefix is effectively unique in the corpus.
-- **No fund figures** — no value, returns, members or positions. **No repository links.** **No
-  student names, grades or submissions.**
+- **No fund figures** — no value, returns, members or positions. **No links to the private source
+  repositories** — `default-fail` is the one public exception, named in `CONTENT-RULES.md` §4.1.
+  **No student names, grades or submissions.**
 - **University colours are quarantined** to `.inst` on `/about`. They never enter the series
   palette, a figure, or the gradient system. The card and both logos theme normally: the UCL mark is
   inlined so its fills read the card's tokens, and the monochrome Leiden seal is lifted on dark by a

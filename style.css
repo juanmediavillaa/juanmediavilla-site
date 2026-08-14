@@ -1056,6 +1056,16 @@ hr.divider {
 }
 .tip b { color: var(--ink); }
 
+/* Repository mark. Sized in em so it tracks whatever type it sits in, and
+   painted with currentColor so it inherits the link — the source file ships a
+   hardcoded near-black fill, which would vanish on the dark plane (§16). */
+.gh {
+  width: 1em; height: 1em;
+  vertical-align: -0.13em;
+  margin-right: .45em;
+  flex: none;
+}
+
 /* ---------- micro-interactions ---------- */
 
 a:not(.card):not(.nav__home):not(.nav a):not(.work__row) {
