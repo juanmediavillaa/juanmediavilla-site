@@ -1,0 +1,7 @@
+# title: What the AI tier already carries
+# unit: share of the total, per cent — a share, not a growth rate
+# caption: A share of a total at one point in time, not a growth rate — the other charts on this page show growth, this one does not. The Max tier's share of paying subscribers against its share of subscription revenue. The gap is the point: a minority of subscribers on the AI product generate a disproportionate share of the money. If AI were repelling paying users, these two bars would be level or inverted.
+# provenance: Reported Max penetration of roughly 8-9% of the paying base and 12-16% of subscription revenue, as of Q2 2026. Ranges are shown at their midpoint. Company-reported, not audited by me.
+measure,percent,note
+Share of paying subscribers,8.5,about 8-9%
+Share of subscription revenue,14,about 12-16%

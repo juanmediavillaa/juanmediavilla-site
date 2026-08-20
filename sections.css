@@ -303,3 +303,30 @@ a.note:hover h3 { color: var(--accent); }
    verdict scale would have to explain. */
 .bk--reading { border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; }
 .bk__verdict--reading { border-color: var(--accent); color: var(--accent); }
+
+/* A figure's title and unit, above the chart. Both are <p> rather than spans
+   made block by CSS: a title and a unit concatenated in the markup read as
+   "...since 2021millions of..." anywhere CSS is absent — a screen reader, a
+   copy-paste, a search snippet. They are also NOT figcaptions, because a
+   <figure> may contain only one, and this one has a real caption below. An h3
+   would break the heading order the audit checks. */
+.fig-title {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-top: none;
+  margin: 0 0 var(--s1);
+  padding: 0;
+  max-width: none;
+}
+figure .scroll > svg { display: block; width: 100%; min-width: 30rem; height: auto; }
+.fig-unit {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  margin: 0 0 var(--s3);
+  max-width: var(--measure);
+}

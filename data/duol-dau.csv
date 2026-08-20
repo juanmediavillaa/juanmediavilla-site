@@ -1,0 +1,13 @@
+# title: Daily active users since 2021
+# unit: millions of daily active users, at each year end
+# kind: columns
+# caption: Year-end daily active users, with the latest quarter and management's stated 2028 target alongside. The line the market is pricing would have flattened by now. It has not: users have roughly doubled since the end of 2023 and the most recent quarter accelerated. The target bar is an ambition, not a result, and is drawn open for that reason.
+# provenance: Company-reported year-end figures, Q4 2021 to Q4 2025, plus Q2 2026 as the latest reported quarter. Q4 2023 is back-computed from the reported +51% year-on-year growth into Q4 2024 and is marked derived. The 2028 figure is a management target, not a forecast of mine. Not pre-registered.
+period,value,note,kind
+Q4 2021,10.1,,actual
+Q4 2022,16.3,,actual
+Q4 2023,26.9,derived,actual
+Q4 2024,40.5,,actual
+Q4 2025,52.7,,actual
+Q2 2026,58.7,latest,actual
+2028,100,target,target

@@ -271,6 +271,168 @@ def return_html(v: dict, *, big: bool = False) -> str:
             f'{signed(v["returnPct"])}</span>')
 
 
+# =================================================================== figures
+
+def read_series(name: str) -> dict:
+    """A figure's numbers and its caption, both from the committed CSV.
+
+    The numbers are never retyped into markup (CONTENT-RULES §7), and the file
+    is linked under the chart so a reader can take the same numbers away.
+    Lines beginning `#` carry the title, caption and provenance, so a figure
+    cannot drift from the words describing it — they live in one file.
+    """
+    path = SITE / "data" / name
+    if not path.exists():
+        raise ContentError(f"figure source {name} does not exist")
+    meta, rows = {}, []
+    header = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        if line.startswith("#"):
+            key, _, value = line.lstrip("# ").partition(":")
+            meta[key.strip().lower()] = value.strip()
+        elif header is None:
+            header = [c.strip() for c in line.split(",")]
+        else:
+            cells = [c.strip() for c in line.split(",")]
+            rows.append(dict(zip(header, cells)))
+    if not rows:
+        raise ContentError(f"figure source {name} has no rows")
+    for k in ("title", "caption", "provenance"):
+        if k not in meta:
+            raise ContentError(f"figure source {name} has no `# {k}:` line")
+    return {"meta": meta, "rows": rows, "file": name}
+
+
+def bar_chart(series: dict) -> str:
+    """Horizontal bars as inline SVG.
+
+    Inline so it inherits the page's custom properties and follows the manual
+    theme toggle; a referenced <img> can only see prefers-color-scheme (§16).
+    One colour for every bar — the label carries the meaning, so a greyscale
+    print loses nothing and no series slot is cycled (§11). Authored at 640
+    wide with 12px type and never scaled down (§14, §15).
+    """
+    rows = series["rows"]
+    # The label gutter is measured, not fixed: Plex Mono advances about 0.6em,
+    # so a 12px glyph is ~7.2px wide. A hardcoded 210px gutter clipped
+    # "Share of subscription revenue" straight off the left edge of the viewBox.
+    # The canvas is a CONSTANT 640 wide for every chart on the site. Sizing it
+    # to content instead gave two charts different viewBox widths, and since
+    # both stretch to the same container, identical 12px type rendered at
+    # different sizes on the same page.
+    CHAR, W, R, TOP, ROW = 7.2, 640, 54, 30, 42
+    longest = max(max(len(r["measure"]), len(r.get("note", ""))) for r in rows)
+    L = min(round(longest * CHAR) + 24, 300)
+    BARS = W - L - R
+    H = TOP + ROW * len(rows) + 12
+    top = max(float(r["percent"]) for r in rows)
+    scale = BARS / (top * 1.12)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="'
+           + esc(series["meta"]["title"]) + ": "
+           + esc(", ".join(f'{r["measure"]} {r["percent"]} percent' for r in rows)) + '">']
+    for i, r in enumerate(rows):
+        y = TOP + i * ROW
+        w = float(r["percent"]) * scale
+        out.append(f'<text x="{L - 12}" y="{y + 15:.0f}" text-anchor="end" '
+                   f'font-family="var(--mono)" font-size="12" fill="var(--ink)">'
+                   f'{esc(r["measure"])}</text>')
+        out.append(f'<rect x="{L}" y="{y + 4:.0f}" width="{w:.1f}" height="16" rx="2" '
+                   f'fill="var(--accent)"/>')
+        out.append(f'<text x="{L + w + 8:.1f}" y="{y + 16:.0f}" '
+                   f'font-family="var(--mono)" font-size="12" fill="var(--ink)">'
+                   f'{r["percent"]}%</text>')
+        if r.get("note"):
+            out.append(f'<text x="{L - 12}" y="{y + 29:.0f}" text-anchor="end" '
+                       f'font-family="var(--mono)" font-size="12" fill="var(--ink-3)">'
+                       f'{esc(r["note"])}</text>')
+    out.append(f'<line x1="{L}" y1="{TOP - 6}" x2="{L}" y2="{H - 10}" '
+               f'stroke="var(--line-2)" stroke-width="1"/>')
+    out.append("</svg>")
+    return "\n            ".join(out)
+
+
+def column_chart(series: dict) -> str:
+    """A time series as columns, on the same 640 canvas.
+
+    A target is drawn open rather than filled: an ambition and a result must not
+    look like the same kind of thing.
+    """
+    rows = series["rows"]
+    W, H, L, R, TOP, BASE = 640, 250, 46, 16, 26, 196
+    step = (W - L - R) / len(rows)
+    bw = min(step * 0.58, 54)
+    top = max(float(r["value"]) for r in rows) * 1.1
+
+    out = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="'
+           + esc(series["meta"]["title"]) + ": "
+           + esc(", ".join(f'{r["period"]} {r["value"]}' for r in rows)) + '">']
+    for level in (0, 25, 50, 75, 100):
+        y = BASE - level / top * (BASE - TOP)
+        out.append(f'<line x1="{L}" y1="{y:.1f}" x2="{W - R}" y2="{y:.1f}" '
+                   f'stroke="var(--line)" stroke-width="1"/>')
+        out.append(f'<text x="{L - 9}" y="{y + 4:.1f}" text-anchor="end" '
+                   f'font-family="var(--mono)" font-size="12" fill="var(--ink-3)">{level}</text>')
+    for i, r in enumerate(rows):
+        v = float(r["value"])
+        x = L + i * step + (step - bw) / 2
+        h = v / top * (BASE - TOP)
+        target = r.get("kind") == "target"
+        fill = ('fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 3"'
+                if target else 'fill="var(--accent)"')
+        out.append(f'<rect x="{x:.1f}" y="{BASE - h:.1f}" width="{bw:.1f}" height="{h:.1f}" '
+                   f'rx="2" {fill}/>')
+        out.append(f'<text x="{x + bw / 2:.1f}" y="{BASE - h - 7:.1f}" text-anchor="middle" '
+                   f'font-family="var(--mono)" font-size="12" fill="var(--ink)">{r["value"]}</text>')
+        out.append(f'<text x="{x + bw / 2:.1f}" y="{BASE + 18:.0f}" text-anchor="middle" '
+                   f'font-family="var(--mono)" font-size="12" fill="var(--ink-3)">'
+                   f'{esc(r["period"])}</text>')
+        if r.get("note"):
+            out.append(f'<text x="{x + bw / 2:.1f}" y="{BASE + 34:.0f}" text-anchor="middle" '
+                       f'font-family="var(--mono)" font-size="12" fill="var(--ink-3)">'
+                       f'{esc(r["note"])}</text>')
+    out.append(f'<line x1="{L}" y1="{BASE}" x2="{W - R}" y2="{BASE}" '
+               f'stroke="var(--line-2)" stroke-width="1"/>')
+    out.append("</svg>")
+    return "\n            ".join(out)
+
+
+def figure(name: str) -> str:
+    s = read_series(name)
+    m = s["meta"]
+    if "unit" not in m:
+        raise ContentError(f"figure source {name} has no `# unit:` line — a chart that "
+                           f"does not say what its numbers are invites the reader to guess")
+    columns = m.get("kind") == "columns"
+    key, val = ("period", "value") if columns else ("measure", "percent")
+    suffix = "" if columns else "%"
+    svg = column_chart(s) if columns else bar_chart(s)
+    table = "".join(
+        f'<tr><td>{esc(r[key])}</td><td class="n">{r[val]}{suffix}</td>'
+        f'<td>{esc(r.get("note", ""))}</td></tr>' for r in s["rows"])
+    return f"""        <figure>
+          <p class="fig-title">{esc(m["title"])}</p>
+          <p class="fig-unit">{esc(m["unit"])}</p>
+          <div class="scroll" role="region" aria-label="{esc(m["title"])}" tabindex="0">
+            {svg}
+          </div>
+          <p class="scroll-hint">Scroll the chart sideways&nbsp;&rarr;</p>
+          <figcaption>
+            <b>What you're looking at:</b> {esc(m["caption"])}
+            <span class="prov">{esc(m["provenance"])}
+              Source numbers: <a href="../../../data/{esc(name)}">{esc(name)}</a>.</span>
+          </figcaption>
+          <details class="figdata"><summary>Show the numbers</summary>
+            <table><thead><tr><th>{"Period" if columns else "Measure"}</th>
+            <th class="n">Value</th><th>Note</th></tr></thead>
+            <tbody>{table}</tbody></table>
+          </details>
+        </figure>
+"""
+
+
 # ================================================================ components
 
 def card(v: dict) -> str:
@@ -471,7 +633,19 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
             + "          <p>Under construction &mdash; not written up yet.</p>" + chr(10)
             + "        </div>" + chr(10))
     for s in v["sections"]:
-        doc.append(f"        <h2>{esc(s['title'])}</h2>" + chr(10) + blocks(s["md"]) + chr(10))
+        doc.append(f"        <h2>{esc(s['title'])}</h2>" + chr(10))
+        # a line of "@figure name.csv" renders the chart; the rest is prose
+        buf: list[str] = []
+        for para in s["md"].split(chr(10) + chr(10)):
+            if para.strip().startswith("@figure "):
+                if buf:
+                    doc.append(blocks((chr(10) * 2).join(buf)) + chr(10))
+                    buf = []
+                doc.append(figure(para.strip().split(None, 1)[1].strip()))
+            else:
+                buf.append(para)
+        if buf:
+            doc.append(blocks((chr(10) * 2).join(buf)) + chr(10))
     doc.append("""      </div>
     </div>
   </div>

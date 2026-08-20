@@ -1,0 +1,9 @@
+# title: Where the growth is, and where it is not
+# unit: growth, per cent — period stated on every row, because they are not the same
+# caption: Growth by measure. The first three are the quarter just reported, against the same quarter a year earlier. The fourth is management's guidance for the full year, so it is a different period and is labelled as one — it is shown here because bookings is the number that leads reported revenue, and it is the one running slowest. If the concern were simply "growth is slowing", all four bars would be short. If there were no concern at all, the last bar would not be less than half the first.
+# provenance: Duolingo Q2 2026 results, reported 6 August 2026. Bookings is the midpoint of full-year 2026 guidance of 10-12%. Company-reported, not audited by me, and not pre-registered.
+measure,percent,note
+Daily active users,23,Q2 2026 vs Q2 2025
+Revenue,18,Q2 2026 vs Q2 2025
+Paid subscribers,17,Q2 2026 vs Q2 2025
+Bookings,11,full-year 2026 guide
