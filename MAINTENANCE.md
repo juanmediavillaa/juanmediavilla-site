@@ -363,11 +363,16 @@ retroactively, because the commit ordering proves it.
 
 ## 7. Known soft spots
 
-- **`~800 GB archived as of August 2026` is the only number on the site that is not
-  machine-verifiable.** It is self-reported from cloud storage. It always carries its as-of date.
-  Sanity-checked once: over the 83-day window the recorded 12.8 GiB/day implies a ~1,141 GB
-  ceiling, so 800 GB means a 9.0 GiB/day realised average — consistent. **Re-check it whenever you
-  next quote it**, and keep it distinct from the 250 GB server working set.
+- **`~1.05 TB archived as of August 2026` is the only number on the site that is not
+  machine-verifiable.** It is self-reported from cloud storage and always carries its as-of date.
+  Re-checked on 20 August 2026 when it moved up from `~800 GB`: over a ~102-day window the recorded
+  12.8 GiB/day implies a ~1,402 GB ceiling, so 1.05 TB means a 9.6 GiB/day realised average, 75% of
+  peak — consistent, and up from 9.0 GiB/day at the previous figure. **Re-run that check every time
+  it moves**, keep it distinct from the 250 GB server working set, and add the old value to the
+  retired table in `CONTENT-RULES.md` §2 so it cannot come back as current.
+  **Growing it changes nothing downstream**: the 12.8 GiB/day rate, the seven streams, the audited
+  panel (400 markets, 188,856 trades) and the curated tier (206 markets, 408,414 events) are
+  derived from committed files and do not move.
 - **`assets/leiden-seal.svg` is 81 KB**, by far the heaviest asset. A precision-and-whitespace pass
   took it from 89 KB with a verified-identical render (0.1% of channels differing by more than
   8/255, edge antialiasing only). An aggressive pass that stripped elements dropped two visible

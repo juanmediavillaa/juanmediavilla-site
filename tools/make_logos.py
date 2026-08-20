@@ -56,6 +56,8 @@ ALIASES = {
     "google": "alphabet",
     "meta": "meta-platforms",
     "nubank": "nu-holdings",
+    "robinhood": "robinhood-markets",
+    "hims": "hims-and-hers-health",
 }
 
 EXTERNAL = re.compile(r'(?:href|src)\s*=\s*["\']\s*https?://|url\(\s*["\']?\s*https?://', re.I)

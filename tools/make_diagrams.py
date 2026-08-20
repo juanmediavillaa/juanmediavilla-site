@@ -86,7 +86,7 @@ def d_pipeline() -> tuple[str, Dia]:
     d.box(160, 60, 116, 56, "systemd timers", "15–60 min", cls="bx1",
           tip="each collector runs on a systemd timer")
     d.box(302, 60, 126, 56, "storage", "250 GB working set", cls="bx3",
-          tip="server working set; periodically offloaded to a ~800 GB archive")
+          tip="server working set; periodically offloaded to a ~1.05 TB archive")
     d.box(452, 20, 200, 46, "gap audit", "continuity accounting", cls="bx2",
           tip="every feed gap is logged and masked, never interpolated")
     d.box(452, 96, 200, 56, "audited panel",
@@ -98,7 +98,7 @@ def d_pipeline() -> tuple[str, Dia]:
     d.arrow(422, 80, 450, 52, "ar2")
     d.arrow(422, 96, 450, 118)
     d.label(8, 196, "every gap logged and masked — never interpolated", cls="tm")
-    d.label(8, 212, "offloaded to a ~800 GB archive (self-reported, Aug 2026)", cls="tm")
+    d.label(8, 212, "offloaded to a ~1.05 TB archive (self-reported, Aug 2026)", cls="tm")
     return "dia-pipeline", d
 
 

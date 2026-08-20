@@ -15,8 +15,10 @@ roughly eight times the whole page budget. Only the resized versions are
 committed, which keeps the page inside its budget and keeps this repository from
 republishing high-resolution copyrighted art it has no need for.
 
-Every book must have a cover and every cover must belong to a book; both
-directions fail loudly rather than shipping a silent gap.
+Every cover must belong to a book — an unmatched file is a misnamed one that
+will never appear, so it fails. A book without a cover is not an error: it can
+be added before the artwork arrives, and the card shows a neutral placeholder
+until it does.
 """
 
 from __future__ import annotations
@@ -91,12 +93,15 @@ def main() -> int:
     for name in orphans:
         print(f"  ! {name} does not match any book — add it to ALIASES", file=sys.stderr)
     for slug in missing:
-        print(f"  ! {slug} has no cover in {SRC.name}/", file=sys.stderr)
+        # Not an error: a book can be added before its cover arrives, and the
+        # card shows a neutral placeholder until it does. An unmatched FILE is
+        # an error, because it means a misnamed cover nothing will ever use.
+        print(f"  · {slug} has no cover yet")
 
     if args.check:
-        ok = not orphans and not missing
-        print(f"  {len(mapped)} covers matched, {len(orphans)} unmatched, {len(missing)} missing")
-        return 0 if ok else 1
+        print(f"  {len(mapped)} covers matched, {len(orphans)} unmatched, "
+              f"{len(missing)} still to come")
+        return 1 if orphans else 0
 
     OUT.mkdir(parents=True, exist_ok=True)
     written = total = 0
@@ -118,7 +123,7 @@ def main() -> int:
 
     print(f"  {written} covers, {total / 1024:.1f} KB total "
           f"(sources were {sum(p.stat().st_size for p in sources) / 1024 / 1024:.1f} MB)")
-    return 1 if (orphans or missing) else 0
+    return 1 if orphans else 0
 
 
 if __name__ == "__main__":

@@ -293,3 +293,13 @@ a.pos:hover h3 { color: var(--accent); }
 }
 .note__sum { font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-3); }
 a.note:hover h3 { color: var(--accent); }
+
+/* A book on the reading list has no verdict yet, so the pill states the state
+   instead. Dashed, like a dropped verdict: neither is a judgement. */
+.bk__verdict--unread { border-style: dashed; color: var(--ink-3); }
+
+/* The book being read now. An accent rule, the same device the original entry
+   in a notebook log uses — it marks the live one without adding a colour the
+   verdict scale would have to explain. */
+.bk--reading { border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; }
+.bk__verdict--reading { border-color: var(--accent); color: var(--accent); }

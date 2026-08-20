@@ -31,13 +31,18 @@ The previous site advertised these. They are wrong, superseded, or were retracte
 | `n=105` as the corpus size | The final corpus is `n=318`. Pre-registered values must be labelled as such. |
 | `~118 GB` corpus | Superseded. That was the **on-server working set**, not the archive. |
 | `~236 GB` archive | Superseded. Was the portal documentation's figure at the time. |
+| `~800 GB` archive | Superseded 20 August 2026 by `~1.05 TB`. It was correct when written; the archive grew. Do not reintroduce it as a current figure. |
 
-**The corpus figure is `~800 GB archived as of August 2026`, and it is self-reported.** Unlike the
+**The corpus figure is `~1.05 TB archived as of August 2026`, and it is self-reported.** Unlike the
 git-derived counts it cannot be verified from a committed file, so it always carries the as-of
 date. Keep the two quantities distinct: the **250 GB server working set** that fills and is
-periodically offloaded, and the **archived total on cloud storage**. Sanity-checked against the
-recorded 12.8 GiB/day: over the 83-day window the ceiling is ~1,141 GB, so 800 GB implies a 9.0
-GiB/day realised average (70% of peak), which the disclosed outage and the offload cycle explain.
+periodically offloaded, and the **archived total on cloud storage**.
+
+Sanity-checked against the recorded 12.8 GiB/day each time it moves. Over the ~102-day window the
+ceiling is ~1,402 GB, so 1.05 TB implies a **9.6 GiB/day realised average (75% of peak)** — up from
+the 9.0 GiB/day the previous 800 GB figure implied over 83 days, still short of peak, and explained
+by the disclosed outage and the offload cycle. **A figure that cannot clear this check does not
+ship.**
 
 **Growing the corpus figure must not inflate anything downstream.** The audited panel (400
 resolved markets, 188,856 trades) and the curated tier (206 markets, 408,414 repricing events)

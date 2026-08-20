@@ -45,13 +45,24 @@ def load_book(path: pathlib.Path) -> dict:
     where = path.relative_to(SITE).as_posix()
     front, body = parse_front_matter(path.read_text(encoding="utf-8"), where)
 
-    for required in ("title", "author", "read", "verdict"):
-        if required not in front:
-            raise ContentError(f"{where}: missing required field {required}")
+    # A book on the shelf carries a year and a verdict. One that is bought but
+    # unread carries neither, because there is nothing yet to record.
+    # read | reading | unread. The middle one is a fact worth stating: it is
+    # neither a verdict nor a queue position.
+    status = str(front.get("status", "read")).strip().lower()
+    if status not in ("read", "reading", "unread"):
+        raise ContentError(f"{where}: status must be read, reading or unread")
 
-    verdict = str(front["verdict"]).strip().lower()
-    if verdict not in VERDICTS:
+    required = ("title", "author") + (("read", "verdict") if status == "read" else ())
+    for field in required:
+        if field not in front:
+            raise ContentError(f"{where}: missing required field {field}")
+
+    verdict = str(front.get("verdict", "")).strip().lower()
+    if status == "read" and verdict not in VERDICTS:
         raise ContentError(f"{where}: verdict must be one of {', '.join(VERDICTS)}")
+    if status != "read" and (front.get("verdict") or front.get("read")):
+        raise ContentError(f"{where}: a book not yet finished carries no verdict and no year")
 
     sections = parse_body(body, where)
     # The filename is authoritative, so content/books/x.md, books/x/ and
@@ -64,10 +75,12 @@ def load_book(path: pathlib.Path) -> dict:
         "file": where,
         "title": str(front["title"]).strip(),
         "author": str(front["author"]).strip(),
-        "read": str(front["read"]).strip(),       # a year, or a date range in prose
+        "status": status,
+        "read": str(front.get("read", "")).strip(),   # a year, or a span, as recorded
         # `or` would discard a falsy-but-valid key such as 0, silently
         # falling back to the display string and misordering the shelf.
-        "sort": str(front["sortKey"] if "sortKey" in front else front["read"]).strip(),
+        "sort": str(front["sortKey"] if "sortKey" in front
+                    else front.get("read", "")).strip(),
         "verdict": verdict,
         "shelf": str(front.get("shelf", "")).strip(),
         "summary": str(front.get("summary", "")).strip(),
@@ -95,29 +108,38 @@ def parse_body(body: str, where: str) -> list[dict]:
 
 def row(b: dict) -> str:
     """One book on the shelf. A link only when there is something to link to."""
-    cover = (f'            <img class="bk__cover" src="../../../assets/covers/{b["cover"]}" '
+    cover = (f'            <img class="bk__cover" src="../../assets/covers/{b["cover"]}" '
              f'alt="" loading="lazy" decoding="async" width="200">\n'
              if b["cover"] else '            <span class="bk__cover bk__cover--none"></span>\n')
+    top = (f'<span class="bk__top">'
+           f'<span class="bk__verdict bk__verdict--{b["verdict"]}">{b["verdict"]}</span>'
+           f'<span class="bk__when">{esc(b["read"])}</span></span>'
+           if b["status"] == "read" else
+           f'<span class="bk__top"><span class="bk__verdict bk__verdict--{b["status"]}">'
+           f'{"reading now" if b["status"] == "reading" else "unread"}</span></span>')
     inner = cover + f"""            <span class="bk__text">
-              <span class="bk__top">
-                <span class="bk__verdict bk__verdict--{b['verdict']}">{b['verdict']}</span>
-                <span class="bk__when">{esc(b['read'])}</span>
-              </span>
+              {top}
               <h3 class="work-title">{esc(b['title'])}</h3>
               <span class="bk__by">{esc(b['author'])}</span>
 """
     if b["summary"]:
-        inner += f'              <span class="bk__sum">{esc(b["summary"])}</span>\n'
-    inner += (f'              <span class="bk__go">Read the write-up&nbsp;&rarr;</span>\n'
-              if b["written"] else
-              '              <span class="bk__go bk__go--none">No write-up</span>\n')
+        inner += f'              <span class="bk__sum">{esc(b["summary"])}</span>' + chr(10)
+    if b["status"] != "read":
+        label = "In progress" if b["status"] == "reading" else "Not read yet"
+        inner += f'              <span class="bk__go bk__go--none">{label}</span>' + chr(10)
+    elif b["written"]:
+        inner += '              <span class="bk__go">Read the write-up&nbsp;&rarr;</span>' + chr(10)
+    else:
+        inner += '              <span class="bk__go bk__go--none">No write-up</span>' + chr(10)
     inner += "            </span>\n"
 
     if b["written"]:
         return (f'          <a class="card bk" href="{esc(b["slug"])}/index.html"'
                 f' data-verdict="{b["verdict"]}">\n{inner}          </a>\n')
-    return (f'          <div class="card bk bk--flat" data-verdict="{b["verdict"]}">\n'
-            f'{inner}          </div>\n')
+    # the live one carries an accent rule, the same device the notebook log uses
+    extra = " bk--reading" if b["status"] == "reading" else ""
+    return (f'          <div class="card bk bk--flat{extra}" data-status="{b["status"]}">' + chr(10)
+            + inner + "          </div>" + chr(10))
 
 
 def shelf(books: list[dict], empty: str) -> str:
@@ -133,8 +155,13 @@ STANDING_NOTE = ""
 
 
 def build_index(books: list[dict]) -> str:
-    written = [b for b in books if b["written"]]
-    counts = {v: sum(1 for b in books if b["verdict"] == v) for v in VERDICTS}
+    shelf_books = [b for b in books if b["status"] == "read"]
+    # what is being read now sorts first; it is the live one
+    unread = sorted((b for b in books if b["status"] != "read"),
+                    key=lambda b: (b["status"] != "reading", b["title"]))
+    reading = [b for b in unread if b["status"] == "reading"]
+    written = [b for b in shelf_books if b["written"]]
+    counts = {v: sum(1 for b in shelf_books if b["verdict"] == v) for v in VERDICTS}
 
     doc = [head("Books — Notes — Juan Mediavilla",
                 "What I have read, what I thought of it, and what I actually took from it — "
@@ -162,7 +189,7 @@ def build_index(books: list[dict]) -> str:
     <div class="rail">
       <div class="rail__label">
         <p class="eyebrow">How I keep it</p>
-        <p class="meta">{len(books)} books.<br>{len(written)} written up.</p>
+        <p class="meta">{len(shelf_books)} read.<br>{len(written)} written up.<br>{len(unread)} on the shelf.</p>
       </div>
       <div class="rail__body">
 {STANDING_NOTE}        <h2>Verdicts</h2>
@@ -186,7 +213,21 @@ def build_index(books: list[dict]) -> str:
           The log as I have kept it, at the precision I kept it. Several are recorded as a span of
           years rather than a date.
         </p>
-{shelf(books, 'Nothing logged yet.')}      </div>
+{shelf(shelf_books, 'Nothing logged yet.')}      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label">
+        <p class="eyebrow">Reading list</p>
+        <p class="meta">{len(reading)} in progress.<br>{len(unread) - len(reading)} waiting.</p>
+      </div>
+      <div class="rail__body">
+        <h2>Bought, not yet read</h2>
+{shelf(unread, 'Nothing waiting.')}      </div>
     </div>
   </div>
 </section>

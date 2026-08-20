@@ -135,7 +135,7 @@ def load_position(path: pathlib.Path) -> dict:
     where = path.relative_to(SITE).as_posix()
     front, body = parse_front_matter(path.read_text(encoding="utf-8"), where)
 
-    for required in ("ticker", "name", "theme", "status", "updated"):
+    for required in ("ticker", "name", "status", "updated"):
         if required not in front:
             raise ContentError(f"{where}: missing required field {required}")
 
@@ -157,7 +157,9 @@ def load_position(path: pathlib.Path) -> dict:
         "file": where,
         "ticker": str(front["ticker"]).strip().upper(),
         "name": str(front["name"]).strip(),
-        "theme": str(front["theme"]).strip(),
+        # Optional: the themes are his classification, and a position sits
+        # without one rather than being filed under a guess.
+        "theme": str(front.get("theme", "")).strip(),
         "status": status,
         "entries": entries,
         "exits": exits,
@@ -276,7 +278,7 @@ def card(v: dict) -> str:
     overview here, the thesis and the movements one click away."""
     if v["logo"]:
         ground = " pos__logo--ground" if v["logoGround"] else ""
-        mark = (f'              <img class="pos__logo{ground}" src="../../../assets/logos/{v["logo"]}" '
+        mark = (f'              <img class="pos__logo{ground}" src="../../assets/logos/{v["logo"]}" '
                 f'alt="" loading="lazy" decoding="async" width="96">\n')
     else:
         mark = (f'              <span class="pos__logo pos__logo--none" aria-hidden="true">'
@@ -353,7 +355,7 @@ def build_index(views: list[dict], prices: Prices, pf: Portfolio) -> str:
     <p class="eyebrow">Notebook</p>
     <h1>What I bought, and what happened</h1>
     <p class="standfirst">
-      Nine positions: the price I paid for each, and what it trades at now.
+      {len(open_v)} positions: the price I paid for each, and what it trades at now.
     </p>
   </div>
 </header>
@@ -416,6 +418,7 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
                   f'{len(v["entries"])} entr{"y" if len(v["entries"]) == 1 else "ies"}'
                   if v["basisSource"] == "computed" else "average cost, as supplied")
 
+    theme = (f'<span class="pos__class">{esc(v["theme"])}</span>' if v["theme"] else "")
     ground = " pos__logo--ground" if v["logoGround"] else ""
     mark = (f'<img class="pos__logo pos__logo--lg{ground}" src="../../../assets/logos/{v["logo"]}" '
             f'alt="" width="96">' if v["logo"] else
@@ -436,7 +439,7 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
       {mark}
       <span class="pos__ticker pos__ticker--lg">{esc(v['ticker'])}</span>
       <span class="pos__status pos__status--{esc(v['status'])}">{STATUS_LABEL[v['status']]}</span>
-      <span class="pos__class">{esc(v['theme'])}</span>
+      {theme}
     </p>
     <ul class="keyfacts">
       <li>{return_html(v, big=True)}<span>unrealized, {esc(pf.currency)}</span></li>

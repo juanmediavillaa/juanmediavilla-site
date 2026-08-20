@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import pathlib
+import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
@@ -38,8 +39,16 @@ SECTIONS = [
 
 
 def count(folder: str) -> int:
+    """Entries that are actually part of the section.
+
+    A book that is unread, or being read now, is on the reading list rather than
+    the shelf, so it is not what "23 books" on this page means.
+    """
     d = SITE / "content" / folder
-    return len(list(d.glob("*.md"))) if d.exists() else 0
+    if not d.exists():
+        return 0
+    return sum(1 for f in d.glob("*.md")
+               if not re.search(r"^status:\s*(unread|reading)\s*$", f.read_text(encoding="utf-8"), re.M))
 
 
 def build() -> str:

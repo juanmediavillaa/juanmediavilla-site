@@ -425,6 +425,7 @@ h1 + p, h2 + p, h3 + p { margin-top: var(--s3); }
 .work { margin: var(--s4) 0 0; border-top: 1px solid var(--line-2); }
 .work__row {
   display: grid;
+  position: relative;
   grid-template-columns: 2.6rem minmax(0, 1fr);
   gap: var(--s2) var(--s3);
   align-items: start;
@@ -434,7 +435,7 @@ h1 + p, h2 + p, h3 + p { margin-top: var(--s3); }
   color: inherit;
   transition: background-color .18s ease, padding-left .18s ease;
 }
-.work__row:hover, .work__row:focus-visible {
+.work__row:hover, .work__row:focus-within {
   background: var(--surface-2);
   padding-left: var(--s2);
 }
@@ -448,7 +449,16 @@ h1 + p, h2 + p, h3 + p { margin-top: var(--s3); }
 }
 .work__main { min-width: 0; }
 .work__row h3 { margin: 0; transition: color .18s ease; }
-.work__row:hover h3 { color: var(--accent); }
+.work__row:hover h3, .work__row:focus-within h3 { color: var(--accent); }
+
+/* The row is a <div> and the title carries the link, not the row itself. A row
+   may contain a glossary link, and an <a> inside an <a> is invalid: the parser
+   closes the outer one, which ejected .work__stat out of two rows here and
+   dropped it onto its own line. The title's overlay restores whole-row
+   clicking; anything else in the row is raised above it and stays clickable. */
+.work__link { color: inherit; text-decoration: none; }
+.work__link::after { content: ""; position: absolute; inset: 0; }
+.work__row a:not(.work__link) { position: relative; z-index: 1; }
 .work__sum {
   display: block;
   font-size: var(--fs-sm);

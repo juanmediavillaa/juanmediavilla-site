@@ -34,6 +34,8 @@ const PAGES = [
   "notes/index.html", "notes/investing/index.html", "notes/books/index.html",
   "notes/investing/meta-platforms/index.html", "notes/investing/duolingo/index.html",
   "notes/investing/alphabet/index.html", "notes/investing/reddit/index.html",
+  "notes/investing/robinhood-markets/index.html",
+  "notes/investing/hims-and-hers-health/index.html",
   "notes/books/when-genius-failed/index.html",
 ];
 // Home + five sections. Defined in tools/sitegen.py NAV; change both together.

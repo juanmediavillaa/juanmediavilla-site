@@ -60,7 +60,10 @@ for f in sorted(pathlib.Path('.').glob('**/*.html')):
     if str(f) == '404.html': continue          # served at any depth; absolute by necessity
     text = f.read_text()
     ids = set(re.findall(r'\sid="([^"]+)"', text))
-    for href in re.findall(r'href="([^"]+)"', text):
+    # src as well as href: a broken image resolves to nothing, is not an
+    # off-origin request, and is skipped by the budget check, so it was
+    # invisible to every other sweep here.
+    for href in re.findall(r'(?:href|src)="([^"]+)"', text):
         if re.match(r'^(https?:|mailto:|data:|#$)', href): continue
         target, _, frag = href.partition('#')
         if not target:
@@ -100,8 +103,14 @@ print("  none" if not bad else f"  {bad} page(s) out of step")
 sys.exit(1 if bad else 0)
 PY
 
+note "no funding chains in /notes"
+# A sale of a stated size named as the source of specific purchases lets a
+# reader infer their relative sizes — which is the one thing /notes withholds.
+# Movements state the change and the realized result, never where money went.
+if grep -rniE 'proceeds|funded by|funded the|redeploy|rotation|1:1' notes/ content/positions/; then
+  FAIL=1; else echo "  none"; fi
 note "no retired figures"
-if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB)' --include='*.html' .; then
+if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB|800 GB)' --include='*.html' .; then
   FAIL=1; else echo "  none"; fi
 
 note "no heading, card or one-liner built on a null result"
