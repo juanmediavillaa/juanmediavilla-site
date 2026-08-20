@@ -419,9 +419,21 @@ the subjects, delete `OVERNIGHT_LOG.md` and the dangling `PROJECT_STATE.md` poin
 `LICENSE`, and add the accuracy figures to the README **with their n=5 attached** plus a
 false-positive caveat on the word "INSIDER".
 
-**Credentials — delete the Supabase project.** *Pending, Juan to action.* The abandoned
-`GitHub/website` repo holds `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SUPABASE_URL` and
-`NEXT_PUBLIC_SUPABASE_ANON_KEY` in an uncommitted `.env.local`. Deleting the Supabase project
-retires all three at once, which is cleaner than rotating a key on a dead project. The two
-`NEXT_PUBLIC_` values were always shipped to browsers by design, so their safety depended on Row
-Level Security, not secrecy.
+**Credentials — Supabase project deleted. ✅ Closed 20 August 2026.** The abandoned
+`GitHub/website` repo held `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SUPABASE_URL` and
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` in an uncommitted `.env.local`. Deleting the project retired all
+three at once, which was cleaner than rotating a key on a dead project.
+
+Verified rather than assumed, and worth recording how, because the same four questions answer any
+future version of this:
+
+- **`.env.local` was never committed** — gitignored, and zero commits touch it.
+- **No secret value is in the history.** One commit matches `SUPABASE_ANON`, and it is
+  `src/lib/supabaseClient.js` referencing `process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY` — the
+  variable name, not a value.
+- **The repository is not public** (GitHub returns 404 unauthenticated).
+- **The project is gone**: its `*.supabase.co` subdomain has no DNS record, while `supabase.co`
+  itself resolves — so this is deletion, not a network fault.
+
+The dead `.env.local` still sits on the local disk. It is worthless now, but delete it when
+convenient so it cannot be mistaken for a live credential later.
