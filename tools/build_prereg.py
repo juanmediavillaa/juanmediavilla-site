@@ -73,7 +73,7 @@ def main() -> int:
                 print(f"  ! missing {path}", file=sys.stderr)
                 continue
             blocks.append(f'    <h3>{doc}</h3>\n    <pre class="code">'
-                          f"{html.escape(scrub(path.read_text()))}</pre>")
+                          f"{html.escape(scrub(path.read_text(encoding='utf-8')))}</pre>")
         sections.append(
             f'  <section class="section">\n'
             f'    <p class="eyebrow">{pkg}</p>\n'
@@ -102,6 +102,7 @@ def main() -> int:
     <a class="nav__home" href="../../../index.html">Juan Mediavilla</a>
     <a href="../../../projects/index.html">Projects</a>
     <a href="../../index.html">Research</a>
+    <a href="../../../notes/index.html">Notes</a>
     <a href="../../../how-i-work/index.html">How I Work</a>
     <a href="../../../about/index.html">About</a>
   </div>
@@ -134,7 +135,7 @@ def main() -> int:
 </html>
 """
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(page)
+    OUT.write_text(page, encoding='utf-8', newline='\n')
     print(f"  wrote {OUT.relative_to(SITE)} ({len(page):,} bytes)")
     print(f"  pseudonymised {len(pseudonyms)} venue market identifier(s)")
     return 0

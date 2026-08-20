@@ -293,7 +293,7 @@ def build() -> dict[str, str]:
             raise SystemExit(f"diagram {slug} is not well-formed XML: {exc}") from exc
         path = SITE / "figures" / f"{slug}.svg"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(markup + "\n")
+        path.write_text(markup + "\n", encoding='utf-8', newline='\n')
         out[slug] = markup
         print(f"  built {slug} ({len(markup):,} bytes)")
     return out
@@ -302,7 +302,7 @@ def build() -> dict[str, str]:
 def inject(diagrams: dict[str, str]) -> list[str]:
     changed = []
     for page in sorted(SITE.rglob("*.html")):
-        text = original = page.read_text()
+        text = original = page.read_text(encoding='utf-8')
         for m in re.finditer(r"<!-- DIAGRAM:([\w-]+) -->.*?<!-- /DIAGRAM:\1 -->", text, re.S):
             slug = m.group(1)
             if slug not in diagrams:
@@ -312,7 +312,7 @@ def inject(diagrams: dict[str, str]) -> list[str]:
                 m.group(0),
                 f"<!-- DIAGRAM:{slug} -->\n{diagrams[slug]}\n<!-- /DIAGRAM:{slug} -->")
         if text != original:
-            page.write_text(text)
+            page.write_text(text, encoding='utf-8', newline='\n')
             changed.append(str(page.relative_to(SITE)))
     return changed
 

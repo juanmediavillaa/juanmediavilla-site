@@ -28,7 +28,7 @@ CHROME=/path/to/chrome bash tools/audit.sh
 |---|---|
 | **Layout** at 320, 390, 768, 1440 | page overflow, elements overflowing a non-scrolling parent, any text under 12px, scroll regions missing `role`/`aria-label`/`tabindex` |
 | **Computed contrast**, both themes | any text below WCAG AA against its *effective* background, resolved through the ancestor chain — **including SVG text, measured on `fill`** |
-| **Structure**, scripting on and off | heading order, one `h1`, five nav items, landmarks, dead in-page anchors, external subresources, and anything hidden when JS is off |
+| **Structure**, scripting on and off | heading order, one `h1`, the nav item count, landmarks, dead in-page anchors, external subresources, and anything hidden when JS is off |
 | **Internal links** | every relative `href` resolves to a file, and every `#fragment` to a real `id` |
 | **Generator idempotence** | a figure, diagram or glossary entry that has drifted from its source |
 | **Prohibited content** | external subresources, infrastructure, secrets, identifiers, student data, retired figures |
@@ -138,6 +138,166 @@ Keep the plain-language layer: a reader with no background follows steps 1–4, 
 term is defined inline at first use on that page and linked to `/glossary`.
 
 ---
+
+## 3a. How to add a position to /notes/investing
+
+`/notes/investing` is **generated**, not hand-written. Three inputs, kept apart on purpose:
+
+```text
+content/positions/<slug>.md   my writing, and the facts I supply per position
+data/prices.json              last price per ticker      -> tools/prices.py
+data/portfolio.json           the currency and the cost date -> tools/portfolio.py
+```
+
+```sh
+python3 tools/build_notebook.py             # write the pages
+python3 tools/build_notebook.py --check     # fail if any page would change
+python3 tools/build_notebook.py --selftest  # reconcile every derived number
+```
+
+1. Add `content/positions/<slug>.md`. Front matter needs `ticker`, `name`, `theme`, `status`,
+   `summary`, `updated`, plus **either** an `entries` ledger **or** an `avgCost`. Optional:
+   `bookReturnPct`, `exits`, `slug`.
+2. **Every position gets a page**, because every card opens onto it. The body is two sections in
+   this order: `## Thesis` and `## Latest movements`. Where there is no memo the thesis section
+   says so plainly — it is never filled in from the outcome.
+3. Drop the logo into `images/` (gitignored, shared with the book covers) and run
+   `python3 tools/make_logos.py`. Name it after the content file, or add an entry to `ALIASES` —
+   `images/meta.svg` becomes `assets/logos/meta-platforms.svg`. A position without one shows a
+   monogram in the same fixed box, so nothing shifts when the artwork lands. An unmatched **SVG**
+   is an error (covers are never SVG, so it means a misnamed logo); an unmatched raster is ignored,
+   because it is a book cover.
+
+**SVG logos are rewritten, not copied.** Downloaded brand SVGs carry `<metadata>` blocks that can
+embed an author name and a local filesystem path, plus editor namespaces and, in principle,
+`<script>` and `on*` handlers — inert behind `<img>`, live the moment anyone inlines one. All of it
+is stripped and the result is parsed as XML before writing, the same contract the other SVG
+generators hold. A file referencing anything off-origin is **refused**, not cleaned: that breaches
+CONTENT-RULES.md §4.9 and means it is not self-contained.
+
+**Logos keep a fixed light ground in both themes** — the fourth such block after the gradient hero,
+the institution card and the terminal (§13). Amazon's wordmark measures 0.012 relative luminance,
+Micron's 0.051 and Reddit's shading 0.002: on the dark plane they would be invisible. Re-colouring
+someone else's mark is the wrong fix, so the ground is pinned and the artwork left alone.
+3. Add the ticker to `data/prices.json`, and update `data/portfolio.json` for cash and NAV.
+4. Register any new page in `PAGES` in `tools/audit.js`.
+
+**The safety rule, and why it is in the code rather than in this file:**
+
+- **No position weight, and no amount, share count or account value, anywhere.** Share prices,
+  per-position returns and index levels only. What is held is public; how much of it is held is
+  not — not a weight, not a share of equity, not a cash line.
+- **This repository is public, so a content file is published whether or not a page renders it.**
+  Removing a figure from the markup is not removing it. It has to come out of
+  `content/positions/*.md` and `data/*.json` as well, and `--selftest` asserts that it has.
+- `tools/portfolio.py` refuses any field it does not recognise and any field whose name looks like
+  a quantity; it is an allow-list, not a deny-list. The risk is not a careless sentence — it is one
+  absolute number added months later, beside figures that are already public.
+- **The table is ordered alphabetically on purpose.** Ordering by size would re-encode the ranking
+  that removing the weights was meant to withhold.
+- **No performance history and no aggregate return.** The NAV series, the realized figure and the
+  live-book figure were removed when the strategy and structure changed: a record running through
+  that change describes an approach no longer in use. `tools/portfolio.py` now *rejects* `nav`,
+  `cashPct`, `liveBookPct` and `realizedPct` outright, so putting one back is a build failure
+  rather than a quiet reintroduction. The page says the history is absent and why, instead of
+  leaving a gap where a chart used to be.
+- **`share` on an entry is a percentage of the position's own units**, so it weights the average
+  without disclosing size.
+- **Never point this generator at the raw ledger exports or `reports/`.** Those carry member names,
+  deposits, email addresses and an IBAN. Everything here is derived from a hand-written summary of
+  them, and that boundary is the whole design.
+
+**One currency throughout.** The return is derived from cost and price and nothing else, so it is
+correct the moment a new quote lands and there is no second figure to keep in step.
+
+**Prices update themselves.** `.github/workflows/update-prices.yml` runs `tools/fetch_prices.py`
+on weekday evenings, rebuilds, and commits only if something moved. No API key, so there is no
+secret to leak from a public repository. The fetch is **all-or-nothing**: one bad ticker aborts the
+run and yesterday's complete snapshot stays up rather than a half-updated one. The as-of date comes
+from the quote, resolved in the exchange's timezone — a UTC date stamps a Friday close as Saturday.
+
+`tools/fetch_prices.py` is the only writer of `data/prices.json` and `tools/prices.py` the only
+reader. CONTENT-RULES.md §4.9 is about what the *page* requests; this runs on a build machine and
+ships nothing but a committed JSON file.
+
+**Cost basis is computed from `entries` when the ledger is supplied, and taken from `avgCost` when
+it is not** — and the page states which of the two a reader is looking at. Supplying the per-trade
+ledger is strictly better: it makes the basis recomputable and keeps it correct as trades are
+appended.
+
+**Write behaviour, not reconstructed theses.** Across the current ledger exactly one trade carries
+a written note. A thesis composed now, after the outcome is known, is the most flattering thing
+this section could contain and the least honest. Where a memo exists, say so; where it does not,
+say that.
+
+**`NOINDEX = True`, and `CONTENT-RULES.md` §4.3 currently forbids this section outright** — "No
+fund data. No AUM, returns, member names, member count, or any fund state." Publishing needs that
+rule amended first, and needs a view taken on whether a published track record counts as a
+financial promotion.
+
+## 3b. How to add a book to /notes/books
+
+Same machinery as `/notebook`, one file per book:
+
+```sh
+python3 tools/build_books.py            # write the pages
+python3 tools/build_books.py --check    # fail if any page would change
+```
+
+1. Add `content/books/<slug>.md`. Front matter needs `title`, `author`, `read` (a year, or
+   whatever precision the memory actually has) and `verdict` (`loved` | `good` | `fine` |
+   `dropped`). Optional: `summary`, `shelf`, `sortKey`, `slug`.
+2. **A body is optional, and that is the point.** With no `##` sections the book is a flat card on
+   the shelf and gets no page. Most reading never gets written up, and a shelf showing only the
+   books worth a page would be a flattering shelf rather than an accurate one.
+3. With a body, the shape is fixed by the note template: the thesis in a sentence, the two or
+   three ideas worth keeping, the disagreement, and what would actually change. **An empty last
+   field means the book was entertainment — label it, never invent a lesson.**
+4. Register the page in `PAGES` in `tools/audit.js` if it has a body.
+
+**The verdict measures enjoyment, not yield**, and the two come apart — the book that produced the
+most usable ideas is marked `fine`. Do not collapse them into one score.
+
+**Titles of cited works carry `class="work-title"`.** The framing check in `tools/audit.sh` bans
+words like "failed" from a heading; *When Genius Failed* is the name of a book, not a claim about
+my own work, and that class is the exemption. Use it only for the title of someone else's work.
+
+## 3c. Adding a whole new section under /notes
+
+`/notes` is one nav entry standing in front of several sections, so the nav stays at five items no
+matter how many accumulate. To add one:
+
+1. Write its generator, following `tools/build_books.py` — output to `notes/<slug>/`, pages at
+   depth 2, item pages at depth 3, `here="notes/index.html"`.
+2. Add an entry to `SECTIONS` in `tools/build_notes.py`. The counts on the index are read from the
+   content directory, so they cannot drift.
+3. Register its pages in `PAGES` in `tools/audit.js`.
+
+**Do not add it to the nav.** The nav is the professional surface — Projects and Research first,
+one entry for everything written alongside them, then the pages about the author. `NAV_LINKS` in
+`tools/audit.js` asserts the count, and `tools/audit.sh` compares every page's nav against
+`sitegen.NAV`.
+
+## 3d. Two stylesheets, and the nav
+
+**`style.css` is charged to every page; `sections.css` only to the pages that link it.** The
+notebook and books components live in the second file because the budget check charges every page
+for the whole of any stylesheet it loads, and `/research/msc` sits close to its 90 KB markup cap.
+Putting a section nobody else uses into `style.css` cost that page 7 KB it did not have.
+`tools/audit.sh` now sums the stylesheets each page actually links, rather than assuming one file —
+the same class of blind spot as the fonts.
+
+**The nav is defined once in `tools/sitegen.py` `NAV`, and copied into 16 hand-written pages.**
+Adding a section means: edit `NAV`, edit every hand-written page and both other generators, and
+raise `NAV_LINKS` in `tools/audit.js`. `tools/audit.sh` compares every page's nav against `NAV`
+and fails on any that has drifted, because a page left on the old nav is invisible until someone
+lands on it and cannot get out.
+
+**The nav wraps below 768px and always has.** `--nav-h` is derived from a single row, so
+`scroll-padding-top` was ~36px short on every phone and in-page links landed under the nav. There
+are now two measured bands for it. They are deliberately loose: too large only adds whitespace
+above an anchor, too small hides the target, and the exact wrap point moves whenever a label
+changes.
 
 ## 4. How to add a figure
 

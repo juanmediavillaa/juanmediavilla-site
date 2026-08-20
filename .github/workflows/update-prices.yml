@@ -1,0 +1,75 @@
+# Refresh /notes/investing prices on weekday evenings.
+#
+# The job fetches a quote for every ticker in content/positions/, writes
+# data/prices.json, rebuilds the pages from it and commits only if something
+# actually changed. No API key: the feed used needs none, so there is no secret
+# to leak from a public repository.
+#
+# CONTENT-RULES.md §4.9 forbids third-party requests *from the page*. This runs
+# on a build machine and ships nothing but a committed JSON file, so the rule is
+# untouched — see the note at the top of tools/fetch_prices.py.
+#
+# The fetch is all-or-nothing. If any ticker fails, the step exits non-zero,
+# data/prices.json is left exactly as it was, and yesterday's complete snapshot
+# stays up rather than a half-updated one.
+
+name: Update prices
+
+on:
+  schedule:
+    # 22:10 UTC, Monday to Friday. US markets close at 20:00 UTC in summer and
+    # 21:00 in winter, so this clears both without needing two entries. The odd
+    # minute is deliberate: GitHub queues everything scheduled on the hour.
+    - cron: "10 22 * * 1-5"
+  workflow_dispatch:          # and a button, for when a run is wanted now
+
+# Only what the job needs: it pushes one commit to this repository.
+permissions:
+  contents: write
+
+# A slow run must never overlap the next schedule and race it to the same file.
+concurrency:
+  group: update-prices
+  cancel-in-progress: false
+
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # No install step, and none wanted: every tool this job runs is standard
+      # library only. tools/make_covers.py needs Pillow and is not run here.
+
+      - name: Fetch quotes
+        run: python3 tools/fetch_prices.py
+
+      - name: Rebuild the notebook
+        run: python3 tools/build_notebook.py
+
+      - name: Check the derived numbers
+        # Cheap guards that catch a bad snapshot before it is committed: the
+        # arithmetic, and the rule that no source file may carry a position
+        # weight or an absolute quantity.
+        run: python3 tools/build_notebook.py --selftest
+
+      - name: Confirm the build is reproducible
+        # If a second run would write different bytes, something is not
+        # deterministic and the commit would be noise.
+        run: python3 tools/build_notebook.py --check
+
+      - name: Commit if anything moved
+        run: |
+          set -euo pipefail
+          if git diff --quiet HEAD -- data/prices.json notes/investing; then
+            echo "prices unchanged — nothing to commit"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/prices.json notes/investing
+          git commit -m "Update investing prices ($(date -u +%Y-%m-%d))"
+          git push

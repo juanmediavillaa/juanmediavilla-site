@@ -1,0 +1,295 @@
+/* juanmediavilla.com — the two generated sections, /notebook and /books.
+   Loaded only by those pages, which is the point: style.css is charged to every
+   page on the site by the budget check, and a section nobody else uses should
+   not eat the headroom of /research/msc. Same tokens, same scale, same rules —
+   this is a second file, not a second design system.
+
+   tools/audit.sh charges each page for the stylesheets it actually links, so
+   this file is measured wherever it is used and nowhere else. */
+
+:root {
+  /* Gain and loss on /notebook. NOT series colours, never used as such. The
+     validated palette cannot carry them: --c6 measures 4.49:1 on --surface-2 in
+     light and 4.23:1 in dark, --c5 measures 4.11:1 in light — all below AA. So
+     they are derived exactly as the §12 institution colours are: same hue and
+     saturation as --c6 and --c5, lightness moved alone until they clear 4.5:1 on
+     the worst surface here, which is --surface-2 in both themes. Loss anchors on
+     the magenta rather than a red because §11 records green and pink at ΔE 7.7
+     for deuteranopia — so colour is never the only encoding, and every return
+     also carries a sign and an arrow. */
+  --gain: #157E3C;  /* 4.60:1 on --surface-2, 4.98 --plane, 5.15 --surface */
+  --loss: #CE226F;  /* 4.60:1 on --surface-2, 4.97 --plane, 5.14 --surface */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --gain: #2E9651;  /* 4.61:1 on --surface-2, 4.93 on --surface, 5.20 on --plane */
+    --loss: #DE5183;  /* 4.62:1 on --surface-2, 4.94 on --surface, 5.22 on --plane */
+  }
+}
+
+:root[data-theme="dark"] {
+  --gain: #2E9651;
+  --loss: #DE5183;
+}
+
+/* ---------- notebook ----------
+   Cards rather than .work__row: return, weight and status want scanning down a
+   column. Every card is complete markup — script only reorders nodes already
+   there, so blocked it is simply weight order. Kept compact on purpose: the
+   budget charges EVERY page for this whole sheet, and /research/msc has the
+   least room to spare. */
+
+/* auto-FILL, not auto-fit: the closed and watchlist sections often hold one
+   card, and auto-fit would stretch it across the whole column so it read as a
+   different component from the open grid above it. */
+.cards--pos { grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.pos { display: flex; flex-direction: column; gap: var(--s2); }
+.pos h3 { font-size: var(--fs-md); margin: 0; }
+.pos__top { display: flex; align-items: baseline; gap: var(--s2); flex-wrap: wrap; }
+.pos__ticker { font-weight: 600; font-size: var(--fs-sm); color: var(--ink); }
+.pos__ticker--lg { font-size: var(--fs-lg); }
+
+/* The label carries the meaning, so the pill carries no colour — the rule the
+   .finding blocks already follow. A greyscale printout loses nothing. */
+.pos__status {
+  font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); border: 1px solid var(--line); border-radius: 999px;
+  padding: .1em .7em; white-space: nowrap;
+}
+.pos__status--closed, .pos__status--watchlist { background: var(--surface-2); }
+
+.pos__figs {
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4);
+  border-top: 1px solid var(--line); padding-top: var(--s2); margin-top: var(--s1);
+}
+.pos__fig { display: flex; flex-direction: column; gap: .15em; min-width: 0; }
+.pos__lab { font-size: var(--fs-xs); letter-spacing: .06em; text-transform: uppercase; }
+.pos__val, .pos__ret {
+  font-size: var(--fs-lg); font-weight: 600; line-height: 1.2; color: var(--ink);
+}
+/* Three encodings, never one: the arrow, then the sign, then the colour. */
+.pos__ret.is-gain { color: var(--gain); }
+.pos__ret.is-loss { color: var(--loss); }
+.pos__ret.is-unknown, .pos__na, .pos__dash { color: var(--ink-3); }
+.pos__dir { font-weight: 400; }
+.pos__why { font-family: var(--sans); font-weight: 400; }
+.pos__sum { font-size: var(--fs-sm); line-height: 1.5; margin-top: var(--s1); }
+.pos__asof { border-top: 1px solid var(--line); padding-top: var(--s2); margin-top: auto; }
+.pos__empty { color: var(--ink-3); font-style: italic; }
+.pos__ident {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: var(--s2) var(--s3); margin: var(--s3) 0; max-width: none;
+}
+.pos__ticker, .pos__status, .pos__lab, .pos__val, .pos__ret, .pos__asof,
+.pos__class, .pos__back, .wbars__v, .log__tag, .log__date {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+}
+.pos__asof, .pos__class, .pos__why, .pos__sum, .pos__back, .pos__lab {
+  font-size: var(--fs-xs); color: var(--ink-3);
+}
+.pos__back { margin: var(--s4) 0 0; }
+
+/* .keyfacts styles every span as its caption, which would shrink the arrow and
+   the reason text inside a return down to caption size. Named explicitly. */
+.keyfacts .pos__ret--big { display: block; font-size: var(--fs-lg); line-height: 1.2; margin: 0; }
+.keyfacts .pos__ret--big > .pos__dir,
+.keyfacts .pos__ret--big > .pos__dash { display: inline; font-size: inherit; color: inherit; margin: 0; }
+.keyfacts .pos__ret--big > .pos__why { display: inline; font-size: var(--fs-xs); margin: 0; }
+
+/* Weights drawn in markup with an inline width, so the chart is complete with
+   scripting off. The figure sits beside every bar: the bar is the decoration. */
+.wbars { list-style: none; padding: 0; margin: var(--s3) 0 var(--s5); }
+.wbars li {
+  max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 3.6rem;
+  align-items: baseline; gap: var(--s1) var(--s3);
+  padding: var(--s2) 0; border-bottom: 1px solid var(--line);
+}
+.wbars li:last-child { border-bottom: none; }
+.wbars__k { font-size: var(--fs-sm); color: var(--ink-2); min-width: 0; }
+.wbars__v { font-size: var(--fs-sm); color: var(--ink); text-align: right; }
+.wbars__t {
+  grid-column: 1 / -1; display: block; height: 6px;
+  background: var(--surface-2); border-radius: 3px; overflow: hidden;
+}
+.wbars__f { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+@media (min-width: 40rem) {
+  .wbars li { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 3.6rem; }
+  .wbars__t { grid-column: auto; }
+}
+
+/* ---------- the update log ----------
+   The original entry is a card; everything appended after is a plain ruled
+   block. A reader sees at a glance which sentences were written before the
+   outcome, which is the only thing making the rest of the page worth reading. */
+.log { list-style: none; padding: 0; margin: var(--s4) 0 0; }
+.log__item {
+  max-width: none; margin: 0 0 var(--s3);
+  padding: var(--s3) 0 var(--s3) var(--s4);
+  border-left: 1px solid var(--line-2);
+}
+.log__item--first {
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0; background: var(--surface); padding-right: var(--s4);
+}
+.log__head {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: var(--s1) var(--s3); margin: 0 0 var(--s2); max-width: none;
+}
+.log__tag, .log__date { font-size: var(--fs-xs); color: var(--ink-3); }
+.log__tag { font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }
+.log__item--first .log__tag { color: var(--accent); }
+.log__title { font-weight: 600; color: var(--ink); font-size: var(--fs-md); }
+.log__item p:last-child { margin-bottom: 0; }
+
+
+/* ---------- books ----------
+   The shelf is cards, like /notebook, but most books never got written up, so a
+   card is only a link when there is a page behind it. A flat card is not a
+   degraded link — it is the accurate state of the record, and it looks
+   different on purpose. */
+
+.cards--bk { grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
+.bk { display: flex; flex-direction: column; gap: var(--s2); }
+.bk h3 { font-size: var(--fs-md); margin: 0; }
+.bk--flat { border-style: dashed; background: transparent; }
+.bk__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s2); }
+.bk__when, .bk__by, .bk__go { font-family: var(--mono); font-size: var(--fs-xs); }
+.bk__when { color: var(--ink-3); }
+.bk__by { color: var(--ink-2); }
+.bk__by--lg { font-family: var(--sans); font-size: var(--fs-lg); color: var(--ink-2); }
+.bk__sum { font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-3); }
+.bk__go { margin-top: auto; padding-top: var(--s2); border-top: 1px solid var(--line);
+          color: var(--accent); }
+/* Compound, not a bare class: .bk__go sets the accent afterwards at the same
+   specificity, so a plain .bk__go--none rule loses and a card with nothing
+   behind it advertises itself as a link. */
+.bk__go.bk__go--none { color: var(--ink-3); }
+a.bk:hover h3 { color: var(--accent); }
+
+/* The verdict is a word, never a colour or a star rating — the scale measures
+   enjoyment only, and a coloured badge would quietly imply it measures worth. */
+.bk__verdict {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .1em .7em;
+  white-space: nowrap;
+}
+.bk__verdict--loved { color: var(--ink); border-color: var(--line-2); }
+.bk__verdict--dropped { border-style: dashed; }
+
+.bk__key { list-style: none; padding: 0; margin: var(--s3) 0 0; }
+.bk__key li {
+  max-width: none; display: flex; align-items: baseline; gap: var(--s3);
+  padding: var(--s2) 0; border-bottom: 1px solid var(--line);
+}
+.bk__key li:last-child { border-bottom: none; }
+.bk__legend { font-size: var(--fs-sm); color: var(--ink-3); }
+
+/* Covers. A shelf reads better with the artwork on it, so the card is a two
+   column grid: the cover, then everything else. The image carries an empty alt
+   because the title sits beside it in text — announcing it twice helps nobody. */
+/* min() clamps the track to the container: a bare 19rem minimum is wider than
+   the 277px available inside .wrap at 320px, and overflowed the page. */
+.cards--bk { grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); }
+.bk { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s3); align-items: start; }
+.bk__text { display: flex; flex-direction: column; gap: var(--s2); min-width: 0; }
+.bk__cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  /* Publisher art sits on every ground; a hairline keeps a white cover from
+     dissolving into the light plane without putting a frame around it. */
+  box-shadow: 0 0 0 1px var(--line), var(--e1);
+}
+.bk__cover--none { display: block; width: 100%; aspect-ratio: 2 / 3; background: var(--surface-2); border-radius: 3px; }
+.bk__cover--lg { width: 7.5rem; margin: var(--s4) 0 0; }
+@media (max-width: 26rem) { .bk { grid-template-columns: 4.5rem minmax(0, 1fr); } }
+
+/* ---------- position cards ----------
+   The same shape as the shelf on /books: a brief overview on the card, the
+   thesis and the movements one click away. */
+
+.cards--pos { grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); }
+.pos__head { display: flex; align-items: center; gap: var(--s3); }
+.pos__id { display: flex; flex-direction: column; gap: .1em; min-width: 0; }
+
+/* The mark sits in a fixed box whether or not there is artwork, so dropping a
+   logo in later cannot shift the card. Until then the box carries a monogram,
+   which reads as a design rather than as a missing image. */
+.pos__logo {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+  border-radius: 6px;
+}
+/* In light mode every mark sits straight on the page: they are all drawn for a
+   light ground. On the dark plane three of them lose their primary element —
+   Amazon's wordmark measures 1.15:1 against --plane, Reddit's outlines 1.04:1
+   and Micron's single fill 1.88:1 — so those three, and only those three, get a
+   ground there. Which three is decided by measurement in
+   tools/build_notebook.py rather than by eye, and recolouring somebody else's
+   logo to suit the theme was never an option. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) img.pos__logo--ground {
+    background: #F2F2F5;
+    padding: 3px;
+  }
+}
+:root[data-theme="dark"] img.pos__logo--ground {
+  background: #F2F2F5;
+  padding: 3px;
+}
+.pos__logo--none {
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+.pos__go {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--accent);
+  margin-top: auto;
+  padding-top: var(--s2);
+  border-top: 1px solid var(--line);
+}
+a.pos:hover h3 { color: var(--accent); }
+.pos__figs .pos__val, .pos__figs .pos__ret { font-size: var(--fs-md); }
+
+/* The position page shows the mark larger, beside the ticker. */
+.pos__logo--lg { width: 3.5rem; height: 3.5rem; }
+
+/* A second or third h2 in a rail body sat tight against the paragraph above it,
+   because only the paragraph's own bottom margin separated them. */
+.rail__body > h2 ~ h2 { margin-top: var(--s5); }
+
+/* ---------- the /notes index ----------
+   One card per section. Deliberately plainer than the cards inside them: this
+   page is a signpost, not a place to linger. */
+.cards--note { grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); }
+.note { display: flex; flex-direction: column; gap: var(--s2); }
+.note h3 { font-size: var(--fs-h3); margin: 0; }
+.note__count {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.note__sum { font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-3); }
+a.note:hover h3 { color: var(--accent); }

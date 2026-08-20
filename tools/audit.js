@@ -29,7 +29,15 @@ const PAGES = [
   "research/index.html", "research/msc/index.html", "research/bsc/index.html",
   "research/thesis/index.html", "how-i-work/index.html", "about/index.html",
   "cv/index.html", "glossary/index.html",
+  // /notes is generated, and is not in the sitemap. The audit only checks pages
+  // it is told about, so every generated page is registered here.
+  "notes/index.html", "notes/investing/index.html", "notes/books/index.html",
+  "notes/investing/meta-platforms/index.html", "notes/investing/duolingo/index.html",
+  "notes/investing/alphabet/index.html", "notes/investing/reddit/index.html",
+  "notes/books/when-genius-failed/index.html",
 ];
+// Home + five sections. Defined in tools/sitegen.py NAV; change both together.
+const NAV_LINKS = 6;
 const WIDTHS = [320, 390, 768, 1440];
 const MIN_FONT_PX = 12;
 
@@ -311,7 +319,7 @@ const STRUCT = `(() => {
       const problems = [];
       if (r.h1 !== 1) problems.push(`h1=${r.h1}`);
       if (r.skips.length) problems.push(`heading skips ${r.skips.join(",")}`);
-      if (r.nav !== 5) problems.push(`nav=${r.nav}`);
+      if (r.nav !== NAV_LINKS) problems.push(`nav=${r.nav} (want ${NAV_LINKS})`);
       if (!r.main || !r.skip) problems.push("missing landmark or skip link");
       if (r.deadAnchors.length) problems.push(`dead anchors ${r.deadAnchors.join(",")}`);
       if (r.external.length) problems.push(`EXTERNAL ${r.external.join(",")}`);

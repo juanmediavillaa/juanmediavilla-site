@@ -45,8 +45,8 @@ if grep -rnoE '<(link|script|img|iframe)[^>]*(src|href)="(https?:)?//[^"]*"' --i
   FAIL=1; else echo "  none"; fi
 
 note "no infrastructure, secrets, identifiers or student data"
-if grep -rniE '0x[0-9a-f]{6,}|s3565122|ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}|api[_-]?key|bearer ' \
-     --include='*.html' --include='*.css' --include='*.csv' .; then
+if grep -rniE '0x[0-9a-f]{6,}|s3565122|ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}|api[_-]?key|bearer |secret[_-]?key|access[_-]?token' \
+     --include='*.html' --include='*.css' --include='*.csv' --include='*.py' --include='*.yml' --exclude-dir=.git .; then
   FAIL=1; else echo "  none"; fi
 
 note "every internal link resolves"
@@ -77,6 +77,29 @@ print("  none" if not bad else f"  {bad} broken")
 sys.exit(1 if bad else 0)
 PY
 
+note "every nav matches tools/sitegen.py"
+# The nav is written out in 16 hand-edited pages and generated into the rest.
+# Adding a section means touching all of them, and a page left on the old nav is
+# invisible until someone lands on it and cannot reach the new section from it.
+python3 - <<'PY' || FAIL=1
+import pathlib, re, sys
+sys.path.insert(0, 'tools')
+from sitegen import NAV
+want = [label for _, label in NAV]
+bad = 0
+for f in sorted(pathlib.Path('.').glob('**/*.html')):
+    t = f.read_text(encoding='utf-8')
+    m = re.search(r'<nav class="nav".*?</nav>', t, re.S)
+    if not m:
+        continue
+    got = re.findall(r'<a [^>]*>([^<]+)</a>', m.group(0))[1:]   # [0] is the home link
+    if got != want:
+        print(f"  {f}: nav is {got}")
+        bad += 1
+print("  none" if not bad else f"  {bad} page(s) out of step")
+sys.exit(1 if bad else 0)
+PY
+
 note "no retired figures"
 if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB)' --include='*.html' .; then
   FAIL=1; else echo "  none"; fi
@@ -91,8 +114,12 @@ for f in pathlib.Path('.').glob('**/index.html'):
     t = f.read_text()
     if '<main' not in t: continue
     b = t.split('<main',1)[1].split('</main>')[0]
-    for m in re.finditer(r'<(h[123])[^>]*>(.*?)</\1>|<p class="card__stat">(.*?)</p>|<p class="oneline">(.*?)</p>', b, re.S):
-        s = html.unescape(re.sub(r'<[^>]+>','',next(g for g in m.groups()[1:] if g))).strip()
+    for m in re.finditer(r'<(h[123])([^>]*)>(.*?)</\1>|<p class="card__stat">(.*?)</p>|<p class="oneline">(.*?)</p>', b, re.S):
+        # The title of a cited work is a proper noun, not this site's framing of
+        # its own results: 'When Genius Failed' is the name of a book. Only an
+        # element explicitly marked as one is exempt, and only its own text.
+        if 'work-title' in (m.group(2) or ''): continue
+        s = html.unescape(re.sub(r'<[^>]+>','',next(g for g in m.groups()[2:] if g))).strip()
         if NULL.search(s): print(f"  {f}: {s[:70]}"); bad += 1
 print("  none" if not bad else f"  {bad} found")
 sys.exit(1 if bad else 0)
@@ -101,7 +128,6 @@ PY
 note "budgets"
 python3 - <<'PY' || FAIL=1
 import pathlib, re, sys
-css = pathlib.Path('style.css').stat().st_size
 js  = pathlib.Path('app.js').stat().st_size
 figs = {p.name: p.stat().st_size for p in pathlib.Path('figures').glob('*.svg')}
 # Fonts are referenced from the stylesheet, not the markup, so counting only
@@ -114,9 +140,19 @@ print(f"  fonts {fonts/1024:.1f} KB (self-hosted, charged to every page)")
 bad = 0
 for f in sorted(pathlib.Path('.').glob('**/index.html')):
     if 'pre-registration' in str(f): continue
-    s = f.read_text(); h = len(s.encode())
+    s = f.read_text(encoding='utf-8'); h = len(s.encode())
+    # Charge each page for the stylesheets it actually links, not for style.css
+    # alone: /notebook and /books load a second sheet that no other page does,
+    # and counting one file for everyone is how 70 KB of fonts went unseen.
+    css = sum((f.parent / m).resolve().stat().st_size
+              for m in re.findall(r'<link rel="stylesheet" href="([^"]+)"', s)
+              if (f.parent / m).resolve().exists())
     used = sum(figs.get(m+'.svg', 0) for m in re.findall(r'figures/([\w-]+)\.svg', s))
-    used += sum(pathlib.Path('assets', m).stat().st_size for m in re.findall(r'assets/([\w.-]+)', s))
+    # Any local asset the page references, at any depth. The old pattern stopped
+    # at assets/<name> and silently measured a directory for anything nested.
+    for rel in set(re.findall(r'(?:src|href)="([^"]*assets/[\w./-]+)"', s)):
+        a = (f.parent / rel).resolve()
+        if a.is_file(): used += a.stat().st_size
     markup, total = h + css, h + css + used + js + fonts
     cap = 400*1024 if str(f) == 'index.html' else 600*1024
     # /research used to need 110 KB because it carried all six inline charts on

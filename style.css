@@ -287,6 +287,34 @@ code, .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums
 .nav__home:hover { border-bottom-color: var(--ink); }
 .nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 
+/* Six sections plus the theme control do not fit one row on a phone, and never
+   did — the nav has wrapped below 768 since it had four. Two consequences, both
+   measured rather than assumed:
+
+   The gap tightens below 26rem so the control still lands on the second row
+   rather than forcing a third (at 320 that was the difference between a 91px
+   nav and a 125px one).
+
+   --nav-h is derived from a SINGLE row, so scroll-padding-top and the sticky
+   rail offset were ~36px short on every phone — a pre-existing bug, and the
+   reason an in-page link landed under the nav there. The wrapped height is
+   measured instead: 118px at 320, and up to 94px through to 768, where the row
+   finally stops wrapping.
+
+   These bands are deliberately loose rather than pinned to the exact wrap
+   point. Too large only adds whitespace above an anchor; too small hides the
+   target under the nav. The exact point moves whenever a nav label changes, so
+   the safe side is the maintainable one. */
+@media (max-width: 26rem) {
+  .nav .wrap { gap: var(--s1) var(--s2); }
+}
+@media (max-width: 26rem) {
+  :root { --nav-h: 118px; }
+}
+@media (min-width: 26.01rem) and (max-width: 47.99rem) {
+  :root { --nav-h: 95px; }
+}
+
 /* ---------- page header ---------- */
 
 .head { padding: var(--s6) 0 var(--s5); border-bottom: 1px solid var(--line); }
@@ -1025,18 +1053,9 @@ hr.divider {
 
 /* ---------- chrome added by script ---------- */
 
-.theme-toggle {
-  font-family: var(--mono);
-  font-size: var(--fs-xs);
-  background: transparent;
-  color: var(--ink-3);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: .35em .85em;
-  cursor: pointer;
-  transition: border-color .18s ease, color .18s ease;
-}
-.theme-toggle:hover { border-color: var(--line-2); color: var(--ink); }
+/* The theme toggle and the notebook sort buttons are the same control: a mono
+   pill that script adds and that is simply absent without it. One rule, so the
+   two cannot drift apart. */
 
 .progress {
   position: fixed; top: 0; left: 0; height: 2px; width: 0;
@@ -1129,3 +1148,16 @@ svg .pulse { animation: pulse 4.5s ease-in-out infinite; }
   .cv-item { break-inside: avoid; margin: var(--s2) 0; }
   @page { margin: 12mm; }
 }
+
+.theme-toggle {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  background: transparent;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .35em .85em;
+  cursor: pointer;
+  transition: border-color .18s ease, color .18s ease;
+}
+.theme-toggle:hover { border-color: var(--line-2); color: var(--ink); }

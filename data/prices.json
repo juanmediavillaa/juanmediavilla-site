@@ -1,0 +1,50 @@
+{
+  "source": "Yahoo Finance",
+  "quotes": {
+    "GOOGL": {
+      "price": 344.72,
+      "asOf": "2026-08-19",
+      "previousClose": 343.54
+    },
+    "AMZN": {
+      "price": 265.84,
+      "asOf": "2026-08-19",
+      "previousClose": 267.28
+    },
+    "DUOL": {
+      "price": 146.03,
+      "asOf": "2026-08-19",
+      "previousClose": 134.63
+    },
+    "META": {
+      "price": 546.03,
+      "asOf": "2026-08-19",
+      "previousClose": 578.85
+    },
+    "MU": {
+      "price": 937.11,
+      "asOf": "2026-08-19",
+      "previousClose": 911.29
+    },
+    "NFLX": {
+      "price": 80.22,
+      "asOf": "2026-08-19",
+      "previousClose": 74.21
+    },
+    "NU": {
+      "price": 14.61,
+      "asOf": "2026-08-19",
+      "previousClose": 13.56
+    },
+    "RDDT": {
+      "price": 151.71,
+      "asOf": "2026-08-19",
+      "previousClose": 153.45
+    },
+    "SNDK": {
+      "price": 1568.87,
+      "asOf": "2026-08-19",
+      "previousClose": 1344.29
+    }
+  }
+}

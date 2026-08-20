@@ -1,0 +1,12 @@
+# tools/build_notebook.py imports tools/prices.py, which is the first time
+# anything here is imported rather than run, so Python now writes bytecode.
+__pycache__/
+*.pyc
+
+# Downloaded source artwork: full-resolution publisher cover art and brand SVGs,
+# ~4.8 MB. Only the processed versions in assets/covers/ and assets/logos/ are
+# committed — see tools/make_covers.py and tools/make_logos.py.
+#
+# NOT written as `logos/`: that pattern matches a directory of that name at any
+# depth, and silently excluded assets/logos/ — the very files meant to ship.
+images/

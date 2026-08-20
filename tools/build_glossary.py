@@ -242,6 +242,7 @@ def render() -> str:
     <a class="nav__home" href="../index.html">Juan Mediavilla</a>
     <a href="../projects/index.html">Projects</a>
     <a href="../research/index.html">Research</a>
+    <a href="../notes/index.html">Notes</a>
     <a href="../how-i-work/index.html">How I Work</a>
     <a href="../about/index.html">About</a>
     <span data-theme-slot></span>
@@ -267,7 +268,7 @@ def render() -> str:
 
 <footer class="foot">
   <div class="wrap">
-    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
+    <p>Juan Mediavilla · London · <a href="../index.html">Home</a> · <a href="../projects/index.html">Projects</a> · <a href="../research/index.html">Research</a> · <a href="../notes/index.html">Notes</a> · <a href="../how-i-work/index.html">How I Work</a> · <a href="../about/index.html">About</a> · <a href="../cv/index.html">CV</a></p>
   </div>
 </footer>
 
@@ -283,7 +284,7 @@ def check() -> int:
     for page in sorted(SITE.rglob("*.html")):
         if page == OUT:
             continue
-        for m in re.finditer(r'href="[^"]*glossary/index\.html#([\w-]+)"', page.read_text()):
+        for m in re.finditer(r'href="[^"]*glossary/index\.html#([\w-]+)"', page.read_text(encoding='utf-8')):
             used.add(m.group(1))
             if m.group(1) not in slugs:
                 problems.append(f"{page.relative_to(SITE)} links to missing anchor #{m.group(1)}")
@@ -300,7 +301,7 @@ def main() -> int:
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(render())
+    OUT.write_text(render(), encoding='utf-8', newline='\n')
     print(f"  wrote {OUT.relative_to(SITE)} ({len(render()):,} bytes, {len(TERMS)} terms)")
     return check() if args.check else 0
 
