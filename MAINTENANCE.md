@@ -435,5 +435,6 @@ future version of this:
 - **The project is gone**: its `*.supabase.co` subdomain has no DNS record, while `supabase.co`
   itself resolves — so this is deletion, not a network fault.
 
-The dead `.env.local` still sits on the local disk. It is worthless now, but delete it when
-convenient so it cannot be mistaken for a live credential later.
+The dead `.env.local` was deleted from the local disk on 20 August 2026. Nothing was committed by
+that: the file was gitignored and had never been tracked. **This item is fully closed** — no live
+credential remains from that project anywhere, on disk or in history.
