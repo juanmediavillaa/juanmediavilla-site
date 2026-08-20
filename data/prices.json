@@ -2,12 +2,12 @@
   "source": "Yahoo Finance",
   "quotes": {
     "GOOGL": {
-      "price": 340.62,
+      "price": 340.71,
       "asOf": "2026-08-20",
       "previousClose": 346.36
     },
     "AMZN": {
-      "price": 261.36,
+      "price": 261.48,
       "asOf": "2026-08-20",
       "previousClose": 265.13
     },
@@ -17,17 +17,17 @@
       "previousClose": 144.1
     },
     "HIMS": {
-      "price": 32.31,
+      "price": 32.32,
       "asOf": "2026-08-20",
       "previousClose": 28.77
     },
     "META": {
-      "price": 542.16,
+      "price": 542.25,
       "asOf": "2026-08-20",
       "previousClose": 594.97
     },
     "MU": {
-      "price": 954.58,
+      "price": 954.73,
       "asOf": "2026-08-20",
       "previousClose": 949.83
     },
@@ -37,22 +37,22 @@
       "previousClose": 78.24
     },
     "NU": {
-      "price": 14.25,
+      "price": 14.26,
       "asOf": "2026-08-20",
       "previousClose": 13.93
     },
     "RDDT": {
-      "price": 146.01,
+      "price": 146.06,
       "asOf": "2026-08-20",
       "previousClose": 158.12
     },
     "HOOD": {
-      "price": 94.69,
+      "price": 94.55,
       "asOf": "2026-08-20",
       "previousClose": 99.37
     },
     "SNDK": {
-      "price": 1585.95,
+      "price": 1585.42,
       "asOf": "2026-08-20",
       "previousClose": 1528.11
     }
