@@ -1,0 +1,9 @@
+# title: Ad volume and ad price, moving together
+# unit: growth versus the same quarter a year earlier, per cent
+# caption: Ad impressions and average price per ad, each against the same quarter a year before. These two normally trade off against each other — showing more ads usually depresses the price of each. Both rising at once is the unusual result, and it is the single best evidence that the ad system is getting better rather than just bigger. The qualifier is in the first pair: impression growth slowed from 19% to 14% between the quarters, while pricing held.
+# provenance: Meta Q1 and Q2 2026 reported results. Company-reported, not audited by me, not pre-registered.
+measure,percent,note
+Impressions Q1 2026,19,vs Q1 2025
+Impressions Q2 2026,14,vs Q2 2025
+Price per ad Q1 2026,12,vs Q1 2025
+Price per ad Q2 2026,12,vs Q2 2025

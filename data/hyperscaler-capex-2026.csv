@@ -1,0 +1,8 @@
+# title: What the three of them plan to spend this year
+# unit: 2026 capital expenditure guidance, billions of dollars
+# caption: Full-year 2026 capital expenditure guidance. These are not incremental budgets; each is comparable to the entire annual output of a large economy, and each was raised during the year rather than cut. This is the spending the market has been selling, and it is why all three now convert far less of their operating cash flow into free cash flow. If the AI build-out were winding down, these numbers would be falling.
+# provenance: Company guidance as most recently raised: Amazon $220bn (raised from $200bn, attributed partly to higher memory costs), Alphabet up to $205bn (raised from $180-190bn), Meta $130-145bn shown at the midpoint. Company-reported guidance, not audited by me, not pre-registered.
+measure,percent,note
+Amazon,220,raised from $200bn
+Alphabet,205,raised from $180-190bn
+Meta,137,midpoint of $130-145bn
