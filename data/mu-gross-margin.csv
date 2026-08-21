@@ -1,0 +1,10 @@
+# title: Micron's gross margin through this cycle
+# unit: consolidated gross margin, per cent
+# kind: columns
+# caption: Gross margin by fiscal quarter. Memory is a commodity business, and a commodity business earning 85% is not earning it from a durable advantage — it is earning it from scarcity. The last bar is guidance, drawn open because it has not happened. If this were a structural change in the industry rather than a cycle, the first bar would not exist.
+# provenance: Micron company-reported consolidated gross margin, fiscal Q3 2025 through fiscal Q3 2026, plus company guidance for the following quarter. Reported figures, not audited by me, not pre-registered.
+period,value,note,kind
+FQ3 2025,38,,actual
+FQ2 2026,74,,actual
+FQ3 2026,85,,actual
+Next quarter,86,guidance,target
