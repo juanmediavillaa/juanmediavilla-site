@@ -35,8 +35,7 @@ cycle. SK Hynix's M15X fab starts mid-2027; Samsung's P5 is projected for 2028.
 Backlogs then look like durable demand right up until capacity catches up, at which point they
 vanish at once. A sold-out order book is evidence of scarcity, not of underlying demand.
 
-**The two memory positions I hold are not the same trade, which I did not appreciate when I opened
-them.** Forecasts have DRAM and NAND diverging in 2027: DRAM staying structurally short into 2028
+**The two memory positions I hold are not the same trade.** Forecasts have DRAM and NAND diverging in 2027: DRAM staying structurally short into 2028
 as HBM absorbs capacity, while NAND turns to sufficiency in the second half of 2027 as new supply
 arrives against soft consumer demand. That puts a date on one of these positions well before the
 other.
@@ -44,8 +43,7 @@ other.
 **NAND is the leg that turns first, and this position is pure NAND.** Current forecasts have the
 NAND sufficiency ratio turning positive in the second half of 2027 as new capacity comes online
 against weak consumer electronics demand — while DRAM stays short into 2028. Of the two memory
-positions I hold, this is the one with the earlier expiry, and I did not know that when I bought
-it.
+positions I hold, this is the one with the earlier expiry.
 
 The evidence of the boom is real in the meantime. NAND pricing is projected to rise 75–100%, supply
 agreements are being struck with floor prices near $0.29 per gigabyte, and demand for next

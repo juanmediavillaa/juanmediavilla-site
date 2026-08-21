@@ -1,0 +1,11 @@
+# title: Revenue growth, quarter by quarter
+# unit: total revenue versus the same quarter a year earlier, per cent
+# kind: columns
+# caption: Total revenue growth against the same quarter a year before. The re-acceleration is real and it is the reason I hold this: growth troughed at 24% at the end of 2025 and is running well above that. But it is not a straight line up, and the honest reading is that it peaked at 33% in Q1 2026 and has come off since. The last bar is the company's own guidance, and at the midpoint it implies a further slowdown to about 22% — below where the run began. If the AI improvement were compounding into revenue without limit, that bar would not be the shortest on the chart.
+# provenance: Meta company-reported total revenue growth, Q3 2025 through Q2 2026, plus Q3 2026 guidance of $61-64bn shown at the midpoint against reported Q3 2025 revenue of $51.24bn. Company-reported, not audited by me, not pre-registered.
+period,value,note,kind
+Q3 2025,26.3,,actual
+Q4 2025,23.8,trough,actual
+Q1 2026,33.1,peak,actual
+Q2 2026,28.0,,actual
+Q3 2026,22.0,guidance,target

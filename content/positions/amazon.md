@@ -13,8 +13,7 @@ updated: 2026-08-19
 
 **The cloud business is accelerating and the retail business is a margin story waiting to happen.**
 AWS grew 36.7% year on year in Q2 2026 at a 37.7% operating margin, and it has now accelerated for
-five consecutive quarters, from 17% a year earlier. That is a better trajectory than I had credited
-it with.
+five consecutive quarters, from 17% a year earlier.
 
 **The retail argument is about automation, and the arithmetic is forgiving.** At Amazon's volume a
 single point of margin is a very large number, so the case does not need heroics. North America
@@ -25,7 +24,7 @@ revenue base.
 I do not see this business being disrupted. The moat is physical - the fulfilment network, the
 logistics, the installed base - and a physical moat does not fall to a better model.
 
-## The case against, which I went looking for
+## What could take this apart
 
 @figure hyperscaler-capex-2026.csv
 
@@ -36,15 +35,17 @@ is performing; the cash is going into the ground.
 
 **Part of that increase is a cost I am also being paid by elsewhere.** Amazon attributed the raise
 from $200bn to $220bn partly to higher memory prices - the same memory cycle I hold Micron and
-SanDisk for. I am long both sides of that trade, which is worth writing down rather than admiring.
+SanDisk for. I am long both sides of that trade. It is not a hedge, because the two legs are not the
+same size and will not turn at the same time, but it is worth knowing that one position's cost is
+another position's revenue.
 
 **Recent reported profit is flattered by something that is not the business.** Q2 included a $53bn
 gain related to Anthropic. That is a real increase in value and it is not operating performance,
 and any margin comparison that includes it is not like-for-like.
 
 **The margin thesis is the slowest-moving part of the case.** Retail margins have improved for
-years and are still single digit. Automation has been arriving for a decade. I should hold this
-expecting gradual improvement, because gradual is what the record shows.
+years and are still single digit. Automation has been arriving for a decade. This is a position to
+hold expecting gradual improvement, because gradual is what the record shows.
 
 ## What would make me wrong
 

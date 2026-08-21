@@ -299,6 +299,11 @@ def read_series(name: str) -> dict:
             rows.append(dict(zip(header, cells)))
     if not rows:
         raise ContentError(f"figure source {name} has no rows")
+    # How a value is written. Defaults to a percentage because most figures here
+    # are rates, but a chart of dollars must not be able to render "220%".
+    meta.setdefault("format", "{v}%")
+    if "{v}" not in meta["format"]:
+        raise ContentError(f"figure source {name}: `# format:` must contain {{v}}")
     for k in ("title", "caption", "provenance"):
         if k not in meta:
             raise ContentError(f"figure source {name} has no `# {k}:` line")
@@ -315,6 +320,7 @@ def bar_chart(series: dict) -> str:
     wide with 12px type and never scaled down (§14, §15).
     """
     rows = series["rows"]
+    fmt = series["meta"]["format"]
     # The label gutter is measured, not fixed: Plex Mono advances about 0.6em,
     # so a 12px glyph is ~7.2px wide. A hardcoded 210px gutter clipped
     # "Share of subscription revenue" straight off the left edge of the viewBox.
@@ -343,7 +349,7 @@ def bar_chart(series: dict) -> str:
                    f'fill="var(--accent)"/>')
         out.append(f'<text x="{L + w + 8:.1f}" y="{y + 16:.0f}" '
                    f'font-family="var(--mono)" font-size="12" fill="var(--ink)">'
-                   f'{r["percent"]}%</text>')
+                   f'{fmt.replace("{v}", r["percent"])}</text>')
         if r.get("note"):
             out.append(f'<text x="{L - 12}" y="{y + 29:.0f}" text-anchor="end" '
                        f'font-family="var(--mono)" font-size="12" fill="var(--ink-3)">'
@@ -361,6 +367,7 @@ def column_chart(series: dict) -> str:
     look like the same kind of thing.
     """
     rows = series["rows"]
+    fmt = series["meta"]["format"]
     W, H, L, R, TOP, BASE = 640, 250, 46, 16, 26, 196
     step = (W - L - R) / len(rows)
     bw = min(step * 0.58, 54)
@@ -385,7 +392,8 @@ def column_chart(series: dict) -> str:
         out.append(f'<rect x="{x:.1f}" y="{BASE - h:.1f}" width="{bw:.1f}" height="{h:.1f}" '
                    f'rx="2" {fill}/>')
         out.append(f'<text x="{x + bw / 2:.1f}" y="{BASE - h - 7:.1f}" text-anchor="middle" '
-                   f'font-family="var(--mono)" font-size="12" fill="var(--ink)">{r["value"]}</text>')
+                   f'font-family="var(--mono)" font-size="12" fill="var(--ink)">'
+                   f'{fmt.replace("{v}", r["value"])}</text>')
         out.append(f'<text x="{x + bw / 2:.1f}" y="{BASE + 18:.0f}" text-anchor="middle" '
                    f'font-family="var(--mono)" font-size="12" fill="var(--ink-3)">'
                    f'{esc(r["period"])}</text>')
@@ -407,10 +415,9 @@ def figure(name: str) -> str:
                            f"does not say what its numbers are invites the reader to guess")
     columns = m.get("kind") == "columns"
     key, val = ("period", "value") if columns else ("measure", "percent")
-    suffix = "" if columns else "%"
     svg = column_chart(s) if columns else bar_chart(s)
     table = "".join(
-        f'<tr><td>{esc(r[key])}</td><td class="n">{r[val]}{suffix}</td>'
+        f'<tr><td>{esc(r[key])}</td>' + f'<td class="n">{m["format"].replace(chr(123) + "v" + chr(125), r[val])}</td>'
         f'<td>{esc(r.get("note", ""))}</td></tr>' for r in s["rows"])
     return f"""        <figure>
           <p class="fig-title">{esc(m["title"])}</p>

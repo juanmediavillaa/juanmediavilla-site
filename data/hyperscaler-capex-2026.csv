@@ -1,8 +1,12 @@
-# title: What the three of them plan to spend this year
-# unit: 2026 capital expenditure guidance, billions of dollars
-# caption: Full-year 2026 capital expenditure guidance. These are not incremental budgets; each is comparable to the entire annual output of a large economy, and each was raised during the year rather than cut. This is the spending the market has been selling, and it is why all three now convert far less of their operating cash flow into free cash flow. If the AI build-out were winding down, these numbers would be falling.
-# provenance: Company guidance as most recently raised: Amazon $220bn (raised from $200bn, attributed partly to higher memory costs), Alphabet up to $205bn (raised from $180-190bn), Meta $130-145bn shown at the midpoint. Company-reported guidance, not audited by me, not pre-registered.
+# title: What they said they would spend, and what they say now
+# unit: capital expenditure planned for 2026, billions of dollars
+# format: ${v}bn
+# caption: Each company appears twice. The first bar is what it told investors earlier in the year. The second is what it tells them now. Nothing else changed in between except the plan. Amazon added $20bn, Alphabet added about $20bn, Meta about $2.5bn. Read the pairs, not the heights: the point is the gap inside each pair, which is how much more than expected each is now spending. If the build-out were settling down, the second bar in each pair would be the shorter one.
+# provenance: Company guidance. Amazon $200bn raised to $220bn, attributed partly to higher memory prices. Alphabet $180-190bn raised to as much as $205bn, shown at $185bn and $205bn. Meta $125-145bn narrowed to $130-145bn, shown at the midpoints of $135bn and $137.5bn. Company-reported guidance, not audited by me, not pre-registered.
 measure,percent,note
-Amazon,220,raised from $200bn
-Alphabet,205,raised from $180-190bn
-Meta,137,midpoint of $130-145bn
+Amazon — said earlier,200,
+Amazon — says now,220,$20bn more
+Alphabet — said earlier,185,
+Alphabet — says now,205,$20bn more
+Meta — said earlier,135,
+Meta — says now,137,$2.5bn more

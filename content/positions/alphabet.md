@@ -20,19 +20,20 @@ does not exist yet, most recently valued at $126bn.
 I struggle to name a company with a wider moat. Search is still the default verb for finding
 things, and the ad system attached to it is the best cash-generating machine ever built.
 
-## The case against, which I went looking for
+## What could take this apart
 
-*I said I could not see anything wrong with Alphabet. That is a reason to look harder rather than a
-conclusion, and I found four things.*
+*The risk with a company this dominant is that its quality becomes a reason to stop looking. These are
+the four things I would want to be watching, and the first is live now.*
 
 @figure hyperscaler-capex-2026.csv
 
-**"Regardless of their capex they'll do great" is the claim I can least defend.** Alphabet raised
+**The spending is real, and it is currently larger than the cash the business throws off.** Alphabet raised
 2026 capital expenditure guidance to as much as $205bn, from $180-190bn, and spent $44.9bn in a
 single quarter. **Free cash flow went negative for the first time in the company's history**, and
 the CFO has said capex rises again in 2027. The stock fell on that guidance even as revenue beat.
-"They print money" is true at the operating line and, right now, false at the free cash flow line.
-I can argue the spending is correct. I cannot argue it is costless.
+This company prints money at the operating line and, right now, does not at the free cash flow line.
+The spending may well be correct. It is not costless, and any thesis resting on cash generation has to
+carry that.
 
 **The monopoly is a legal fact, and courts have started acting on it.** Judge Mehta imposed
 behavioural remedies that took effect on 3 February 2026 - exclusive distribution contracts banned,
@@ -42,8 +43,8 @@ that underwrite search distribution are a live legal question rather than a sett
 
 **The AI execution is not flawless.** Gemini 3.5 Pro, the intended push into coding and enterprise
 work, was delayed for missing internal benchmarks. The app has 950 million monthly users, which is
-real - but "biggest beneficiary of AI" is a claim about winning, and a slipping flagship model is
-evidence against it.
+real - but calling Alphabet the biggest beneficiary of AI is a claim about winning, and a slipping
+flagship model is evidence on the other side.
 
 **Waymo is a large and growing loss.** Other Bets is running an operating loss near $8.2bn for
 2026, up from about $5.5bn, and paid rides are tracking short of the company's own
