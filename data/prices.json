@@ -2,59 +2,59 @@
   "source": "Yahoo Finance",
   "quotes": {
     "GOOGL": {
-      "price": 340.67,
-      "asOf": "2026-08-20",
-      "previousClose": 346.36
+      "price": 344.82,
+      "asOf": "2026-08-21",
+      "previousClose": 345.9
     },
     "AMZN": {
-      "price": 260.11,
-      "asOf": "2026-08-20",
-      "previousClose": 265.13
+      "price": 258.63,
+      "asOf": "2026-08-21",
+      "previousClose": 262.65
     },
     "DUOL": {
-      "price": 147.03,
-      "asOf": "2026-08-20",
-      "previousClose": 144.1
+      "price": 146.13,
+      "asOf": "2026-08-21",
+      "previousClose": 132.83
     },
     "HIMS": {
-      "price": 31.86,
-      "asOf": "2026-08-20",
-      "previousClose": 28.77
+      "price": 33.78,
+      "asOf": "2026-08-21",
+      "previousClose": 28.15
     },
     "META": {
-      "price": 545.83,
-      "asOf": "2026-08-20",
-      "previousClose": 594.97
+      "price": 549.9,
+      "asOf": "2026-08-21",
+      "previousClose": 589.85
     },
     "MU": {
-      "price": 974.33,
-      "asOf": "2026-08-20",
-      "previousClose": 949.83
+      "price": 966.78,
+      "asOf": "2026-08-21",
+      "previousClose": 971.66
     },
     "NFLX": {
-      "price": 80.14,
-      "asOf": "2026-08-20",
-      "previousClose": 78.24
+      "price": 79.59,
+      "asOf": "2026-08-21",
+      "previousClose": 78.16
     },
     "NU": {
-      "price": 14.21,
-      "asOf": "2026-08-20",
-      "previousClose": 13.93
+      "price": 14.58,
+      "asOf": "2026-08-21",
+      "previousClose": 15.23
     },
     "RDDT": {
-      "price": 150.31,
-      "asOf": "2026-08-20",
-      "previousClose": 158.12
+      "price": 153.29,
+      "asOf": "2026-08-21",
+      "previousClose": 178.09
     },
     "HOOD": {
-      "price": 95.1,
-      "asOf": "2026-08-20",
-      "previousClose": 99.37
+      "price": 108.13,
+      "asOf": "2026-08-21",
+      "previousClose": 95.56
     },
     "SNDK": {
-      "price": 1600.62,
-      "asOf": "2026-08-20",
-      "previousClose": 1528.11
+      "price": 1596.08,
+      "asOf": "2026-08-21",
+      "previousClose": 1641.11
     }
   }
 }
