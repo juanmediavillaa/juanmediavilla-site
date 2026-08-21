@@ -37,11 +37,48 @@ const PAGES = [
   "notes/investing/robinhood-markets/index.html",
   "notes/investing/hims-and-hers-health/index.html",
   "notes/books/when-genius-failed/index.html",
+  // Both carry figures, so both need the chart-label check below.
+  "notes/investing/amazon/index.html", "notes/investing/micron-technology/index.html",
 ];
 // Home + five sections. Defined in tools/sitegen.py NAV; change both together.
 const NAV_LINKS = 6;
 const WIDTHS = [320, 390, 768, 1440];
 const MIN_FONT_PX = 12;
+
+
+/* -------------------------------------------------- chart label collisions */
+// Charts are authored on a constant 640-wide canvas, so column count alone
+// decides whether the labels underneath still fit: nine quarters leaves ~64px
+// per column for a period label that wants ~50px. Overlapping SVG text does not
+// overflow its container and is not under 12px, so neither existing check sees
+// it — it just renders as an unreadable smudge. Every pair of <text> nodes in a
+// figure is tested for an actual rectangle intersection.
+const CHART_TEXT = `(() => {
+  const out = [];
+  document.querySelectorAll("figure svg").forEach((svg, si) => {
+    const name = (svg.getAttribute("aria-label") || ("figure " + si)).split(":")[0];
+    const t = [...svg.querySelectorAll("text")]
+      .map((n) => { const r = n.getBoundingClientRect(); return {
+        l: r.left, r: r.right, t: r.top, b: r.bottom, s: n.textContent }; })
+      .filter((n) => n.r > n.l);
+    for (let i = 0; i < t.length; i++)
+      for (let j = i + 1; j < t.length; j++) {
+        const a = t[i], b = t[j];
+        // Stacked lines 14px apart at 12px type have em boxes that touch by
+        // about half a pixel. That is not a collision, so a pair only counts
+        // when it overlaps vertically by a third of the shorter box - a genuine
+        // clash between two labels on one baseline overlaps by the whole box.
+        const vy = Math.min(a.b, b.b) - Math.max(a.t, b.t);
+        const need = Math.min(a.b - a.t, b.b - b.t) / 3;
+        if (a.l < b.r && b.l < a.r && vy > need)
+          out.push({ chart: name, a: a.s, b: b.s,
+                     px: +(Math.min(a.r, b.r) - Math.max(a.l, b.l)).toFixed(1),
+                     vy: +(Math.min(a.b, b.b) - Math.max(a.t, b.t)).toFixed(1),
+                     ah: +(a.b - a.t).toFixed(1) });
+      }
+  });
+  return JSON.stringify(out);
+})()`;
 
 /* ------------------------------------------------------------------ CDP */
 const getJSON = (p) => new Promise((res, rej) => {
@@ -333,6 +370,21 @@ const STRUCT = `(() => {
     }
   }
   if (!sfail) console.log("  clean with scripting on and off");
+
+  /* ---- chart labels must not sit on top of each other ---- */
+  console.log("\n=== CHART LABELS (measured overlap) ===");
+  let lfail = 0;
+  for (const w of [320, 1440]) {
+    for (const rel of PAGES.filter((p) => p.includes("/investing/") || p.includes("/research/"))) {
+      await load(rel, w);
+      for (const hit of await evalIn(CHART_TEXT)) {
+        lfail++; fails++;
+        console.log(`  ${String(w).padEnd(5)} ${rel}`);
+        console.log(`      "${hit.a}" / "${hit.b}"  x=${hit.px} y=${hit.vy} boxh=${hit.ah}  ${hit.chart}`);
+      }
+    }
+  }
+  if (!lfail) console.log("  no overlapping chart labels at 320 or 1440");
 
   console.log(`\n${fails === 0 ? "PASS" : "FAIL"} — ${fails} finding(s)`);
   cdp.close();

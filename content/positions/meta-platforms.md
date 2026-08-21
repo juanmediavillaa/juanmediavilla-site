@@ -26,9 +26,10 @@ accounts, and it is the reason the stock has been sold harder than peers who do 
 
 @figure meta-revenue-growth.csv
 
-**Growth reaccelerated off the late-2025 trough.** From 24% in Q4 2025 to a 33% peak and 28% now.
-At $60.8bn of quarterly revenue, growing at that rate, this is not a mature business being
-harvested.
+**Growth has roughly doubled off its 2025 low, and stayed there.** It bottomed at 16% in Q1 2025
+and every quarter since has come in above that, peaking at 33.1% and standing at 28% on $60.8bn of
+quarterly revenue. Meta is growing faster today than it was two years ago while carrying a base
+roughly a third larger. That is not a mature business being harvested.
 
 **It is about to become the largest advertising business in the world.** Meta is forecast to take
 $243.5bn of net worldwide ad revenue in 2026 against Google's $239.5bn — 26.8% of global ad spend
@@ -76,7 +77,7 @@ like button. A court-ordered change there would not be scoped to teenagers; it w
 engagement machinery the whole ad system is priced on. That is the branch I am watching, and I judge
 it unlikely rather than impossible.
 
-**Growth against the guide.** Measured from the Q4 2025 trough this is an acceleration; measured
+**Growth against the guide.** Measured from the Q1 2025 low this is an acceleration; measured
 from the Q1 2026 peak it is not, and the company's own Q3 guidance implies about 22% at the midpoint.
 Impressions tell the same story, 19% in Q1 against 14% in Q2, with pricing flat at 12%. The AI
 improvement is visible in both charts, and so is the fact that it has a limit.

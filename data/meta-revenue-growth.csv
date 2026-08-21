@@ -1,11 +1,15 @@
-# title: Revenue growth, quarter by quarter
+# title: Revenue growth, nine quarters in a row
 # unit: total revenue versus the same quarter a year earlier, per cent
 # kind: columns
-# caption: Total revenue growth against the same quarter a year before. The re-acceleration is real and it is the reason I hold this: growth troughed at 24% at the end of 2025 and is running well above that. But it is not a straight line up, and the honest reading is that it peaked at 33% in Q1 2026 and has come off since. The last bar is the company's own guidance, and at the midpoint it implies a further slowdown to about 22% — below where the run began. If the AI improvement were compounding into revenue without limit, that bar would not be the shortest on the chart.
-# provenance: Meta company-reported total revenue growth, Q3 2025 through Q2 2026, plus Q3 2026 guidance of $61-64bn shown at the midpoint against reported Q3 2025 revenue of $51.24bn. Company-reported, not audited by me, not pre-registered.
+# caption: Nine consecutive quarters of revenue growth, each measured against the same quarter a year before. This is the clearest way I can show what I mean by acceleration: growth bottomed at 16% in the first quarter of 2025, and every quarter since has come in above it, peaking at 33.1%. The business is now growing faster than it was two years ago while being roughly a third larger. Two honest qualifiers. It is not a smooth line - Q4 2025 dipped, and the latest quarter has come off the peak. And the final bar is the company's own guidance rather than a result, drawn open for that reason, implying about 22% at the midpoint. I have started the chart in 2024 on purpose: beginning it at the 16% low would have made the run look cleaner than it is.
+# provenance: Meta company-reported total revenue growth. Q3 2024 $40.59bn (+19%), Q4 2024 $48.39bn (+21%), Q1 2025 $42.31bn (+16%), Q2 2025 $47.52bn (+22%), Q3 2025 $51.24bn, Q4 2025 $59.89bn, Q1 2026, Q2 2026 $60.8bn. Q3 2026 is guidance of $61-64bn shown at the midpoint against reported Q3 2025 revenue. Rates are as the company reported them, to the precision available for each quarter. Company-reported, not audited by me, not pre-registered.
 period,value,note,kind
+Q3 2024,19,,actual
+Q4 2024,21,,actual
+Q1 2025,16,low,actual
+Q2 2025,22,,actual
 Q3 2025,26.3,,actual
-Q4 2025,23.8,trough,actual
+Q4 2025,23.8,,actual
 Q1 2026,33.1,peak,actual
-Q2 2026,28.0,,actual
-Q3 2026,22.0,guidance,target
+Q2 2026,28,,actual
+Q3 2026,22,guidance,target
