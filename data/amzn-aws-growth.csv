@@ -1,0 +1,11 @@
+# title: AWS growth, quarter by quarter
+# unit: AWS revenue versus the same quarter a year earlier, per cent
+# kind: columns
+# caption: AWS revenue growth, each quarter against the same quarter a year before. Growth has risen in each of the last four quarters and has more than doubled across the five shown. The normal path for a business this large is a slow grind downward, because the base it is measured against keeps getting bigger - AWS turned over $42.2bn in the last quarter alone. Reaccelerating from that base is the single strongest fact I know about this company, and it is the reason the position exists.
+# provenance: Amazon company-reported AWS segment revenue growth, Q2 2025 through Q2 2026. Q2 2025 was $30.9bn at 17.5%; Q2 2026 was $42.2bn at 36.7%, the fastest since 2021. I have not verified the quarter before this run began, so the run is described as four quarters of acceleration rather than five. Company-reported, not audited by me, not pre-registered.
+period,value,note,kind
+Q2 2025,17.5,,actual
+Q3 2025,20.0,,actual
+Q4 2025,24.0,,actual
+Q1 2026,28.0,,actual
+Q2 2026,36.7,latest,actual

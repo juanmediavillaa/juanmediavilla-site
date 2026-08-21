@@ -1,0 +1,8 @@
+# title: Where the profit comes from, and where the room is
+# unit: segment operating margin, per cent, most recent quarter
+# caption: Operating margin by segment. AWS earns about five times the margin of the North American retail business and now supplies roughly 61% of all operating profit. I am not expecting retail to converge on cloud - they are different businesses and it never will. The point is what sits underneath the two short bars: retail turns over far more revenue than AWS does, so one point of margin there is a very large number, and this is the part of the company automation is aimed at.
+# provenance: Amazon Q2 2026 reported segment results. AWS $16.6bn of operating income on $42.2bn of revenue; North America $9.1bn at 7.9%; International $1.7bn at 4.1%. The AWS margin includes derivative accounting gains - excluding them the year-on-year improvement is 520 basis points rather than 650. Company-reported, not audited by me, not pre-registered.
+measure,percent,note
+AWS,39.4,$16.6bn of income
+North America,7.9,$9.1bn of income
+International,4.1,$1.7bn of income

@@ -338,7 +338,8 @@ def bar_chart(series: dict) -> str:
 
     out = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="'
            + esc(series["meta"]["title"]) + ": "
-           + esc(", ".join(f'{r["measure"]} {r["percent"]} percent' for r in rows)) + '">']
+           + esc(", ".join(f'{r["measure"]} {fmt.replace("{v}", r["percent"])}'
+                             for r in rows)) + '">']
     for i, r in enumerate(rows):
         y = TOP + i * ROW
         w = float(r["percent"]) * scale
@@ -360,6 +361,24 @@ def bar_chart(series: dict) -> str:
     return "\n            ".join(out)
 
 
+def ticks(top: float) -> list[int]:
+    """Gridline levels that fit the range, rather than a fixed ladder.
+
+    The levels were hardcoded to 0/25/50/75/100. On any column chart topping out
+    below about 60 that put three of the five lines at a negative y, outside the
+    viewBox: the Meta revenue chart peaks at 33% and was drawing its 50, 75 and
+    100 lines at y=-37, -154 and -271, so they were silently clipped and the
+    chart shipped with two gridlines and no usable axis.
+
+    Steps are chosen from a round-number ladder so the labels stay readable, and
+    at most five lines are drawn.
+    """
+    for step in (1, 2, 5, 10, 20, 25, 50, 100, 200, 500, 1000):
+        if top / step <= 5:
+            break
+    return [step * i for i in range(int(top // step) + 1)]
+
+
 def column_chart(series: dict) -> str:
     """A time series as columns, on the same 640 canvas.
 
@@ -375,8 +394,9 @@ def column_chart(series: dict) -> str:
 
     out = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="'
            + esc(series["meta"]["title"]) + ": "
-           + esc(", ".join(f'{r["period"]} {r["value"]}' for r in rows)) + '">']
-    for level in (0, 25, 50, 75, 100):
+           + esc(", ".join(f'{r["period"]} {fmt.replace("{v}", r["value"])}'
+                             for r in rows)) + '">']
+    for level in ticks(top):
         y = BASE - level / top * (BASE - TOP)
         out.append(f'<line x1="{L}" y1="{y:.1f}" x2="{W - R}" y2="{y:.1f}" '
                    f'stroke="var(--line)" stroke-width="1"/>')

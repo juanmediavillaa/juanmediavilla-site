@@ -1,0 +1,9 @@
+# title: Every part of the company is growing
+# unit: revenue growth versus the same quarter a year earlier, per cent
+# caption: Revenue growth by line of business, all against the same quarter a year before. This is the chart that makes me want to own Alphabet rather than a single-product AI company: there is no one bar here that the whole thing depends on. Cloud is the standout, but the three beneath it are a mature advertising and subscription business still compounding at double digits on an enormous base - Search alone turned over $63.3bn in the quarter, more than Cloud, YouTube and subscriptions put together.
+# provenance: Alphabet Q2 2026 reported results. Google Cloud $24.8bn up 82%; Google Search and other $63.3bn up 17%; subscriptions, platforms and devices $12.9bn up 15%; YouTube advertising $11.1bn up 13%. Total revenue $119.8bn, up 24%. Company-reported, not audited by me, not pre-registered.
+measure,percent,note
+Google Cloud,82,$24.8bn of revenue
+Search and other,17,$63.3bn of revenue
+Subscriptions and devices,15,$12.9bn of revenue
+YouTube ads,13,$11.1bn of revenue

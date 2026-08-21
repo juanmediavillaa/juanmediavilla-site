@@ -46,9 +46,15 @@ twice as profitable if we own the platform". Both are management's own estimates
 disclosures, and the $10bn figure is now four years old — but they are the numbers the people
 running the company used, and they explain exactly why it would rather own compute than rent it.
 
+This is the one page where the comparison with the other two earns its place, so here are all
+three.
+
 @figure hyperscaler-capex-2026.csv
 
-Meta is not even the biggest spender of the three. It is the one being punished hardest for it.
+**Meta is not the biggest spender of the three, and it raised its plan by the least - about
+$2.5bn, against roughly $20bn each for Amazon and Alphabet. It is the one being punished hardest
+for it.** The gap between what the company is actually doing and how the stock has been treated
+is why this is a position rather than a watchlist entry.
 
 **A four-billion-person network with the best ad targeting in the world, printing operating cash and
 buying its own future, is not a business I want to trade around.**

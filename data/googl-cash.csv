@@ -1,0 +1,8 @@
+# title: Cash the business made, and cash it spent building
+# unit: most recent quarter, billions of dollars
+# format: ${v}bn
+# caption: Both bars are the same single quarter. Alphabet's operations produced $39.1bn of cash, and the company spent $44.9bn building data centres - about $5.9bn more than it earned, which is why free cash flow was negative for the first time in its history as a public company. Capital expenditure doubled against the same quarter a year earlier. I read that gap as buying scarce capacity at the moment it is scarcest, and the rest of this page is my reason for thinking so. It is also the number that would tell me first if I am wrong.
+# provenance: Alphabet Q2 2026 reported operating cash flow of $39.069bn and capital expenditure of $44.924bn, giving free cash flow of -$5.855bn. Full-year 2026 capital expenditure guidance raised to as much as $205bn from $180-190bn. Company-reported, not audited by me, not pre-registered.
+measure,percent,note
+Cash from operations,39.1,generated
+Capital expenditure,44.9,spent building
