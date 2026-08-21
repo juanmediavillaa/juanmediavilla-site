@@ -4,6 +4,36 @@ These rules bind anyone — human or agent — editing this site. They exist bec
 claims on the previous version of this site were overstatements that had to be retracted.
 **If a change would violate one of these, do not make the change.**
 
+## 0. Publishing is the owner's decision, every time
+
+**Never run `git push`, and never merge to `main`, without the site owner asking for it in that
+same exchange.** `main` deploys straight to the public site, search engines index quickly, and
+pushed history is public the moment it lands — reverting later removes the page, not the fact that
+it was published.
+
+This rule exists because it was broken. Three commits rewriting the Alphabet, Amazon and Meta
+theses were pushed on the strength of an earlier "push" in the same session, as though approval
+carried forward. It does not. **Permission to publish is granted once, for one specific change,
+and expires the moment that change is published.**
+
+What this means in practice:
+
+- Commit locally as much as you like. Local commits are cheap and reversible; that is not what this
+  rule is about.
+- When work is ready, say it is ready, summarise what changed, and **stop**. Wait to be told to
+  push.
+- "Push", "ship it", or "publish" authorises **the change under discussion at that moment** — not
+  the next one, and not the rest of the session.
+- Ambiguity resolves to not pushing. Asking costs one message; an unreviewed claim on a public
+  investing record costs considerably more.
+- This applies to anything else that reaches the public: opening a pull request, editing a GitHub
+  release, or publishing an artifact. The nightly price workflow in
+  `.github/workflows/update-prices.yml` is separately and durably authorised, and is the *only*
+  standing exception.
+
+The owner reviews wording before it goes public. Treat every draft as unreviewed until told
+otherwise.
+
 ## 1. Every number traces to a source
 
 No figure appears on this site unless it traces to one of:
@@ -310,6 +340,9 @@ undefined custom property in a `fill` silently falls back to black, which is inv
 mode and which the audit only catches because it measures `fill` rather than `color`.
 
 ## 17. Checks before publishing
+
+A clean audit means the change is *correct*, not that it may be *published* — see §0, which
+requires the owner to ask for the push.
 
 Run `bash tools/audit.sh` — it does all of this and more. The two sweeps it wraps:
 

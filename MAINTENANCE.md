@@ -16,6 +16,10 @@ bash tools/audit.sh
 Runs every check. Non-zero exit means something is wrong. **Run it before every commit**, and
 certainly before merging to `main`.
 
+A green audit is not permission to publish. **Do not `git push` unless the owner asks for it in
+that exchange** — see [CONTENT-RULES.md §0](CONTENT-RULES.md). Commit locally, report what
+changed, and wait.
+
 It needs a Chrome. If yours is elsewhere:
 
 ```sh
