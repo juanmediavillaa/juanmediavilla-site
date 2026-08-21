@@ -11,96 +11,85 @@ updated: 2026-08-19
 
 *Written 2026-08-21.*
 
-**Roughly 3.6 billion people use something Meta owns every day — about 44% of the planet — and the
-ad system attached to them is getting better rather than merely bigger.**
+**About 3.6 billion people — roughly 44% of the planet — use something Meta owns every single day,
+and the machine that sells advertising against them is getting better, not just bigger.** This is
+the position I feel most strongly about, and the market disagrees with me right now, which is most
+of why I hold it.
 
 @figure meta-ads.csv
 
-That chart is the strongest thing in this thesis. Ad impressions rose 14% and average price per ad
-rose 12% in Q2 2026 against the same quarter a year earlier. Those two normally trade against each
-other - more inventory usually means a lower price per unit. Both rising at once says the targeting
-is improving, and that is where AI is showing up in the accounts even though the company does not
-break it out.
-
-Revenue was $60.8bn, up 28%, with advertising at $59.4bn, up 27%.
+**That chart is the whole argument in one image.** Ad impressions rose 14% and the average price per
+ad rose 12% in the same quarter. Those two normally trade against each other — showing more ads
+usually pushes down what each is worth. Both rising together means the targeting is genuinely
+improving. Meta does not break out an "AI revenue" line, so this is where the AI shows up in the
+accounts, and it is the reason the stock has been sold harder than peers who do quantify it.
 
 @figure meta-revenue-growth.csv
 
-**And the ad business is about to become the largest in the world.** Meta is forecast to take
+**Growth reaccelerated off the late-2025 trough.** From 24% in Q4 2025 to a 33% peak and 28% now.
+At $60.8bn of quarterly revenue, growing at that rate, this is not a mature business being
+harvested.
+
+**It is about to become the largest advertising business in the world.** Meta is forecast to take
 $243.5bn of net worldwide ad revenue in 2026 against Google's $239.5bn — 26.8% of global ad spend
-against 26.4% — overtaking Google for the first time. The gap in growth is what did it: roughly 24%
-against about 12%. The Advantage+ automated suite is named as the single biggest driver, which is
-the same AI argument as the chart above, arriving in market share.
+against 26.4% — passing Google for the first time. The reason is the growth gap: roughly 24% against
+about 12%. The Advantage+ automated suite is named as the single biggest driver, which is the same
+AI story as the chart above, arriving as market share. It is a full-year forecast rather than a
+reported result, but the direction is not in doubt.
 
-That is a forecast for the full year rather than a reported result, so it has not happened yet.
-
-**On capex I take the other side of the sell-off.** Meta has been short of compute and leasing it.
-Spending to own that capacity is not a vanity project; it is a company declining to rent its own
-future.
-
-The cost of depending on someone else's platform is a number Meta's own management has put on the
-record. On the February 2022 earnings call, CFO Dave Wehner said Apple's tracking changes were a
-headwind "on the order of $10 billion" of revenue for that year alone. Zuckerberg has gone further
-in interview, estimating the company "might be twice as profitable if we own the platform".
-
-Both figures deserve the caveat that they are management's own estimates rather than disclosures -
-the $10bn was described as a best guess, and it is four years old. But they are the numbers the
-people running the company used, and they explain why it would rather own compute than rent it.
-
-## What could take this apart
+**On the capital expenditure, I take the other side of the sell-off, and I think the sellers have it
+backwards.** Meta has been short of compute and renting it. Spending to own that capacity is a
+company refusing to depend on anyone else — and it has learned that lesson expensively before. On
+the February 2022 earnings call, CFO Dave Wehner put Apple's tracking changes at a headwind "on the
+order of $10 billion" of revenue in a single year. Zuckerberg has estimated the company "might be
+twice as profitable if we own the platform". Both are management's own estimates rather than audited
+disclosures, and the $10bn figure is now four years old — but they are the numbers the people
+running the company used, and they explain exactly why it would rather own compute than rent it.
 
 @figure hyperscaler-capex-2026.csv
 
-**The last quarter was not clean.** Diluted earnings per share were $6.18, **down
-13% year on year**, and missed consensus by roughly 14%. Free cash flow was $784m against $8.55bn a
-year earlier - a fall of about 91% - because capital expenditure of $31.1bn consumed roughly 98% of
-operating cash flow. Over the last twelve months, capex including finance leases has run at 41% of
-revenue. The ad engine is strong. The company around it is currently converting almost none of that
-strength into cash.
+Meta is not even the biggest spender of the three. It is the one being punished hardest for it.
 
-**The litigation is the threat I take most seriously, and the headline number is the least of it.**
-The $1.4tn figure in circulation is a theoretical ceiling on civil penalties, and the states have
-said they are not seeking a specific amount. Reading it as the risk gets the shape of this wrong in
-both directions.
+**A four-billion-person network with the best ad targeting in the world, printing operating cash and
+buying its own future, is not a business I want to trade around.**
 
+## What I am watching
+
+*I am bullish, and these are the things I would need to see to change that.*
+
+**The litigation, which is the threat I take most seriously — though not for the reason the headline
+suggests.** The $1.4tn figure in circulation is a theoretical ceiling on civil penalties, and the
+states have said they are not seeking a specific amount; reading it as the risk gets this wrong.
 What is actually in front of the company: a jury found Meta liable in March 2026, one case has
 produced $942m in awards, and the federal trial with California, Colorado, Kentucky and New Jersey
-opened in August 2026. Twenty-six more states are behind those four.
+opened in August 2026, with twenty-six more states behind them.
 
-**The exposure that would matter is product remedies, not damages.** The claims are about design -
-infinite scroll, algorithmic recommendation, the like button. A fine is a number a company this size
-absorbs. A court-ordered change to those mechanics would not be scoped to teenagers' spending; it
-would reach the engagement machinery of the whole platform, and the engagement machinery is what the
-ad system is priced on. That is the branch I would want to be watching.
+A fine is a number a company this size absorbs. **The exposure that would matter is a product
+remedy** — the claims are about design, meaning infinite scroll, algorithmic recommendation and the
+like button. A court-ordered change there would not be scoped to teenagers; it would reach the
+engagement machinery the whole ad system is priced on. That is the branch I am watching, and I judge
+it unlikely rather than impossible.
 
-**The vertical-integration argument cuts both ways.** Meta's complaint about Apple is that an
-intermediary takes too much and sets the rules. When Meta ran its own marketplace it charged
-creators 47.5% of each sale - materially more than Apple's 30%. That does not make the $10bn wrong,
-but it does describe the argument accurately: this is a company that wants to be the one setting the
-terms, rather than one that objects to terms being set. As a shareholder I am on the profitable side
-of that. It is worth being clear that it is the argument I am making.
+**Growth against the guide.** Measured from the Q4 2025 trough this is an acceleration; measured
+from the Q1 2026 peak it is not, and the company's own Q3 guidance implies about 22% at the midpoint.
+Impressions tell the same story, 19% in Q1 against 14% in Q2, with pricing flat at 12%. The AI
+improvement is visible in both charts, and so is the fact that it has a limit.
 
-**Growth is coming off its peak, and guidance says that continues.** Measured from the Q4 2025
-trough of 24%, this is an acceleration. Measured from Q1 2026 it is not: 33% fell to 28%, and the
-company's own Q3 guidance implies about 22% at the midpoint, below where the run began.
-Impressions tell the same story — 19% in Q1 against 14% in Q2 — with pricing flat at 12%. The AI
-improvement is visible in both charts. So is its limit.
+**Cash conversion.** Capital expenditure of $31.1bn consumed roughly 98% of operating cash flow,
+leaving $784m of free cash flow against $8.55bn a year earlier, with capex including finance leases
+running at 41% of revenue. I think this is the right thing to be doing. I still want to see it stop.
 
 **One argument I am deliberately not making.** It is tempting to note that buying Meta at multiples
-like these has worked out before. I am leaving that off the page. It reasons from the outcome
-backwards, it would have said the same thing at several points where it was wrong, and a record
-whose whole value is that it was written in advance cannot lean on hindsight.
+like these has worked out before. I am leaving that off the page: it reasons from the outcome
+backwards, it would have said the same thing at points where it was wrong, and a record whose whole
+value is that it was written in advance cannot lean on hindsight.
 
 ## What would make me wrong
 
-- **Price per ad flattening while impressions keep decelerating.** That combination would say the
-  AI improvement has been harvested and the volume story is over at the same time.
-- **A product remedy that reaches the core recommendation system**, rather than a fine. A fine is a
-  number; a remedy is a change to the machine.
-- **Capex rising again into 2027 without revenue acceleration to match**, which would make the
-  compute build an expense rather than an investment.
-- **Free cash flow near zero for several more quarters.** One quarter of 98% reinvestment is a
-  decision. A year of it is a different company from the one I bought.
+- Price per ad flattening while impression growth keeps decelerating — the two halves failing at once.
+- A product remedy that reaches the core recommendation system, rather than a fine.
+- Capex rising again into 2027 with no revenue acceleration to match.
+- Free cash flow near zero for several more quarters.
 
 ## Latest movements
 

@@ -11,55 +11,70 @@ updated: 2026-08-19
 
 *Written 2026-08-21.*
 
-**Alphabet is diversified, dominant, and the most complete AI position available in one stock.**
-Search, YouTube, Cloud, Android, Chrome, and a research arm that keeps producing. Cloud is growing
-strongly, YouTube keeps compounding, and unlike most AI stories the compute, the models, the
-distribution and the demand all sit inside one company. Waymo is a real option on a category that
-does not exist yet, most recently valued at $126bn.
+**Alphabet is the most complete company in the world, and I want to own it for a very long time.**
+Almost nobody else holds every layer of the AI stack at once: its own silicon in TPUs, its own
+frontier models, its own data centres, its own distribution through Search, Chrome and Android, and
+its own demand through Cloud and YouTube. Most companies are renting at least one of those from
+somebody else. Alphabet owns the lot, and funds it from operations.
 
-I struggle to name a company with a wider moat. Search is still the default verb for finding
-things, and the ad system attached to it is the best cash-generating machine ever built.
+**The moat around Search is the widest I know of.** Search is the default verb for finding things,
+and the advertising system bolted to it is the finest cash-generating machine ever built. That is
+not a business that gets competed away by a better product; it is a habit, a distribution network
+and a two-sided market that took twenty-five years to assemble.
 
-## What could take this apart
+**It is diversified in a way that is rare at this size.** Cloud is growing strongly against the two
+largest competitors in the world. YouTube keeps compounding. Android and Chrome sit underneath the
+world's browsing. Any one of these would be a great company on its own.
 
-*The risk with a company this dominant is that its quality becomes a reason to stop looking. These are
-the four things I would want to be watching, and the first is live now.*
+**And it is still expanding.** Gemini reached 950 million monthly users. Waymo — most recently
+valued at $126bn — is a genuine option on a category that does not exist yet, and Alphabet is one
+of very few companies that can fund something that ambitious out of petty cash.
 
 @figure hyperscaler-capex-2026.csv
 
-**The spending is real, and it is currently larger than the cash the business throws off.** Alphabet raised
-2026 capital expenditure guidance to as much as $205bn, from $180-190bn, and spent $44.9bn in a
-single quarter. **Free cash flow went negative for the first time in the company's history**, and
-the CFO has said capex rises again in 2027. The stock fell on that guidance even as revenue beat.
-This company prints money at the operating line and, right now, does not at the free cash flow line.
-The spending may well be correct. It is not costless, and any thesis resting on cash generation has to
-carry that.
+**The capital expenditure is the argument, not the objection.** Alphabet is spending up to $205bn
+this year, raised from $180-190bn, and free cash flow has gone negative for the first time in the
+company's history. I read that as a company converting cash into an owned asset base at exactly the
+moment that asset is scarcest. Compute is the input to everything it sells for the next decade, and
+it is buying it rather than leasing it from a competitor. Businesses that compound for decades tend
+to be the ones that spent heavily when it was uncomfortable.
 
-**The monopoly is a legal fact, and courts have started acting on it.** Judge Mehta imposed
-behavioural remedies that took effect on 3 February 2026 - exclusive distribution contracts banned,
-limited search data sharing required. Structural relief was rejected, so no Chrome or Android
-divestiture, and both sides are now appealing at the D.C. Circuit. The default-placement economics
-that underwrite search distribution are a live legal question rather than a settled one.
+That is my view, and I hold it knowing the cost is real. Below is what I am watching to find out
+whether I am right.
 
-**The AI execution is not flawless.** Gemini 3.5 Pro, the intended push into coding and enterprise
-work, was delayed for missing internal benchmarks. The app has 950 million monthly users, which is
-real - but calling Alphabet the biggest beneficiary of AI is a claim about winning, and a slipping
-flagship model is evidence on the other side.
+## What I am watching
 
-**Waymo is a large and growing loss.** Other Bets is running an operating loss near $8.2bn for
-2026, up from about $5.5bn, and paid rides are tracking short of the company's own
-one-million-a-week target. It may still be the right bet. It is not free.
+*I am bullish, not blind. These are the things that would change the picture, in the order I rank
+them.*
+
+**Search query volume, as assistants absorb navigational queries.** This is the one that matters
+most. Alphabet can win the AI race and still lose economics if the query migrates to a surface that
+monetises worse than a page of search ads. Nothing in the numbers says this is happening yet.
+
+**The antitrust remedies, which are live rather than theoretical.** Judge Mehta's behavioural
+remedies took effect on 3 February 2026 — exclusive distribution contracts banned, limited search
+data sharing required. The court rejected structural relief, so there is no Chrome or Android
+divestiture, and both sides are appealing at the D.C. Circuit. I read the outcome so far as close to
+the good case. It is still a live matter rather than a closed one.
+
+**Whether the spending converts.** Free cash flow negative for one quarter is an investment
+decision. If it is still negative in two years with cloud revenue and margin flat, the build-out was
+an expense rather than an asset.
+
+**Execution on models.** Gemini 3.5 Pro was delayed for missing internal benchmarks. One slipped
+release is noise. A pattern of them, while rivals ship, would undercut the part of this thesis that
+says Alphabet wins AI rather than merely survives it.
+
+**Waymo's losses against its own targets.** Other Bets is running about $8.2bn of operating loss
+for 2026, up from roughly $5.5bn, with paid rides short of the company's one-million-a-week goal. I
+am happy funding a real option. I want it to look like one.
 
 ## What would make me wrong
 
-- **Search query volume falling as assistants absorb navigational queries.** This is the one that
-  matters. Alphabet can win AI and still lose the economics if the query moves to a surface that
-  monetises worse.
-- **The appeal going against them**, or remedies extending to default placements outright.
-- **Capex rising again into 2028 without cloud revenue or margin catching up**, which would turn a
-  build-out into a write-down.
-- **Free cash flow staying negative for several more quarters.** One quarter is an investment
-  decision. Eight is a different business.
+- Search revenue per query falling for consecutive quarters, not just query mix shifting.
+- The appeal going against Alphabet in a way that reaches default placements.
+- Capex rising again into 2028 with cloud growth decelerating at the same time.
+- Free cash flow still negative through 2027.
 
 ## Latest movements
 
