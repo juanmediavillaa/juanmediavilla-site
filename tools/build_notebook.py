@@ -619,6 +619,13 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
                 f'{v["ticker"]} — {v["name"]}', 3,
                 here="notes/index.html", noindex=NOINDEX)]
 
+    # Guarded, because prices.py returns an unavailable quote rather than
+    # raising and this page has to survive one: a position added before its
+    # first fetch has no price yet, and the card at the index already shows an
+    # em dash in that case. Without the guard money(None) raised a TypeError and
+    # took the whole build down.
+    last_note = f"last · {v['asOf']}" if v["price"] else "no quote yet"
+
     doc.append(f"""
 <header class="head">
   <div class="wrap">
@@ -633,7 +640,7 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
     <ul class="keyfacts">
       <li>{return_html(v, big=True)}<span>unrealized, {esc(pf.currency)}</span></li>
       <li><b>{money(v['basis'])}</b><span>{esc(basis_note)}</span></li>
-      <li><b>{money(v['price'])}</b><span>last · {esc(v['asOf'])}</span></li>
+      <li><b>{money(v['price']) if v['price'] else MINUS}</b><span>{esc(last_note)}</span></li>
     </ul>
   </div>
 </header>

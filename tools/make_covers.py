@@ -27,6 +27,17 @@ import argparse
 import pathlib
 import re
 import sys
+# A Windows console is cp1252, which cannot encode the em dash, middle dot and
+# arrow used in this script's progress output. The encode raises, and because
+# the write to disk happens before the message, the run aborts having already
+# applied part of its work. Force UTF-8 on the streams so a status line can
+# never take down the job it is describing.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):   # already wrapped, or not a real tty
+        pass
+
 
 SITE = pathlib.Path(__file__).resolve().parent.parent
 SRC = SITE / "images"

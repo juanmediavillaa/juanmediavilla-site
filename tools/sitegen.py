@@ -15,6 +15,18 @@ from __future__ import annotations
 import html as _html
 import pathlib
 import re
+import sys
+
+# Done here rather than in each generator because all three import this module.
+# A Windows console is cp1252 and cannot encode the em dash this file prints in
+# its orphan warning; the encode raises, and since pages are written before the
+# summary line, the run aborts having already applied part of its work. Force
+# UTF-8 on the streams so a status line can never take down the job it reports.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):   # already wrapped, or not a real tty
+        pass
 
 SITE = pathlib.Path(__file__).resolve().parent.parent
 
