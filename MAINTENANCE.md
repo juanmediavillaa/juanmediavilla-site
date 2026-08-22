@@ -172,6 +172,23 @@ python3 tools/build_notebook.py --selftest  # reconcile every derived number
    is an error (covers are never SVG, so it means a misnamed logo); an unmatched raster is ignored,
    because it is a book cover.
 
+**A logo may be a PNG where no vector mark exists.** Fair Isaac publishes none, so
+`make_logos.py` also takes an alpha-carrying raster (`.png`/`.webp`, never `.jpg` — no
+transparency), downscales it to 240px on its longest side and writes an optimised PNG. That branch
+imports Pillow lazily, so the SVG path still runs without it.
+
+**A raster is accepted only where it can be shown to work.** The dark-mode ground is decided in
+`tools/build_notebook.py` by reading fills out of the SVG — it cannot inspect a bitmap, and it
+cannot grow a Pillow dependency because the price workflow runs that generator in CI. So
+`make_logos.py` measures the raster's opaque pixels against `--plane` itself and **refuses** one
+below 2:1 rather than installing something invisible in dark mode. Fair Isaac measures 4.0:1. That
+is what keeps `needs_ground()` returning `False` for rasters correct by construction rather than by
+luck.
+
+**One file per slug.** The page resolves artwork with `glob("<slug>.*")` and takes the first match,
+so a slug holding both a `.png` and a `.svg` would be decided by sort order. Writing one format
+deletes the other.
+
 **SVG logos are rewritten, not copied.** Downloaded brand SVGs carry `<metadata>` blocks that can
 embed an author name and a local filesystem path, plus editor namespaces and, in principle,
 `<script>` and `on*` handlers — inert behind `<img>`, live the moment anyone inlines one. All of it

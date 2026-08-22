@@ -32,8 +32,17 @@ reference (`href`/`src`/`url()` pointing off-origin) is refused outright rather
 than cleaned, because it would breach CONTENT-RULES.md §4.9 and it means the
 file is not self-contained.
 
-Needs no third-party package. `tools/make_covers.py` needs Pillow; this does not,
-because nothing here is rasterised.
+Vector logos need no third-party package. A **raster** logo needs Pillow, imported
+lazily inside that branch alone, so the SVG path still runs on a machine without
+it — `tools/audit.sh` never calls this script, but the split matters if it ever
+does.
+
+A raster is accepted only where it can be shown to work. The dark-mode ground is
+decided in `tools/build_notebook.py` by reading fills out of the SVG, which
+cannot be done to a bitmap and cannot grow a Pillow dependency because the price
+workflow runs that generator in CI. So the measurement happens here instead, and
+a raster that would be lost against the dark plane is refused rather than
+installed invisibly.
 """
 
 from __future__ import annotations
@@ -61,6 +70,19 @@ OUT = SITE / "assets" / "logos"
 CONTENT = SITE / "content" / "positions"
 
 RASTER = (".png", ".jpg", ".jpeg", ".webp")
+
+# Alpha-capable formats only. A JPEG cannot carry transparency, so a JPEG
+# "logo" arrives as artwork in a white box that would sit on the page as a
+# white box; it is almost certainly a book cover anyway.
+LOGO_RASTER = (".png", ".webp")
+
+# The mark renders in a 2.5rem box, 3.5rem on a position page. 240px is a little
+# over 4x the largest of those, which covers every plausible display density
+# while keeping the file small.
+MAX_PX = 240
+
+# --plane in dark mode, #0C0C10, matching DARK_PLANE_LUM in tools/build_notebook.py.
+DARK_PLANE_LUM = 0.003785
 
 # Where the download's filename does not normalise onto the position's slug.
 ALIASES = {
@@ -104,6 +126,71 @@ def sanitise(text: str, name: str) -> str:
     return text + "\n"
 
 
+def _relative_luminance(r: int, g: int, b: int) -> float:
+    def channel(c: int) -> float:
+        c /= 255
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+
+
+def raster_contrast(im) -> float:
+    """Contrast of the mark's opaque pixels against the dark plane.
+
+    Averaged over pixels that are actually drawn — a logo is mostly
+    transparency, and including it would measure the background instead of the
+    artwork. Mirrors the ratio build_notebook.needs_ground() computes from SVG
+    fills, so both paths answer the same question the same way.
+    """
+    opaque = [p for p in im.getdata() if p[3] > 128]
+    if not opaque:
+        raise ValueError("is fully transparent")
+    mean = sum(_relative_luminance(r, g, b) for r, g, b, _ in opaque) / len(opaque)
+    return ((max(mean, DARK_PLANE_LUM) + 0.05)
+            / (min(mean, DARK_PLANE_LUM) + 0.05))
+
+
+def install_raster(src: pathlib.Path, slug: str) -> tuple[pathlib.Path, int]:
+    """Downscale a transparent logo and write it as an optimised PNG."""
+    try:
+        from PIL import Image          # lazy: the SVG path must not need Pillow
+    except ImportError as exc:
+        raise ValueError("needs Pillow to install a raster logo "
+                         "(pip install Pillow), or supply an SVG") from exc
+
+    if src.suffix.lower() not in LOGO_RASTER:
+        raise ValueError(f"is {src.suffix} — a logo raster must carry alpha, so "
+                         f"use {' or '.join(LOGO_RASTER)}, or supply an SVG")
+
+    im = Image.open(src).convert("RGBA")
+    ratio = raster_contrast(im)
+    if ratio < 2.0:
+        raise ValueError(
+            f"measures {ratio:.2f}:1 against the dark plane and would be lost there. "
+            "A raster cannot be given a ground the way an SVG can (see the module "
+            "docstring), so supply an SVG instead")
+
+    if max(im.size) > MAX_PX:
+        scale = MAX_PX / max(im.size)
+        im = im.resize((max(1, round(im.width * scale)),
+                        max(1, round(im.height * scale))), Image.LANCZOS)
+    dest = OUT / f"{slug}.png"
+    im.save(dest, "PNG", optimize=True)
+    return dest, ratio
+
+
+def drop_siblings(slug: str, keep: pathlib.Path) -> None:
+    """One file per slug.
+
+    The page resolves artwork with glob("<slug>.*") and takes the first match,
+    so a slug holding both a .png and a .svg is decided by sort order rather
+    than by intent. Replacing a logo with one in another format removes the old.
+    """
+    for other in OUT.glob(f"{slug}.*"):
+        if other != keep:
+            other.unlink()
+            print(f"  · removed {other.name}, superseded by {keep.name}")
+
+
 def slugs() -> set[str]:
     return {p.stem for p in CONTENT.glob("*.md")}
 
@@ -130,6 +217,7 @@ def main() -> int:
         if slug in known:
             mapped[slug] = p
         elif p.suffix.lower() == ".svg":
+            # Covers are never SVG, so an unmatched one is a misnamed logo.
             orphan_svgs.append(p.name)
 
     missing = sorted(known - set(mapped))
@@ -148,23 +236,25 @@ def main() -> int:
     total = saved = 0
     failed = []
     for slug, src in sorted(mapped.items()):
-        if src.suffix.lower() != ".svg":
-            print(f"  ! {src.name} is not an SVG; raster logos are not handled", file=sys.stderr)
-            failed.append(src.name)
-            continue
-        raw = src.read_text(encoding="utf-8", errors="replace")
+        before = src.stat().st_size
+        note = ""
         try:
-            clean = sanitise(raw, src.name)
+            if src.suffix.lower() == ".svg":
+                clean = sanitise(src.read_text(encoding="utf-8", errors="replace"), src.name)
+                dest = OUT / f"{slug}.svg"
+                dest.write_text(clean, encoding="utf-8", newline="\n")
+            else:
+                dest, ratio = install_raster(src, slug)
+                note = f"  raster, {ratio:.1f}:1 on the dark plane"
         except ValueError as exc:
             print(f"  ! {src.name} {exc}", file=sys.stderr)
             failed.append(src.name)
             continue
-        dest = OUT / f"{slug}.svg"
-        dest.write_text(clean, encoding="utf-8", newline="\n")
-        before, after = len(raw.encode()), dest.stat().st_size
+        drop_siblings(slug, dest)
+        after = dest.stat().st_size
         total += after
         saved += before - after
-        print(f"  {slug:22} {before / 1024:5.1f} KB → {after / 1024:5.1f} KB")
+        print(f"  {slug:22} {before / 1024:5.1f} KB → {after / 1024:5.1f} KB{note}")
 
     print(f"  {len(mapped) - len(failed)} logos, {total / 1024:.1f} KB "
           f"({saved / 1024:.1f} KB of metadata and cruft removed)")
