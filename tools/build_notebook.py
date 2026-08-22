@@ -37,6 +37,7 @@ import argparse
 import pathlib
 import re
 import sys
+import xml.etree.ElementTree as ET
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from portfolio import Portfolio, PortfolioError  # noqa: E402
@@ -80,17 +81,121 @@ def _lum(hexcolour: str) -> float | None:
     return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
 
 
+# The handful of CSS colour keywords that turn up in real brand SVGs. An
+# unrecognised keyword is deliberately NOT added here: it is treated as dark
+# below, so a mark painted in something this cannot read gets a ground rather
+# than disappearing.
+NAMED = {
+    "black": "#000000", "white": "#ffffff", "red": "#ff0000", "lime": "#00ff00",
+    "blue": "#0000ff", "yellow": "#ffff00", "cyan": "#00ffff", "aqua": "#00ffff",
+    "magenta": "#ff00ff", "fuchsia": "#ff00ff", "silver": "#c0c0c0",
+    "gray": "#808080", "grey": "#808080", "maroon": "#800000",
+    "olive": "#808000", "green": "#008000", "purple": "#800080",
+    "teal": "#008080", "navy": "#000080", "orange": "#ffa500",
+}
+
+DRAWABLE = {"path", "rect", "circle", "ellipse", "polygon", "polyline", "line",
+            "text", "tspan"}
+
+
+def _paint_lum(token: str | None) -> float | None:
+    """Relative luminance of one paint value, or None where nothing is painted.
+
+    `None` as the token means the property was never set anywhere up the tree.
+    In SVG the initial value of `fill` is black, so that is the answer — not
+    "unknown". Reading it as unknown is what made a black logo look safe.
+    """
+    if token is None:
+        return _lum("#000000")
+    tok = token.strip().lower()
+    if tok in ("none", "transparent"):
+        return None                       # nothing is drawn, so nothing to lose
+    if tok.startswith("url(") or tok == "currentcolor":
+        return None                       # a gradient or an inherited context;
+                                          # gradient stops are measured separately
+    if tok in NAMED:
+        tok = NAMED[tok]
+    if tok.startswith("#"):
+        return _lum(tok)
+    m = re.match(r"rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)", tok)
+    if m:
+        vals = []
+        for raw in m.groups():
+            v = float(raw)
+            vals.append(v * 255 / 100 if "%" in tok else v)
+        return _lum("#" + "".join(f"{max(0, min(255, int(round(v)))):02x}" for v in vals))
+    # Unreadable. Treat it as the dangerous case rather than the safe one.
+    return 0.0
+
+
+def _class_fills(text: str) -> dict[str, str]:
+    """fill declarations from any <style> block, keyed by class name."""
+    out: dict[str, str] = {}
+    for block in re.findall(r"<style[^>]*>(.*?)</style>", text, re.S | re.I):
+        for selector, body in re.findall(r"([^{}]+)\{([^{}]*)\}", block):
+            m = re.search(r"(?:^|[;\s])fill\s*:\s*([^;}]+)", body)
+            if not m:
+                continue
+            for sel in selector.split(","):
+                sel = sel.strip()
+                if sel.startswith("."):
+                    out[sel[1:]] = m.group(1).strip()
+    return out
+
+
+def effective_fills(text: str) -> list[float]:
+    """Luminance of every fill the renderer would actually paint."""
+    css = _class_fills(text)
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError:
+        return [0.0]                      # unparseable: assume the worst
+
+    found: list[float] = []
+
+    def resolve(el, inherited: str | None) -> None:
+        tag = el.tag.split("}")[-1]
+        fill = el.get("fill")
+        style = el.get("style") or ""
+        m = re.search(r"(?:^|[;\s])fill\s*:\s*([^;]+)", style)
+        if m:
+            fill = m.group(1).strip()
+        if fill is None:
+            for cls in (el.get("class") or "").split():
+                if cls in css:
+                    fill = css[cls]
+                    break
+        current = fill if fill is not None else inherited
+        if tag in DRAWABLE:
+            lum = _paint_lum(current)
+            if lum is not None:
+                found.append(lum)
+        elif tag == "stop":               # gradient stops are painted too
+            lum = _paint_lum(el.get("stop-color"))
+            if lum is not None:
+                found.append(lum)
+        for child in el:
+            resolve(child, current)
+
+    resolve(root, root.get("fill"))
+    return found
+
+
 def needs_ground(slug: str) -> bool:
+    """True where any painted part of the mark would be lost on the dark plane.
+
+    Recolouring somebody else's logo is not an option, so the fix is a light
+    ground behind it — but only where it is needed, which is a measurement
+    rather than a judgement. The bar is 2:1 against --plane.
+    """
     svg = SITE / "assets" / "logos" / f"{slug}.svg"
     if not svg.exists():
+        # A raster logo, or none at all. tools/make_logos.py refuses to install
+        # a raster that would need a ground, so False is correct by
+        # construction here rather than by luck.
         return False
-    fills = set(re.findall(r'(?:fill|stop-color)[=:]\s*["\']?(#[0-9a-fA-F]{3,6})',
-                           svg.read_text(encoding="utf-8")))
-    for f in fills:
-        l = _lum(f)
-        if l is None:
-            continue
-        if (max(l, DARK_PLANE_LUM) + 0.05) / (min(l, DARK_PLANE_LUM) + 0.05) < 2.0:
+    for lum in effective_fills(svg.read_text(encoding="utf-8")):
+        if (max(lum, DARK_PLANE_LUM) + 0.05) / (min(lum, DARK_PLANE_LUM) + 0.05) < 2.0:
             return True
     return False
 

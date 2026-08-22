@@ -234,12 +234,17 @@ a.bk:hover h3 { color: var(--accent); }
   border-radius: 6px;
 }
 /* In light mode every mark sits straight on the page: they are all drawn for a
-   light ground. On the dark plane three of them lose their primary element —
-   Amazon's wordmark measures 1.15:1 against --plane, Reddit's outlines 1.04:1
-   and Micron's single fill 1.88:1 — so those three, and only those three, get a
-   ground there. Which three is decided by measurement in
-   tools/build_notebook.py rather than by eye, and recolouring somebody else's
-   logo to suit the theme was never an option. */
+   light ground. On the dark plane five of them lose their primary element —
+   Reddit's outlines measure 1.04:1 against --plane, Hinge Health's paths
+   1.08:1, Amazon's wordmark 1.15:1, Hims & Hers 1.42:1 and Micron's single fill
+   1.88:1 — so those five, and only those five, get a ground there. Which five
+   is decided by measurement in tools/build_notebook.py rather than by eye, and
+   recolouring somebody else's logo to suit the theme was never an option.
+
+   Hinge Health is why that measurement now resolves fills rather than grepping
+   for them: its file sets no fill anywhere, so every path renders in SVG's
+   default black, and a check looking only for hex literals found nothing and
+   called it safe. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) img.pos__logo--ground {
     background: #F2F2F5;
