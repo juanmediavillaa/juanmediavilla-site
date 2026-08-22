@@ -16,10 +16,20 @@
       "asOf": "2026-08-21",
       "previousClose": 132.83
     },
+    "FICO": {
+      "price": 1172.67,
+      "asOf": "2026-08-21",
+      "previousClose": 1085.78
+    },
     "HIMS": {
       "price": 33.78,
       "asOf": "2026-08-21",
       "previousClose": 28.15
+    },
+    "HNGE": {
+      "price": 88.42,
+      "asOf": "2026-08-21",
+      "previousClose": 88.49
     },
     "META": {
       "price": 549.9,

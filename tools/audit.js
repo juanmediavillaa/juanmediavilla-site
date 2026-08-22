@@ -39,6 +39,7 @@ const PAGES = [
   "notes/books/when-genius-failed/index.html",
   // Both carry figures, so both need the chart-label check below.
   "notes/investing/amazon/index.html", "notes/investing/micron-technology/index.html",
+  "notes/investing/fair-isaac/index.html", "notes/investing/hinge-health/index.html",
 ];
 // Home + five sections. Defined in tools/sitegen.py NAV; change both together.
 const NAV_LINKS = 6;

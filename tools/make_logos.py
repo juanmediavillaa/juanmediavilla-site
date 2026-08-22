@@ -58,6 +58,10 @@ ALIASES = {
     "nubank": "nu-holdings",
     "robinhood": "robinhood-markets",
     "hims": "hims-and-hers-health",
+    "fico": "fair-isaac",
+    "fairisaac": "fair-isaac",
+    "hinge": "hinge-health",
+    "hingehealth": "hinge-health",
 }
 
 EXTERNAL = re.compile(r'(?:href|src)\s*=\s*["\']\s*https?://|url\(\s*["\']?\s*https?://', re.I)
