@@ -13,7 +13,7 @@ updated: 2026-08-19
 
 **About 3.6 billion people — roughly 44% of the planet — use something Meta owns every single day,
 and the machine that sells advertising against them is getting better, not just bigger.** This is
-the position I feel most strongly about, and the market disagrees with me right now, which is most
+the position I feel most strongly about, and the market disagrees with me, which is most
 of why I hold it.
 
 @figure meta-ads.csv
@@ -28,7 +28,7 @@ accounts, and it is the reason the stock has been sold harder than peers who do 
 
 **Growth has roughly doubled off its 2025 low, and stayed there.** It bottomed at 16% in Q1 2025
 and every quarter since has come in above that, peaking at 33.1% and standing at 28% on $60.8bn of
-quarterly revenue. Meta is growing faster today than it was two years ago while carrying a base
+quarterly revenue. Meta is growing faster than it was two years earlier while carrying a base
 roughly a third larger. That is not a mature business being harvested.
 
 **It is about to become the largest advertising business in the world.** Meta is forecast to take
@@ -52,7 +52,7 @@ three.
 
 @figure hyperscaler-capex-2026.csv
 
-**Meta is not the biggest spender of the three, and it raised its plan by the least - about
+**Meta is not the biggest spender of the three, and it raised its plan by the least — about
 $2.5bn, against roughly $20bn each for Amazon and Alphabet. It is the one being punished hardest
 for it.** The gap between what the company is actually doing and how the stock has been treated
 is why this is a position rather than a watchlist entry.

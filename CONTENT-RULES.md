@@ -357,3 +357,21 @@ grep -rniE '(ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}|api[_-]?key|secret|bearer |infur
 ```
 
 Both must return nothing.
+
+## 18. Prose must not expire
+
+**Never write a claim whose truth depends on when it is read.** "Right now", "so far", "last
+quarter", "this year", "the most recent quarter", "I have not owned this through a downturn" — each
+is accurate on the day it is written and quietly false afterwards. Nothing else in this repository
+can detect that: the sentence stays grammatical, the figures stay where they were, and the page goes
+on asserting something that stopped being true.
+
+Name the period instead. "In Q2 2026" is still correct in five years; "last quarter" is wrong within
+three months. Where a figure is inherently a snapshot, anchor it — "valued at $126bn as of August
+2026" rather than "most recently valued at $126bn".
+
+Quoted speech is exempt, and must stay exact. Reddit's "search referrals were choppy in the quarter"
+is the CEO's sentence, and editing inside the quotation marks to satisfy this rule would be a
+misquote — which §1 forbids more strongly than this rule requires anything.
+
+`tools/audit.sh` enforces this over `content/`, skipping dated ledger entries and quoted spans.

@@ -15,7 +15,7 @@ updated: 2026-08-23
 it is compounding at a rate that usually belongs to much smaller companies.** This is the position I
 have least anxiety about.
 
-**The scale is the argument.** 139 million customers, with about 4 million added in the quarter
+**The scale is the argument.** 139 million customers, with about 4 million added in Q2 2026
 alone: roughly 118 million in Brazil, 15.8 million in Mexico and more than 5 million in Colombia.
 Gross revenue of nearly $5.9bn, up 39%. Record net income of $1.1bn. **Return on equity of 33%** — a
 figure most established banks would be pleased to report at a fraction of this growth rate.
@@ -29,7 +29,7 @@ count and a franchise.
 active customer is around $17 and rising each quarter. Nu acquires cheaply, then sells credit,
 deposits and investment products into a base that already trusts it. Deposits stand at $45.3bn and
 the credit portfolio at $39.4bn. Meanwhile it is still opening new fronts — a full digital bank
-launched in Mexico this quarter, where the underbanked opportunity looks like Brazil did several
+launched in Mexico in Q2 2026, where the underbanked opportunity looks like Brazil did several
 years ago.
 
 **A bank earning a 33% return on equity while growing revenue 39% in markets it already leads is not
@@ -50,7 +50,7 @@ generally supportive period. Brazilian rates and unemployment are the variables 
 book, and a 33% ROE is exactly the sort of number that compresses when they turn.
 
 **Mexico is early.** It is the second growth engine and the reason the runway looks long, but 15.8
-million customers is not yet the position Brazil represents, and a full banking licence brings costs
+million customers is not the position Brazil represents, and a full banking licence brings costs
 before it brings returns.
 
 **Currency.** The results are reported in dollars and earned in reais and pesos. A move in either can

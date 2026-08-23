@@ -27,8 +27,8 @@ little as **$1 a score against roughly $10 for FICO** — a 90% undercut, with t
 industry saving above $600m in the first year. So the threat is real, it is live, and it comes from a
 vehicle the bureaus own.
 
-**And the results say the moat is holding — so far, and in the most demanding way possible.** In the
-quarter reported in August, revenue was $674.2m, up 26%. The Scores segment did $458.9m, up 41%.
+**And the results say the moat is holding, in the most demanding way possible.** In the quarter
+reported in August 2026, revenue was $674.2m, up 26%. The Scores segment did $458.9m, up 41%.
 Mortgage origination revenue rose **97%**. Full-year guidance went up, not down: $2.53bn of revenue
 (+27%) and $42.43 of non-GAAP EPS (+42%).
 
@@ -49,15 +49,18 @@ just argued. If growth is coming from price while unit volumes quietly fall, rev
 a while and tells me nothing about whether lenders are leaving. Price-led growth has a ceiling that
 volume-led growth does not. I want to see the units.
 
-**A tenfold price gap is not a normal competitive attack.** Most moats are not tested against a rival
-at 10% of the price with a regulator's blessing. Switching costs are what stand between FICO and that
-gap, and I am assuming they are large. That assumption is the thesis.
+**A tenfold price gap is not a normal competitive attack, and it is not a launch promotion either.**
+Equifax has committed to holding the $1 VantageScore 4.0 price through 2027, and TransUnion has cut
+to 99 cents. So the undercut is contracted rather than temporary, and the bureaus are competing with
+each other to supply it. Most moats are not tested against a rival at a tenth of the price with a
+regulator's blessing and a multi-year price guarantee behind it. Switching costs are what stand
+between FICO and that gap, and I am assuming they are large. That assumption is the thesis.
 
 **The FHFA is a political actor.** Permitting VantageScore is not the same as mandating it, and the
 agency that changed the rule once can change it again. The current outcome is close to the good case
 — competition allowed, nothing compelled.
 
-**The market disagrees with me right now.** The stock fell over 9% after that beat. Investors are
+**The market disagrees with me.** The stock fell over 9% after that beat. Investors are
 pricing the threat rather than the results, which is the whole reason there is an opportunity here,
 and also the reason I could be the one who is wrong.
 

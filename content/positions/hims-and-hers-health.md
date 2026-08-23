@@ -15,8 +15,8 @@ updated: 2026-08-23
 still growing about 40% after a year of being hit from several directions at once.** I bought it
 after the dip because I think the damage is to the share price rather than to the business.
 
-**The most recent quarter.** Revenue of more than $753m, up close to 40%, with 300,000 net new
-subscribers added in the quarter and international revenue of $131m. Full-year guidance was raised
+**Q2 2026.** Revenue of more than $753m, up close to 40%, with 300,000 net new
+subscribers added in that quarter and international revenue of $131m. Full-year guidance was raised
 to about $3.3bn. A company under this much pressure is not supposed to be adding subscribers at that
 rate.
 

@@ -45,13 +45,13 @@ is a twentieth of the business. Advertising is what is driving Reddit. If I told
 the AI-data story, I would be paying for the other 95% and describing the 5%. The renewals with
 Google and OpenAI are also unresolved with no stated timeline.
 
-**AI cuts both ways here, and the negative side showed up this quarter.** About half of Reddit's
+**AI cuts both ways here, and the negative side showed up in Q2 2026.** About half of Reddit's
 traffic arrives from Google, and AI Overviews are eating into that. The CEO wrote that "search
 referrals were choppy in the quarter" and that visibility into referral traffic "remains low". So the
 platform that benefits from selling human data is simultaneously exposed to AI absorbing the search
 result that used to deliver its readers.
 
-**US daily active users went backwards** — 53.2 million against 53.5 million the previous quarter,
+**US daily active users went backwards** — 53.2 million against 53.5 million in Q1 2026,
 the first sequential decline in the five quarters the company charts. On a business monetising the US
 at $11.85 a head, that is the wrong number to see falling, and the stock was marked down hard for it.
 

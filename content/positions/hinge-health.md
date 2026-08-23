@@ -15,7 +15,7 @@ updated: 2026-08-23
 rarely get to buy.** Most companies compounding at this rate are still spending their way toward a
 margin. This one is not, and that is the reason I own it.
 
-**The most recent quarter, which is what convinced me.** Revenue of $212.8m, up 53% and ahead of the
+**Q2 2026, which is what convinced me.** Revenue of $212.8m, up 53% and ahead of the
 company's own guidance. Operating income of $62m, more than doubled. Operating margin of 29%,
 against 19% a year earlier — the margin is expanding while growth stays high, which is the hard
 combination. Adjusted gross margin reached 87%. Free cash flow was $100m against $33m a year before.
@@ -46,7 +46,7 @@ discount.
 
 **Billings rather than revenue.** Last-twelve-month calculated billings were $862m, up 52%. Billings
 lead recognised revenue in a subscription business, so this is the line that shows a slowdown first.
-Right now it is running with revenue rather than behind it, which is what I want to see.
+It ran with revenue rather than behind it, which is what I want to see.
 
 **Whether margin expansion continues or stalls.** Nineteen to 29% in a year is a big step. The thesis
 needs it to keep going, or at least hold, while revenue grows.

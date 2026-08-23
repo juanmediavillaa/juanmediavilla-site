@@ -11,14 +11,16 @@ updated: 2026-08-23
 
 *Written 2026-08-23.*
 
-**Netflix won streaming, and I got to buy the winner during a de-rating.** The competitive question
-that hung over this company for a decade has been answered: the rivals that were going to spend their
-way in have mostly retreated to licensing their content back to it. What is left is the largest
-subscription entertainment business in the world, with the pricing power that comes from being the
-one service people will not cancel.
+**Netflix won the first phase of streaming, and I got to buy the winner during a de-rating.** The
+studios that were going to spend their way past it have largely stopped trying to starve it instead:
+Netflix has a global Pay-One deal with Sony, an expanded Universal arrangement covering live-action
+films, and a slate of licensed titles from Paramount. Rivals licensing their libraries to the company
+they were meant to displace is what winning looks like. What is left is the largest subscription
+entertainment business in the world, with the pricing power that comes from being the one service
+people will not cancel.
 
 **The stock came down a long way, and that is the opportunity.** Shares are roughly **41% below their
-peak and down about 26% so far this year**, and the multiple has compressed from a historical 35-40
+peak, and down about 26% since the start of 2026**, and the multiple has compressed from a historical 35-40
 times forward earnings to somewhere around **20-24 times**. That is not a distressed business being
 marked down. It is a mature, profitable, cash-generating one being repriced from a growth multiple to
 something much more ordinary.
@@ -32,8 +34,8 @@ shares at a compressed multiple is management taking the same side of this trade
 information than I have.
 
 **What I am actually buying is durability rather than acceleration.** A service people keep, that
-raises prices without losing them, that produces cash reliably, bought at a price that no longer
-assumes rapid growth. If it merely stays what it is, that works from here.
+raises prices without losing them, that produces cash reliably, bought at a price that had stopped
+assuming rapid growth. If it merely stays what it is, that works from here.
 
 ## What I am watching
 
@@ -55,6 +57,13 @@ which it stops working shows up as churn after a price rise rather than as a war
 
 **Content spend is the cost of the moat.** The library has to keep being refreshed at enormous
 expense simply to keep people where they are. That is the permanent tax on this business.
+
+**A consolidated competitor is being assembled, which cuts against the paragraph above.** Paramount
+agreed in early 2026 to acquire Warner Bros. Discovery, folding Paramount+, HBO Max and Pluto into a
+single service with roughly 22% of the US streaming market and the Warner franchises behind it — and
+Netflix bid for those assets and was beaten. I have argued that the competitive question is settled.
+One buyer assembling that much library in one place is the most credible reason to think it is being
+reopened, and I would rather have it on the page than discover it in a later quarter.
 
 ## What would make me wrong
 

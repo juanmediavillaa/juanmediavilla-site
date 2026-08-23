@@ -21,7 +21,7 @@ $741m at a 57% margin, and that margin is being carried while the company spends
 marketing and new products. This is a profitable business, not a growth story that hopes to become
 one.
 
-**Platform assets reached $369bn, up 32%, with $21.7bn of net deposits in the quarter — about a 28%
+**Platform assets reached $369bn, up 32%, with $21.7bn of net deposits in Q2 2026 — about a 28%
 annualised rate.** This is the number that matters most to me. User counts can be vanity; net
 deposits are people moving real money onto the platform, and at that rate the asset base compounds
 without needing a single new customer. As those balances grow with their owners' careers, the
@@ -45,9 +45,10 @@ growing far more slowly than the exciting half.
 deconsolidation. That is a real event and it is not the operating business, so the underlying
 progress is smaller than the headline.
 
-**What a drawdown does to this.** I have not owned this through a bad market. The thesis says the
-deposits keep arriving because the accounts are habitual rather than speculative. A sustained
-downturn is the test of that sentence, and it has not happened yet.
+**What a drawdown does to this.** The thesis says the deposits keep arriving because the accounts
+are habitual rather than speculative. A sustained downturn is the test of that sentence: transaction
+revenue would fall first, and whether net deposits hold through it is the number that answers the
+question.
 
 **Regulatory exposure.** A retail broker expanding into crypto, prediction markets and its own
 clearing infrastructure is widening the number of regulators with an opinion about it.

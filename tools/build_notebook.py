@@ -599,7 +599,7 @@ def card(v: dict) -> str:
         f'                <span class="pos__val">{money(v["price"]) if v["price"] else MINUS}</span>\n'
         f'              </span>\n'
         f'              <span class="pos__fig">\n'
-        f'                <span class="pos__lab">Unrealized</span>\n'
+        f'                <span class="pos__lab">Unrealised</span>\n'
         f'                {return_html(v)}\n'
         f'              </span>\n'
         f'            </span>\n'
@@ -743,7 +743,7 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
       {theme}
     </p>
     <ul class="keyfacts">
-      <li>{return_html(v, big=True)}<span>unrealized, {esc(pf.currency)}</span></li>
+      <li>{return_html(v, big=True)}<span>unrealised, {esc(pf.currency)}</span></li>
       <li><b>{money(v['basis'])}</b><span>{esc(basis_note)}</span></li>
       <li><b>{money(v['price']) if v['price'] else MINUS}</b><span>{esc(last_note)}</span></li>
     </ul>

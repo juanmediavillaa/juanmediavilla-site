@@ -17,11 +17,11 @@ displaced by a better model or a cheaper competitor.
 
 @figure amzn-aws-growth.csv
 
-**That chart is the position.** AWS grew 36.7% to $42.2bn last quarter, its fastest rate since 2021,
+**That chart is the position.** AWS grew 36.7% to $42.2bn in Q2 2026, its fastest rate since 2021,
 and growth has risen in each of the last four quarters from 17.5%. Businesses this large are supposed
 to decelerate, because every year they are measured against a bigger base. This one is doing the
 opposite, which says demand for compute is outrunning what the market expected rather than fading.
-AWS is now at a $169bn annualised run rate, and within it the AI business and the in-house chips have
+AWS reached a $169bn annualised run rate, and within it the AI business and the in-house chips have
 each passed $25bn annualised, both more than doubling in a year.
 
 **The retail moat is physical, and physical moats age well.** Fulfilment centres, delivery density,
@@ -34,14 +34,14 @@ does not eat a warehouse network. That is the part of Amazon I am least worried 
 39.4% and supplies around 61% of all operating profit. The two short bars are the opportunity: at
 Amazon's volume a single point of retail margin is an enormous number, so this case needs no heroics.
 North America has moved to 7.9%, and the company expects to more than double its fleet of robotic
-arms this year. I do not need a dramatic re-rating; I need this to keep grinding upward, which is
+arms during 2026. I do not need a dramatic re-rating; I need this to keep grinding upward, which is
 what it has done for a decade.
 
 **The capital expenditure is the price of the next decade, and Amazon has always paid it.** Guidance
 went to $220bn from $200bn. Over the last twelve months capital expenditure of $173bn has more than
 consumed $161bn of operating cash flow, turning free cash flow into an outflow of $7.6bn against an
 inflow of $18.2bn a year earlier. This is a company with a long record of spending its cash flow into
-capacity and being right - AWS itself was exactly that trade, and the chart at the top of this page
+capacity and being right — AWS itself was exactly that trade, and the chart at the top of this page
 is what it grew into. Part of the increase is higher memory prices, which is the same cycle I am on
 the other side of through Micron and SanDisk.
 
@@ -57,11 +57,11 @@ into softening demand.
 would mean the economics of the business have changed rather than its phase.
 
 **How quickly automation reaches the margin.** Retail margins have improved for years and are still
-single digit. I expect gradual, because gradual is what the record shows - but if two more years pass
+single digit. I expect gradual, because gradual is what the record shows — but if two more years pass
 with no movement, the savings are being competed away in price rather than kept.
 
 **The quality of reported profit.** Q2 included a $53bn gain related to Anthropic, and the AWS margin
-itself includes derivative accounting gains - stripping those out, the year-on-year improvement is
+itself includes derivative accounting gains — stripping those out, the year-on-year improvement is
 520 basis points rather than 650. Both are real value and neither is operating performance, and I
 want to track the underlying line rather than the headline.
 

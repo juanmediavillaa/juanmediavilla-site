@@ -109,6 +109,39 @@ note "no funding chains in /notes"
 # Movements state the change and the realized result, never where money went.
 if grep -rniE 'proceeds|funded by|funded the|redeploy|rotation|1:1' notes/ content/positions/; then
   FAIL=1; else echo "  none"; fi
+note "no prose that expires (positions and books)"
+# A page saying "right now" or "last quarter" is true the day it is written and
+# silently false later; nothing else here can detect that, because the sentence
+# stays grammatical and the figures stay put. Name the period instead — "in Q2
+# 2026" is still correct in five years. Quoted speech is exempt: altering words
+# inside quotation marks to tidy the prose would be a misquote.
+python3 - <<'PY' || FAIL=1
+import pathlib, re, sys
+
+EXPIRING = re.compile(
+    r"\b(right now|currently|so far|thus far|at the moment|these days|for now|"
+    r"nowadays|as things stand|to date|last quarter|this quarter|next quarter|"
+    r"the previous quarter|the most recent quarter|the latest quarter|"
+    r"this year|last year|newest|most recently|have not owned|has not happened yet|"
+    r"not yet|no longer)\b", re.I)
+
+QUOTED = re.compile(r"[\u201c\"][^\u201d\"]*[\u201d\"]")
+
+bad = 0
+for f in sorted(pathlib.Path("content").glob("*/*.md")):
+    for n, line in enumerate(f.read_text(encoding="utf-8").split("\n"), 1):
+        # Dated ledger entries are anchored by their own date, not by when read.
+        if line.lstrip().startswith("- **20"):
+            continue
+        for m in EXPIRING.finditer(QUOTED.sub(lambda q: " " * len(q.group(0)), line)):
+            bad += 1
+            print(f"  {f.as_posix()}:{n}  \"{m.group(0)}\"  {line.strip()[:78]}")
+if bad:
+    print(f"  {bad} phrase(s) that will expire — name the period instead")
+    sys.exit(1)
+print("  none")
+PY
+
 note "no retired figures"
 if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB|800 GB)' --include='*.html' .; then
   FAIL=1; else echo "  none"; fi

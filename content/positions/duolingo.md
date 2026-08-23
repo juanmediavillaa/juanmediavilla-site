@@ -11,15 +11,15 @@ updated: 2026-08-19
 
 *Written 2026-08-21. Figures are Duolingo's Q2 2026 results, reported 6 August 2026, and market
 data from that week. I bought this position in November 2025 and laddered into it through February
-2026 — this is the argument as I hold it today, not a reconstruction of what I thought then, which
-I did not write down.*
+2026 — this is the argument as it stood at the date above, not a reconstruction of what I thought
+when I bought, which I did not write down.*
 
 **I hold this because I do not see the business slowing down, and the market has priced it as
 though it already has.** The re-rating I expect is a consequence of that, not the reason for it.
 
 @figure duol-dau.csv
 
-**Users are growing, and growing faster than last quarter.** Daily active users rose 23% to 58.7m
+**Users are growing, and growing faster than in the preceding quarter.** Daily active users rose 23% to 58.7m
 in Q2 and accelerated from Q1, against monthly actives above 160m. Whatever the market is worried
 about is not showing up in whether people open the app.
 
@@ -31,10 +31,10 @@ units to 24 raises revenue, because more people run out and subscribe, and lower
 users, because it frustrates them. One unit. They know the elasticity of their own product to that
 resolution, and they have been tuning it for years.
 
-Right now they are turning that dial toward users on purpose. They have pushed advanced AI
+They are turning that dial toward users on purpose. They have pushed advanced AI
 features *down* into the lower and free tiers, made the app less aggressive about prompting
 conversion, and set a target of 100 million daily active users by 2028 against roughly 59 million
-today. There is also a mechanical effect: a three-month free trial pushes booking recognition out
+at the time of writing. There is also a mechanical effect: a three-month free trial pushes booking recognition out
 by a full quarter. So a good part of the bookings gap in the chart above is a choice and a timing
 artefact rather than demand disappearing.
 
@@ -57,7 +57,7 @@ a language app has to pay for every user Duolingo gets talked into.
 
 **The habit system is the other half of that moat, and it is measurable.** The streak is not a
 gimmick; it is the retention mechanism. A single streak-revival feature re-engaged 15 million users
-in the quarter. That is the asset an AI chat interface does not have and cannot quickly build.
+in Q2 2026. That is the asset an AI chat interface does not have and cannot quickly build.
 
 **The expansion beyond languages is real where it is working.** Chess launched in 2025 and reached
 roughly 7m daily active users inside a year. Music absorbed a $34.5m acqui-hire of NextBeat for
@@ -68,7 +68,7 @@ not the default place people learn languages.
 GPT-5 demo built a language-learning app in minutes, and the shares are down about 66% over the
 year. My view is that a model is not a curriculum. What Duolingo owns is a structured path, a
 difficulty curve and a habit loop, backed by more data on how people actually learn than anyone
-else has. The evidence so far reads my way: the Max tier is about 8–9% of paying subscribers and
+else has. The evidence reads my way: the Max tier is about 8–9% of paying subscribers and
 already produces 12–16% of subscription revenue, and Q2 raised the full-year adjusted EBITDA margin
 outlook to 26.5% as AI serving costs fell. Users are paying more because of the AI, not leaving
 because of it.
