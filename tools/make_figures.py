@@ -171,6 +171,20 @@ def load_fit() -> dict:
     return json.loads((POLY / "results/hier_mmpp_v0/logs/fit.json").read_text())
 
 
+def load_agent_programme() -> dict:
+    """The synthetic-bed measurements behind the three agent-programme figures.
+
+    Unlike the other sources here, this one lives in this repository rather than in
+    a research repo: the bed it came from is a sealed environment that is not
+    checked out beside the site, and the sealed-side numbers were never inside it
+    at all. The file is a transcription of the bed's own report plus the answer-key
+    measurement taken afterwards, and it carries its provenance in a `_source` key.
+    Keeping it as a data file rather than as literals in this script is what lets
+    the chart, the published CSV and the download all come from one place.
+    """
+    return json.loads((SITE / "data" / "agent-programme-results.json").read_text())
+
+
 def load_strategies() -> list[dict]:
     with open(POLY / "results/backtests_historical_v0/results_table.csv", newline="") as fh:
         return list(csv.DictReader(fh))
@@ -605,8 +619,206 @@ def fig_perclass() -> None:
     write_svg("fig-perclass", s)
 
 
+def _hatch(s: Svg, slug: str) -> str:
+    """A 45-degree hatch, so 'inside the noise' survives greyscale and colourblindness.
+
+    Defined per figure rather than in the shared <style>: these SVGs are inlined
+    into HTML, where a <style> is document-scoped, and several figures share a page.
+    A local <defs> keeps the pattern id the only thing that has to be unique.
+    """
+    pid = f"hz-{slug}"
+    s.add(f'<defs><pattern id="{pid}" width="5" height="5" patternUnits="userSpaceOnUse" '
+          f'patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--surface)"/>'
+          f'<line x1="0" y1="0" x2="0" y2="5" stroke="var(--muted)" stroke-width="2"/>'
+          f"</pattern></defs>")
+    return f"url(#{pid})"
+
+
+def _whiskers(s: Svg, items: list[tuple[float, float, float]], cap: float = 4) -> None:
+    """Every interval in one figure as a single <g>, drawn in ink not in a series colour.
+
+    One group rather than one per row, for the same reason fig_models groups its
+    subject dots: this page carries three charts against a 90 KB markup cap, and
+    repeating the stroke attributes fourteen times is pure weight. Called after the
+    bars so the whiskers sit on top of them.
+    """
+    if not items:
+        return
+    lines = "".join(
+        f'<line x1="{lo:.1f}" y1="{y:.1f}" x2="{hi:.1f}" y2="{y:.1f}"/>'
+        f'<line x1="{lo:.1f}" y1="{y - cap:.1f}" x2="{lo:.1f}" y2="{y + cap:.1f}"/>'
+        f'<line x1="{hi:.1f}" y1="{y - cap:.1f}" x2="{hi:.1f}" y2="{y + cap:.1f}"/>'
+        for lo, hi, y in items)
+    s.add(f'<g stroke="var(--ink-2)" stroke-width="1.2" fill="none">{lines}</g>')
+
+
+def fig_agent_ceiling() -> None:
+    """How close an honest search got, against how far a compromised one appears to get."""
+    rows = load_agent_programme()["ceiling"]
+    write_csv("agent-ceiling.csv",
+              ["quantity", "average_precision", "interval_lo", "interval_hi",
+               "measured_from", "is_candidate_model"],
+              [[r["long"], r["value"],
+                "" if r["lo"] is None else r["lo"], "" if r["hi"] is None else r["hi"],
+                r["side"], "yes" if r["candidate"] else "no"] for r in rows])
+
+    slug = "fig-agent-ceiling"
+    h = 40 + 40 * len(rows) + 44
+    x0, x1 = 152, W - PAD_R - 62
+    hi = 0.68
+    sx = lambda v: x0 + v / hi * (x1 - x0)
+    s = Svg(h, "How far the search got, against the ceiling and against the trap",
+            "The honest search reached 0.3971 against an achievable ceiling of 0.4198. The same "
+            "model with the excluded settlement column added back reaches 0.6194, which is not a "
+            "candidate model and is drawn hatched.")
+    hatch = _hatch(s, slug)
+    bars: list[tuple[float, float, float]] = []
+
+    for i, r in enumerate(rows):
+        y = PAD_T + 24 + i * 40
+        # Two stacked lines in the left gutter rather than a second column on the
+        # right: the longest bar's value label ran straight through a right-hand
+        # column, and there is no width at 640 for both.
+        s.text(0, y - 2, r["label"], cls="lbl-i")
+        s.text(0, y + 12,
+               {"sealed": "from the answer key", "file": "from the data itself",
+                "agent": "from the search"}[r["side"]])
+        w = sx(r["value"]) - x0
+        if r["candidate"]:
+            s.rect(x0, y - 10, w, 20, "bar", f'{r["long"]}: {r["value"]:.4f}')
+        else:
+            # Third encoding on top of colour and hatch: the row is also the only
+            # one carrying a cross and a stated exclusion, so greyscale loses nothing.
+            s.add(f'<rect x="{x0:.1f}" y="{y - 10:.1f}" width="{w:.2f}" height="20" '
+                  f'fill="{hatch}" stroke="var(--c2)" stroke-width="1.5">'
+                  f'<title>{esc(r["long"])}: {r["value"]:.4f} — not a candidate model</title></rect>')
+        if r["lo"] is not None:
+            bars.append((sx(r["lo"]), sx(r["hi"]), y))
+        label = f'{r["value"]:.4f}' if r["candidate"] else f'\u2715 {r["value"]:.4f}'
+        s.text(sx(r["value"]) + 9, y + 4, label, cls="lbl-i")
+
+    _whiskers(s, bars)
+    yb = PAD_T + 24 + len(rows) * 40 - 14
+    s.line(x0, yb, x1, yb)
+    for t in (0, 0.2, 0.4, 0.6):
+        s.text(sx(t), yb + 15, f"{t:g}", anchor="middle")
+    s.text((x0 + x1) / 2, yb + 30,
+           "average precision, higher is better \u00b7 whiskers are 95% intervals",
+           anchor="middle")
+    s.text(0, h - 6, "\u2715 hatched = uses a column excluded on availability grounds",
+           cls="lbl-i")
+    write_svg(slug, s)
+
+
+def fig_agent_changes() -> None:
+    """Every change the search made, sorted by effect, against the zero line."""
+    rows = load_agent_programme()["changes"]
+    # An interval that REACHES zero has not crossed it. One row here is
+    # [-0.0140, -0.0000], which the source calls a real loss "by an amount whose
+    # interval reaches exactly to zero"; -0.0 is not < 0, so a strict test filed it
+    # as noise and the legend miscounted. Straddling is lo < 0 < hi, nothing looser.
+    verdict = lambda r: ("gain" if r["lo"] >= 0 else "loss" if r["hi"] <= 0
+                         else "inside the noise")
+    write_csv("agent-search-changes.csv",
+              ["change", "delta_average_precision", "interval_lo", "interval_hi", "verdict"],
+              [[r["label"], r["delta"], r["lo"], r["hi"], verdict(r)] for r in rows])
+
+    slug = "fig-agent-changes"
+    row_h = 25
+    h = PAD_T + 22 + row_h * len(rows) + 66
+    x0, x1 = 232, W - PAD_R - 66
+    lo, hi = -0.05, 0.13
+    sx = lambda v: x0 + (v - lo) / (hi - lo) * (x1 - x0)
+    straddle = sum(1 for r in rows if verdict(r) == "inside the noise")
+    s = Svg(h, "Every change the search made, sorted by effect",
+            f"Of {len(rows)} changes, {straddle} have an interval that crosses zero and bought "
+            "nothing that can be told apart from noise. Three are real gains and three are real "
+            "losses.")
+    hatch = _hatch(s, slug)
+    bars: list[tuple[float, float, float]] = []
+
+    zero = sx(0)
+    s.line(zero, PAD_T + 6, zero, PAD_T + 14 + row_h * len(rows), "rule")
+    s.text(zero, PAD_T, "no change", anchor="middle")
+
+    for i, r in enumerate(rows):
+        y = PAD_T + 26 + i * row_h
+        v = verdict(r)
+        s.text(0, y + 4, r.get("short", r["label"]), cls="lbl-i")
+        a, b = sorted((zero, sx(r["delta"])))
+        if v == "inside the noise":
+            s.add(f'<rect x="{a:.1f}" y="{y - 7:.1f}" width="{b - a:.2f}" height="14" '
+                  f'fill="{hatch}" stroke="var(--muted)" stroke-width="1">'
+                  f'<title>{esc(r["label"])}: {r["delta"]:+.4f} — interval crosses zero</title></rect>')
+        else:
+            fill = "var(--c3)" if v == "gain" else "var(--c2)"
+            s.add(f'<rect x="{a:.1f}" y="{y - 7:.1f}" width="{b - a:.2f}" height="14" '
+                  f'fill="{fill}">'
+                  f'<title>{esc(r["label"])}: {r["delta"]:+.4f} — a real {v}</title></rect>')
+        bars.append((sx(r["lo"]), sx(r["hi"]), y))
+        # Position (side of the zero line) and glyph both repeat what colour says.
+        mark = {"gain": "\u25b2", "loss": "\u25bc", "inside the noise": "\u2248"}[v]
+        s.text(W - PAD_R, y + 4, f'{mark} {r["delta"]:+.4f}', anchor="end", cls="lbl-i")
+
+    _whiskers(s, bars, cap=3.5)
+    yb = PAD_T + 20 + row_h * len(rows) + 8
+    s.line(x0, yb, x1, yb)
+    for t in (-0.04, 0, 0.04, 0.08, 0.12):
+        s.text(sx(t), yb + 15, f"{t:+g}".replace("+0", "0") if t == 0 else f"{t:+g}",
+               anchor="middle")
+    s.text((x0 + x1) / 2, yb + 28, "change in average precision", anchor="middle")
+    s.text(0, h - 8,
+           f"\u25b2 gain  \u25bc loss  \u2248 hatched, interval crosses zero ({straddle} of {len(rows)})",
+           cls="lbl-i")
+    write_svg(slug, s)
+
+
+def fig_agent_near_miss() -> None:
+    """The three correlations the agent computed and did not conclude from."""
+    rows = load_agent_programme()["near_miss"]
+    write_csv("agent-near-miss.csv", ["pair", "correlation"],
+              [[r["label"], r["r"]] for r in rows])
+
+    slug = "fig-agent-near-miss"
+    h = 40 + 46 * len(rows) + 74
+    x0, x1 = 150, W - PAD_R - 58
+    sx = lambda v: x0 + v * (x1 - x0)
+    s = Svg(h, "The correlations that carry the lookahead signature",
+            "The merchant score tracks each period's own fraud rate more closely than the two "
+            "periods track each other. A score fixed before the data begins could not do that.")
+    hatch = _hatch(s, slug)
+    third = rows[-1]["r"]
+
+    # The reference line IS the finding: everything to its right is the anomaly.
+    s.line(sx(third), PAD_T + 4, sx(third), PAD_T + 18 + 46 * len(rows), "rule")
+
+    for i, r in enumerate(rows):
+        y = PAD_T + 28 + i * 46
+        above = r["r"] > third
+        s.text(0, y - 2, r["short"], cls="lbl-i")
+        s.text(0, y + 12, "above the reference" if above else "the reference")
+        if above:
+            s.rect(x0, y - 11, sx(r["r"]) - x0, 22, "bar", f'{r["label"]}: r = {r["r"]:.3f}')
+        else:
+            s.add(f'<rect x="{x0:.1f}" y="{y - 11:.1f}" width="{sx(r["r"]) - x0:.2f}" height="22" '
+                  f'fill="{hatch}" stroke="var(--muted)" stroke-width="1">'
+                  f'<title>{esc(r["label"])}: r = {r["r"]:.3f} — the reference</title></rect>')
+        s.text(sx(r["r"]) + 9, y + 4, f'r = {r["r"]:.3f}', cls="lbl-i")
+
+    yb = PAD_T + 24 + 46 * len(rows)
+    s.line(x0, yb, x1, yb)
+    for t in (0, 0.25, 0.5, 0.75, 1.0):
+        s.text(sx(t), yb + 15, f"{t:g}", anchor="middle")
+    s.text((x0 + x1) / 2, yb + 28, "correlation, 0 to 1", anchor="middle")
+    # The second footnote said what the caption already says, and cost a line the
+    # footer did not have. Interpretation belongs in the caption, not on the canvas.
+    s.text(0, h - 8, "dashed line: how well the two periods track each other", cls="lbl-i")
+    write_svg(slug, s)
+
+
 FIGURES = [fig_hazard, fig_lead, fig_lead_metrics, fig_pooling,
-           fig_two_state, fig_strategies, fig_models, fig_perclass]
+           fig_two_state, fig_strategies, fig_models, fig_perclass,
+           fig_agent_ceiling, fig_agent_changes, fig_agent_near_miss]
 
 
 # which published CSV backs which figure
@@ -619,6 +831,9 @@ FIGURE_DATA = {
     "fig-strategies": "strategies.csv",
     "fig-models": "models-macro-f1.csv",
     "fig-perclass": "models-per-class-f1.csv",
+    "fig-agent-ceiling": "agent-ceiling.csv",
+    "fig-agent-changes": "agent-search-changes.csv",
+    "fig-agent-near-miss": "agent-near-miss.csv",
 }
 MAX_ROWS = 12
 

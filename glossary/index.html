@@ -33,11 +33,16 @@
         Every technical term this site uses, in plain words. Where a term has a number attached to
         it in my own work, that number is the example.
       </p>
-      <ul class="gloss-nav"><li><a href="#bootstrap">Bootstrap (and why “clustered”)</a></li><li><a href="#credible-interval">Credible interval</a></li><li><a href="#dwell-time">Dwell time</a></li><li><a href="#friedman-test">Friedman test</a></li><li><a href="#hawkes">Hawkes process (self-exciting)</a></li><li><a href="#hazard-rate">Hazard rate</a></li><li><a href="#held-out">Held out (out-of-sample)</a></li><li><a href="#isotonic-calibration">Isotonic calibration</a></li><li><a href="#leave-one-out">Leave-one-out</a></li><li><a href="#macro-f1">Macro-F1</a></li><li><a href="#mmpp">MMPP (Markov-modulated Poisson process)</a></li><li><a href="#nats">Nats (log-evidence)</a></li><li><a href="#nav">NAV and unitization</a></li><li><a href="#order-book">Order book, and L2 depth</a></li><li><a href="#p-value">p-value</a></li><li><a href="#partial-pooling">Partial pooling (hierarchical model)</a></li><li><a href="#point-process">Point process</a></li><li><a href="#poisson">Poisson process</a></li><li><a href="#pre-registration">Pre-registration</a></li><li><a href="#prediction-market">Prediction market</a></li><li><a href="#repricing">Repricing event</a></li><li><a href="#self-supervised">Self-supervised learning</a></li><li><a href="#shrinkage">Shrinkage</a></li><li><a href="#truncation">Truncation artifact</a></li><li><a href="#walk-forward">Walk-forward testing</a></li><li><a href="#weibull">Weibull</a></li><li><a href="#xgboost">XGBoost</a></li><li><a href="#lambda">λ (lambda) — the rate</a></li></ul>
+      <ul class="gloss-nav"><li><a href="#average-precision">Average precision</a></li><li><a href="#bootstrap">Bootstrap (and why “clustered”)</a></li><li><a href="#credible-interval">Credible interval</a></li><li><a href="#dwell-time">Dwell time</a></li><li><a href="#friedman-test">Friedman test</a></li><li><a href="#hawkes">Hawkes process (self-exciting)</a></li><li><a href="#hazard-rate">Hazard rate</a></li><li><a href="#held-out">Held out (out-of-sample)</a></li><li><a href="#isotonic-calibration">Isotonic calibration</a></li><li><a href="#leave-one-out">Leave-one-out</a></li><li><a href="#macro-f1">Macro-F1</a></li><li><a href="#mmpp">MMPP (Markov-modulated Poisson process)</a></li><li><a href="#nats">Nats (log-evidence)</a></li><li><a href="#nav">NAV and unitization</a></li><li><a href="#order-book">Order book, and L2 depth</a></li><li><a href="#p-value">p-value</a></li><li><a href="#partial-pooling">Partial pooling (hierarchical model)</a></li><li><a href="#point-process">Point process</a></li><li><a href="#poisson">Poisson process</a></li><li><a href="#pre-registration">Pre-registration</a></li><li><a href="#prediction-market">Prediction market</a></li><li><a href="#repricing">Repricing event</a></li><li><a href="#self-supervised">Self-supervised learning</a></li><li><a href="#shrinkage">Shrinkage</a></li><li><a href="#target-leakage">Target leakage</a></li><li><a href="#truncation">Truncation artifact</a></li><li><a href="#walk-forward">Walk-forward testing</a></li><li><a href="#weibull">Weibull</a></li><li><a href="#xgboost">XGBoost</a></li><li><a href="#lambda">λ (lambda) — the rate</a></li></ul>
     </div>
   </header>
 
   <div class="wrap">
+    <div class="gterm" id="average-precision">
+      <h2>Average precision</h2>
+      <p>A score for how well a model <em>ranks</em> rare events. Sort everything by the model's confidence, walk down the list, and at each step ask what fraction of what you have flagged so far was real. Average precision is the area under the curve that traces. A model that ranks at random scores the base rate itself, so the base rate is the number to compare against. It is blind to the probabilities: a model that is right about the order but wrong about every number scores identically to a perfectly calibrated one.</p>
+      <p class="mine">On the second synthetic bed the best admissible model scored 0.3971 against a base rate of 0.0206 — ranking fraud about nineteen times better than chance.</p>
+    </div>
     <div class="gterm" id="bootstrap">
       <h2>Bootstrap (and why “clustered”)</h2>
       <p>A way of asking how much an answer wobbles. You resample your own data thousands of times, recompute the result each time, and look at the spread. <b>Clustered</b> means resampling whole markets rather than individual trades, because two trades in the same market are not independent of each other. Treating them as independent would make a result look far more certain than it is.</p>
@@ -144,6 +149,11 @@
       <h2>Shrinkage</h2>
       <p>How hard a <a href="#partial-pooling">pooled model</a> pulls a noisy estimate toward the group average. Estimates built on very little data should be pulled hard; estimates built on a lot should barely move.</p>
       <p class="mine">Mine pulls the data-poor markets 40.5 times harder than the data-rich ones, which is exactly the behaviour you want.</p>
+    </div>
+    <div class="gterm" id="target-leakage">
+      <h2>Target leakage</h2>
+      <p>Information about the answer smuggled into the inputs. A column counts as leakage when its value did not exist yet at the moment the prediction is for — it is a fact about what happened next. A model using one scores brilliantly and is worth nothing, because at the moment a real decision has to be made the column is blank.</p>
+      <p class="mine">A settlement column planted in a synthetic bed was worth +0.2231 average precision on its own — more than every improvement that project's whole search found, added together.</p>
     </div>
     <div class="gterm" id="truncation">
       <h2>Truncation artifact</h2>
