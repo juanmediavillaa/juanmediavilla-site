@@ -93,17 +93,28 @@ are derived from committed files and do not move.
 ## 4. Hard prohibitions
 
 1. **No links to the private source repositories.** The research platform, the wallet engine, the
-   fund terminal, the data portal and the fund are private, are never linked, and nothing may imply
-   they are public or reader-verifiable. **One exception, named explicitly:**
-   `github.com/juanmediavillaa/default-fail` — public, MIT, mine — may be linked, and is, from
-   `/how-i-work`, `/projects` and `/about`. This rule previously read "no repository links of any
-   kind"; that was written when every repository was private, and the blanket form outlived its
-   reason. Adding a second exception means editing this line first, and a repository qualifies only
-   if it is already public and carries nothing covered by 4.2, 4.3, 4.4 or 4.10.
+   data portal and the fund are private, are never linked, and nothing may imply they are public or
+   reader-verifiable. **Two exceptions, named explicitly:**
+   - `github.com/juanmediavillaa/default-fail` — public, MIT, mine — may be linked, and is, from
+     `/how-i-work`, `/projects` and `/about`.
+   - `github.com/juanmediavillaa/fund-terminal` — public, MIT, mine — may be linked, and is, from
+     `/projects` and `/projects/fund-terminal/`, together with the static demo it publishes at
+     `juanmediavillaa.github.io/fund-terminal/`. It qualifies because it ships a synthetic seed
+     fund and nothing else: generated members and amounts, invented instruments, and a
+     `.gitignore` that excludes every real fund file. **It is not the fund**, and 4.3 continues to
+     cover the private repository that is.
+
+   This rule previously read "no repository links of any kind"; that was written when every
+   repository was private, and the blanket form outlived its reason. Adding a further exception
+   means editing this line first, and a repository qualifies only if it is already public and
+   carries nothing covered by 4.2, 4.3, 4.4 or 4.10.
 2. **No server hostnames, VPS providers, RPC endpoints, API keys, IP addresses, storage
    topology or private remote URLs** — not in markup, not in comments, not in commit messages.
 3. **No fund data.** No AUM, returns, member names, member count, or any fund state. Never link
-   or attach the fund repository; it contains credential files.
+   or attach the fund repository; it contains credential files. This is about the fund, not about
+   the software that runs it: the open-source terminal named in 4.1 carries a synthetic seed and
+   is linkable, and no figure from the real book may appear in it, on this site, or in any
+   screenshot of either.
 4. **No pricing, tiers, licence terms or purchase path for the data portal**, and nothing sourced
    from its `docs/internal/` (unpublished legal assessment and competitor teardown).
 5. **No student names, grades or submissions** from teaching material.

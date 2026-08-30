@@ -148,6 +148,33 @@ def d_tiers() -> tuple[str, Dia]:
     return "dia-tiers", d
 
 
+def d_mark() -> tuple[str, Dia]:
+    d = Dia(230, "Marking the book, and the refusal",
+            "Recomputing what the fund is worth means pricing every holding against the market. "
+            "If any one of them has no quote, the write is refused and the last value the book "
+            "could stand behind is left in place.")
+    d.box(8, 26, 168, 50, "mark to market", "operator asks for it", cls="bx3",
+          tip="the only moment a new fund value is recorded")
+    d.box(212, 26, 196, 50, "quote every holding", "live market data", cls="bx1",
+          tip="each position is priced against live market data")
+    d.box(452, 26, 200, 50, "every one priced?", cls="bx2",
+          tip="the gate: a partial answer is not an answer")
+    d.arrow(176, 51, 210, 51, "ar1")
+    d.arrow(408, 51, 450, 51, "ar1")
+    d.arrow(552, 78, 512, 128, "ar1")
+    d.arrow(540, 78, 148, 128, "ar2")
+    d.label(566, 106, "yes", cls="ts")
+    d.label(300, 96, "no", cls="ts")
+    d.box(372, 132, 280, 48, "fund value written", "cash + \u03a3 (position market value)",
+          cls="bx1", tip="the invariant the book is kept to")
+    d.box(8, 132, 280, 48, "write refused", "no value recorded, none guessed", cls="bx2",
+          tip="a missing quote produces a refusal, never a filled-in number")
+    d.label(8, 200, "positions are derived from an append-only trade ledger, not stored", cls="tm")
+    d.label(8, 218, "each trade stamps the FX rate of its own trade date, so it cannot drift",
+            cls="tm")
+    return "dia-mark", d
+
+
 def d_nav() -> tuple[str, Dia]:
     d = Dia(220, "Unitisation, and the ledger invariant",
             "Money paid in is converted to units at today's price per unit. The fund's value "
@@ -278,7 +305,7 @@ def d_permissions() -> tuple[str, Dia]:
     return "dia-permissions", d
 
 
-DIAGRAMS = [d_pipeline, d_two_state, d_tiers, d_nav, d_ssl,
+DIAGRAMS = [d_pipeline, d_two_state, d_tiers, d_mark, d_nav, d_ssl,
             d_orchestrator, d_dispatch, d_context, d_permissions]
 
 
