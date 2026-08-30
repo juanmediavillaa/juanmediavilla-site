@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fund-accounting terminal — Juan Mediavilla</title>
-<meta name="description" content="A working fund-accounting system: four generations of command-line tool evolved into a web terminal sharing one ledger, with NAV unitisation and decimal-exact money handling.">
+<meta name="description" content="An open-source fund terminal built on NAV unit accounting, whose mark-to-market path refuses to write a fund value when a price is missing rather than record one it cannot stand behind.">
 <link rel="canonical" href="https://juanmediavilla.com/projects/fund-terminal/">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://juanmediavilla.com/projects/fund-terminal/">
 <meta property="og:title" content="Fund-accounting terminal — Juan Mediavilla">
-<meta property="og:description" content="A working fund-accounting system: four generations of command-line tool evolved into a web terminal sharing one ledger, with NAV unitisation and decimal-exact money handling.">
+<meta property="og:description" content="An open-source fund terminal built on NAV unit accounting, whose mark-to-market path refuses to write a fund value when a price is missing rather than record one it cannot stand behind.">
 <meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
@@ -38,15 +38,17 @@
   <div class="wrap">
     <p class="eyebrow">Financial systems</p>
     <h1>Fund-accounting terminal</h1>
-    <p class="standfirst">A working fund-accounting system: four generations of command-line tool evolved into a web
-      terminal sharing one ledger, with <a href="../../glossary/index.html#nav"><dfn>NAV</dfn></a>
-      unitisation, decimal-exact money handling and a benchmark overlay.</p>
-    <p class="case__meta">Active · July 2025 – present · the longest-running build here</p>
+    <p class="standfirst">A web terminal for running a small fund, now open source. When the market data it needs is
+      missing it refuses to write a fund value rather than record one it cannot stand behind — and
+      around that sit <a href="../../glossary/index.html#nav"><dfn>NAV</dfn></a> unit accounting,
+      positions derived from an append-only trade ledger, and seven investor documents generated
+      from the book.</p>
+    <p class="case__meta">Open source, MIT · started July 2025 · Python and Flask, React front end</p>
     <ul class="keyfacts">
-      <li><b>4</b><span>generations, one shared ledger</span></li>
-      <li><b>Jul 2025</b><span>running since</span></li>
+      <li><b>MIT</b><span>public repository, readable in full</span></li>
       <li><b>exact</b><span>decimal money, written as text</span></li>
-      <li><b>0</b><span>fund figures published anywhere</span></li>
+      <li><b>7</b><span>investor documents from the book</span></li>
+      <li><b>0</b><span>figures from my own fund, anywhere</span></li>
     </ul>
   </div>
 </header>
@@ -60,22 +62,102 @@
       <p>
         When several people put money into one pot, you need to track who owns what share as money
         goes in and out at different times. The standard answer is
-        <a href="../../glossary/index.html#nav"><dfn>unitization</dfn></a>: the fund's value is divided
-        into units, like shares in a fund. Put money in and you are issued units at today's price;
-        take money out and units are redeemed at today's price. Everything else exists to keep that
-        arithmetic exactly right.
+        <a href="../../glossary/index.html#nav"><dfn>unitization</dfn></a>: the fund's value is
+        divided into units, like shares in a fund. Put money in and you are issued units at today's
+        price; take money out and units are redeemed at today's price. This is the terminal that
+        does that arithmetic, prices the holdings against live market data, and produces the
+        paperwork an investor actually expects to receive.
+      </p>
+    </div>
+
+    <h2>It declines to record a number it cannot stand behind</h2>
+<div class="plain">
+      <p>
+        Working out what the fund is worth means asking the market what every holding is worth at
+        that moment. The interesting path is the one where the answer arrives incomplete. If a quote
+        is missing — the price feed is down, the ticker has gone away, the market is shut — the
+        recomputation stops and writes nothing at all, and the last figure the book could stand
+        behind stays as the figure. <em>Mark to market</em>, the industry's name for that
+        recomputation, means restating a holding at what the market says it is worth today rather
+        than what was paid for it.
       </p>
       <p>
-        Two decisions do most of the work. Money is never stored as an ordinary decimal number,
-        because those cannot represent amounts like 0.10 exactly and the error compounds silently
-        over thousands of operations; it is stored in a form that is exact and written to disk as
-        text so nothing is lost in translation. And the older command-line tool and the newer web
-        interface read and write the same files, so the two can never disagree about what the ledger
-        says.
+        The alternative is worse than it looks. Filling the gap with yesterday's price, or a zero,
+        or by quietly skipping the holding, produces a fund value that is indistinguishable from a
+        real one and is wrong — and because every unit price, every member's ownership share and
+        every return is computed from that one number, the error propagates into all of them at
+        once and leaves no trace of where it came from. A refusal is loud, dated and obviously a
+        refusal. It is the same discipline as the
+        <a href="../agent-research-programme/index.html">agent-orchestration measurement</a> on this
+        site, whose generated report is reproduced with the sections where it declines to answer
+        left in.
       </p>
       <p>
-        No figures from the fund appear anywhere on this site — no value, no returns, no members,
-        no positions — and the repository is not linked.
+        Three other decisions follow from the same rule. Money is never held as an ordinary decimal
+        number, because those cannot represent amounts like 0.10 exactly and the error compounds
+        silently over thousands of operations; it is held in an exact form and written to disk as
+        text, so nothing is lost in translation. Positions are not stored at all — they are derived
+        from an append-only log of trades each time they are needed, so the holdings and the trade
+        history cannot come to disagree, because there is only one of them. And a trade in a foreign
+        currency stamps the exchange rate of its own trade date into the record, rather than being
+        re-translated later at whatever rate happens to be in force when someone looks.
+      </p>
+    </div>
+
+    <figure>
+<!-- DIAGRAM:dia-mark -->
+<svg viewBox="0 0 660 230" role="img" aria-labelledby="dt-dia-mark dd-dia-mark" xmlns="http://www.w3.org/2000/svg">
+  <title id="dt-dia-mark">Marking the book, and the refusal</title>
+  <desc id="dd-dia-mark">Recomputing what the fund is worth means pricing every holding against the market. If any one of them has no quote, the write is refused and the last value the book could stand behind is left in place.</desc>
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+  <style>.bx{fill:var(--surface);stroke:var(--line);stroke-width:1}.bx1{stroke:var(--c1);stroke-width:1.5}.bx2{stroke:var(--c2);stroke-width:1.5}.bx3{stroke:var(--c3);stroke-width:1.5}.t{font:13px var(--sans);fill:var(--ink)}.ts{font:12px var(--mono);fill:var(--ink-2)}.tm{font:12px var(--mono);fill:var(--ink-2)}.ar{stroke:var(--muted);stroke-width:1.2;fill:none;marker-end:url(#a)}.ar1{stroke:var(--c1)}.ar2{stroke:var(--c2)}.dash{stroke-dasharray:4 3}.pulse{opacity:0}</style>
+  <g><rect x="8" y="26" width="168" height="50" rx="6" class="bx bx3"/><title>the only moment a new fund value is recorded</title><text x="92" y="46" class="t" text-anchor="middle" dominant-baseline="middle">mark to market</text><text x="92" y="62" class="ts" text-anchor="middle" dominant-baseline="middle">operator asks for it</text></g>
+  <g><rect x="212" y="26" width="196" height="50" rx="6" class="bx bx1"/><title>each position is priced against live market data</title><text x="310" y="46" class="t" text-anchor="middle" dominant-baseline="middle">quote every holding</text><text x="310" y="62" class="ts" text-anchor="middle" dominant-baseline="middle">live market data</text></g>
+  <g><rect x="452" y="26" width="200" height="50" rx="6" class="bx bx2"/><title>the gate: a partial answer is not an answer</title><text x="552" y="51" class="t" text-anchor="middle" dominant-baseline="middle">every one priced?</text></g>
+  <path d="M176 51 L210 51" class="ar ar1"/>
+  <path d="M408 51 L450 51" class="ar ar1"/>
+  <path d="M552 78 L512 128" class="ar ar1"/>
+  <path d="M540 78 L148 128" class="ar ar2"/>
+  <text x="566" y="106" class="ts" text-anchor="start">yes</text>
+  <text x="300" y="96" class="ts" text-anchor="start">no</text>
+  <g><rect x="372" y="132" width="280" height="48" rx="6" class="bx bx1"/><title>the invariant the book is kept to</title><text x="512" y="151" class="t" text-anchor="middle" dominant-baseline="middle">fund value written</text><text x="512" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">cash + Σ (position market value)</text></g>
+  <g><rect x="8" y="132" width="280" height="48" rx="6" class="bx bx2"/><title>a missing quote produces a refusal, never a filled-in number</title><text x="148" y="151" class="t" text-anchor="middle" dominant-baseline="middle">write refused</text><text x="148" y="167" class="ts" text-anchor="middle" dominant-baseline="middle">no value recorded, none guessed</text></g>
+  <text x="8" y="200" class="tm" text-anchor="start">positions are derived from an append-only trade ledger, not stored</text>
+  <text x="8" y="218" class="tm" text-anchor="start">each trade stamps the FX rate of its own trade date, so it cannot drift</text>
+</svg>
+<!-- /DIAGRAM:dia-mark -->
+      <figcaption>
+        <b>What you're looking at:</b> what happens when the book is marked to market. Every holding
+        is priced against the market, and the new fund value is written only if all of them came
+        back with a price. Had the design gone the other way, the missing holding would have been
+        filled in from a stale price and the box on the left would not exist.
+        <span class="prov">System design · no fund values, holdings or members are shown</span>
+      </figcaption>
+    </figure>
+
+    <h2>Read it, and look at it</h2>
+<div class="plain">
+      <p>
+        The source is public under the MIT licence:
+        <a href="https://github.com/juanmediavillaa/fund-terminal"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="currentColor"/></svg>the fund-terminal repository</a>.
+        There is also a
+        <a href="https://juanmediavillaa.github.io/fund-terminal/">browsable demo</a>, and it is
+        important to be clear about what it is not. It is a static page built against a fund that
+        does not exist. The members, the amounts, the NAV history and the holdings are all
+        generated; the companies in it are invented; there is no backend behind the page and
+        everything that would write is disabled. Nothing in it describes a real book, and none of
+        the figures mean anything.
+      </p>
+      <p>
+        It does demonstrate the refusal, though, and not by contrivance. Because the instruments in
+        the seed fund are invented, no market quote exists for any of them — so the positions report
+        themselves as offline and marking to market declines, which is exactly what a real ticker
+        would produce while the price feed was down. Adding a real security to the book is what
+        turns live pricing on.
+      </p>
+      <p>
+        No figures from the fund I actually run appear anywhere: not on this site, and not in the
+        repository, which ships a synthetic seed and excludes real fund files by design.
       </p>
     </div>
 
@@ -110,23 +192,40 @@
       <summary>The technical version</summary>
       <div class="inner">
         <p>
-          A NAV-based accounting system with per-member units, ownership, return and full
-          transaction history across five screens. Four generations of command-line tool preceded
-          the web application.
+          A Flask API over two plain files — a JSON book and a CSV transaction log — with a React
+          front end on top, covering fund overview, positions, trades, members, transactions,
+          analytics, reports and documents. Four generations of a command-line tool preceded it;
+          what is published is the web terminal.
         </p>
         <div class="finding">
           <p class="finding__sign">Correctness is the story</p>
           <p>
             Money is handled as <code>Decimal</code> end to end and serialised to JSON <em>as
-            strings</em>, so no float drift can enter the ledger. The core invariant, that fund
-            value equals cash plus the market value of positions, is enforced rather than assumed.
-            Deposits and withdrawals issue or redeem units at the current NAV. The web terminal and
-            the command-line tool read and write the same state files, so the ledger cannot fork
-            between them.
+            strings</em>, so no float drift can enter the ledger. Trades are the source of truth and
+            positions are derived from them by average cost, with the euro price stamped at the FX
+            rate of the trade date. The core invariant, that fund value equals cash plus the market
+            value of positions, is enforced rather than assumed — and the mark-to-market path
+            <strong>refuses to write a value at all</strong> when a holding has no quote to mark
+            against, instead of recording an interpolated one.
+          </p>
+        </div>
+        <div class="finding">
+          <p class="finding__sign">What it is not</p>
+          <p>
+            The README states the limits and this page will not soften them. There is no
+            authentication and no authorisation: the API is open on localhost and anyone who reaches
+            it can read and write the book, so it is never exposed to a network. State is a JSON
+            file rewritten in place, with no database and no transactions, so concurrent writers
+            lose data. It is <strong>not a regulated system</strong> — no defensible audit trail, no
+            double-entry bookkeeping, no custodian reconciliation, no tax reporting. There is
+            <strong>no test suite</strong>, and the accounting logic is the part that would most
+            deserve one. Prices come from an unofficial scraper of a public endpoint, with no
+            fallback vendor. The base currency is euros, hard-coded.
           </p>
         </div>
         <p class="entry__stack">
-          Flask, pandas and yfinance on the backend; React, Vite and Recharts on the front end.
+          Flask, pandas and yfinance on the backend, all money as <code>Decimal</code> persisted as
+          strings; React, Vite and Recharts on the front end. MIT licensed.
         </p>
       </div>
     </details>
