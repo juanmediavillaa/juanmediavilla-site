@@ -197,6 +197,12 @@ leaked one is worse than a missing one. If that is ever revisited, the caption m
 figures are redacted, and no AUM, NAV, return, member name, member count, position size or
 holding may appear.
 
+*Noted, not yet amended:* this was written when the only running instance was the real fund. The
+terminal named in 4.1 now publishes a static demo whose members, amounts, NAV path, holdings and
+instruments are all generated, so a screenshot of it leaks nothing — the reason behind the ban does
+not reach it. The ban stands as written until there is a reason to ship such a screenshot, at which
+point this rule gets rewritten deliberately rather than read around.
+
 ## 8. JavaScript ceiling
 
 JS is permitted and currently uses **~15.5 KB of the 25 KB budget** (see §11). It adds the theme

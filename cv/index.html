@@ -154,14 +154,15 @@
       </div>
       <ul>
         <li>
-          Built a <a href="../glossary/index.html#nav">NAV</a>-based (net asset value) fund-accounting system with unit issuance and redemption, live position
-          pricing and benchmark-relative reporting, across five screens and four preceding
-          generations of CLI.
+          Built and open-sourced (MIT) a <a href="../glossary/index.html#nav">NAV</a>-based (net asset value) fund-accounting terminal with unit issuance and
+          redemption, live position pricing, benchmark-relative reporting and seven generated
+          investor documents; Flask API over a JSON book and a CSV trade log, React front end.
         </li>
         <li>
-          Used end-to-end <code>Decimal</code> arithmetic serialised as strings, an enforced
-          fund-value invariant, and a shared state contract so the pre-existing CLI and the web
-          terminal operate on the same ledger without divergence.
+          Used end-to-end <code>Decimal</code> arithmetic serialised as strings, positions derived
+          from an append-only trade ledger with FX stamped at trade date, and a mark-to-market path
+          that refuses to write a fund value when a holding cannot be priced rather than record an
+          interpolated one.
         </li>
       </ul>
     </div>
