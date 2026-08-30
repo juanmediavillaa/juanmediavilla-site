@@ -376,7 +376,13 @@ const STRUCT = `(() => {
   console.log("\n=== CHART LABELS (measured overlap) ===");
   let lfail = 0;
   for (const w of [320, 1440]) {
-    for (const rel of PAGES.filter((p) => p.includes("/investing/") || p.includes("/research/"))) {
+    // Every page, not an allow-list of two path fragments. The filter here used to
+    // be `/investing/` or `/research/`, which silently skipped every other page
+    // carrying a chart — including /how-i-work and /projects/agent-research-programme,
+    // whose slug contains "research" but not "/research/". The probe returns nothing
+    // for a page with no `figure svg`, so checking all of them costs a page load and
+    // removes the class of blind spot rather than one instance of it.
+    for (const rel of PAGES) {
       await load(rel, w);
       for (const hit of await evalIn(CHART_TEXT)) {
         lfail++; fails++;

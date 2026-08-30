@@ -11,6 +11,13 @@ SITE="$(pwd)"
 FAIL=0
 note() { printf '\n\033[1m%s\033[0m\n' "$1"; }
 
+# Flush WSL's writes before a Windows-side Chrome reads them over /mnt/c. Without
+# this the browser audits can measure the PREVIOUS version of a page that a
+# generator has just rewritten — which is the one failure mode worse than a red
+# audit, because it is green on content that is not what will ship. Observed: the
+# chart-overlap check reported five collisions that had already been fixed on disk.
+sync 2>/dev/null || true
+
 CHROME="${CHROME:-/mnt/c/Program Files/Google/Chrome/Application/chrome.exe}"
 PROFILE="$(mktemp -d)"
 if [ -x "$CHROME" ]; then
@@ -45,9 +52,43 @@ if grep -rnoE '<(link|script|img|iframe)[^>]*(src|href)="(https?:)?//[^"]*"' --i
   FAIL=1; else echo "  none"; fi
 
 note "no infrastructure, secrets, identifiers or student data"
-if grep -rniE '0x[0-9a-f]{6,}|s3565122|ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}|api[_-]?key|bearer |secret[_-]?key|access[_-]?token' \
-     --include='*.html' --include='*.css' --include='*.csv' --include='*.py' --include='*.yml' --exclude-dir=.git .; then
-  FAIL=1; else echo "  none"; fi
+# Base64 payloads are blanked before the scan. These patterns look for a leak in
+# READABLE TEXT — a wallet address, a key, a hostname — and an encoded image is
+# none of those: it is opaque bytes in which "0x" followed by six hex characters
+# turns up by chance in roughly every kilobyte. Scanning it can only ever produce
+# a false positive, and a check that cries wolf on every attachment gets muted,
+# which is how a real match would get waved through. The patterns themselves are
+# unchanged, and three positive controls assert as much before the scan runs.
+python3 - <<'PY' || FAIL=1
+import pathlib, re, sys
+
+PATTERNS = re.compile(
+    r'0x[0-9a-f]{6,}|s3565122|ssh://|[0-9]{1,3}(\.[0-9]{1,3}){3}'
+    r'|api[_-]?key|bearer |secret[_-]?key|access[_-]?token', re.I)
+# No \s in the payload class: the scan is line-by-line, so a data URI never
+# spans a newline here, and allowing whitespace let the match run past the URI
+# and swallow the readable text after it — which the controls below caught.
+DATAURI = re.compile(r'data:[a-z/+.-]+;base64,[A-Za-z0-9+/=]+')
+SUFFIXES = {'.html', '.css', '.csv', '.py', '.yml'}
+
+def scan(text):
+    return PATTERNS.search(DATAURI.sub('', text))
+
+# Positive control: the check must still fire on a readable wallet address.
+assert scan('taker 0xdeadbeef12'), "wallet pattern stopped matching"
+assert scan('data:image/png;base64,AAAA and 0xdeadbeef12'), "text beside a data URI must still scan"
+assert not scan('data:image/png;base64,QQQQ0xdeadbeef12QQQQ'), "base64 payload should be skipped"
+
+bad = 0
+for f in sorted(pathlib.Path('.').rglob('*')):
+    if '.git' in f.parts or f.suffix not in SUFFIXES or not f.is_file(): continue
+    for n, line in enumerate(f.read_text(encoding='utf-8', errors='replace').split('\n'), 1):
+        m = scan(line)
+        if m:
+            print(f"  {f.as_posix()}:{n}: {m.group(0)}"); bad += 1
+print("  none" if not bad else f"  {bad} match(es)")
+sys.exit(1 if bad else 0)
+PY
 
 note "every internal link resolves"
 # Pages moved when projects and the theses each became their own page. A link
