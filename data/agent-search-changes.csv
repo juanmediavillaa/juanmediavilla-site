@@ -1,0 +1,15 @@
+change,delta_average_precision,interval_lo,interval_hi,verdict
+model family: linear → boosted tree,0.1039,0.0859,0.1218,gain
+learning rate 0.1 → 0.05,0.0205,0.0132,0.0271,gain
+merchant id → its own fraud rate,0.0187,0.0095,0.0281,gain
+learning rate 0.05 → 0.025,0.0037,-0.0007,0.0078,inside the noise
+5 derived ratios added,0.0022,-0.0044,0.0084,inside the noise
+column subsampling to 60%,0.0008,-0.0041,0.0061,inside the noise
+min rows per leaf 20 → 100,0.0007,-0.0022,0.0036,inside the noise
+leaves per tree 31 → 63,-0.0003,-0.0062,0.0059,inside the noise
+leaf-value shrinkage 0 → 10,-0.0008,-0.0049,0.0033,inside the noise
+leaves per tree 31 → 15,-0.001,-0.0076,0.0055,inside the noise
+encoding fold seed 0 → 7,-0.0018,-0.006,0.0022,inside the noise
+feature set 27 → 15 columns,-0.0056,-0.0098,-0.0009,loss
+class re-weighting on,-0.0073,-0.014,-0.0,loss
+boosting rounds 100 → 400,-0.034,-0.0437,-0.0248,loss

@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measuring an agent orchestration pattern — Juan Mediavilla</title>
+<meta name="description" content="A pattern for running AI agents on research work, measured over four weeks in August 2026 against synthetic datasets with sealed answers and a planted trap — including the prediction that turned out wrong.">
+<link rel="canonical" href="https://juanmediavilla.com/projects/agent-research-programme/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanmediavilla.com/projects/agent-research-programme/">
+<meta property="og:title" content="Measuring an agent orchestration pattern — Juan Mediavilla">
+<meta property="og:description" content="A pattern for running AI agents on research work, measured over four weeks in August 2026 against synthetic datasets with sealed answers and a planted trap — including the prediction that turned out wrong.">
+<meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
+<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%234F46E5'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Helvetica,Arial,sans-serif'%20font-size='33'%20font-weight='700'%20fill='%23ffffff'%20text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="wrap">
+    <a class="nav__home" href="../../index.html">Juan Mediavilla</a>
+    <a href="../../projects/index.html" aria-current="page">Projects</a>
+    <a href="../../research/index.html">Research</a>
+    <a href="../../notes/index.html">Notes</a>
+    <a href="../../how-i-work/index.html">How I Work</a>
+    <a href="../../about/index.html">About</a>
+    <span data-theme-slot></span>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Agentic systems</p>
+    <h1>Measuring an agent orchestration pattern</h1>
+    <p class="standfirst">
+      I built a pattern for running AI agents on research work, then spent four weeks measuring it.
+      The catching was done by independent reading — by a session from another project and by an
+      auditor with no stake — rather than by the contracts, gates and automated checks I had built
+      to do it.
+    </p>
+    <p class="oneline">
+      An orchestration pattern for running AI agents on research work, and four weeks of measuring
+      it against synthetic datasets built with a known true answer and a trap planted in each.
+    </p>
+    <p class="case__meta">Two synthetic beds and five research projects · August 2026 · a measurement, not a benchmark</p>
+    <ul class="keyfacts">
+      <li><b>94.6%</b><span>of the sealed ceiling, second bed</span></li>
+      <li><b>+0.2231</b><span>average precision the planted trap was worth</span></li>
+      <li><b>18 of 18</b><span>routes that walked through the permission rules</span></li>
+      <li><b>1 of 2</b><span>predictions written in advance, falsified</span></li>
+    </ul>
+    <p class="meta">
+      An <b>agent</b>, here, means an AI tool given a task and allowed to act on its own for a
+      while — reading files, writing code, running commands — rather than answering one question at
+      a time. The architecture this page measures is described on
+      <a href="../../how-i-work/index.html">how I work</a>.
+    </p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The finding</p></div>
+      <div class="rail__body">
+<h2>What caught things was independent reading</h2>
+<p>
+      Start with the part the design got wrong. This pattern leans on enforcement: written contracts
+      an agent has to satisfy, gates it has to pass, checks that run whether or not anyone asks for
+      them. That machinery is what I would have defended if challenged, and across the two synthetic
+      beds and the five research projects it produced approximately one mechanical refusal.
+    </p>
+    <p>
+      That count is approximate on purpose, and it is worth being precise about why. It is a tally
+      of refusals I happened to notice, in an unblinded record, with no mechanism anywhere in the
+      pipeline that would have logged a counter-instance. So it is a ratio between things I saw, not
+      a rate over things that occurred, and it should be read as an order of magnitude rather than
+      as a measurement. What it is good enough to support is the comparison: the enforcement
+      machinery was not where the catches came from.
+    </p>
+    <p>
+      They came from reading. A session belonging to an unrelated project, and an auditor with no
+      stake in the outcome — each handed the situation rather than a checklist. The absence of the
+      checklist is the active ingredient rather than an oversight. A checklist can only carry what
+      somebody already anticipated, and the failures worth catching are the ones nobody did. The
+      enforcement is not worthless: it is cheap, it runs unattended, and it holds a floor. It is
+      simply not what found the problems, and I had the emphasis backwards.
+    </p>
+
+    <h3>The seal taught the same lesson at a lower layer</h3>
+    <p>
+      Every dataset in the two beds was generated with a known true answer, and that answer was
+      sealed away from the agent behind permission rules — the whole point of the exercise being
+      that a result you can check beats a result you assert. An audit tried
+      <span class="num">18</span> routes against those rules, and every one of the
+      <span class="num">18</span> succeeded: literal paths, tilde and absolute forms, paths
+      assembled from shell variables at runtime, globs, upward traversal, <span class="mono">find</span>,
+      other interpreters — Python, Perl, Node — and a <span class="mono">tar</span> of the whole
+      tree. The audit reported reaching the file inventory and stopped there without reading the
+      files.
+    </p>
+    <p>
+      The mechanism is not subtle once seen. The rules matched on command text, and a shell is not
+      command text: no rule that reads a string can evaluate one, so any construction that defers
+      the path until runtime is invisible to it. What held was an operating-system boundary — a
+      root-owned directory the agent's account could not read at all. The tool layer is where the
+      rule was easy to write. The kernel is where it was true.
+    </p>
+    <p class="pull">
+      Both failures are the same failure. A rule that lists what it expects catches only what was
+      expected of it.
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The rig</p></div>
+      <div class="rail__body">
+<h2>A dataset where I already knew the answer</h2>
+<p class="lede">
+      Seven projects over roughly four weeks in August 2026: five ordinary research projects, and
+      two synthetic beds built to make the pattern measurable rather than describable.
+    </p>
+    <p>
+      The distinction between those two groups is the one that matters, and softening it would
+      wreck the piece. The five research projects have no sealed answer. Whatever an agent produced
+      on them can be reviewed, argued with and improved, but it cannot be scored, because there is
+      no key to score it against. Only the two beds had one.
+    </p>
+    <p>
+      A bed is a synthetic dataset generated for the purpose, so that the true relationship between
+      the columns and the outcome is a thing I chose rather than a thing to be discovered. Into each
+      one I planted a trap: a column that looks powerfully predictive and is inadmissible, because
+      its value does not exist at the moment the prediction is for. This is
+      <a href="../../glossary/index.html#target-leakage"><dfn>target leakage</dfn></a> — information
+      about the outcome smuggled into the inputs — and it is the single most common way a modelling
+      result is quietly wrong. A model that uses it scores brilliantly and is worth nothing, because
+      at the moment a real decision has to be made the column is blank.
+    </p>
+    <p>
+      Two things were then sealed away from the agent: the generating process, and the answer key.
+      The consequence is what makes the exercise worth running. The agent could not compute how good
+      a model could possibly be, so it could not grade itself, tune toward the key, or argue with
+      the score afterwards. I could compute all of that from the sealed side, with a script the bed
+      never had access to. The results below are checkable rather than asserted, and that property
+      comes entirely from the boundary rather than from anything the agent did.
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The first bed</p></div>
+      <div class="rail__body">
+<h2>The first bed reported a number above its own ceiling</h2>
+<p>
+      The agent used the planted trap and reported a headline of
+      <span class="num">0.7802</span>. Excluding the trap, the honest score for that same work is
+      <span class="num">0.1994</span>. The best score any model could have achieved on that bed
+      without the trap — measured afterwards from the sealed side — is
+      <span class="num">0.367</span>.
+    </p>
+    <p>
+      So the reported headline was more than twice the ceiling of the problem it claimed to have
+      solved. That is not a subtle statistical error. It is arithmetically impossible on its face:
+      a number above the ceiling is proof that information from after the outcome is in the feature
+      set, and it needs no domain knowledge to spot, only the ceiling. Nothing in the pipeline
+      remarked on it — not the contracts, not the gates, not the automated checks, and not the
+      agent, which had no ceiling to compare against because I had sealed it away.
+    </p>
+    <p>
+      That last clause is the honest reading, and it cuts both ways. The seal is what makes the
+      measurement trustworthy and it is also what removed the one check that would have caught the
+      error instantly. The revision after this bed was to stop expecting enforcement to notice, and
+      to put an independent reader in the loop instead.
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The second bed</p></div>
+      <div class="rail__body">
+<h2>The second bed excluded the trap on the reasoning that settles it</h2>
+<p>
+      The second bed ran on 28 August 2026, on a card-fraud problem: <span class="num">833,391</span>
+      transactions from 2024 to train on, <span class="num">104,160</span> from the first quarter of
+      2025 to score against, sharing no customers at all. Fraud is
+      <span class="num">2.62%</span> of the training file and <span class="num">2.06%</span> of the
+      scoring file.
+    </p>
+    <p>
+      Before fitting anything, the agent was required to ask of each of the
+      <span class="num">34</span> columns a single question: at what moment does this column's value
+      become known, relative to the moment of the transaction being predicted? Thirty could be
+      placed as knowable then. Two could not be placed at all and were recorded as
+      <span class="mono">unresolved</span> rather than waved through. Two could be ruled out — one
+      is the outcome itself, and the other is the trap: the difference between the amount authorised
+      and the amount finally settled. Settlement happens after authorisation. The column is a fact
+      about what came next, so it cannot be an input to a decision made at the transaction.
+    </p>
+    <p>
+      The agent excluded it on that reasoning, from the column's name alone, before measuring
+      anything. It then measured what the exclusion cost, as three separately fitted models rather
+      than one subtraction: adding the trap back to the best model, and nothing else, raises
+      <a href="../../glossary/index.html#average-precision"><dfn>average precision</dfn></a> — a
+      ranking score where higher is better — from <span class="num">0.3971</span> to
+      <span class="num">0.6194</span>, a difference of <span class="num">+0.2231</span>
+      (<a href="../../glossary/index.html#bootstrap">95% paired bootstrap interval</a>
+      <span class="num">+0.2071</span> to <span class="num">+0.2383</span>). Every improvement the
+      search found across its whole budget, added together, is a small fraction of that one number.
+    </p>
+
+    <h3>What the honest score is worth</h3>
+    <p>
+      The best admissible model scored <span class="num">0.3971</span>. From the sealed side, the
+      best achievable average precision on those same admissible columns is
+      <span class="num">0.4198</span>. So the search reached <span class="num">94.6%</span> of the
+      achievable score — a figure I can state only because I held the key, and one the report itself
+      leaves standing as <span class="mono">PENDING</span> because it was sealed from the material
+      needed to compute it.
+    </p>
+    <p>
+      Two comparisons from the same sealed measurement put that in proportion. An out-of-the-box
+      gradient boosting fit on the identical <span class="num">27</span> admissible columns scores
+      <span class="num">0.2706</span>, so the search bought <span class="num">+0.1265</span> over
+      simply running the library — the tuning was worth something real. And the absolute bound using
+      every column, traps included, is <span class="num">0.5560</span>: any score above that line is
+      proof on its face that post-outcome information has reached the feature set. A line of that
+      kind is the cheapest check in this whole programme, and it is the one bed one had no access
+      to.
+    </p>
+
+    <figure>
+<!-- FIGURE:fig-agent-ceiling -->
+<div class="scroll" role="region" tabindex="0" aria-label="How far the search got, against the ceiling and against the trap — scrollable chart">
+<svg viewBox="0 0 640 284" role="img" aria-labelledby="t-fig-agent-ceiling d-fig-agent-ceiling" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-agent-ceiling">How far the search got, against the ceiling and against the trap</title>
+  <desc id="d-fig-agent-ceiling">The honest search reached 0.3971 against an achievable ceiling of 0.4198. The same model with the excluded settlement column added back reaches 0.6194, which is not a candidate model and is drawn hatched.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <defs><pattern id="hz-fig-agent-ceiling" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--surface)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--muted)" stroke-width="2"/></pattern></defs>
+  <text x="0" y="44" class="lbl-i" text-anchor="start">random ranking</text>
+  <text x="0" y="58" class="lbl" text-anchor="start">from the data itself</text>
+  <rect x="152" y="36" width="12.42" height="20" class="bar"><title>a ranker guessing at random scores the fraud rate itself: 0.0206</title></rect>
+  <text x="173.4" y="50" class="lbl-i" text-anchor="start">0.0206</text>
+  <text x="0" y="84" class="lbl-i" text-anchor="start">library defaults</text>
+  <text x="0" y="98" class="lbl" text-anchor="start">from the answer key</text>
+  <rect x="152" y="76" width="163.16" height="20" class="bar"><title>out-of-the-box gradient boosting on the 27 admissible columns: 0.2706</title></rect>
+  <text x="324.2" y="90" class="lbl-i" text-anchor="start">0.2706</text>
+  <text x="0" y="124" class="lbl-i" text-anchor="start">this search</text>
+  <text x="0" y="138" class="lbl" text-anchor="start">from the search</text>
+  <rect x="152" y="116" width="239.43" height="20" class="bar"><title>the best admissible configuration the 25-run search found: 0.3971</title></rect>
+  <text x="400.4" y="130" class="lbl-i" text-anchor="start">0.3971</text>
+  <text x="0" y="164" class="lbl-i" text-anchor="start">achievable ceiling</text>
+  <text x="0" y="178" class="lbl" text-anchor="start">from the answer key</text>
+  <rect x="152" y="156" width="253.11" height="20" class="bar"><title>the best average precision attainable on the admissible columns: 0.4198</title></rect>
+  <text x="414.1" y="170" class="lbl-i" text-anchor="start">0.4198</text>
+  <text x="0" y="204" class="lbl-i" text-anchor="start">with the trap</text>
+  <text x="0" y="218" class="lbl" text-anchor="start">from the search</text>
+  <rect x="152" y="196" width="373.46" height="20" fill="url(#hz-fig-agent-ceiling)" stroke="var(--c2)" stroke-width="1.5"><title>the same model with the settlement column added back: 0.6194 — not a candidate model</title></rect>
+  <text x="534.5" y="210" class="lbl-i" text-anchor="start">✕ 0.6194</text>
+  <g stroke="var(--ink-2)" stroke-width="1.2" fill="none"><line x1="378.3" y1="126" x2="404.9" y2="126"/><line x1="378.3" y1="122" x2="378.3" y2="130"/><line x1="404.9" y1="122" x2="404.9" y2="130"/><line x1="513" y1="206" x2="538.1" y2="206"/><line x1="513" y1="202" x2="513" y2="210"/><line x1="538.1" y1="202" x2="538.1" y2="210"/></g>
+  <line x1="152" y1="232" x2="562" y2="232" class="axis"/>
+  <text x="152" y="247" class="lbl" text-anchor="middle">0</text>
+  <text x="272.6" y="247" class="lbl" text-anchor="middle">0.2</text>
+  <text x="393.2" y="247" class="lbl" text-anchor="middle">0.4</text>
+  <text x="513.8" y="247" class="lbl" text-anchor="middle">0.6</text>
+  <text x="357" y="262" class="lbl" text-anchor="middle">average precision, higher is better · whiskers are 95% intervals</text>
+  <text x="0" y="278" class="lbl-i" text-anchor="start">✕ hatched = uses a column excluded on availability grounds</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">quantity</th><th scope="col">average precision</th><th scope="col">interval lo</th><th scope="col">interval hi</th><th scope="col">measured from</th><th scope="col">is candidate model</th></tr></thead><tbody><tr><td>a ranker guessing at random scores the fraud rate itself</td><td>0.0206</td><td></td><td></td><td>file</td><td>yes</td></tr><tr><td>out-of-the-box gradient boosting on the 27 admissible columns</td><td>0.2706</td><td></td><td></td><td>sealed</td><td>yes</td></tr><tr><td>the best admissible configuration the 25-run search found</td><td>0.3971</td><td>0.3754</td><td>0.4194</td><td>agent</td><td>yes</td></tr><tr><td>the best average precision attainable on the admissible columns</td><td>0.4198</td><td></td><td></td><td>sealed</td><td>yes</td></tr><tr><td>the same model with the settlement column added back</td><td>0.6194</td><td>0.5987</td><td>0.6404</td><td>agent</td><td>no</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-agent-ceiling -->
+      <figcaption>
+        <b>What you're looking at:</b> how far an honest search got, and how much further a
+        compromised one appears to get. The top four bars are all legitimate; the bottom one is the
+        same model with the excluded settlement column handed back to it, and it is drawn hatched
+        because it is not a candidate model. Had the exclusion been a formality, the hatched bar
+        would sit alongside the others instead of half again beyond the ceiling. Two of the five
+        carry no whisker because no interval was published for them: the base rate is a property of
+        the file, and the two sealed-side figures are single measurements from the answer key.
+        <span class="prov">n = 104,160 validation rows · data 2026-08-28 · not pre-registered · no untouched holdout ·
+        <a href="../../data/agent-ceiling.csv">agent-ceiling.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <h3>Three changes carried the search</h3>
+    <p>
+      The search is the less interesting half of that number, and it is worth seeing whole. Across
+      its budget it made <span class="num">14</span> distinct changes. Three produced a gain whose
+      interval excludes zero, three produced a real loss, and the remaining
+      <span class="num">8</span> bought nothing that can be told apart from noise — including four
+      consecutive attempts at regularisation, and the constructed ratios the final model leans on
+      hardest.
+    </p>
+
+    <figure>
+<!-- FIGURE:fig-agent-changes -->
+<div class="scroll" role="region" tabindex="0" aria-label="Every change the search made, sorted by effect — scrollable chart">
+<svg viewBox="0 0 640 460" role="img" aria-labelledby="t-fig-agent-changes d-fig-agent-changes" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-agent-changes">Every change the search made, sorted by effect</title>
+  <desc id="d-fig-agent-changes">Of 14 changes, 8 have an interval that crosses zero and bought nothing that can be told apart from noise. Three are real gains and three are real losses.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <defs><pattern id="hz-fig-agent-changes" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--surface)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--muted)" stroke-width="2"/></pattern></defs>
+  <line x1="322.6" y1="28" x2="322.6" y2="386" class="rule"/>
+  <text x="322.6" y="22" class="lbl" text-anchor="middle">no change</text>
+  <text x="0" y="52" class="lbl-i" text-anchor="start">model family: linear → tree</text>
+  <rect x="322.6" y="41" width="188.17" height="14" fill="var(--c3)"><title>model family: linear → boosted tree: +0.1039 — a real gain</title></rect>
+  <text x="624" y="52" class="lbl-i" text-anchor="end">▲ +0.1039</text>
+  <text x="0" y="77" class="lbl-i" text-anchor="start">learning rate 0.1 → 0.05</text>
+  <rect x="322.6" y="66" width="37.13" height="14" fill="var(--c3)"><title>learning rate 0.1 → 0.05: +0.0205 — a real gain</title></rect>
+  <text x="624" y="77" class="lbl-i" text-anchor="end">▲ +0.0205</text>
+  <text x="0" y="102" class="lbl-i" text-anchor="start">merchant id → its own fraud rate</text>
+  <rect x="322.6" y="91" width="33.87" height="14" fill="var(--c3)"><title>merchant id → its own fraud rate: +0.0187 — a real gain</title></rect>
+  <text x="624" y="102" class="lbl-i" text-anchor="end">▲ +0.0187</text>
+  <text x="0" y="127" class="lbl-i" text-anchor="start">learning rate 0.05 → 0.025</text>
+  <rect x="322.6" y="116" width="6.7" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>learning rate 0.05 → 0.025: +0.0037 — interval crosses zero</title></rect>
+  <text x="624" y="127" class="lbl-i" text-anchor="end">≈ +0.0037</text>
+  <text x="0" y="152" class="lbl-i" text-anchor="start">5 derived ratios added</text>
+  <rect x="322.6" y="141" width="3.98" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>5 derived ratios added: +0.0022 — interval crosses zero</title></rect>
+  <text x="624" y="152" class="lbl-i" text-anchor="end">≈ +0.0022</text>
+  <text x="0" y="177" class="lbl-i" text-anchor="start">column subsampling to 60%</text>
+  <rect x="322.6" y="166" width="1.45" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>column subsampling to 60%: +0.0008 — interval crosses zero</title></rect>
+  <text x="624" y="177" class="lbl-i" text-anchor="end">≈ +0.0008</text>
+  <text x="0" y="202" class="lbl-i" text-anchor="start">min rows per leaf 20 → 100</text>
+  <rect x="322.6" y="191" width="1.27" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>min rows per leaf 20 → 100: +0.0007 — interval crosses zero</title></rect>
+  <text x="624" y="202" class="lbl-i" text-anchor="end">≈ +0.0007</text>
+  <text x="0" y="227" class="lbl-i" text-anchor="start">leaves per tree 31 → 63</text>
+  <rect x="322" y="216" width="0.54" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>leaves per tree 31 → 63: -0.0003 — interval crosses zero</title></rect>
+  <text x="624" y="227" class="lbl-i" text-anchor="end">≈ -0.0003</text>
+  <text x="0" y="252" class="lbl-i" text-anchor="start">leaf-value shrinkage 0 → 10</text>
+  <rect x="321.1" y="241" width="1.45" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>leaf-value shrinkage 0 → 10: -0.0008 — interval crosses zero</title></rect>
+  <text x="624" y="252" class="lbl-i" text-anchor="end">≈ -0.0008</text>
+  <text x="0" y="277" class="lbl-i" text-anchor="start">leaves per tree 31 → 15</text>
+  <rect x="320.7" y="266" width="1.81" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>leaves per tree 31 → 15: -0.001 — interval crosses zero</title></rect>
+  <text x="624" y="277" class="lbl-i" text-anchor="end">≈ -0.001</text>
+  <text x="0" y="302" class="lbl-i" text-anchor="start">encoding fold seed 0 → 7</text>
+  <rect x="319.3" y="291" width="3.26" height="14" fill="url(#hz-fig-agent-changes)" stroke="var(--muted)" stroke-width="1"><title>encoding fold seed 0 → 7: -0.0018 — interval crosses zero</title></rect>
+  <text x="624" y="302" class="lbl-i" text-anchor="end">≈ -0.0018</text>
+  <text x="0" y="327" class="lbl-i" text-anchor="start">feature set 27 → 15 columns</text>
+  <rect x="312.4" y="316" width="10.14" height="14" fill="var(--c2)"><title>feature set 27 → 15 columns: -0.0056 — a real loss</title></rect>
+  <text x="624" y="327" class="lbl-i" text-anchor="end">▼ -0.0056</text>
+  <text x="0" y="352" class="lbl-i" text-anchor="start">class re-weighting on</text>
+  <rect x="309.3" y="341" width="13.22" height="14" fill="var(--c2)"><title>class re-weighting on: -0.0073 — a real loss</title></rect>
+  <text x="624" y="352" class="lbl-i" text-anchor="end">▼ -0.0073</text>
+  <text x="0" y="377" class="lbl-i" text-anchor="start">boosting rounds 100 → 400</text>
+  <rect x="261" y="366" width="61.58" height="14" fill="var(--c2)"><title>boosting rounds 100 → 400: -0.034 — a real loss</title></rect>
+  <text x="624" y="377" class="lbl-i" text-anchor="end">▼ -0.034</text>
+  <g stroke="var(--ink-2)" stroke-width="1.2" fill="none"><line x1="478.1" y1="48" x2="543.1" y2="48"/><line x1="478.1" y1="44.5" x2="478.1" y2="51.5"/><line x1="543.1" y1="44.5" x2="543.1" y2="51.5"/><line x1="346.5" y1="73" x2="371.6" y2="73"/><line x1="346.5" y1="69.5" x2="346.5" y2="76.5"/><line x1="371.6" y1="69.5" x2="371.6" y2="76.5"/><line x1="339.8" y1="98" x2="373.4" y2="98"/><line x1="339.8" y1="94.5" x2="339.8" y2="101.5"/><line x1="373.4" y1="94.5" x2="373.4" y2="101.5"/><line x1="321.3" y1="123" x2="336.7" y2="123"/><line x1="321.3" y1="119.5" x2="321.3" y2="126.5"/><line x1="336.7" y1="119.5" x2="336.7" y2="126.5"/><line x1="314.6" y1="148" x2="337.8" y2="148"/><line x1="314.6" y1="144.5" x2="314.6" y2="151.5"/><line x1="337.8" y1="144.5" x2="337.8" y2="151.5"/><line x1="315.1" y1="173" x2="333.6" y2="173"/><line x1="315.1" y1="169.5" x2="315.1" y2="176.5"/><line x1="333.6" y1="169.5" x2="333.6" y2="176.5"/><line x1="318.6" y1="198" x2="329.1" y2="198"/><line x1="318.6" y1="194.5" x2="318.6" y2="201.5"/><line x1="329.1" y1="194.5" x2="329.1" y2="201.5"/><line x1="311.3" y1="223" x2="333.2" y2="223"/><line x1="311.3" y1="219.5" x2="311.3" y2="226.5"/><line x1="333.2" y1="219.5" x2="333.2" y2="226.5"/><line x1="313.7" y1="248" x2="328.5" y2="248"/><line x1="313.7" y1="244.5" x2="313.7" y2="251.5"/><line x1="328.5" y1="244.5" x2="328.5" y2="251.5"/><line x1="308.8" y1="273" x2="332.5" y2="273"/><line x1="308.8" y1="269.5" x2="308.8" y2="276.5"/><line x1="332.5" y1="269.5" x2="332.5" y2="276.5"/><line x1="311.7" y1="298" x2="326.5" y2="298"/><line x1="311.7" y1="294.5" x2="311.7" y2="301.5"/><line x1="326.5" y1="294.5" x2="326.5" y2="301.5"/><line x1="304.8" y1="323" x2="320.9" y2="323"/><line x1="304.8" y1="319.5" x2="304.8" y2="326.5"/><line x1="320.9" y1="319.5" x2="320.9" y2="326.5"/><line x1="297.2" y1="348" x2="322.6" y2="348"/><line x1="297.2" y1="344.5" x2="297.2" y2="351.5"/><line x1="322.6" y1="344.5" x2="322.6" y2="351.5"/><line x1="243.4" y1="373" x2="277.6" y2="373"/><line x1="243.4" y1="369.5" x2="243.4" y2="376.5"/><line x1="277.6" y1="369.5" x2="277.6" y2="376.5"/></g>
+  <line x1="232" y1="400" x2="558" y2="400" class="axis"/>
+  <text x="250.1" y="415" class="lbl" text-anchor="middle">-0.04</text>
+  <text x="322.6" y="415" class="lbl" text-anchor="middle">0</text>
+  <text x="395" y="415" class="lbl" text-anchor="middle">+0.04</text>
+  <text x="467.4" y="415" class="lbl" text-anchor="middle">+0.08</text>
+  <text x="539.9" y="415" class="lbl" text-anchor="middle">+0.12</text>
+  <text x="395" y="428" class="lbl" text-anchor="middle">change in average precision</text>
+  <text x="0" y="452" class="lbl-i" text-anchor="start">▲ gain  ▼ loss  ≈ hatched, interval crosses zero (8 of 14)</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">change</th><th scope="col">delta average precision</th><th scope="col">interval lo</th><th scope="col">interval hi</th><th scope="col">verdict</th></tr></thead><tbody><tr><td>model family: linear → boosted tree</td><td>0.1039</td><td>0.0859</td><td>0.1218</td><td>gain</td></tr><tr><td>learning rate 0.1 → 0.05</td><td>0.0205</td><td>0.0132</td><td>0.0271</td><td>gain</td></tr><tr><td>merchant id → its own fraud rate</td><td>0.0187</td><td>0.0095</td><td>0.0281</td><td>gain</td></tr><tr><td>learning rate 0.05 → 0.025</td><td>0.0037</td><td>-0.0007</td><td>0.0078</td><td>inside the noise</td></tr><tr><td>5 derived ratios added</td><td>0.0022</td><td>-0.0044</td><td>0.0084</td><td>inside the noise</td></tr><tr><td>column subsampling to 60%</td><td>0.0008</td><td>-0.0041</td><td>0.0061</td><td>inside the noise</td></tr><tr><td>min rows per leaf 20 → 100</td><td>0.0007</td><td>-0.0022</td><td>0.0036</td><td>inside the noise</td></tr><tr><td>leaves per tree 31 → 63</td><td>-0.0003</td><td>-0.0062</td><td>0.0059</td><td>inside the noise</td></tr><tr><td>leaf-value shrinkage 0 → 10</td><td>-0.0008</td><td>-0.0049</td><td>0.0033</td><td>inside the noise</td></tr><tr><td>leaves per tree 31 → 15</td><td>-0.001</td><td>-0.0076</td><td>0.0055</td><td>inside the noise</td></tr><tr><td>encoding fold seed 0 → 7</td><td>-0.0018</td><td>-0.006</td><td>0.0022</td><td>inside the noise</td></tr><tr><td>feature set 27 → 15 columns</td><td>-0.0056</td><td>-0.0098</td><td>-0.0009</td><td>loss</td></tr></tbody></table></div><p class="prov">First 12 of 14 rows. <a href="../../data/agent-search-changes.csv">Download all 14</a>.</p></details>
+<!-- /FIGURE:fig-agent-changes -->
+      <figcaption>
+        <b>What you're looking at:</b> every change the search made, sorted by how much it moved the
+        score, with the whisker showing how much that movement could have been chance. A bar whose
+        whisker crosses the vertical line is hatched, because the change cannot be told apart from
+        doing nothing. A search that had found a productive axis would show a run of solid bars
+        marching to the right; this one shows three, then a plateau. The single largest bar is the
+        first structural choice — a linear model swapped for a tree ensemble — and nothing after it
+        comes close.
+        <span class="prov">n = 14 changes measured on 104,160 validation rows · data 2026-08-28
+        · not pre-registered · no untouched holdout ·
+        <a href="../../data/agent-search-changes.csv">agent-search-changes.csv</a></span>
+      </figcaption>
+    </figure>
+
+    <p>
+      <a href="../../docs/synthetic-fraud-2-report.html">Read the full technical report for the
+      second bed (HTML, 1.0&nbsp;MB)</a> — the agent's own account of every run, generated
+      end-to-end from its committed result files with no number typed by hand. It is reproduced as
+      it was written, including the sections where it declines to answer.
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The near-miss</p></div>
+      <div class="rail__body">
+<h2>One inference short</h2>
+<p>
+      The second bed carried a second trap, and what happened to it is more interesting than either
+      catching it or missing it would have been.
+    </p>
+    <p>
+      The column is a per-merchant risk score whose name states no time window — no "as of", no
+      period. The agent investigated it properly. It established that the score is constant within
+      each merchant and identical for the same merchant across both files. It then computed the two
+      quantities that settle the question: the score correlates <span class="num">0.943</span> with
+      that merchant's fraud rate over the training period and <span class="num">0.838</span> with
+      the same merchant's fraud rate over the scoring period, while the two periods' own rates
+      correlate only <span class="num">0.620</span> with each other.
+    </p>
+    <p>
+      Read those three numbers together and they say something specific. A score fixed before the
+      data begins should track each period about as well as the periods track one another. This one
+      tracks both periods far better than they track each other, which is the signature of a
+      quantity computed across both — that is, of a summary that has seen the outcomes it is being
+      used to predict.
+    </p>
+
+    <figure>
+<!-- FIGURE:fig-agent-near-miss -->
+<div class="scroll" role="region" tabindex="0" aria-label="The correlations that carry the lookahead signature — scrollable chart">
+<svg viewBox="0 0 640 252" role="img" aria-labelledby="t-fig-agent-near-miss d-fig-agent-near-miss" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <title id="t-fig-agent-near-miss">The correlations that carry the lookahead signature</title>
+  <desc id="d-fig-agent-near-miss">The merchant score tracks each period's own fraud rate more closely than the two periods track each other. A score fixed before the data begins could not do that.</desc>
+  <style>.lbl{font:12px var(--mono,monospace);fill:var(--ink-2)}.lbl-i{font:12px var(--mono,monospace);fill:var(--ink,#0D0B14)}.ttl{font:13px var(--sans,sans-serif);fill:var(--ink,#111)}.axis{stroke:var(--line,#E4E2EE);stroke-width:1}.rule{stroke:var(--muted,#7B7890);stroke-width:1;stroke-dasharray:3 3}.bar{fill:var(--c1,#4F46E5)}.bar-2{fill:var(--c3,#0E9384)}.ser{fill:none;stroke:var(--c1,#4F46E5);stroke-width:2}.ser-2{fill:none;stroke:var(--c2,#E8590C);stroke-width:1.5;stroke-dasharray:5 3}.dot{fill:var(--c1,#4F46E5)}.dot-2{fill:var(--ink-2)}.cell{fill:var(--c1,#4F46E5)}.cv{font:12px var(--mono,monospace);fill:var(--ink,#111)}.cv.hi{fill:#fff}</style>
+  <defs><pattern id="hz-fig-agent-near-miss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--surface)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--muted)" stroke-width="2"/></pattern></defs>
+  <line x1="407.9" y1="26" x2="407.9" y2="178" class="rule"/>
+  <text x="0" y="48" class="lbl-i" text-anchor="start">score × 2024 rate</text>
+  <text x="0" y="62" class="lbl" text-anchor="start">above the reference</text>
+  <rect x="150" y="39" width="392.29" height="22" class="bar"><title>score vs its merchant's 2024 fraud rate: r = 0.943</title></rect>
+  <text x="551.3" y="54" class="lbl-i" text-anchor="start">r = 0.943</text>
+  <text x="0" y="94" class="lbl-i" text-anchor="start">score × 2025 rate</text>
+  <text x="0" y="108" class="lbl" text-anchor="start">above the reference</text>
+  <rect x="150" y="85" width="348.61" height="22" class="bar"><title>score vs its merchant's 2025 fraud rate: r = 0.838</title></rect>
+  <text x="507.6" y="100" class="lbl-i" text-anchor="start">r = 0.838</text>
+  <text x="0" y="140" class="lbl-i" text-anchor="start">2024 × 2025 rate</text>
+  <text x="0" y="154" class="lbl" text-anchor="start">the reference</text>
+  <rect x="150" y="131" width="257.92" height="22" fill="url(#hz-fig-agent-near-miss)" stroke="var(--muted)" stroke-width="1"><title>the 2024 rate vs the 2025 rate: r = 0.62 — the reference</title></rect>
+  <text x="416.9" y="146" class="lbl-i" text-anchor="start">r = 0.62</text>
+  <line x1="150" y1="184" x2="566" y2="184" class="axis"/>
+  <text x="150" y="199" class="lbl" text-anchor="middle">0</text>
+  <text x="254" y="199" class="lbl" text-anchor="middle">0.25</text>
+  <text x="358" y="199" class="lbl" text-anchor="middle">0.5</text>
+  <text x="462" y="199" class="lbl" text-anchor="middle">0.75</text>
+  <text x="566" y="199" class="lbl" text-anchor="middle">1</text>
+  <text x="358" y="212" class="lbl" text-anchor="middle">correlation, 0 to 1</text>
+  <text x="0" y="244" class="lbl-i" text-anchor="start">dashed line: how well the two periods track each other</text>
+</svg>
+</div>
+<p class="scroll-hint">Chart scrolls sideways on a narrow screen — or open “Show the numbers” below.</p>
+<details class="figdata"><summary>Show the numbers</summary><div class="scroll" role="region" tabindex="0" aria-label="Data table"><table><thead><tr><th scope="col">pair</th><th scope="col">correlation</th></tr></thead><tbody><tr><td>score vs its merchant's 2024 fraud rate</td><td>0.943</td></tr><tr><td>score vs its merchant's 2025 fraud rate</td><td>0.838</td></tr><tr><td>the 2024 rate vs the 2025 rate</td><td>0.62</td></tr></tbody></table></div></details>
+<!-- /FIGURE:fig-agent-near-miss -->
+      <figcaption>
+        <b>What you're looking at:</b> the three correlations the agent computed, with the dashed
+        line marking how well the two periods track each other. A score fixed before the data begins
+        has no way to beat that line, because it cannot know either period better than the periods
+        know one another. Both solid bars sit past it. Had the column been innocent, all three bars
+        would have landed at roughly the same length and there would be nothing to conclude. No
+        intervals are drawn because none were published for these three figures.
+        <span class="prov">n = 600 merchants · data 2026-08-28 · not pre-registered ·
+        computed across both files ·
+        <a href="../../data/agent-near-miss.csv">agent-near-miss.csv</a></span>
+      </figcaption>
+    </figure>
+    <p>
+      The agent computed both correlations, wrote them down, recorded the column
+      <span class="mono">unresolved</span>, and excluded it from every reported model. What it did
+      not do is take the last step and say what the pattern means. Its own report states the two
+      readings are "consistent with a standing merchant attribute fixed in advance and with a
+      summary computed across both files, and the two files cannot tell them apart" — a conclusion
+      that is defensible on the evidence it allowed itself, and one step short of the evidence it
+      had already produced.
+    </p>
+    <p class="pull">
+      The behaviour was right and the inference was missing. That is a far more useful failure mode
+      to know about than a miss, because a miss looks like inattention and this looks like caution.
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">The predictions</p></div>
+      <div class="rail__body">
+<h2>One prediction held and one was wrong</h2>
+<p class="lede">
+      Both were written down and sealed before the second bed ran. Publishing the one that turned
+      out wrong is what makes the rest of this page worth reading.
+    </p>
+
+    <div class="finding">
+      <p class="finding__sign">P1 · The first trap would be caught — about 85% confidence — HELD</p>
+      <p>
+        It was caught, and caught on the route I expected: the meaning of the column rather than
+        the behaviour of its values. A quantity that only exists once a transaction has settled
+        cannot be an input to a decision taken at authorisation. The agent reached that from the
+        column's name, before fitting anything, and no measurement was needed or would have changed
+        it.
+      </p>
+    </div>
+
+    <div class="finding">
+      <p class="finding__sign">P2 · The second trap would go unquestioned — about 80% confidence — FALSIFIED</p>
+      <p>
+        It was questioned. The agent noticed that the name fixes no time window, investigated,
+        computed the diagnostic correlations, recorded the column as unresolved and excluded it from
+        every reported model. The prediction that it would pass unexamined is simply wrong, and by a
+        wide margin — the examination was thorough. What the agent stopped short of was the
+        conclusion, which is a different thing from never looking.
+      </p>
+    </div>
+
+    <p>
+      A prediction I got wrong is worth more here than the one I got right, for two reasons. The
+      first is evidential: written predictions are only worth anything if the falsified ones get
+      published, and a page reporting two hits would be indistinguishable from a page where the
+      predictions were written afterwards. The second is that being wrong is what located the
+      near-miss at all. I expected a miss, found an investigation that stopped one inference short,
+      and that gap is the most specific thing this programme learned about where the pattern needs
+      work — an agent that reasons carefully and then declines to conclude will not be caught by any
+      gate that checks whether the work was done.
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="rail">
+      <div class="rail__label"><p class="eyebrow">Limits</p></div>
+      <div class="rail__body">
+<h2>Limits of the evidence</h2>
+<p>
+      This was measured twice. The measurement is the contribution, and it is not a proof that the
+      pattern works.
+    </p>
+    <ul class="plain">
+      <li>
+        <strong>It is a measurement, not a benchmark.</strong> The traps were planted by a session I
+        directed, sealed by me, and scored by me. Two beds, one operator, one model family. Nothing
+        here is a controlled comparison against an alternative, and the numbers should not be read
+        as though it were.
+      </li>
+      <li>
+        <strong>Only two of the seven projects had sealed answers.</strong> The other five are
+        ordinary research work with no key to score against. They inform the refusal count and
+        nothing else on this page.
+      </li>
+      <li>
+        <strong>The refusal count is a ratio, not a rate.</strong> An unblinded record, with no
+        mechanism that would have logged a counter-instance, cannot produce a denominator. It
+        supports the direction of the comparison and no figure derived from it.
+      </li>
+      <li>
+        <strong>The second bed's headline is optimistic by an amount nothing can bound.</strong>
+        No untouched holdout was sealed, by design, and the scoring rows were consulted
+        <span class="num">583</span> times over the course of the search before the reported number
+        was computed on them. The <span class="num">94.6%</span> is a ratio between two figures, one
+        of which carries that optimism.
+      </li>
+      <li>
+        <strong>Applying a rule is not the same as noticing a problem.</strong> The second bed was
+        instructed in advance, and with emphasis, to check every column's availability. It complied,
+        and complying is all it demonstrates. Whether an unprompted session would have found the
+        trap is exactly the question this design cannot answer, and the agent's own report says so
+        three separate times rather than parking it in a footnote.
+      </li>
+      <li>
+        <strong>The search found a plateau rather than a winner.</strong> Eight of the second bed's
+        configurations are statistically indistinguishable at the top, and of the fourteen distinct
+        changes the search made, three produced a gain whose interval excludes zero. Calling any one
+        of them "the best" overstates what was measured.
+      </li>
+    </ul>
+
+    <details>
+      <summary>The technical version</summary>
+      <div class="inner">
+        <h3>The second bed, in figures</h3>
+        <div class="scroll" role="region" tabindex="0" aria-label="Scrollable table">
+          <table>
+            <caption>Second bed. Scores are average precision on the validation file. Intervals are
+              bootstrap over validation rows.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Quantity</th>
+                <th scope="col" class="n">Figure</th>
+                <th scope="col">Where it comes from</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Random ranking (the fraud rate itself)</td>
+                <td class="n">0.0206</td>
+                <td>The validation file</td>
+              </tr>
+              <tr>
+                <td>Linear model on the admissible columns</td>
+                <td class="n">0.2505 [0.2332, 0.2701]</td>
+                <td>The agent's first run — the floor</td>
+              </tr>
+              <tr>
+                <td>Library defaults on the admissible columns</td>
+                <td class="n">0.2706</td>
+                <td>Sealed side, measured after the run</td>
+              </tr>
+              <tr>
+                <td>Best admissible model the search found</td>
+                <td class="n">0.3971 [0.3754, 0.4194]</td>
+                <td>The agent's search; ROC AUC 0.9406</td>
+              </tr>
+              <tr>
+                <td>Best achievable on the admissible columns</td>
+                <td class="n">0.4198</td>
+                <td>Sealed side — the agent's report leaves this PENDING</td>
+              </tr>
+              <tr>
+                <td>Absolute bound using every column, traps included</td>
+                <td class="n">0.5560</td>
+                <td>Sealed side; a score above it is proof of leakage</td>
+              </tr>
+              <tr>
+                <td>Best model with the settlement trap added back</td>
+                <td class="n">0.6194 [0.5987, 0.6404]</td>
+                <td>The agent's run 16 — not a candidate model</td>
+              </tr>
+              <tr>
+                <td>What the settlement trap alone was worth</td>
+                <td class="n">+0.2231 [+0.2071, +0.2383]</td>
+                <td>Paired bootstrap against the best admissible model</td>
+              </tr>
+              <tr>
+                <td>What the two unresolved columns were worth</td>
+                <td class="n">+0.0169 [+0.0127, +0.0209]</td>
+                <td>Paired bootstrap, fitted separately</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="method">
+          <b>What the headline is an estimate of</b> — <span class="num">0.3971</span> was computed
+          on all <span class="num">104,160</span> validation rows, of which
+          <span class="num">2,149</span> are fraudulent, from a model fitted on all
+          <span class="num">833,391</span> training rows. Those same validation rows had been
+          consulted <span class="num">583</span> times by the time it was computed, and the number
+          of boosting rounds in the final configuration was itself chosen by reading those curves.
+          There is no untouched <a href="../../glossary/index.html#held-out">held-out</a> set in
+          that project, by design, so the figure does not estimate performance on data the search
+          has not touched.
+        </p>
+        <h3>The exploration budget</h3>
+        <p>
+          The second bed fixed one thing in advance and nothing else: a budget of
+          <span class="num">25</span> runs, with run <span class="num">26</span> refused and the
+          project required to stop and report whatever it had. Each run's written justification was
+          appended before the run executed rather than after its score was known, which is what
+          makes the ledger a record of intent rather than of hindsight. All
+          <span class="num">25</span> were spent, including one that errored before producing a
+          score and consumed its row anyway. The stopping reason was the budget, not a result.
+        </p>
+        <p>
+          Nothing was escalated to me across the whole of that session — the inventory, the column
+          declaration, all twenty-five runs and the report — and the project sat blocked for zero
+          minutes. The agent recorded that as a finding rather than leaving it as an absence, so
+          that "he was not needed" can be told apart from "nobody wrote it down".
+        </p>
+        <p class="entry__stack">
+          Synthetic tabular data generated for the purpose; gradient-boosted trees and logistic
+          regression; paired bootstrap intervals over validation rows; answer keys and generating
+          process held behind a root-owned directory rather than a tool-level permission rule.
+        </p>
+      </div>
+    </details>
+
+    <p>
+      <a href="../../how-i-work/index.html">← The architecture this measures</a>
+    </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><nav class="pager" aria-label="More work"><p><span>Previous</span><a href="../../projects/data-portal/index.html">← Market-data portal</a></p></nav></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Juan Mediavilla · London · <a href="../../index.html">Home</a> · <a href="../../projects/index.html">Projects</a> · <a href="../../research/index.html">Research</a> · <a href="../../notes/index.html">Notes</a> · <a href="../../how-i-work/index.html">How I Work</a> · <a href="../../about/index.html">About</a> · <a href="../../cv/index.html">CV</a> · <a href="../../glossary/index.html">Glossary</a></p>
+  </div>
+</footer>
+
+<script src="../../app.js"></script>
+</body>
+</html>

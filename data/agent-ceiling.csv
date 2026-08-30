@@ -1,0 +1,6 @@
+quantity,average_precision,interval_lo,interval_hi,measured_from,is_candidate_model
+a ranker guessing at random scores the fraud rate itself,0.0206,,,file,yes
+out-of-the-box gradient boosting on the 27 admissible columns,0.2706,,,sealed,yes
+the best admissible configuration the 25-run search found,0.3971,0.3754,0.4194,agent,yes
+the best average precision attainable on the admissible columns,0.4198,,,sealed,yes
+the same model with the settlement column added back,0.6194,0.5987,0.6404,agent,no

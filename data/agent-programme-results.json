@@ -1,0 +1,35 @@
+{
+  "_source": "docs/report.html and docs/feature-availability.md of the synthetic-fraud-2 bed, run 2026-08-28, plus the sealed-side measurement taken after the run. Every value here is transcribed from those documents; nothing is computed in this file. tools/make_figures.py reads it and writes the published CSVs and the SVGs, so no number is typed into a chart.",
+  "_units": "Scores and deltas are average precision on the 104,160-row validation file. Intervals are 95% bootstrap over validation rows; paired where the row is a delta.",
+
+  "ceiling": [
+    {"label": "random ranking",      "long": "a ranker guessing at random scores the fraud rate itself", "value": 0.0206, "lo": null,   "hi": null,   "side": "file",    "candidate": true},
+    {"label": "library defaults",    "long": "out-of-the-box gradient boosting on the 27 admissible columns", "value": 0.2706, "lo": null,   "hi": null,   "side": "sealed",  "candidate": true},
+    {"label": "this search",         "long": "the best admissible configuration the 25-run search found", "value": 0.3971, "lo": 0.3754, "hi": 0.4194, "side": "agent",   "candidate": true},
+    {"label": "achievable ceiling",  "long": "the best average precision attainable on the admissible columns", "value": 0.4198, "lo": null,   "hi": null,   "side": "sealed",  "candidate": true},
+    {"label": "with the trap",       "long": "the same model with the settlement column added back", "value": 0.6194, "lo": 0.5987, "hi": 0.6404, "side": "agent",   "candidate": false}
+  ],
+
+  "changes": [
+    {"label": "model family: linear → boosted tree", "short": "model family: linear → tree", "delta":  0.1039, "lo":  0.0859, "hi":  0.1218},
+    {"label": "learning rate 0.1 → 0.05",            "delta":  0.0205, "lo":  0.0132, "hi":  0.0271},
+    {"label": "merchant id → its own fraud rate",    "delta":  0.0187, "lo":  0.0095, "hi":  0.0281},
+    {"label": "learning rate 0.05 → 0.025",          "delta":  0.0037, "lo": -0.0007, "hi":  0.0078},
+    {"label": "5 derived ratios added",                   "delta":  0.0022, "lo": -0.0044, "hi":  0.0084},
+    {"label": "column subsampling to 60%",                "delta":  0.0008, "lo": -0.0041, "hi":  0.0061},
+    {"label": "min rows per leaf 20 → 100",          "delta":  0.0007, "lo": -0.0022, "hi":  0.0036},
+    {"label": "leaves per tree 31 → 63",             "delta": -0.0003, "lo": -0.0062, "hi":  0.0059},
+    {"label": "leaf-value shrinkage 0 → 10",         "delta": -0.0008, "lo": -0.0049, "hi":  0.0033},
+    {"label": "leaves per tree 31 → 15",             "delta": -0.0010, "lo": -0.0076, "hi":  0.0055},
+    {"label": "encoding fold seed 0 → 7",            "delta": -0.0018, "lo": -0.0060, "hi":  0.0022},
+    {"label": "feature set 27 → 15 columns",         "delta": -0.0056, "lo": -0.0098, "hi": -0.0009},
+    {"label": "class re-weighting on",                    "delta": -0.0073, "lo": -0.0140, "hi": -0.0000},
+    {"label": "boosting rounds 100 → 400",           "delta": -0.0340, "lo": -0.0437, "hi": -0.0248}
+  ],
+
+  "near_miss": [
+    {"label": "score vs its merchant's 2024 fraud rate", "short": "score × 2024 rate", "r": 0.943},
+    {"label": "score vs its merchant's 2025 fraud rate", "short": "score × 2025 rate", "r": 0.838},
+    {"label": "the 2024 rate vs the 2025 rate",          "short": "2024 × 2025 rate",  "r": 0.620}
+  ]
+}

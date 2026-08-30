@@ -26,6 +26,7 @@ const PAGES = [
   "index.html", "projects/index.html",
   "projects/prediction-market/index.html", "projects/wallet-intelligence/index.html",
   "projects/fund-terminal/index.html", "projects/data-portal/index.html",
+  "projects/agent-research-programme/index.html",
   "research/index.html", "research/msc/index.html", "research/bsc/index.html",
   "research/thesis/index.html", "how-i-work/index.html", "about/index.html",
   "cv/index.html", "glossary/index.html",

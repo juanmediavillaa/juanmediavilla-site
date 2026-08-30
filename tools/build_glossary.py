@@ -204,6 +204,24 @@ TERMS: list[tuple[str, str, str, str | None]] = [
      "it. Well understood, unfashionable, and often extremely hard to beat.",
      "In my benchmark it was statistically tied with a transformer that took eighteen times longer "
      "to train — about 23 minutes against about 7 hours."),
+
+    ("average-precision", "Average precision",
+     "A score for how well a model <em>ranks</em> rare events. Sort everything by the model's "
+     "confidence, walk down the list, and at each step ask what fraction of what you have flagged "
+     "so far was real. Average precision is the area under the curve that traces. A model that "
+     "ranks at random scores the base rate itself, so the base rate is the number to compare "
+     "against. It is blind to the probabilities: a model that is right about the order but wrong "
+     "about every number scores identically to a perfectly calibrated one.",
+     "On the second synthetic bed the best admissible model scored 0.3971 against a base rate of "
+     "0.0206 — ranking fraud about nineteen times better than chance."),
+
+    ("target-leakage", "Target leakage",
+     "Information about the answer smuggled into the inputs. A column counts as leakage when its "
+     "value did not exist yet at the moment the prediction is for — it is a fact about what "
+     "happened next. A model using one scores brilliantly and is worth nothing, because at the "
+     "moment a real decision has to be made the column is blank.",
+     "A settlement column planted in a synthetic bed was worth +0.2231 average precision on its "
+     "own — more than every improvement that project's whole search found, added together."),
 ]
 
 

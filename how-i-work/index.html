@@ -340,6 +340,14 @@
       the build when it happens is a guarantee. That gate exists because two real leaks got past an
       earlier exclusion operating at the rendering layer rather than the build layer.
     </p>
+    <p class="plain">
+      That is the strongest claim on this page, and it is the one I went and measured. Over four
+      weeks in August 2026 the enforcement described here produced approximately one mechanical
+      refusal across seven projects, while independent reading did the catching — written up, with
+      the numbers and the prediction I got wrong, in
+      <a href="../projects/agent-research-programme/index.html">measuring an agent orchestration
+      pattern</a>.
+    </p>
 
     <p class="code-src">tools/check_no_leaks.mjs — the gate that fails the build</p>
     <pre class="code" role="region" tabindex="0" aria-label="Code excerpt">let leaks = 0;
