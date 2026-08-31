@@ -16,13 +16,16 @@ almost any how if they have a why, and the why is specific to the situation each
 ## What I took from it
 
 **The book is in two parts, and the first one earns the second.** The first is his time in the
-concentration camps — the whole story, from the beginning at Auschwitz to being among the last
-freed at a camp in Dachau. We see his journey through his scientific lens: embracing life by trying
+concentration camps — deported in 1942, and held across four of them: Theresienstadt,
+Auschwitz-Birkenau, Kaufering and Türkheim. The account runs from his arrival at Auschwitz to
+liberation at Türkheim, part of the Dachau complex, by which point he was one of the few prisoners
+still left. We see his journey through his scientific lens: embracing life by trying
 to see its meaning, that is, its meaning from the unique situation of each individual. He fights
 through the atrocities by keeping himself grounded in his bigger purpose — his unpublished work and
 his wife — and constantly finds strength through these. The story is emotive and graphic. He
 depicts camp life vividly, detailing starvation, lack of hygiene, brutal forced labour, miserable
-living conditions, and the constant presence of death, brutality, abuse and depersonification. That
+living conditions, and the constant presence of death, brutality, abuse, and the stripping of a man down to his
+number. That
 part sets the tone and the foundation of credibility for the second part, logotherapy.
 
 **Under those conditions people were stripped of their person and reduced to their truest form of
@@ -41,18 +44,26 @@ He recalls thinking about his wife during an early morning march to a road site.
 what made me think.
 
 **Logotherapy is a form of therapy that focuses on finding each person's why to keep going and to
-exist.** He often quotes Nietzsche.
+exist.** He returns to the same line several times.
 
-> The man who has a why can bear with almost any how.
+> He who has a why to live for can bear with almost any how. — Friedrich Nietzsche, quoted by Frankl
 
-He takes a more philosophical turn there, which I liked, and specifically his focus on the why of
-things, because I believe it to be true. He argues the benefits of logotherapy through a few
-examples: patients should be confronted with the truth of their situation and challenged about it,
-and focused on the reasons they must keep going. One of my favourite quotes from the book is
-something along the lines of “live your life as if you had already lived one as wrongfully as you are about to right now”,
-because it makes you reflect on how you truly want to live and what you truly believe to be right
-and wrong. He expresses the need for meaning in every life, no matter how miserable or precarious
-the situation and the suffering.
+The turn there is more philosophical, and I liked it — specifically the focus on the why of things,
+because I believe it to be true. Logotherapy is the forward-facing half of the book: less
+retrospective and less introspective than psychoanalysis, built on what he calls the will to meaning
+rather than Freud's will to pleasure. The patient is not walked back through his history but
+confronted with, and reoriented toward, the meaning of his own life, and then held to the reasons he
+must keep going. Frankl argues the whole of it through a handful of cases.
+
+The maxim underneath it is the line I keep, and he calls it the categorical imperative of
+logotherapy.
+
+> Live as if you were living already for the second time and as if you had acted the first time as wrongly as you are about to act now!
+
+It asks you to treat the present as though it were already past, and the past as though it could
+still be amended, and that is why it works on me: it forces the question of how I actually want to
+live, and of what I actually hold to be right and wrong. Around it he sets the wider claim, that
+every life needs a meaning no matter how miserable or precarious the situation and the suffering.
 
 ## Where I disagree, and where it is weak
 
