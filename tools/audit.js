@@ -38,6 +38,7 @@ const PAGES = [
   "notes/investing/robinhood-markets/index.html",
   "notes/investing/hims-and-hers-health/index.html",
   "notes/books/when-genius-failed/index.html",
+  "notes/books/mans-search-for-meaning/index.html",
   // Both carry figures, so both need the chart-label check below.
   "notes/investing/amazon/index.html", "notes/investing/micron-technology/index.html",
   "notes/investing/fair-isaac/index.html", "notes/investing/hinge-health/index.html",
