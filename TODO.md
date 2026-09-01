@@ -111,12 +111,14 @@ still unenforced is the state this entry exists to end.
 
 ## `/projects/agent-research-programme/` is at its markup cap
 
-**After the 1 September 2026 correction to its headline finding, the page sits at 89.9 KB of the
-90 KB markup cap — about 140 bytes of headroom.** It is the largest markup on the site and it was
-already at 87.7 KB before that edit; correcting the finding, naming the retraction and
-distinguishing the four-week measurement window from the four-month span of work consumed nearly
-all of what was left. The edit was held to the cap by tightening its own new prose, which worked
-once and will not work twice.
+**After the 1 September 2026 correction to its headline finding, the page sits at 89.0 KB of the
+90 KB markup cap — about 1 KB of headroom.** It is the largest markup on the site, and it was
+already at 87.7 KB before that edit; correcting the finding and separating the four-week
+measurement window from the four-month span of work took most of what was left, and the edit was
+held to the cap by tightening its own new prose rather than by raising it. It stood at 89.9 KB —
+roughly 140 bytes clear — until a later decision to keep the retraction in the repository rather
+than on the page returned about 900 bytes. **That headroom came back from a content decision that
+happened to go that way, not from anything structural**, so the entry stands.
 
 **The next substantive edit to this page has to split it, not shave it.** `CONTENT-RULES.md` §16 is
 explicit that a page approaching the cap gets split rather than granted an exception — that is what
