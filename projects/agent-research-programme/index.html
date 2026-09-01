@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Measuring an agent orchestration pattern — Juan Mediavilla</title>
-<meta name="description" content="A pattern for running AI agents on research work, measured over four weeks in August 2026 against synthetic datasets with sealed answers and a planted trap — including the prediction that turned out wrong.">
+<meta name="description" content="A pattern for running AI agents on research work, measured across seven projects: three of the seven catches came from a reader with no stake, one from the enforcement machinery built to find them.">
 <link rel="canonical" href="https://juanmediavilla.com/projects/agent-research-programme/">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://juanmediavilla.com/projects/agent-research-programme/">
 <meta property="og:title" content="Measuring an agent orchestration pattern — Juan Mediavilla">
-<meta property="og:description" content="A pattern for running AI agents on research work, measured over four weeks in August 2026 against synthetic datasets with sealed answers and a planted trap — including the prediction that turned out wrong.">
+<meta property="og:description" content="A pattern for running AI agents on research work, measured across seven projects: three of the seven catches came from a reader with no stake, one from the enforcement machinery built to find them.">
 <meta property="og:image" content="https://juanmediavilla.com/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://juanmediavilla.com/assets/og.png">
@@ -39,17 +39,19 @@
     <p class="eyebrow">Agentic systems</p>
     <h1>Measuring an agent orchestration pattern</h1>
     <p class="standfirst">
-      I built a pattern for running AI agents on research work, then spent four weeks measuring it.
-      The catching was done by independent reading — by a session from another project and by an
-      auditor with no stake — rather than by the contracts, gates and automated checks I had built
-      to do it.
+      I built a pattern for running AI agents on research work, then measured which parts of it
+      caught anything. Seven catches changed a result; <span class="num">three</span> came from a
+      reader with no stake in the work. The contracts, gates and checks I had built to do that job
+      refused one thing between them, and work grading itself caught nothing. An earlier version of
+      this page claimed far more for the reading, and is corrected below rather than quietly.
     </p>
     <p class="oneline">
-      An orchestration pattern for running AI agents on research work, and four weeks of measuring
-      it against synthetic datasets built with a known true answer and a trap planted in each.
+      An orchestration pattern for running AI agents on research work, measured across seven
+      projects against synthetic datasets built with a known true answer and a trap planted in each.
     </p>
-    <p class="case__meta">Two synthetic beds and five research projects · August 2026 · a measurement, not a benchmark</p>
+    <p class="case__meta">Two synthetic beds and five research projects · four months of work, measured over four weeks in August 2026 · a measurement, not a benchmark</p>
     <ul class="keyfacts">
+      <li><b>3 of 7</b><span>catches from a reader with no stake</span></li>
       <li><b>94.6%</b><span>of the sealed ceiling, second bed</span></li>
       <li><b>+0.2231</b><span>average precision the planted trap was worth</span></li>
       <li><b>18 of 18</b><span>routes that walked through the permission rules</span></li>
@@ -69,28 +71,55 @@
     <div class="rail">
       <div class="rail__label"><p class="eyebrow">The finding</p></div>
       <div class="rail__body">
-<h2>What caught things was independent reading</h2>
+<h2>Three of seven catches came from a reader with no stake</h2>
 <p>
       Start with the part the design got wrong. This pattern leans on enforcement: written contracts
       an agent has to satisfy, gates it has to pass, checks that run whether or not anyone asks for
-      them. That machinery is what I would have defended if challenged, and across the two synthetic
-      beds and the five research projects it produced approximately one mechanical refusal.
+      them. That machinery is what I would have defended if challenged. Across the two synthetic
+      beds and the five research projects it refused <span class="num">one</span> thing, from one
+      check, meeting all five conditions the pattern sets before a refusal counts. A subject
+      assessing its own work contributed nothing at all.
     </p>
     <p>
-      That count is approximate on purpose, and it is worth being precise about why. It is a tally
-      of refusals I happened to notice, in an unblinded record, with no mechanism anywhere in the
-      pipeline that would have logged a counter-instance. So it is a ratio between things I saw, not
-      a rate over things that occurred, and it should be read as an order of magnitude rather than
-      as a measurement. What it is good enough to support is the comparison: the enforcement
-      machinery was not where the catches came from.
+      <span class="num">Seven</span> catches changed a result, and they divide four ways.
+      <span class="num">Three</span> came from a reader with no stake in the artifact: a session
+      from an unrelated project, and an auditor handed the situation rather than a checklist. Two
+      came from me, reading the output. One came from the doer running its own scan a second time
+      under an instruction someone else wrote. One came from a party holding an answer key the
+      project did not have.
+    </p>
+    <div class="finding">
+      <p class="finding__sign">Retracted — an earlier version of this page said independent reading did nearly all of it</p>
+      <p>
+        This page used to open by saying the catching was done by independent reading, and the
+        repository it draws on put the same claim at &ldquo;every other one&rdquo; and then at
+        &ldquo;7 of 7&rdquo;. It was the most quotable sentence I had and it was wrong: the
+        attribution column in my own evidence file contradicted it on the page it was written on.
+        Three of seven is what that record supports. It is corrected in the open rather than edited
+        quietly, because a case study about instruments that pass while blind does not get to fix
+        its own headline off-camera.
+      </p>
+    </div>
+    <p>
+      What survives is still the finding, and still the most interesting thing on this page. A
+      stakeless reader is the largest single source in the sample and the only one of the four a
+      project can deliberately install: &ldquo;I happened to read the output&rdquo; is not a
+      mechanism, and &ldquo;someone held the answer key&rdquo; is not available to a project doing
+      real work. It is smaller than I first wrote it and it points the same way.
     </p>
     <p>
-      They came from reading. A session belonging to an unrelated project, and an auditor with no
-      stake in the outcome — each handed the situation rather than a checklist. The absence of the
-      checklist is the active ingredient rather than an oversight. A checklist can only carry what
-      somebody already anticipated, and the failures worth catching are the ones nobody did. The
-      enforcement is not worthless: it is cheap, it runs unattended, and it holds a floor. It is
-      simply not what found the problems, and I had the emphasis backwards.
+      None of it is a rate. Every figure above is a ratio between things I noticed, in an unblinded
+      record, with nothing in the pipeline that would have logged a counter-instance. No check here
+      has been shown a planted error, so none has a false-negative rate, and &ldquo;self-assessment
+      caught nothing&rdquo; is a statement about the record rather than the world — a check that
+      quietly held leaves no artifact. Seven runs, one operator, one machine, one model family, and
+      the underlying records are not published.
+    </p>
+    <p>
+      The enforcement is not worthless: it is cheap, it runs unattended, and it holds a floor. It is
+      simply not where the catches came from, and I had the emphasis backwards. The absence of a
+      checklist in front of the reader is the active ingredient — a checklist carries only what
+      somebody already anticipated, and the failures worth catching are the ones nobody did.
     </p>
 
     <h3>The seal taught the same lesson at a lower layer</h3>
@@ -128,8 +157,11 @@
       <div class="rail__body">
 <h2>A dataset where I already knew the answer</h2>
 <p class="lede">
-      Seven projects over roughly four weeks in August 2026: five ordinary research projects, and
-      two synthetic beds built to make the pattern measurable rather than describable.
+      Seven projects: five ordinary research projects, and two synthetic beds built to make the
+      pattern measurable rather than describable. Two spans are involved. The work the seven
+      projects consist of runs to about four months; measuring the pattern against them was roughly
+      four weeks in August 2026. Where the repository dates the sample at four months, it means
+      the work.
     </p>
     <p>
       The distinction between those two groups is the one that matters, and softening it would

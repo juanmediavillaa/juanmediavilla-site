@@ -57,3 +57,73 @@ Two facts that bear on any fix:
 
 Whichever is picked, `assets/covers/` is generated: `make_covers.py` needs Pillow and is
 deliberately outside `tools/audit.sh`, so re-encoding is a by-hand step whose output gets committed.
+
+---
+
+## The 900-word cap on `/how-i-work`
+
+**`CONTENT-RULES.md` §6 caps that page at 900 words. As of 1 September 2026 it holds 2,488 words
+inside `<main>` — roughly 2.8× the cap — and `tools/audit.sh` does not check it.** Nothing is
+failing, because nothing is looking. The cap has been exceeded for long enough that no single edit
+can be blamed for it; the September 2026 pass that repointed the repository links added about 87
+words to an already-breached page without anything objecting.
+
+Reproduce it:
+
+```sh
+python3 - <<'PY'
+import re
+h = open('how-i-work/index.html', encoding='utf-8').read()
+t = re.search(r'<main.*?</main>', h, re.S).group(0)
+t = re.sub(r'<(script|style|svg)\b.*?</\1>', '', t, flags=re.S | re.I)
+print(len(re.sub(r'&[a-z]+;', ' ', re.sub(r'<[^>]+>', ' ', t)).split()))
+PY
+```
+
+**The problem is not the number, it is the asymmetry.** Every other hard rule in §4 and §7 has a
+check behind it: external subresources, infrastructure leakage, retired figures, null results in
+headings, expiring prose, byte budgets. This one is prose alone, so it fails silently and
+permanently, and the page grows every time it is edited in good faith. §6 itself is the rule most
+likely to be read as advisory for exactly that reason — which is the failure mode
+`agent-research-protocol` labels `[UNENFORCED]` and requires a rule to declare about itself.
+
+### Options, none chosen
+
+1. **Enforce it and cut the page to 900.** Honest, and expensive: the page carries the vault
+   boundary, the contract, the caught-error list and the site case study. Something load-bearing
+   goes, and §6 protects two catches by name as non-negotiable.
+2. **Enforce it at the real number and say why it moved.** Set the cap where the page actually
+   sits, deliberately, with the reason written down. Cheap, and it concedes that the original 900
+   was a guess — which it may have been.
+3. **Count only what the cap was for.** The cap exists to stop the page becoming an essay. Counting
+   `<main>` charges it for headings, figure captions and the artifact blocks §6 requires. A count
+   over body prose only would measure the thing being limited.
+4. **Split the page.** `CONTENT-RULES.md` §16 and `MAINTENANCE.md` §7 both say split rather than
+   raise a cap, and that is what removed `/research`'s 110 KB exception. The case study and the
+   caught-error list are separable from the method.
+5. **Relabel §6's cap as advisory.** Recorded for completeness, and the weakest: it converts a
+   breached hard rule into a satisfied soft one and changes nothing about the page.
+
+Whichever is picked, the check goes into `tools/audit.sh` in the same change. A cap chosen and
+still unenforced is the state this entry exists to end.
+
+---
+
+## `/projects/agent-research-programme/` is at its markup cap
+
+**After the 1 September 2026 correction to its headline finding, the page sits at 89.9 KB of the
+90 KB markup cap — about 140 bytes of headroom.** It is the largest markup on the site and it was
+already at 87.7 KB before that edit; correcting the finding, naming the retraction and
+distinguishing the four-week measurement window from the four-month span of work consumed nearly
+all of what was left. The edit was held to the cap by tightening its own new prose, which worked
+once and will not work twice.
+
+**The next substantive edit to this page has to split it, not shave it.** `CONTENT-RULES.md` §16 is
+explicit that a page approaching the cap gets split rather than granted an exception — that is what
+removed `/research`'s 110 KB allowance once the two theses became separate pages. The same seam is
+available here: the finding and the two synthetic beds are the argument, while the pre-registered
+predictions, the permission-route audit and the closing limitations read as a separable second page.
+
+Recorded now because the failure mode is predictable: the next editor finds 140 bytes, shaves a
+sentence to fit, and the page loses content to a byte budget instead of to a decision. Reproduce
+with the `budgets` block of `bash tools/audit.sh`.
