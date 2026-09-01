@@ -345,7 +345,10 @@ If a curve is *derived* rather than read from a file, the CSV column name must s
 - **Aggregate and derived statistics only**, nothing below 10-minute resolution, and **never a
   venue market identifier** — an 8-hex prefix is effectively unique in the corpus.
 - **No fund figures** — no value, returns, members or positions. **No links to the private source
-  repositories** — `default-fail` is the one public exception, named in `CONTENT-RULES.md` §4.1.
+  repositories** — three public exceptions, named in `CONTENT-RULES.md` §4.1:
+  `agent-research-protocol` (the current agent method, and what a link about how I work now points
+  at), `fund-terminal` (synthetic seed fund only), and `default-fail` (superseded by the first,
+  still public, and linkable only where the sentence is historical).
   **No student names, grades or submissions.**
 - **University colours are quarantined** to `.inst` on `/about`. They never enter the series
   palette, a figure, or the gradient system. The card and both logos theme normally: the UCL mark is

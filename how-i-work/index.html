@@ -449,14 +449,14 @@ if (leaks) {
       <div class="rail__body">
 <h2>Gates that refuse an unproven claim</h2>
 <p class="plain">
-      The contract above is written down and published rather than re-improvised per task.
-      <span class="mono">default-fail</span> is git hooks, subagent definition files, criteria
-      files and shell scripts — nothing imports it and nothing runs a supervisor process. Every
-      criterion starts at <span class="mono">fail</span>, and only a citation that
-      <em>resolves</em> moves it: a <span class="mono">file:line</span> I can open, or a command
-      with its real output. The grader is a read-only subagent working from a context that never
-      saw the work being produced. Until the hooks are installed none of it is enforced, and the
-      repository says so in those words rather than implying otherwise.
+      The contract above is written down and published rather than re-improvised per task. The
+      current version is <span class="mono">agent-research-protocol</span> — criteria files,
+      subagent definition files, git hooks and shell scripts, nothing that imports anything and no
+      supervisor process. Every criterion starts at <span class="mono">fail</span>, and only a
+      citation that <em>resolves</em> moves it: a <span class="mono">file:line</span> I can open,
+      or a command with its real output. The grader is read-only, works from a context that never
+      saw the work being produced, and cannot fix what it finds. Until the hooks are installed none
+      of it is enforced, and the repository says so in those words rather than implying otherwise.
     </p>
     <p class="plain">
       The part worth reading is not the workflow, though. It is that the instruments get tested
@@ -470,9 +470,15 @@ if (leaks) {
     </p>
     <p class="plain">
       That one is written up with the rest, including the gates found broken while the proof suite
-      was still green. The repository carries the detail; this page does not try to.
+      was still green, in <a href="https://github.com/juanmediavillaa/default-fail">default-fail</a>
+      — the superseded predecessor, where those instruments were built and where their write-ups
+      stayed. The successor keeps the practices and carries the measurement instead: run across
+      seven projects, the machinery on this page produced one refusal from one check and nothing at
+      all from work grading itself, and the largest single share of the catches that changed a
+      result came from a reader with no stake in the work. It says first, and at length, that seven
+      runs by one operator cannot settle that. Neither repository's detail is reproduced here.
     </p>
-    <p><a href="https://github.com/juanmediavillaa/default-fail"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="currentColor"/></svg>default-fail on GitHub&nbsp;→</a></p>
+    <p><a href="https://github.com/juanmediavillaa/agent-research-protocol"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="currentColor"/></svg>agent-research-protocol on GitHub&nbsp;→</a></p>
       </div>
     </div>
   </div>

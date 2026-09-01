@@ -94,9 +94,22 @@ are derived from committed files and do not move.
 
 1. **No links to the private source repositories.** The research platform, the wallet engine, the
    data portal and the fund are private, are never linked, and nothing may imply they are public or
-   reader-verifiable. **Two exceptions, named explicitly:**
-   - `github.com/juanmediavillaa/default-fail` — public, MIT, mine — may be linked, and is, from
-     `/how-i-work`, `/projects` and `/about`.
+   reader-verifiable. **Three exceptions, named explicitly:**
+   - `github.com/juanmediavillaa/agent-research-protocol` — public, MIT, mine — may be linked, and
+     is, from `/how-i-work`, `/projects` and `/about`. It is the current publication of the agent
+     working method and it supersedes `default-fail`, so a sentence about **how I work now** links
+     here. **Nothing on this site may claim more for it than its own README does**, and that README
+     is unusually restrictive about itself: seven runs by one operator on one machine under one
+     model family, none of the underlying records published, so *"no figure in this repository can
+     be checked by you"*. Its headline tally is **three of seven** catches from a reader with no
+     stake — an earlier version of it said "7 of 7" and that wording is **retracted at source**.
+     Do not reintroduce it here in any form. See §2.
+   - `github.com/juanmediavillaa/default-fail` — public, MIT, mine — **superseded by
+     `agent-research-protocol`, and still public.** It stays linkable only where the sentence is
+     *historical*: where it names what was built or what was found at the time, and the link
+     identifies that artifact rather than recommending it as current practice. **Never as the
+     current method, and never as the thing a reader should adopt.** If it is ever taken private
+     or deleted, every remaining link to it comes out.
    - `github.com/juanmediavillaa/fund-terminal` — public, MIT, mine — may be linked, and is, from
      `/projects` and `/projects/fund-terminal/`, together with the static demo it publishes at
      `juanmediavillaa.github.io/fund-terminal/`. It qualifies because it ships a synthetic seed
@@ -106,8 +119,16 @@ are derived from committed files and do not move.
 
    This rule previously read "no repository links of any kind"; that was written when every
    repository was private, and the blanket form outlived its reason. Adding a further exception
-   means editing this line first, and a repository qualifies only if it is already public and
-   carries nothing covered by 4.2, 4.3, 4.4 or 4.10.
+   means editing this line first — it has now been edited twice, for `fund-terminal` and for
+   `agent-research-protocol` — and a repository qualifies only if it is already public and
+   carries nothing covered by 4.2, 4.3, 4.4 or 4.10. `agent-research-protocol` was checked against
+   those four on 1 September 2026 at tag `1.0.2`: no hostnames, addresses, ports, key paths or
+   credentials; no fund, portal or venue material; no feed data; its worked examples describe
+   classes of failure with the identifying specifics already removed.
+
+   **A superseded exception is not deleted from this list.** Keeping `default-fail` here, marked
+   as superseded, is what tells a later editor that an existing link to it may be deliberate rather
+   than stale. Removing the line would make every historical link look like an oversight.
 2. **No server hostnames, VPS providers, RPC endpoints, API keys, IP addresses, storage
    topology or private remote URLs** — not in markup, not in comments, not in commit messages.
 3. **No fund data.** No AUM, returns, member names, member count, or any fund state. Never link
