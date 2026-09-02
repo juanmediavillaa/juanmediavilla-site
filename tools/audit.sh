@@ -184,7 +184,12 @@ print("  none")
 PY
 
 note "no retired figures"
-if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB|800 GB)' --include='*.html' .; then
+# '7 of 7' is a retired *claim*, not a figure: the attribution of the agent
+# programme's catches. agent-research-protocol retracts it at source and
+# CONTENT-RULES.md 4.1 forbids reintroducing it here. It was this site's most
+# quotable sentence, which is exactly why it needs a machine guard and not a
+# rule. The record supports three of seven.
+if grep -rnoE '(\+?665 nats|17,349|0\.939|0\.0585|236 GB|118 GB|800 GB|7 of 7)' --include='*.html' .; then
   FAIL=1; else echo "  none"; fi
 
 note "no heading, card or one-liner built on a null result"
