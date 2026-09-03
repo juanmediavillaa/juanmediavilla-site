@@ -41,7 +41,7 @@
     <p class="standfirst">
       Each entry opens in plain language, states what was hard, and reports what it found —
       including when the answer was that there was nothing there. The technical version is one
-      click below it. Source repositories are private and are not linked, apart from the two that
+      click below it. Source repositories are private and are not linked, apart from the three that
       are open source, which you can read in full.
     </p>
   </div>
@@ -112,44 +112,38 @@
   </div>
 </section>
 
-<article class="section" id="default-fail">
+<article class="section" id="agent-research-protocol">
   <div class="wrap">
     <div class="rail">
       <div class="rail__label">
         <p class="eyebrow">Open source</p>
-        <p class="entry__meta">Public · MIT · git hooks and POSIX shell · superseded</p>
+        <p class="entry__meta">Public · MIT · shell scripts, subagent definitions and git hooks</p>
       </div>
       <div class="rail__body">
-        <h2>default-fail</h2>
-        <p class="oneline">Evidence-bound gates for unattended AI-agent work in git — with the proofs, and the
-      times the gates were found broken.</p>
+        <h2>agent-research-protocol</h2>
+        <p class="oneline">The pattern I run agents under, published together with the measurement of which
+      parts of it caught anything.</p>
 <div class="plain">
       <p>
-        The written contract I ran agents under, packaged so that someone else could run it. Every
-        criterion starts at <span class="mono">fail</span> and only moves on a citation that
-        resolves; the grader is a read-only subagent that never saw the work being produced; and a
-        pre-commit hook refuses the commit rather than trusting an agent to behave.
+        The written contract, packaged so that someone else can run it. Every criterion starts at
+        <span class="mono">fail</span> and only moves on a citation that resolves; the grader is a
+        read-only subagent that never saw the work being produced and cannot fix what it finds; and
+        a pre-commit hook refuses the commit rather than trusting an agent to behave.
       </p>
       <p>
-        It has been superseded by
-        <a href="https://github.com/juanmediavillaa/agent-research-protocol">agent-research-protocol</a>,
-        which is what I run now and the one to read. It keeps the practices that survived being
-        measured across seven projects, and it leads with what that measurement cost the design
-        rather than with the feature list: the installed checks refused one thing, work grading
+        What makes it worth reading is not the machinery. It is what happened when I measured that
+        machinery across seven projects: the installed checks refused one thing, work grading
         itself caught nothing, and the largest single share of the catches that changed a result
-        came from a reader with no stake in it. It also says, first and at length, that seven runs
-        by one operator on one machine cannot settle that.
-        <span class="mono">default-fail</span> stays public because the write-ups below are in it,
-        and the source is still there to check what this site says about how I work against the
-        code that did it.
+        came from a reader with no stake in it. The repository opens with that rather than with a
+        feature list, and says first, and at length, that seven runs by one operator on one machine
+        cannot settle it.
+        <a href="https://github.com/juanmediavillaa/agent-research-protocol"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="currentColor"/></svg>agent-research-protocol on GitHub</a>.
       </p>
       <p>
-        The argument is in the findings file rather than the feature list. Every mechanism ships
-        with a proof, and the proofs were broken on purpose to confirm they fail when they should;
-        the instruments that returned a clean pass on input built to trip them are written up
-        rather than quietly fixed — a claim-checker whose number mask deleted every decimal it
-        existed to check, a quality gate that passed four fabricated summaries and failed the clean
-        one. <a href="../how-i-work/index.html">How I work</a> has that story;
+        It supersedes <span class="mono">default-fail</span>, which stays public because the
+        instrument write-ups are in it and nowhere else: a claim-checker whose number mask deleted
+        every decimal it existed to check, a quality gate that passed four fabricated summaries and
+        failed the clean one. <a href="../how-i-work/index.html">How I work</a> has that story;
         <a href="https://github.com/juanmediavillaa/default-fail"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" fill="currentColor"/></svg>the default-fail repository</a> has the detail.
       </p>
     </div>
