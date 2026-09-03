@@ -3,28 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pre-registration and reports — embargoed until submission</title>
-<meta name="robots" content="noindex, nofollow">
-<script>try{var t=localStorage.getItem('theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<title>Pre-registered specifications and reports — Juan Mediavilla</title>
 <link rel="stylesheet" href="../../../style.css">
 <link rel="icon" href="data:,">
 </head>
 <!--
-  EMBARGOED. Built but deliberately unpublished: not linked from anywhere on the
-  site, excluded from sitemap.xml, and carrying noindex.
+  PUBLISHED. Held back until the MSc thesis was submitted, then published by the
+  three steps this comment used to list: the robots meta is gone, the page is in
+  sitemap.xml, and it is linked from research/index.html and
+  research/thesis/index.html.
 
-  It publishes after the MSc thesis is submitted in September 2026. Publishing a
-  pre-registered SPEC next to the report that fails its own primary test is the
-  strongest evidence of method on this site, because it is the one claim that
-  cannot be constructed retroactively - the commit ordering proves it. Worth doing
-  properly after submission rather than half-doing before it.
+  Why it was worth holding: a pre-registered SPEC next to the report that fails
+  its own primary test is the strongest evidence of method on this site, because
+  it is the one claim that cannot be constructed retroactively - the commit
+  ordering proves it. Publishing it early would have spent that for nothing.
 
   REDACTION: venue market identifiers in the source documents are replaced with
   stable pseudonyms ("market A", "market B", ...) by tools/build_prereg.py. Do not
-  paste the raw documents in; regenerate with that script.
-
-  TO PUBLISH: delete the robots meta above, add this page to sitemap.xml, and link
-  it from research/index.html and research/thesis/index.html.
+  paste the raw documents in; regenerate with that script. That redaction is the
+  reason this page can be public at all - see CONTENT-RULES.md 7.
 -->
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -37,7 +34,6 @@
     <a href="../../../notes/index.html">Notes</a>
     <a href="../../../how-i-work/index.html">How I Work</a>
     <a href="../../../about/index.html">About</a>
-    <span data-theme-slot></span>
   </div>
 </nav>
 
@@ -50,9 +46,10 @@
         the report of what the study actually returned and the caveats carried with it.
       </p>
       <p class="meta">
-        <b>Embargoed until submission, September 2026.</b> Not linked, not indexed, not in the
-        sitemap. Venue market identifiers are replaced with stable pseudonyms; nothing else is
-        altered.
+        <b>Held back until the thesis was submitted, and published unchanged.</b> Each
+        specification was committed before the study it governs was run, which is what makes the
+        ordering evidence rather than assertion. Venue market identifiers are replaced with stable
+        pseudonyms; nothing else is altered.
       </p>
     </div>
   </header>
@@ -62,7 +59,7 @@
     <h2>Hierarchical MMPP fit and pooling study</h2>
     <p class="meta">SPEC ab05bc1 committed 2026-06-16, before any fit; results 5293b7a.</p>
     <h3>SPEC.md</h3>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Hierarchical MMPP v0 — SPECIFICATION (pre-registered before any fitting)
+    <pre class="code"># Hierarchical MMPP v0 — SPECIFICATION (pre-registered before any fitting)
 
 _Committed BEFORE the fitting code runs (house style: spec → fit → gate). This is the
 central ML-sophistication step of the project: moving from **N independent per-market MMPP
@@ -253,7 +250,7 @@ thesis spine, and is it ready to carry the bounded k=3 latent population structu
 whether μ,Σ are estimated with usable precision at n=34.
 </pre>
     <h3>REPORT.md</h3>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Hierarchical MMPP v0 — a model of the market population
+    <pre class="code"># Hierarchical MMPP v0 — a model of the market population
 
 _The central ML-sophistication step: replacing **N independent per-market MMPP fits** with
 **one hierarchical (partial-pooling) model** in which each market&#x27;s parameters are drawn from
@@ -430,7 +427,7 @@ high-activity saturation flag, the `max_count`-cap artifact, complete-case handl
 G-POOL regime confound.
 </pre>
     <h3>CAVEATS.md</h3>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Hierarchical MMPP v0 — CAVEATS
+    <pre class="code"># Hierarchical MMPP v0 — CAVEATS
 
 **1. Inference is Metropolis-within-Gibbs, not NUTS — and the trigger block did not converge.**
 The forward-algorithm HMM marginal likelihood has no autodiff gradient in this codebase, so
@@ -508,7 +505,7 @@ weakly-identified trigger directions the Laplace Hessian is ridge-regularized wh
     <h2>Walk-forward predictive-validity study</h2>
     <p class="meta">SPEC ba92b6c committed 2026-06-17, before any outcome statistic; results a90c9bf.</p>
     <h3>SPEC.md</h3>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># WALK-FORWARD PREDICTIVE-VALIDITY OF THE TWO-STATE MMPP — SPEC (PRE-REGISTERED)
+    <pre class="code"># WALK-FORWARD PREDICTIVE-VALIDITY OF THE TWO-STATE MMPP — SPEC (PRE-REGISTERED)
 
 **Frozen BEFORE any outcome statistic is computed.** Question: can the two-state (hot/cold)
 MMPP — fit causally and walked forward out-of-sample — **forecast near-future intensity** and
@@ -631,7 +628,7 @@ self-excitation or is descriptively rich but predictively redundant.
 Artifacts: `results/wf_mmpp_v0/{logs/*.json, figs/*.png, REPORT.md}`; code `analysis/wf_mmpp/`.
 </pre>
     <h3>REPORT.md</h3>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># Walk-forward predictive validity of the two-state MMPP — REPORT (wf_mmpp_v0)
+    <pre class="code"># Walk-forward predictive validity of the two-state MMPP — REPORT (wf_mmpp_v0)
 
 **Question.** Can the two-state (hot/cold) MMPP, fit causally and walked forward out-of-sample,
 **forecast near-future intensity** and **identify hot/cold state transitions**, and does its latent
@@ -739,7 +736,7 @@ Artifacts: `logs/wf_gates.json` (all numbers + CIs), `logs/wf_arrays.npz`, `figs
 See `CAVEATS.md`.
 </pre>
     <h3>CAVEATS.md</h3>
-    <pre class="code" role="region" tabindex="0" aria-label="Code excerpt"># wf_mmpp_v0 — CAVEATS
+    <pre class="code"># wf_mmpp_v0 — CAVEATS
 
 1. **Pre-registered metrics that turned out artifact-prone (reported in full, not suppressed):**
    - *G-ANTICIPATE lead:* the SPEC&#x27;s &quot;first crossing in [onset−10,end]&quot; is boundary-pinned (filter
@@ -785,6 +782,5 @@ See `CAVEATS.md`.
 <footer class="foot">
   <div class="wrap"><p>Juan Mediavilla · London</p></div>
 </footer>
-<script src="../../../app.js"></script>
 </body>
 </html>
