@@ -252,7 +252,7 @@ this section could contain and the least honest. Where a memo exists, say so; wh
 say that.
 
 **`NOINDEX = True`, and `CONTENT-RULES.md` §4.3 currently forbids this section outright** — "No
-fund data. No AUM, returns, member names, member count, or any fund state." Publishing needs that
+fund data, and no statement that I run one." Publishing needs that
 rule amended first, and needs a view taken on whether a published track record counts as a
 financial promotion.
 
@@ -344,7 +344,8 @@ If a curve is *derived* rather than read from a file, the CSV column name must s
   hedge.
 - **Aggregate and derived statistics only**, nothing below 10-minute resolution, and **never a
   venue market identifier** — an 8-hex prefix is effectively unique in the corpus.
-- **No fund figures** — no value, returns, members or positions. **No links to the private source
+- **No fund figures, and no claim that I run a fund** — see `CONTENT-RULES.md` §4.3, which covers
+  the fact of it as well as the numbers. **No links to the private source
   repositories** — three public exceptions, named in `CONTENT-RULES.md` §4.1:
   `agent-research-protocol` (the current agent method, and what a link about how I work now points
   at), `fund-terminal` (synthetic seed fund only), and `default-fail` (superseded by the first,

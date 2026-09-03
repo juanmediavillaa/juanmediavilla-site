@@ -222,7 +222,7 @@ note "/how-i-work word cap"
 # what 6 states: words inside <main>, with script, style and svg stripped.
 python3 - <<'PY' || FAIL=1
 import re, pathlib, sys
-CAP = 2489
+CAP = 2459
 t = pathlib.Path('how-i-work/index.html').read_text(encoding='utf-8')
 b = t.split('<main', 1)[1].split('</main>')[0]
 b = re.sub(r'<(script|style|svg)\b.*?</\1>', '', b, flags=re.S | re.I)

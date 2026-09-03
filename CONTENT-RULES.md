@@ -100,8 +100,8 @@ are derived from committed files and do not move.
 ## 4. Hard prohibitions
 
 1. **No links to the private source repositories.** The research platform, the wallet engine, the
-   data portal and the fund are private, are never linked, and nothing may imply they are public or
-   reader-verifiable. **Three exceptions, named explicitly:**
+   data portal and a private financial deployment are private, are never linked, and nothing may
+   imply they are public or reader-verifiable. **Three exceptions, named explicitly:**
    - `github.com/juanmediavillaa/agent-research-protocol` — public, MIT, mine — may be linked, and
      is, from `/how-i-work`, `/projects` and `/about`. It is the current publication of the agent
      working method and it supersedes `default-fail`, so a sentence about **how I work now** links
@@ -121,8 +121,8 @@ are derived from committed files and do not move.
      `/projects` and `/projects/fund-terminal/`, together with the static demo it publishes at
      `juanmediavillaa.github.io/fund-terminal/`. It qualifies because it ships a synthetic seed
      fund and nothing else: generated members and amounts, invented instruments, and a
-     `.gitignore` that excludes every real fund file. **It is not the fund**, and 4.3 continues to
-     cover the private repository that is.
+     `.gitignore` that excludes every real book file. **It carries no real financial data**, and
+     4.3 continues to cover the private repository that does.
 
    This rule previously read "no repository links of any kind"; that was written when every
    repository was private, and the blanket form outlived its reason. Adding a further exception
@@ -138,11 +138,20 @@ are derived from committed files and do not move.
    than stale. Removing the line would make every historical link look like an oversight.
 2. **No server hostnames, VPS providers, RPC endpoints, API keys, IP addresses, storage
    topology or private remote URLs** — not in markup, not in comments, not in commit messages.
-3. **No fund data.** No AUM, returns, member names, member count, or any fund state. Never link
-   or attach the fund repository; it contains credential files. This is about the fund, not about
-   the software that runs it: the open-source terminal named in 4.1 carries a synthetic seed and
-   is linkable, and no figure from the real book may appear in it, on this site, or in any
+3. **No fund data, and no statement that I run one.** No AUM, returns, member names, member
+   count, or any holding — **and nothing, anywhere in this repository or on the site it publishes,
+   asserting that I operate a fund.** Never link or attach the private deployment repository; it
+   contains credential files. This is about private financial data and about the fact of the
+   deployment, not about the software: the open-source terminal named in 4.1 carries a synthetic
+   seed and is linkable, and no real financial figure may appear in it, on this site, or in any
    screenshot of either.
+
+   **The second clause was added on 3 September 2026, and it was added because this rule was
+   written as though the repository were private.** It is public. So the rules file forbidding
+   publication of fund data was itself, in five places, asserting that the fund existed and was
+   mine — as were `MAINTENANCE.md`, `/how-i-work` and `/projects/fund-terminal/`. **A prohibition
+   that names what it protects, in a public file, publishes the thing it protects.** Write these
+   rules so they govern without disclosing.
 4. **No pricing, tiers, licence terms or purchase path for the data portal**, and nothing sourced
    from its `docs/internal/` (unpublished legal assessment and competitor teardown).
 5. **No student names, grades or submissions** from teaching material.
@@ -182,18 +191,21 @@ method is public.** On that page:
 - Quote only *operating rules*, never *stored facts*.
 - Every principle on the page must keep an artifact attached. If a claim cannot point at
   something that was actually built or caught, delete the claim.
-- The two self-critical catches (the fund-goal contradiction, and the two "founded ventures"
-  corrected downward) are load-bearing. Do not soften them into successes.
+- The self-critical catch (the two "founded ventures" corrected downward) is load-bearing. Do not
+  soften it into a success. **There were two.** The other was removed on 3 September 2026 because
+  stating it required disclosing a private matter — see 4.3. It was **not** removed for being
+  unflattering, which is never a reason here, and this line exists so that the difference stays on
+  the record. Any replacement catch carries the same rule.
 - No tool-name badges or "built with" lists. Name a tool only when the sentence needs it.
-- **Keep it to 2,489 words**, counted as words inside `<main>` with `script`, `style` and `svg`
+- **Keep it to 2,459 words**, counted as words inside `<main>` with `script`, `style` and `svg`
   stripped. **The cap was 900 and nothing checked it, so the page reached 2,489 — 2.8× the limit —
-  without one failure.** The number is not a judgement that 2,489 is the right length; it is the
-  measured length on 3 September 2026, adopted because a cap nobody enforces is worse than an honest
-  one, and because cutting 1,589 words of a page whose every principle §6 requires to keep an
-  artifact attached is a separate decision nobody has made. **It is a ratchet, not a budget**: there
-  is no headroom by construction, so the next addition fails until this number and the `CAP` in
-  `tools/audit.sh` are moved together, deliberately. Lower it when the page is cut; raise it only
-  with a reason written here.
+  without one failure.** The number is not a judgement that 2,459 is the right length; it is the
+  measured length, adopted because a cap nobody enforces is worse than an honest one, and because
+  cutting the page down to 900 is a separate decision nobody has made. **It is a ratchet, not a
+  budget**: there is no headroom by construction, so the next addition fails until this number and
+  the `CAP` in `tools/audit.sh` are moved together, deliberately. Lower it whenever the page is
+  cut — it came down from 2,489 to 2,459 the first time that happened; raise it only with a reason
+  written here.
 
 ## 7. Evidence: figures, data and code
 
@@ -233,7 +245,7 @@ leaked one is worse than a missing one. If that is ever revisited, the caption m
 figures are redacted, and no AUM, NAV, return, member name, member count, position size or
 holding may appear.
 
-*Noted, not yet amended:* this was written when the only running instance was the real fund. The
+*Noted, not yet amended:* this was written when the only running instance held real data. The
 terminal named in 4.1 now publishes a static demo whose members, amounts, NAV path, holdings and
 instruments are all generated, so a screenshot of it leaks nothing — the reason behind the ban does
 not reach it. The ban stands as written until there is a reason to ship such a screenshot, at which
