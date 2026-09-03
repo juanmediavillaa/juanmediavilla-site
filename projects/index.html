@@ -117,7 +117,7 @@
     <div class="rail">
       <div class="rail__label">
         <p class="eyebrow">Open source</p>
-        <p class="entry__meta">Public · MIT · git hooks and POSIX shell</p>
+        <p class="entry__meta">Public · MIT · git hooks and POSIX shell · superseded</p>
       </div>
       <div class="rail__body">
         <h2>default-fail</h2>
@@ -125,12 +125,23 @@
       times the gates were found broken.</p>
 <div class="plain">
       <p>
-        The written contract I run agents under, packaged so that someone else can run it. Every
+        The written contract I ran agents under, packaged so that someone else could run it. Every
         criterion starts at <span class="mono">fail</span> and only moves on a citation that
         resolves; the grader is a read-only subagent that never saw the work being produced; and a
-        pre-commit hook refuses the commit rather than trusting an agent to behave. The source is
-        public, so what this site says about how I work can be checked against the code that does
-        it.
+        pre-commit hook refuses the commit rather than trusting an agent to behave.
+      </p>
+      <p>
+        It has been superseded by
+        <a href="https://github.com/juanmediavillaa/agent-research-protocol">agent-research-protocol</a>,
+        which is what I run now and the one to read. It keeps the practices that survived being
+        measured across seven projects, and it leads with what that measurement cost the design
+        rather than with the feature list: the installed checks refused one thing, work grading
+        itself caught nothing, and the largest single share of the catches that changed a result
+        came from a reader with no stake in it. It also says, first and at length, that seven runs
+        by one operator on one machine cannot settle that.
+        <span class="mono">default-fail</span> stays public because the write-ups below are in it,
+        and the source is still there to check what this site says about how I work against the
+        code that did it.
       </p>
       <p>
         The argument is in the findings file rather than the feature list. Every mechanism ships

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the embargoed pre-registration page from the committed research documents.
+"""Build the pre-registration page from the committed research documents.
 
 Reproduces research/thesis/pre-registration/index.html verbatim from the SPEC,
 REPORT and CAVEATS of each pre-registered study, with one transformation: venue
@@ -35,21 +35,20 @@ DOCUMENTS = ("SPEC.md", "REPORT.md", "CAVEATS.md")
 MARKET_ID = re.compile(r"0x[0-9a-fA-F]{6,}")
 
 HEAD_COMMENT = """<!--
-  EMBARGOED. Built but deliberately unpublished: not linked from anywhere on the
-  site, excluded from sitemap.xml, and carrying noindex.
+  PUBLISHED. Held back until the MSc thesis was submitted, then published by the
+  three steps this comment used to list: the robots meta is gone, the page is in
+  sitemap.xml, and it is linked from research/index.html and
+  research/thesis/index.html.
 
-  It publishes after the MSc thesis is submitted in September 2026. Publishing a
-  pre-registered SPEC next to the report that fails its own primary test is the
-  strongest evidence of method on this site, because it is the one claim that
-  cannot be constructed retroactively - the commit ordering proves it. Worth doing
-  properly after submission rather than half-doing before it.
+  Why it was worth holding: a pre-registered SPEC next to the report that fails
+  its own primary test is the strongest evidence of method on this site, because
+  it is the one claim that cannot be constructed retroactively - the commit
+  ordering proves it. Publishing it early would have spent that for nothing.
 
   REDACTION: venue market identifiers in the source documents are replaced with
   stable pseudonyms ("market A", "market B", ...) by tools/build_prereg.py. Do not
-  paste the raw documents in; regenerate with that script.
-
-  TO PUBLISH: delete the robots meta above, add this page to sitemap.xml, and link
-  it from research/index.html and research/thesis/index.html.
+  paste the raw documents in; regenerate with that script. That redaction is the
+  reason this page can be public at all - see CONTENT-RULES.md 7.
 -->"""
 
 
@@ -88,8 +87,7 @@ def main() -> int:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pre-registration and reports — embargoed until submission</title>
-<meta name="robots" content="noindex, nofollow">
+<title>Pre-registered specifications and reports — Juan Mediavilla</title>
 <link rel="stylesheet" href="../../../style.css">
 <link rel="icon" href="data:,">
 </head>
@@ -117,9 +115,10 @@ def main() -> int:
         the report of what the study actually returned and the caveats carried with it.
       </p>
       <p class="meta">
-        <b>Embargoed until submission, September 2026.</b> Not linked, not indexed, not in the
-        sitemap. Venue market identifiers are replaced with stable pseudonyms; nothing else is
-        altered.
+        <b>Held back until the thesis was submitted, and published unchanged.</b> Each
+        specification was committed before the study it governs was run, which is what makes the
+        ordering evidence rather than assertion. Venue market identifiers are replaced with stable
+        pseudonyms; nothing else is altered.
       </p>
     </div>
   </header>
