@@ -88,7 +88,14 @@ are derived from committed files and do not move.
   five-person TU Delft course project; Alphatrack was a solo side product. Both are real; neither
   was a company.
 - **Not** "my project" for AI4MDE Studio — it is a contribution of ~3% of commits.
-- **Not** any characterisation of the MSc thesis as finished, submitted, examined or graded.
+- **Not** any characterisation of the MSc thesis as examined or graded, and no result reported for
+  it. **Submission is now a fact and may be stated as one** — the thesis has been submitted, and
+  this line previously forbade saying so. It was written when the thesis was in write-up, it was
+  correct then, and it went on forbidding the correction after it stopped being true: `/research/`,
+  `/research/msc/` and `/research/thesis/` asserted unsubmitted status for as long as this rule
+  blocked the fix. **A prohibition that outlives its condition is a rule that enforces a falsehood**
+  — the same failure §4.1's blanket form had, and the reason both get edited rather than read
+  around. Examination, grade and result stay prohibited; say nothing about any of them.
 
 ## 4. Hard prohibitions
 
