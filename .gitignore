@@ -10,3 +10,8 @@ __pycache__/
 # NOT written as `logos/`: that pattern matches a directory of that name at any
 # depth, and silently excluded assets/logos/ — the very files meant to ship.
 images/
+
+# Working drafts for the operator to choose from — proposed wording, not site
+# content. Written into the repo so they sit beside what they describe, kept out
+# of history so an unapplied draft can never be mistaken for a published claim.
+drafts/
