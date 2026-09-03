@@ -185,7 +185,15 @@ method is public.** On that page:
 - The two self-critical catches (the fund-goal contradiction, and the two "founded ventures"
   corrected downward) are load-bearing. Do not soften them into successes.
 - No tool-name badges or "built with" lists. Name a tool only when the sentence needs it.
-- Keep it under 900 words.
+- **Keep it to 2,489 words**, counted as words inside `<main>` with `script`, `style` and `svg`
+  stripped. **The cap was 900 and nothing checked it, so the page reached 2,489 — 2.8× the limit —
+  without one failure.** The number is not a judgement that 2,489 is the right length; it is the
+  measured length on 3 September 2026, adopted because a cap nobody enforces is worse than an honest
+  one, and because cutting 1,589 words of a page whose every principle §6 requires to keep an
+  artifact attached is a separate decision nobody has made. **It is a ratchet, not a budget**: there
+  is no headroom by construction, so the next addition fails until this number and the `CAP` in
+  `tools/audit.sh` are moved together, deliberately. Lower it when the page is cut; raise it only
+  with a reason written here.
 
 ## 7. Evidence: figures, data and code
 

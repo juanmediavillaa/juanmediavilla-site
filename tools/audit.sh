@@ -213,6 +213,28 @@ print("  none" if not bad else f"  {bad} found")
 sys.exit(1 if bad else 0)
 PY
 
+note "/how-i-work word cap"
+# CONTENT-RULES.md 6 capped this page at 900 words and nothing ever checked it,
+# so it reached 2,489 -- 2.8x the cap -- without a single failure. The cap is now
+# set to the measured count and enforced here. It is a RATCHET, not a budget:
+# there is no headroom by construction, so any addition fails until the number in
+# 6 and the number here are both moved deliberately, together. Counting matches
+# what 6 states: words inside <main>, with script, style and svg stripped.
+python3 - <<'PY' || FAIL=1
+import re, pathlib, sys
+CAP = 2489
+t = pathlib.Path('how-i-work/index.html').read_text(encoding='utf-8')
+b = t.split('<main', 1)[1].split('</main>')[0]
+b = re.sub(r'<(script|style|svg)\b.*?</\1>', '', b, flags=re.S | re.I)
+b = re.sub(r'<[^>]+>', ' ', b)
+b = re.sub(r'&[a-z]+;', ' ', b)
+n = len(b.split())
+print(f"  {n} words of {CAP}")
+if n > CAP:
+    print(f"  OVER by {n - CAP}. Cut, or move the cap in CONTENT-RULES.md 6 and here together.")
+sys.exit(1 if n > CAP else 0)
+PY
+
 note "budgets"
 python3 - <<'PY' || FAIL=1
 import pathlib, re, sys

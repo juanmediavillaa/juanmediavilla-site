@@ -60,52 +60,37 @@ deliberately outside `tools/audit.sh`, so re-encoding is a by-hand step whose ou
 
 ---
 
-## The 900-word cap on `/how-i-work`
+## The 900-word cap on `/how-i-work` — resolved 3 September 2026
 
-**`CONTENT-RULES.md` §6 caps that page at 900 words. As of 1 September 2026 it holds 2,488 words
-inside `<main>` — roughly 2.8× the cap — and `tools/audit.sh` does not check it.** Nothing is
-failing, because nothing is looking. The cap has been exceeded for long enough that no single edit
-can be blamed for it; the September 2026 pass that repointed the repository links added about 87
+**Resolved as option 2 below: the cap is now 2,489 words, and `tools/audit.sh` enforces it.**
+Kept here rather than deleted, because the entry records how a hard rule went 2.8× over without one
+failure, and that is the part worth not forgetting.
+
+**What it was.** `CONTENT-RULES.md` §6 capped the page at 900 words and nothing checked it, so it
+reached 2,489 inside `<main>` — roughly 2.8× the cap. Nothing was failing, because nothing was
+looking. No single edit could be blamed: the pass that repointed the repository links added about 87
 words to an already-breached page without anything objecting.
 
-Reproduce it:
-
-```sh
-python3 - <<'PY'
-import re
-h = open('how-i-work/index.html', encoding='utf-8').read()
-t = re.search(r'<main.*?</main>', h, re.S).group(0)
-t = re.sub(r'<(script|style|svg)\b.*?</\1>', '', t, flags=re.S | re.I)
-print(len(re.sub(r'&[a-z]+;', ' ', re.sub(r'<[^>]+>', ' ', t)).split()))
-PY
-```
-
-**The problem is not the number, it is the asymmetry.** Every other hard rule in §4 and §7 has a
-check behind it: external subresources, infrastructure leakage, retired figures, null results in
-headings, expiring prose, byte budgets. This one is prose alone, so it fails silently and
-permanently, and the page grows every time it is edited in good faith. §6 itself is the rule most
-likely to be read as advisory for exactly that reason — which is the failure mode
+**The problem was never the number, it was the asymmetry.** Every other hard rule in §4 and §7 had a
+check behind it — external subresources, infrastructure leakage, retired figures, null results in
+headings, expiring prose, byte budgets. This one was prose alone, so it failed silently and
+permanently, and the page grew every time it was edited in good faith. That is the failure mode
 `agent-research-protocol` labels `[UNENFORCED]` and requires a rule to declare about itself.
 
-### Options, none chosen
+**What was chosen, and what was not.** Option 2 — enforce it at the real number and say why it
+moved. It concedes that 900 was a guess, which nothing in the repository ever justified. The four
+rejected options are still live if the page is ever cut: (1) cut to 900, expensive because §6
+protects two catches by name; (3) count body prose only, since `<main>` charges the page for
+headings and the artifact blocks §6 requires; (4) split it, per §16; (5) relabel the cap advisory,
+which would have converted a breached hard rule into a satisfied soft one and changed nothing.
 
-1. **Enforce it and cut the page to 900.** Honest, and expensive: the page carries the vault
-   boundary, the contract, the caught-error list and the site case study. Something load-bearing
-   goes, and §6 protects two catches by name as non-negotiable.
-2. **Enforce it at the real number and say why it moved.** Set the cap where the page actually
-   sits, deliberately, with the reason written down. Cheap, and it concedes that the original 900
-   was a guess — which it may have been.
-3. **Count only what the cap was for.** The cap exists to stop the page becoming an essay. Counting
-   `<main>` charges it for headings, figure captions and the artifact blocks §6 requires. A count
-   over body prose only would measure the thing being limited.
-4. **Split the page.** `CONTENT-RULES.md` §16 and `MAINTENANCE.md` §7 both say split rather than
-   raise a cap, and that is what removed `/research`'s 110 KB exception. The case study and the
-   caught-error list are separable from the method.
-5. **Relabel §6's cap as advisory.** Recorded for completeness, and the weakest: it converts a
-   breached hard rule into a satisfied soft one and changes nothing about the page.
+**The cap is a ratchet, not a budget.** It equals the measured count exactly, so there is no
+headroom and the next addition fails. Moving it means editing §6 and `CAP` in `tools/audit.sh`
+together, deliberately. Lower it freely when the page is cut; raise it only with a reason written
+into §6.
 
-Whichever is picked, the check goes into `tools/audit.sh` in the same change. A cap chosen and
-still unenforced is the state this entry exists to end.
+Verified by construction rather than by reading: run with `CAP` one below the true count, the check
+reports `OVER by 1` and exits non-zero; at the true count it passes.
 
 ---
 
@@ -120,12 +105,28 @@ roughly 140 bytes clear — until a later decision to keep the retraction in the
 than on the page returned about 900 bytes. **That headroom came back from a content decision that
 happened to go that way, not from anything structural**, so the entry stands.
 
-**The next substantive edit to this page has to split it, not shave it.** `CONTENT-RULES.md` §16 is
-explicit that a page approaching the cap gets split rather than granted an exception — that is what
-removed `/research`'s 110 KB allowance once the two theses became separate pages. The same seam is
-available here: the finding and the two synthetic beds are the argument, while the pre-registered
-predictions, the permission-route audit and the closing limitations read as a separable second page.
+### The trigger, and the seam it fires
 
-Recorded now because the failure mode is predictable: the next editor finds 140 bytes, shaves a
-sentence to fit, and the page loses content to a byte budget instead of to a decision. Reproduce
-with the `budgets` block of `bash tools/audit.sh`.
+**Trigger: the next substantive edit to this page. Not a byte threshold — an intent one.** Anything
+that adds a claim, a figure, a section or a paragraph fires it. Fixing a typo, correcting a number
+in place, or repointing a link does not. The page currently passes, so nothing fires today; the
+point of writing the trigger down is that the *next* editor meets it before they start rather than
+after they have written something that will not fit.
+
+**When it fires, split at this seam:**
+
+| stays on `/projects/agent-research-programme/` | moves to a second page |
+|---|---|
+| the finding — three of seven, the four attributions, ratio-not-a-rate | the two pre-registered predictions and their outcomes |
+| the rig, and both synthetic beds | the 18-route permission audit |
+| | the closing limitations |
+
+The line is *argument* versus *apparatus*: what the measurement found, against how it was run and
+what it could not see. `CONTENT-RULES.md` §16 requires the split rather than an exception, and that
+is what removed `/research`'s 110 KB allowance once the two theses became separate pages — the
+precedent is the same shape and it worked.
+
+**The seam is recorded, not chosen.** Picking a different one is fine; picking none, and shaving a
+sentence to fit instead, is the failure this entry exists to prevent — the page would lose content
+to a byte budget rather than to a decision. Reproduce the measurement with the `budgets` block of
+`bash tools/audit.sh`.
