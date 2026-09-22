@@ -591,7 +591,7 @@ def card(v: dict) -> str:
         f'            <span class="pos__sum">{esc(v["summary"])}</span>\n'
         f'            <span class="pos__figs">\n'
         f'              <span class="pos__fig">\n'
-        f'                <span class="pos__lab">Bought at</span>\n'
+        f'                <span class="pos__lab">Average price</span>\n'
         f'                <span class="pos__val">{money(v["basis"])}</span>\n'
         f'              </span>\n'
         f'              <span class="pos__fig">\n'
@@ -636,11 +636,10 @@ def build_index(views: list[dict], prices: Prices, pf: Portfolio) -> str:
     # would imply the whole page is that fresh.
     priced = prices.oldest_as_of([v["ticker"] for v in open_v
                                   if v["priceSource"] == "feed"])
-    rddt = next((v["returnPct"] for v in open_v if v["ticker"] == "RDDT"), None)
 
     doc = [head("Investing — Notes — Juan Mediavilla",
                 "What I bought, when, and what happened since — the ledger, in percentages and "
-                "share prices, with no amounts anywhere.", 2,
+                "average share prices, with no amounts anywhere.", 2,
                 here="notes/index.html", noindex=NOINDEX)]
 
     doc.append(f"""
@@ -649,7 +648,7 @@ def build_index(views: list[dict], prices: Prices, pf: Portfolio) -> str:
     <p class="eyebrow">Notebook</p>
     <h1>What I bought, and what happened</h1>
     <p class="standfirst">
-      {len(open_v)} positions: the price I paid for each, and what it trades at now.
+      {len(open_v)} positions: my average price for each, and what it trades at now.
     </p>
   </div>
 </header>
@@ -677,8 +676,15 @@ def build_index(views: list[dict], prices: Prices, pf: Portfolio) -> str:
       <div class="rail__body">
         <h2>Positions</h2>
         <p>
-          What I paid, what it trades at now, and the change between the two, quoted in
-          {esc(pf.currency)}.
+          My average price per share, what it trades at now, and the change between the two,
+          quoted in {esc(pf.currency)}.
+        </p>
+        <p>
+          <b>The average is the weighted average cost of the shares I still hold</b>, not the
+          price of the first one. Adding at a lower price pulls it down and the percentage moves
+          with it, so a position I averaged into reads against what I actually paid rather than
+          against where I started. Selling realises a gain or a loss but does not move the
+          average, which is why a trimmed position still shows the cost of what is left.
         </p>
 {grid(open_v)}      </div>
     </div>
@@ -693,7 +699,8 @@ def build_index(views: list[dict], prices: Prices, pf: Portfolio) -> str:
         <h2>Where these numbers come from</h2>
         <p class="meta">
           Prices: {esc(prices.feed)}, {esc(pf.currency)}, as of {esc(priced or "—")}.<br>
-          Cost: as supplied, {esc(pf.as_of)}. The per-trade ledger is not in these files.<br>
+          Averages: struck from my own ledger on {esc(pf.as_of)} and entered by hand. The
+          individual fills are not in these files — only the average they produce.<br>
           No aggregate return, no history, no position sizes: none of it is in these files.
         </p>
       </div>
@@ -710,7 +717,7 @@ def build_index(views: list[dict], prices: Prices, pf: Portfolio) -> str:
 def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) -> str:
     basis_note = ("weighted average of "
                   f'{len(v["entries"])} entr{"y" if len(v["entries"]) == 1 else "ies"}'
-                  if v["basisSource"] == "computed" else "average cost, as supplied")
+                  if v["basisSource"] == "computed" else "average price, shares still held")
 
     theme = (f'<span class="pos__class">{esc(v["theme"])}</span>' if v["theme"] else "")
     ground = " pos__logo--ground" if v["logoGround"] else ""
@@ -743,7 +750,7 @@ def build_position(v: dict, prev: dict | None, nxt: dict | None, pf: Portfolio) 
       {theme}
     </p>
     <ul class="keyfacts">
-      <li>{return_html(v, big=True)}<span>unrealised, {esc(pf.currency)}</span></li>
+      <li>{return_html(v, big=True)}<span>unrealised vs average, {esc(pf.currency)}</span></li>
       <li><b>{money(v['basis'])}</b><span>{esc(basis_note)}</span></li>
       <li><b>{money(v['price']) if v['price'] else MINUS}</b><span>{esc(last_note)}</span></li>
     </ul>
@@ -866,6 +873,23 @@ def selftest() -> int:
 
 
 
+
+    # The failure this catches: an average that was never re-struck after a
+    # later purchase, so the page shows the opening price and calls it an
+    # average. That is not hypothetical — META carried its July entry price for
+    # three weeks after buying below it. A position whose own movements record
+    # an add cannot still be sitting on the price it opened at.
+    stale = []
+    for path in sorted(CONTENT.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        opened = re.search(r"\*\*[\d-]+ — Opened\*\*[^$\n]*\$([\d,]+\.\d\d)", text)
+        if not opened or "— Added**" not in text:
+            continue
+        v = next(x for x in views if x["file"] == path.relative_to(SITE).as_posix())
+        if abs(v["basis"] - float(opened.group(1).replace(",", ""))) < 0.005:
+            stale.append(v["ticker"])
+    ok("no averaged position still carries its opening price", not stale,
+       ", ".join(stale) + " never re-struck" if stale else "")
 
     blob = (pathlib.Path("data/portfolio.json").read_text(encoding="utf-8")
             + pathlib.Path("data/prices.json").read_text(encoding="utf-8")).lower()

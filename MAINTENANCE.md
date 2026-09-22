@@ -161,7 +161,7 @@ python3 tools/build_notebook.py --selftest  # reconcile every derived number
 
 1. Add `content/positions/<slug>.md`. Front matter needs `ticker`, `name`, `theme`, `status`,
    `summary`, `updated`, plus **either** an `entries` ledger **or** an `avgCost`. Optional:
-   `bookReturnPct`, `exits`, `slug`.
+   `theme`, `exits`, `slug`.
 2. **Every position gets a page**, because every card opens onto it. The body is two sections in
    this order: `## Thesis` and `## Latest movements`. Where there is no memo the thesis section
    says so plainly — it is never filled in from the outcome.
@@ -242,9 +242,25 @@ reader. CONTENT-RULES.md §4.9 is about what the *page* requests; this runs on a
 ships nothing but a committed JSON file.
 
 **Cost basis is computed from `entries` when the ledger is supplied, and taken from `avgCost` when
-it is not** — and the page states which of the two a reader is looking at. Supplying the per-trade
-ledger is strictly better: it makes the basis recomputable and keeps it correct as trades are
-appended.
+it is not** — and the page states which of the two a reader is looking at.
+
+**`avgCost` is an average, not an entry price, and the page says so.** It is the weighted average
+cost of the shares *still held*: a purchase below the running average pulls it down, and a sale
+realizes a gain or a loss without moving it. The card is labelled `Average price` and the position
+page captions it `average price, shares still held`, because a figure labelled "Bought at" reads as
+the price of the first share and understates every position that was averaged into.
+
+**Re-strike `avgCost` by hand after every purchase, away from this repository.** The arithmetic
+needs share counts, and a share count must never be committed — so it is done against the private
+ledger and only the resulting average is pasted in. That is the whole obfuscation: the published
+number is a price, and a price alone reconstructs nothing.
+
+**`--selftest` catches the failure that mattered.** `no averaged position still carries its opening
+price` re-reads each file's `## Latest movements`, and fails the build where a position records an
+`Added` line but its `avgCost` still equals the price on its `Opened` line. META sat at its July
+entry price of `673.66` for three weeks after buying below it at `$573.24`; the true average of the
+shares held was `656.92`, and the page was reporting −12.0% where the position was −9.8%. The
+workflow runs `--selftest` before committing, so that drift is now a build failure.
 
 **Write behaviour, not reconstructed theses.** Across the current ledger exactly one trade carries
 a written note. A thesis composed now, after the outcome is known, is the most flattering thing

@@ -3,8 +3,8 @@ ticker: META
 name: Meta Platforms
 theme: Platforms
 status: open
-avgCost: 673.66
-updated: 2026-08-19
+avgCost: 656.92
+updated: 2026-09-21
 ---
 
 ## Thesis
@@ -103,3 +103,6 @@ value is that it was written in advance cannot lean on hindsight.
 - **2026-07-15 — Opened** in two lots, at $675.25 and $684.00.
 - **2026-07-17 — Added** a top-up at $648.19. Position size +20%.
 - **2026-08-06 — Trimmed** 33% at $589.66, cut at a loss. Realized −12.5%.
+- **2026-08-20 — Trimmed** 50% at $550.10, the second cut at a loss. Realized −18.3%.
+- **2026-08-31 — Added** at $573.24. Position size +20%. The first purchase below what the
+  earlier shares had cost, which moved the average of what I hold from $673.66 to $656.92.
