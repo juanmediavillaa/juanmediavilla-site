@@ -5,7 +5,7 @@
 
 One nav entry stands in front of several sections, so this page is what the nav
 points at. It is generated rather than hand-written for one reason: the counts on
-it ("9 positions", "23 books") are read from the content directories, so they
+it ("9 positions", "23 read / 3 to read") are read from the content directories, so they
 cannot drift from what is actually there.
 
 Adding a section means adding an entry to SECTIONS below. A section whose
@@ -27,39 +27,43 @@ from sitegen import SITE, ContentError, emit, esc, foot, head  # noqa: E402
 OUT = SITE / "notes"
 NOINDEX = True
 
-# slug, title, one line, content dir, singular/plural noun for the count
+# slug, title, one line, content dir, singular/plural noun for the count.
+# A None noun means the section labels its own count (see label()).
 SECTIONS = [
     ("investing", "Investing",
      "What I bought, what I paid for it, and what it trades at now.",
      "positions", ("position", "positions")),
     ("books", "Books",
      "What I have read, with a verdict beside each.",
-     "books", ("book", "books")),
+     "books", None),
 ]
 
 
-def count(folder: str) -> int:
-    """Entries that are actually part of the section.
+def waiting(f: pathlib.Path) -> bool:
+    """A book that is unread, or being read now, is on the reading list, not the shelf."""
+    return bool(re.search(r"^status:\s*(unread|reading)\s*$", f.read_text(encoding="utf-8"), re.M))
 
-    A book that is unread, or being read now, is on the reading list rather than
-    the shelf, so it is not what "23 books" on this page means.
-    """
+
+def label(folder: str, noun: tuple[str, str] | None) -> str:
+    """The count on a section's card, read from its content directory."""
     d = SITE / "content" / folder
-    if not d.exists():
-        return 0
-    return sum(1 for f in d.glob("*.md")
-               if not re.search(r"^status:\s*(unread|reading)\s*$", f.read_text(encoding="utf-8"), re.M))
+    files = list(d.glob("*.md")) if d.exists() else []
+    if noun is None:
+        # the books card shows both sides: the shelf and the reading list
+        queued = sum(1 for f in files if waiting(f))
+        return f"{len(files) - queued} read / {queued} to read"
+    one, many = noun
+    return f"{len(files)} {one if len(files) == 1 else many}"
 
 
 def build() -> str:
     rows = []
-    for slug, title, blurb, folder, (one, many) in SECTIONS:
+    for slug, title, blurb, folder, noun in SECTIONS:
         if not (OUT / slug / "index.html").exists():
             continue
-        n = count(folder)
         rows.append(
             f'          <a class="card note" href="{esc(slug)}/index.html">\n'
-            f'            <span class="note__count">{n} {one if n == 1 else many}</span>\n'
+            f'            <span class="note__count">{esc(label(folder, noun))}</span>\n'
             f'            <h3>{esc(title)}</h3>\n'
             f'            <span class="note__sum">{esc(blurb)}</span>\n'
             f'            <span class="pos__go">Open&nbsp;&rarr;</span>\n'
