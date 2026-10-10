@@ -2,69 +2,69 @@
   "source": "Yahoo Finance",
   "quotes": {
     "GOOGL": {
-      "price": 348.29,
-      "asOf": "2026-10-08",
-      "previousClose": 338.24
+      "price": 351.66,
+      "asOf": "2026-10-09",
+      "previousClose": 343.5
     },
     "AMZN": {
-      "price": 254.06,
-      "asOf": "2026-10-08",
-      "previousClose": 248.23
+      "price": 262.43,
+      "asOf": "2026-10-09",
+      "previousClose": 251.52
     },
     "DUOL": {
-      "price": 151.22,
-      "asOf": "2026-10-08",
-      "previousClose": 146.57
+      "price": 149.92,
+      "asOf": "2026-10-09",
+      "previousClose": 144.27
     },
     "FICO": {
-      "price": 707.43,
-      "asOf": "2026-10-08",
-      "previousClose": 661.75
+      "price": 667.58,
+      "asOf": "2026-10-09",
+      "previousClose": 661.25
     },
     "HIMS": {
-      "price": 28.06,
-      "asOf": "2026-10-08",
-      "previousClose": 29.3
+      "price": 30.92,
+      "asOf": "2026-10-09",
+      "previousClose": 29.0
     },
     "HNGE": {
-      "price": 98.0,
-      "asOf": "2026-10-08",
-      "previousClose": 97.94
+      "price": 102.9,
+      "asOf": "2026-10-09",
+      "previousClose": 97.67
     },
     "META": {
-      "price": 720.89,
-      "asOf": "2026-10-08",
-      "previousClose": 725.93
+      "price": 718.67,
+      "asOf": "2026-10-09",
+      "previousClose": 728.08
     },
     "MU": {
-      "price": 1035.84,
-      "asOf": "2026-10-08",
-      "previousClose": 1097.39
+      "price": 1029.0,
+      "asOf": "2026-10-09",
+      "previousClose": 1074.89
     },
     "NFLX": {
-      "price": 71.57,
-      "asOf": "2026-10-08",
-      "previousClose": 67.85
+      "price": 70.3,
+      "asOf": "2026-10-09",
+      "previousClose": 67.06
     },
     "NU": {
-      "price": 15.38,
-      "asOf": "2026-10-08",
-      "previousClose": 13.29
+      "price": 16.12,
+      "asOf": "2026-10-09",
+      "previousClose": 13.43
     },
     "RDDT": {
-      "price": 156.47,
-      "asOf": "2026-10-08",
-      "previousClose": 149.53
+      "price": 159.91,
+      "asOf": "2026-10-09",
+      "previousClose": 147.86
     },
     "HOOD": {
-      "price": 107.01,
-      "asOf": "2026-10-08",
-      "previousClose": 111.15
+      "price": 109.02,
+      "asOf": "2026-10-09",
+      "previousClose": 112.74
     },
     "SNDK": {
-      "price": 1609.46,
-      "asOf": "2026-10-08",
-      "previousClose": 1787.69
+      "price": 1581.82,
+      "asOf": "2026-10-09",
+      "previousClose": 1719.99
     }
   }
 }
